@@ -20,6 +20,7 @@ dependencies:
   webfabrik_theme:
     git: https://github.com/ton-An/webfabrik_theme
   intl: ^0.20.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -27,3 +28,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
