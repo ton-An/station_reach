@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:maplibre/maplibre.dart';
+import 'package:station_reach/secrets.dart';
 
-class MapWidget extends StatelessWidget {
-  const MapWidget({super.key});
+class MapPage extends StatelessWidget {
+  const MapPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class MapWidget extends StatelessWidget {
         initCenter: Position(9.17, 47.68),
         initZoom: 2,
         initStyle:
-            'https://api.maptiler.com/maps/streets-v2/style.json?key=TflVLODr98zL4hpAoXP1',
+            'https://api.maptiler.com/maps/streets-v2/style.json?key=${Secrets.maptilerKey}',
       ),
       children: const [
         MapScalebar(),
