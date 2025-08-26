@@ -5,6 +5,9 @@ import 'package:station_reach/secrets.dart';
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
 
+  static const String pageName = 'map';
+  static const String route = '/$pageName';
+
   @override
   Widget build(BuildContext context) {
     return MapLibreMap(
