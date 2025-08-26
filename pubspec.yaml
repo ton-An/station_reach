@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_bloc: ^9.1.1
   fpdart: ^1.1.1
   go_router: ^16.2.0
   maplibre: ^0.2.2
