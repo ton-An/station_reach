@@ -14,7 +14,8 @@ dependencies:
   fpdart: ^1.1.1
   go_router: ^16.2.0
   maplibre: ^0.2.2
-
+  webfabrik_theme:
+    git: https://github.com/ton-An/webfabrik_theme
 dev_dependencies:
   flutter_test:
     sdk: flutter
