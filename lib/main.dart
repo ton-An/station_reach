@@ -5,10 +5,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:station_reach/core/dependency_injector.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
-import 'package:station_reach/features/map/presentation/pages/map_page.dart';
+import 'package:station_reach/cubits/station_search_cubit/station_search_cubit.dart';
+import 'package:station_reach/pages/map_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  initGetIt();
+
   runApp(const MainApp());
 }
 
@@ -75,8 +80,13 @@ class _MainAppState extends State<MainApp> {
               routes: [
                 GoRoute(
                   path: MapPage.pageName,
-                  builder: (context, state) => BlocProvider(
-                    create: (context) => inAppNotificationCubit,
+                  builder: (context, state) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(create: (context) => inAppNotificationCubit),
+                      BlocProvider(
+                        create: (context) => getIt<StationSearchCubit>(),
+                      ),
+                    ],
                     child: const MapPage(),
                   ),
                 ),
