@@ -29,11 +29,7 @@ class _Map extends StatelessWidget {
                 ],
               ),
           ],
-          children: [
-            MapScalebar(),
-            SourceAttribution(),
-            MapControlButtons(showTrackLocation: true),
-          ],
+          children: [MapScalebar(), _Controls()],
         );
       },
     );
