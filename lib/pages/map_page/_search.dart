@@ -22,6 +22,7 @@ class _Search extends StatelessWidget {
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
                       height: 46,
@@ -56,34 +57,50 @@ class _Search extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (state is StationSearchStateSuccess &&
-                        state.stations.isNotEmpty)
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 200),
-                        child: ListView.builder(
-                          itemCount: state.stations.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return FadeTapDetector(
-                              onTap: () {
-                                context
-                                    .read<StationReachabilityCubit>()
-                                    .getReachability(state.stations[index].id);
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: theme.spacing.xSmall,
-                                  vertical: theme.spacing.xSmall,
-                                ),
-                                child: Text(
-                                  state.stations[index].name,
-                                  style: theme.text.body,
-                                ),
-                              ),
-                            );
-                          },
+                    if (state is StationSearchDataState &&
+                        state.stations.isNotEmpty) ...[
+                      Padding(
+                        padding: EdgeInsets.only(left: theme.spacing.xSmall),
+                        child: Text(
+                          AppLocalizations.of(context)!.results,
+                          style: theme.text.subhead.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: theme.colors.text.withValues(alpha: .3),
+                          ),
                         ),
                       ),
+                      XTinyGap(),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 180),
+                        child: Scrollbar(
+                          child: ListView.builder(
+                            itemCount: state.stations.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return FadeTapDetector(
+                                onTap: () {
+                                  context
+                                      .read<StationReachabilityCubit>()
+                                      .getReachability(
+                                        state.stations[index].id,
+                                      );
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: theme.spacing.xSmall,
+                                    bottom: theme.spacing.xSmall,
+                                  ),
+                                  child: Text(
+                                    state.stations[index].name,
+                                    style: theme.text.body,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
