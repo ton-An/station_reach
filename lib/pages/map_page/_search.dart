@@ -19,7 +19,7 @@ class _Search extends StatelessWidget {
 
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: theme.colors.background.withValues(alpha: .93),
+                  color: theme.colors.translucentBackground,
                 ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

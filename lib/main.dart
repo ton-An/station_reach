@@ -40,7 +40,11 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return WebfabrikTheme(
-      data: WebfabrikThemeData(),
+      data: WebfabrikThemeData(
+        colors: WebfabrikColorThemeData(
+          translucentBackground: Color(0xFFFFFFFF).withValues(alpha: .93),
+        ),
+      ),
       child: MultiBlocProvider(
         providers: [BlocProvider(create: (context) => inAppNotificationCubit)],
         child: CupertinoApp.router(
