@@ -99,6 +99,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Station Reach'**
   String get appName;
+
+  /// No description provided for @openStreetMapAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'© OpenStreetMap'**
+  String get openStreetMapAttribution;
 }
 
 class _AppLocalizationsDelegate
