@@ -16,7 +16,6 @@ class _Search extends StatelessWidget {
           builder: (context, state) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(theme.radii.button),
-
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: theme.colors.translucentBackground,
@@ -25,11 +24,11 @@ class _Search extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                      height: 50,
+                      height: 46,
                       child: CupertinoTextField(
                         style: theme.text.body,
                         placeholderStyle: theme.text.body.copyWith(
-                          color: theme.colors.text.withValues(alpha: .5),
+                          color: theme.colors.text.withValues(alpha: .64),
                         ),
                         placeholder: 'Search Stations',
                         cursorHeight: 20,
@@ -38,13 +37,13 @@ class _Search extends StatelessWidget {
                           borderRadius: BorderRadius.zero,
                           color: Colors.transparent,
                         ),
+                        cursorColor: theme.colors.primary,
                         onChanged: (String locationQuery) {
                           context.read<StationSearchCubit>().searchStations(
                             locationQuery,
                           );
                         },
                         prefixMode: OverlayVisibilityMode.always,
-
                         prefix: Padding(
                           padding: EdgeInsets.only(
                             left: theme.spacing.xxSmall,
@@ -52,7 +51,7 @@ class _Search extends StatelessWidget {
                           ),
                           child: Icon(
                             Icons.search,
-                            color: theme.colors.text.withValues(alpha: .5),
+                            color: theme.colors.primary,
                           ),
                         ),
                       ),
