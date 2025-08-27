@@ -27,7 +27,7 @@ class _Controls extends StatelessWidget {
                 );
               },
               icon: Icons.add_rounded,
-              iconColor: theme.colors.primary,
+              iconColor: theme.colors.accent,
             ),
             XSmallGap(),
             CustomIconButton(
