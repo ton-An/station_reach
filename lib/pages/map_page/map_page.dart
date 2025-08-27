@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +18,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 part '_attribution_legend.dart';
 part '_controls.dart';
 part '_map.dart';
+part '_scale_bar.dart';
 part '_search.dart';
 
 class MapPage extends StatelessWidget {

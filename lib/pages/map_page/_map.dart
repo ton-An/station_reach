@@ -29,7 +29,7 @@ class _Map extends StatelessWidget {
                 ],
               ),
           ],
-          children: [MapScalebar(), _Controls()],
+          children: [_ScaleBar(), _Controls()],
         );
       },
     );
