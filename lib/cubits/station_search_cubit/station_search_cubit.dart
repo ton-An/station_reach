@@ -18,39 +18,42 @@ class StationSearchCubit extends Cubit<StationSearchState> {
   final FailureHandler failureHandler;
 
   Future<void> searchStations(String query) async {
-    if (query.isNotEmpty) {
-      emit(StationSearchStateLoading());
-
-      final Uri url = Uri.parse('${Constants.apiUrl}/locations?query=$query');
-
-      List locations = [];
-
-      try {
-        final Response response = await dio.getUri(url);
-
-        if (response.statusCode == HttpStatus.ok) {
-          locations = response.data;
-        } else if (response.statusCode != null &&
-            response.statusCode != HttpStatus.ok) {
-          throw StatusCodeNotOkFailure(statusCode: response.statusCode!);
-        } else {
-          throw UnknownRequestFailure();
-        }
-      } on DioException catch (diaException) {
-        final Failure failure = failureHandler.dioExceptionMapper(
-          dioException: diaException,
-        );
-
-        emit(StationSearchStateFailure(failure: failure));
-      } on Failure catch (failure) {
-        emit(StationSearchStateFailure(failure: failure));
-      }
-
-      final List<Station> stations = locations
-          .map((location) => Station.fromJson(location))
-          .toList();
-
-      emit(StationSearchStateSuccess(stations: stations));
+    if (query.isEmpty) {
+      emit(StationSearchStateSuccess(stations: []));
+      return;
     }
+
+    emit(StationSearchStateLoading());
+
+    final Uri url = Uri.parse('${Constants.apiUrl}/locations?query=$query');
+
+    List locations = [];
+
+    try {
+      final Response response = await dio.getUri(url);
+
+      if (response.statusCode == HttpStatus.ok) {
+        locations = response.data;
+      } else if (response.statusCode != null &&
+          response.statusCode != HttpStatus.ok) {
+        throw StatusCodeNotOkFailure(statusCode: response.statusCode!);
+      } else {
+        throw UnknownRequestFailure();
+      }
+    } on DioException catch (diaException) {
+      final Failure failure = failureHandler.dioExceptionMapper(
+        dioException: diaException,
+      );
+
+      emit(StationSearchStateFailure(failure: failure));
+    } on Failure catch (failure) {
+      emit(StationSearchStateFailure(failure: failure));
+    }
+
+    final List<Station> stations = locations
+        .map((location) => Station.fromJson(location))
+        .toList();
+
+    emit(StationSearchStateSuccess(stations: stations));
   }
 }
