@@ -23,7 +23,13 @@ class StationSearchCubit extends Cubit<StationSearchState> {
       return;
     }
 
-    emit(StationSearchStateLoading());
+    List<Station> previousStations = [];
+
+    if (state is StationSearchDataState) {
+      previousStations = (state as StationSearchDataState).stations;
+    }
+
+    emit(StationSearchStateLoading(stations: previousStations));
 
     final Uri url = Uri.parse('${Constants.apiUrl}/locations?query=$query');
 

@@ -9,15 +9,21 @@ abstract class StationSearchState extends Equatable {
 
 class StationSearchStateInitial extends StationSearchState {}
 
-class StationSearchStateLoading extends StationSearchState {}
-
-class StationSearchStateSuccess extends StationSearchState {
-  StationSearchStateSuccess({required this.stations});
+abstract class StationSearchDataState extends StationSearchState {
+  StationSearchDataState({required this.stations});
 
   final List<Station> stations;
 
   @override
   List<Object?> get props => [stations];
+}
+
+class StationSearchStateLoading extends StationSearchDataState {
+  StationSearchStateLoading({required super.stations});
+}
+
+class StationSearchStateSuccess extends StationSearchDataState {
+  StationSearchStateSuccess({required super.stations});
 }
 
 class StationSearchStateFailure extends StationSearchState {
