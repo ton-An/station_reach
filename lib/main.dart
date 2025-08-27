@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:station_reach/core/dependency_injector.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:station_reach/cubits/station_search_cubit/station_search_cubit.dart';
+import 'package:station_reach/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
 import 'package:station_reach/pages/map_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -85,6 +86,9 @@ class _MainAppState extends State<MainApp> {
                       BlocProvider(create: (context) => inAppNotificationCubit),
                       BlocProvider(
                         create: (context) => getIt<StationSearchCubit>(),
+                      ),
+                      BlocProvider(
+                        create: (context) => getIt<StationReachabilityCubit>(),
                       ),
                     ],
                     child: const MapPage(),
