@@ -13,11 +13,6 @@ class _ScaleBar extends StatelessWidget {
 
     final metersPerPixel = controller.getMetersPerPixelAtLatitudeSync(latitude);
 
-    final BorderSide borderSide = BorderSide(
-      color: theme.colors.text,
-      width: 1,
-    );
-
     final unit = metersPerPixel >= 10 ? _Unit.km : _Unit.m;
 
     final meters = getMeters(metersPerPixel);
