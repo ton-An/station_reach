@@ -105,6 +105,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'© OpenStreetMap'**
   String get openStreetMapAttribution;
+
+  /// No description provided for @results.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get results;
 }
 
 class _AppLocalizationsDelegate

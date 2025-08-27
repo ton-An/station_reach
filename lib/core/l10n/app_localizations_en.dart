@@ -13,4 +13,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openStreetMapAttribution => '© OpenStreetMap';
+
+  @override
+  String get results => 'Results';
 }
