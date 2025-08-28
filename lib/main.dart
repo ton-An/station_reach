@@ -46,6 +46,95 @@ class _MainAppState extends State<MainApp> {
           accent: Color.fromARGB(255, 7, 114, 255),
           translucentBackground: Color(0xFFFFFFFF).withValues(alpha: .93),
         ),
+        text: WebfabrikTextThemeData(
+          largeTitle: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 34,
+            fontWeight: FontWeight.w400,
+            height: 41 / 34,
+            color: CupertinoColors.label,
+          ),
+
+          title1: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 28,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 34 / 28,
+            color: CupertinoColors.label,
+          ),
+
+          title2: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 22,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 28 / 22,
+            color: CupertinoColors.label,
+          ),
+
+          title3: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 20,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 25 / 20,
+            color: CupertinoColors.label,
+          ),
+
+          headline: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 17,
+            fontVariations: [FontVariation('wght', 600)],
+            height: 22 / 17,
+            color: CupertinoColors.label,
+          ),
+
+          body: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 18,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 22 / 17,
+            color: CupertinoColors.label,
+          ),
+
+          callout: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 16,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 21 / 16,
+            color: CupertinoColors.label,
+          ),
+
+          subhead: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 15,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 20 / 15,
+            color: CupertinoColors.label,
+          ),
+
+          footnote: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 13.0,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 18 / 13,
+            color: CupertinoColors.label,
+          ),
+
+          caption1: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 12,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 16 / 12,
+            color: CupertinoColors.label,
+          ),
+
+          caption2: TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 11,
+            fontVariations: [FontVariation('wght', 400)],
+            height: 13 / 11,
+            color: CupertinoColors.label,
+          ),
+        ),
       ),
       child: MultiBlocProvider(
         providers: [BlocProvider(create: (context) => inAppNotificationCubit)],

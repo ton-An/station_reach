@@ -49,6 +49,7 @@ class _Search extends StatelessWidget {
                         prefixMode: OverlayVisibilityMode.always,
                         prefix: Padding(
                           padding: EdgeInsets.only(
+                            top: theme.spacing.tiny * 1.5,
                             left: theme.spacing.xxSmall,
                             right: theme.spacing.xSmall,
                           ),
@@ -66,12 +67,12 @@ class _Search extends StatelessWidget {
                         child: Text(
                           AppLocalizations.of(context)!.results,
                           style: theme.text.subhead.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: theme.colors.text.withValues(alpha: .3),
+                            fontVariations: [FontVariation('wght', 600)],
+                            color: theme.colors.primary.withValues(alpha: .8),
                           ),
                         ),
                       ),
-                      XTinyGap(),
+                      SmallGap(),
                       ConstrainedBox(
                         constraints: const BoxConstraints(maxHeight: 180),
                         child: Scrollbar(
