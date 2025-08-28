@@ -29,17 +29,22 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<StationSearchCubit, StationSearchState>(
-      listener: (context, state) {
-        if (state is StationSearchStateFailure) {
+      listener: (context, searchState) {
+        if (searchState is StationSearchStateFailure) {
           context.read<InAppNotificationCubit>().sendFailureNotification(
-            state.failure,
+            searchState.failure,
           );
         }
       },
-      child: BlocBuilder<StationReachabilityCubit, StationReachabilityState>(
-        builder: (context, state) {
-          return Scaffold(body: Stack(children: [_Map(), _Search()]));
+      child: BlocListener<StationReachabilityCubit, StationReachabilityState>(
+        listener: (context, reachabilityState) {
+          if (reachabilityState is StationReachabilityStateFailure) {
+            context.read<InAppNotificationCubit>().sendFailureNotification(
+              reachabilityState.failure,
+            );
+          }
         },
+        child: Scaffold(body: Stack(children: [_Map(), _Search()])),
       ),
     );
   }
