@@ -42,7 +42,8 @@ class _ScaleBar extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: theme.text.subhead.copyWith(color: theme.colors.text),
             ),
-            Container(
+            AnimatedContainer(
+              duration: theme.durations.short,
               width: meters / metersPerPixel,
               height: 3,
               padding: EdgeInsets.only(
