@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:station_reach/widgets/fade_gesture_detector.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class CustomIconButton extends StatelessWidget {
@@ -17,7 +18,7 @@ class CustomIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return FadeTapDetector(
+    return FadeGestureDetector(
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.all(theme.spacing.xSmall),
