@@ -89,6 +89,9 @@ class _Search extends StatelessWidget {
                                       .getReachability(
                                         state.stations[index].id,
                                       );
+                                  context
+                                      .read<StationSearchCubit>()
+                                      .collapseSearch();
                                 },
                                 minOpacity: index.isEven ? .1 : .6,
                                 child: Container(

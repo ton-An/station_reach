@@ -62,4 +62,8 @@ class StationSearchCubit extends Cubit<StationSearchState> {
 
     emit(StationSearchStateSuccess(stations: stations));
   }
+
+  void collapseSearch() {
+    emit(StationSearchStateInitial());
+  }
 }
