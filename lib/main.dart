@@ -44,7 +44,7 @@ class _MainAppState extends State<MainApp> {
         colors: WebfabrikColorThemeData(
           primary: const Color.fromARGB(255, 83, 196, 108),
           accent: Color.fromARGB(255, 7, 114, 255),
-          translucentBackground: Color(0xFFFFFFFF).withValues(alpha: .93),
+          translucentBackground: Color(0xFFFFFFFF).withValues(alpha: .95),
         ),
         text: WebfabrikTextThemeData(
           largeTitle: TextStyle(
