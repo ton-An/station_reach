@@ -24,6 +24,7 @@ dependencies:
   dio: ^5.9.0
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.2
+  pointer_interceptor: ^0.10.1+2
 
 dev_dependencies:
   flutter_test:
