@@ -9,6 +9,7 @@ import 'package:station_reach/cubits/station_search_cubit/station_search_states.
 import 'package:station_reach/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
 import 'package:station_reach/cubits/stations_reachability_cubit/station_reachability_states.dart';
 import 'package:station_reach/secrets.dart';
+import 'package:station_reach/widgets/fade_gesture_detector.dart';
 import 'package:station_reach/widgets/icon_button.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';

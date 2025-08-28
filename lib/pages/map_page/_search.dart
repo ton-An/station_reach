@@ -25,38 +25,41 @@ class _Search extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        height: 46,
-                        child: CupertinoTextField(
-                          style: theme.text.body,
-                          placeholderStyle: theme.text.body.copyWith(
-                            color: theme.colors.text.withValues(alpha: .64),
-                          ),
-                          placeholder: AppLocalizations.of(
-                            context,
-                          )!.searchStations,
-                          cursorHeight: 20,
-                          padding: EdgeInsets.zero,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.zero,
-                            color: Colors.transparent,
-                          ),
-                          cursorColor: theme.colors.primary,
-                          onChanged: (String locationQuery) {
-                            context.read<StationSearchCubit>().searchStations(
-                              locationQuery,
-                            );
-                          },
-                          prefixMode: OverlayVisibilityMode.always,
-                          prefix: Padding(
-                            padding: EdgeInsets.only(
-                              top: theme.spacing.tiny * 1.5,
-                              left: theme.spacing.xxSmall,
-                              right: theme.spacing.xSmall,
+                      MouseRegion(
+                        cursor: SystemMouseCursors.text,
+                        child: SizedBox(
+                          height: 46,
+                          child: CupertinoTextField(
+                            style: theme.text.body,
+                            placeholderStyle: theme.text.body.copyWith(
+                              color: theme.colors.text.withValues(alpha: .64),
                             ),
-                            child: Icon(
-                              Icons.search_rounded,
-                              color: theme.colors.primary,
+                            placeholder: AppLocalizations.of(
+                              context,
+                            )!.searchStations,
+                            cursorHeight: 20,
+                            padding: EdgeInsets.zero,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.zero,
+                              color: Colors.transparent,
+                            ),
+                            cursorColor: theme.colors.primary,
+                            onChanged: (String locationQuery) {
+                              context.read<StationSearchCubit>().searchStations(
+                                locationQuery,
+                              );
+                            },
+                            prefixMode: OverlayVisibilityMode.always,
+                            prefix: Padding(
+                              padding: EdgeInsets.only(
+                                top: theme.spacing.tiny * 1.5,
+                                left: theme.spacing.xxSmall,
+                                right: theme.spacing.xSmall,
+                              ),
+                              child: Icon(
+                                Icons.search_rounded,
+                                color: theme.colors.primary,
+                              ),
                             ),
                           ),
                         ),
@@ -73,29 +76,30 @@ class _Search extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SmallGap(),
                         ConstrainedBox(
-                          constraints: const BoxConstraints(maxHeight: 200),
-                          child: EdgeFade(
-                            topOptions: EdgeFadeOptions(enabled: false),
-                            bottomOptions: EdgeFadeOptions(
-                              heightFactor: .2,
-                              halfWayPoint: .7,
-                            ),
-                            child: ListView.builder(
-                              itemCount: state.stations.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return FadeTapDetector(
-                                  onTap: () {
-                                    context
-                                        .read<StationReachabilityCubit>()
-                                        .getReachability(
-                                          state.stations[index].id,
-                                        );
-                                  },
+                          constraints: const BoxConstraints(maxHeight: 260),
+                          child: ListView.builder(
+                            itemCount: state.stations.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return FadeGestureDetector(
+                                onTap: () {
+                                  context
+                                      .read<StationReachabilityCubit>()
+                                      .getReachability(
+                                        state.stations[index].id,
+                                      );
+                                },
+                                minOpacity: index.isEven ? .1 : .6,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: index.isEven
+                                        ? theme.colors.translucentBackground
+                                        : theme.colors.primaryTranslucent,
+                                  ),
                                   child: Padding(
                                     padding: EdgeInsets.only(
+                                      top: theme.spacing.xSmall,
                                       left: theme.spacing.xSmall,
                                       bottom: theme.spacing.xSmall,
                                     ),
@@ -104,9 +108,9 @@ class _Search extends StatelessWidget {
                                       style: theme.text.body,
                                     ),
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ],
