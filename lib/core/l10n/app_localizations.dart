@@ -117,6 +117,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search Stations'**
   String get searchStations;
+
+  /// No description provided for @mapTilerAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'© MapTiler'**
+  String get mapTilerAttribution;
+
+  /// No description provided for @mapLibreAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'© MapLibre'**
+  String get mapLibreAttribution;
 }
 
 class _AppLocalizationsDelegate

@@ -2,5 +2,7 @@
     "appName": "Station Reach",
     "openStreetMapAttribution": "© OpenStreetMap",
     "results": "Results",
-    "searchStations": "Search Stations"
+    "searchStations": "Search Stations",
+    "mapTilerAttribution": "© MapTiler",
+    "mapLibreAttribution": "© MapLibre"
 }

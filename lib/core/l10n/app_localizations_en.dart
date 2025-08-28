@@ -19,4 +19,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchStations => 'Search Stations';
+
+  @override
+  String get mapTilerAttribution => '© MapTiler';
+
+  @override
+  String get mapLibreAttribution => '© MapLibre';
 }

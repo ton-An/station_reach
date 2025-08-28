@@ -43,6 +43,7 @@ class _MainAppState extends State<MainApp> {
       data: WebfabrikThemeData(
         colors: WebfabrikColorThemeData(
           primary: const Color.fromARGB(255, 83, 196, 108),
+          primaryTranslucent: const Color.fromARGB(60, 83, 196, 108),
           accent: Color.fromARGB(255, 7, 114, 255),
           translucentBackground: Color(0xFFFFFFFF).withValues(alpha: .95),
         ),
