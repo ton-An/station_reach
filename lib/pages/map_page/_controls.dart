@@ -10,39 +10,41 @@ class _Controls extends StatelessWidget {
 
     return Align(
       alignment: Alignment.bottomRight,
-      child: Container(
-        padding: EdgeInsets.only(
-          bottom: theme.spacing.medium,
-          right: theme.spacing.medium,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            CustomIconButton(
-              onPressed: () {
-                controller.animateCamera(
-                  zoom: controller.getCamera().zoom + 1,
-                  nativeDuration: theme.durations.short,
-                );
-              },
-              icon: Icons.add_rounded,
-              iconColor: theme.colors.accent,
-            ),
-            XSmallGap(),
-            CustomIconButton(
-              onPressed: () {
-                controller.animateCamera(
-                  zoom: controller.getCamera().zoom - 1,
-                  nativeDuration: theme.durations.short,
-                );
-              },
-              icon: Icons.remove_rounded,
-              iconColor: theme.colors.error,
-            ),
-            XSmallGap(),
-            _AttributionLegend(),
-          ],
+      child: PointerInterceptor(
+        child: Container(
+          padding: EdgeInsets.only(
+            bottom: theme.spacing.medium,
+            right: theme.spacing.medium,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              CustomIconButton(
+                onPressed: () {
+                  controller.animateCamera(
+                    zoom: controller.getCamera().zoom + 1,
+                    nativeDuration: theme.durations.short,
+                  );
+                },
+                icon: Icons.add_rounded,
+                iconColor: theme.colors.accent,
+              ),
+              XSmallGap(),
+              CustomIconButton(
+                onPressed: () {
+                  controller.animateCamera(
+                    zoom: controller.getCamera().zoom - 1,
+                    nativeDuration: theme.durations.short,
+                  );
+                },
+                icon: Icons.remove_rounded,
+                iconColor: theme.colors.error,
+              ),
+              XSmallGap(),
+              _AttributionLegend(),
+            ],
+          ),
         ),
       ),
     );

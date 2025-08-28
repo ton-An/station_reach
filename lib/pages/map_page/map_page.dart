@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:maplibre/maplibre.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:station_reach/cubits/station_search_cubit/station_search_cubit.dart';
 import 'package:station_reach/cubits/station_search_cubit/station_search_states.dart';
