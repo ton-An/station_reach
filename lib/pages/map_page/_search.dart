@@ -31,7 +31,9 @@ class _Search extends StatelessWidget {
                         placeholderStyle: theme.text.body.copyWith(
                           color: theme.colors.text.withValues(alpha: .64),
                         ),
-                        placeholder: 'Search Stations',
+                        placeholder: AppLocalizations.of(
+                          context,
+                        )!.searchStations,
                         cursorHeight: 20,
                         padding: EdgeInsets.zero,
                         decoration: BoxDecoration(
@@ -51,7 +53,7 @@ class _Search extends StatelessWidget {
                             right: theme.spacing.xSmall,
                           ),
                           child: Icon(
-                            Icons.search,
+                            Icons.search_rounded,
                             color: theme.colors.primary,
                           ),
                         ),

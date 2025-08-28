@@ -1,5 +1,6 @@
 {
     "appName": "Station Reach",
     "openStreetMapAttribution": "© OpenStreetMap",
-    "results": "Results"
+    "results": "Results",
+    "searchStations": "Search Stations"
 }

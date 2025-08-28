@@ -111,6 +111,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Results'**
   String get results;
+
+  /// No description provided for @searchStations.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Stations'**
+  String get searchStations;
 }
 
 class _AppLocalizationsDelegate
