@@ -46,7 +46,7 @@ class _AttributionLegend extends StatelessWidget {
 }
 
 class _AttributionLink extends StatelessWidget {
-  const _AttributionLink({super.key, required this.text, required this.url});
+  const _AttributionLink({required this.text, required this.url});
 
   final String text;
   final String url;
