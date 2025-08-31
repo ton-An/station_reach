@@ -30,7 +30,10 @@ class _Search extends StatelessWidget {
                         child: SizedBox(
                           height: 46,
                           child: CupertinoTextField(
-                            style: theme.text.body,
+                            style: theme.text.body.copyWith(
+                              height: 1.27,
+                              color: theme.colors.text,
+                            ),
                             placeholderStyle: theme.text.body.copyWith(
                               color: theme.colors.text.withValues(alpha: .64),
                             ),
@@ -86,9 +89,7 @@ class _Search extends StatelessWidget {
                                 onTap: () {
                                   context
                                       .read<StationReachabilityCubit>()
-                                      .getReachability(
-                                        state.stations[index].id,
-                                      );
+                                      .getReachability(state.stations[index]);
                                   context
                                       .read<StationSearchCubit>()
                                       .collapseSearch();
