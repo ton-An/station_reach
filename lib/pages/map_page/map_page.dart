@@ -8,6 +8,8 @@ import 'package:station_reach/cubits/station_search_cubit/station_search_cubit.d
 import 'package:station_reach/cubits/station_search_cubit/station_search_states.dart';
 import 'package:station_reach/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
 import 'package:station_reach/cubits/stations_reachability_cubit/station_reachability_states.dart';
+import 'package:station_reach/models/reachable_station.dart';
+import 'package:station_reach/models/trip.dart';
 import 'package:station_reach/secrets.dart';
 import 'package:station_reach/widgets/fade_gesture_detector.dart';
 import 'package:station_reach/widgets/icon_button.dart';
@@ -16,9 +18,12 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_attribution_legend.dart';
 part '_controls.dart';
+part '_legend_container.dart';
+part '_legends.dart';
 part '_map.dart';
 part '_scale_bar.dart';
 part '_search.dart';
+part '_time_gradient_legend.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
