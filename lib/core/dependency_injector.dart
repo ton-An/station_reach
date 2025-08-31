@@ -17,7 +17,7 @@ void initGetIt() {
     () => StationSearchCubit(dio: getIt(), failureHandler: getIt()),
   );
   getIt.registerFactory(
-    () => StationReachabilityCubit(dio: getIt(), failureHandler: getIt()),
+    () => StationReachabilityCubit(failureHandler: getIt()),
   );
 
   // -- Third Party -- //
