@@ -197,14 +197,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.15.6"
-  http:
-    dependency: "direct main"
-    description:
-      name: http
-      sha256: bb2ce4590bc2667c96f318d68cac1b5a7987ec819351d32b1c987239a815e007
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.5.0"
   http_parser:
     dependency: transitive
     description:
@@ -551,7 +543,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "71d99c7024ecf36cd508d1813477eecf01be4ca0"
+      resolved-ref: "08104290e0f7f44c125a1db2410fb9a8bf0b8559"
       url: "https://github.com/ton-An/webfabrik_theme"
     source: git
     version: "0.0.1"
