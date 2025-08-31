@@ -6,9 +6,9 @@ class _ScaleBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MapController controller = MapController.of(context);
-    final MapCamera camera = MapCamera.of(context);
+    final MapCamera? camera = MapCamera.maybeOf(context);
 
-    final double latitude = camera.center.lat.toDouble();
+    final double latitude = camera?.center.lat.toDouble() ?? 0;
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     final metersPerPixel = controller.getMetersPerPixelAtLatitudeSync(latitude);
@@ -17,45 +17,38 @@ class _ScaleBar extends StatelessWidget {
 
     final meters = getMeters(metersPerPixel);
 
-    return Align(
-      alignment: Alignment.bottomLeft,
-      child: Container(
-        margin: EdgeInsets.only(
-          bottom: theme.spacing.medium,
-          left: theme.spacing.medium,
-        ),
-        padding: EdgeInsets.symmetric(
-          horizontal: theme.spacing.xSmall,
-          vertical: theme.spacing.xSmall,
-        ),
-        decoration: BoxDecoration(
-          color: theme.colors.translucentBackground,
-          borderRadius: BorderRadius.circular(theme.radii.small),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '${(meters / unit.meters).toInt()} ${unit.abbreviation}',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.text.subhead.copyWith(color: theme.colors.text),
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: theme.spacing.xSmall,
+        vertical: theme.spacing.xSmall,
+      ),
+      decoration: BoxDecoration(
+        color: theme.colors.translucentBackground,
+        borderRadius: BorderRadius.circular(theme.radii.small),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${(meters / unit.meters).toInt()} ${unit.abbreviation}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.text.subhead.copyWith(color: theme.colors.text),
+          ),
+          AnimatedContainer(
+            duration: theme.durations.short,
+            width: meters / metersPerPixel,
+            height: 3,
+            padding: EdgeInsets.only(
+              left: theme.spacing.tiny + theme.spacing.xTiny,
             ),
-            AnimatedContainer(
-              duration: theme.durations.short,
-              width: meters / metersPerPixel,
-              height: 3,
-              padding: EdgeInsets.only(
-                left: theme.spacing.tiny + theme.spacing.xTiny,
-              ),
-              decoration: BoxDecoration(
-                color: theme.colors.text,
-                borderRadius: BorderRadius.circular(1),
-              ),
+            decoration: BoxDecoration(
+              color: theme.colors.text,
+              borderRadius: BorderRadius.circular(1),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
