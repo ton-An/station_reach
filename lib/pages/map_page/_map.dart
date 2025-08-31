@@ -59,6 +59,8 @@ class _MapState extends State<_Map> {
   }
 
   void _sortStationsByDuration(List<Trip> trips) {
+    _reachableStations.clear();
+
     for (final trip in trips) {
       for (final station in trip.stops) {
         final duration = station.duration.inMinutes;
