@@ -58,7 +58,7 @@ query (\$stopIds: [String!]!, \$start: Long!, \$range: Int!) {
 
     final List<String> stopIds = [station.id, ...station.childrenIds];
 
-    final url = Uri.parse('${Constants.apiUrl}gtfs/v1');
+    final url = Uri.parse('${Constants.otpUrl}gtfs/v1');
 
     final Map<String, dynamic> queryVariables = {
       'stopIds': stopIds,

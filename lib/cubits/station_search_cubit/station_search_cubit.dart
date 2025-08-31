@@ -38,7 +38,7 @@ class StationSearchCubit extends Cubit<StationSearchState> {
     emit(StationSearchStateLoading(stations: previousStations));
 
     final Uri url = Uri.parse(
-      '${Constants.apiUrl}geocode/stopClusters?query=$normalizedQuery',
+      '${Constants.otpUrl}geocode/stopClusters?query=$normalizedQuery',
     );
 
     try {
