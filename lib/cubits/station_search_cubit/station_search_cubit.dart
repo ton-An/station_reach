@@ -18,7 +18,13 @@ class StationSearchCubit extends Cubit<StationSearchState> {
   final FailureHandler failureHandler;
 
   Future<void> searchStations(String query) async {
-    if (query.isEmpty) {
+    RegExp queryNormalizer = RegExp(
+      r'([+ - && || ! ( ) { } \[ \] ^ " ~ * ? : \\ /])',
+    );
+
+    final String normalizedQuery = query.replaceAll(queryNormalizer, '');
+
+    if (normalizedQuery.isEmpty) {
       emit(StationSearchStateSuccess(stations: const []));
       return;
     }
@@ -32,7 +38,7 @@ class StationSearchCubit extends Cubit<StationSearchState> {
     emit(StationSearchStateLoading(stations: previousStations));
 
     final Uri url = Uri.parse(
-      '${Constants.apiUrl}geocode/stopClusters?query=$query',
+      '${Constants.apiUrl}geocode/stopClusters?query=$normalizedQuery',
     );
 
     try {
