@@ -1,11 +1,6 @@
 import 'package:station_reach/models/reachable_station.dart';
 
 class Trip {
-  Trip({required this.id, required this.name, required this.stops});
-
-  final String id;
-  final String name;
-  final List<ReachableStation> stops;
 
   factory Trip.fromJson(Map json) {
     final Map<String, dynamic> trip = json['stoptimes'][0];
@@ -48,4 +43,9 @@ class Trip {
       stops: computedStops,
     );
   }
+  Trip({required this.id, required this.name, required this.stops});
+
+  final String id;
+  final String name;
+  final List<ReachableStation> stops;
 }

@@ -51,7 +51,7 @@ class _MapState extends State<_Map> {
                     ),
                   ),
             ].reversed.toList(),
-            children: [_Legends(), _Controls()],
+            children: const [_Legends(), _Controls()],
           );
         },
       ),

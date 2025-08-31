@@ -14,7 +14,7 @@ class _Legends extends StatelessWidget {
           bottom: theme.spacing.medium,
           left: theme.spacing.medium,
         ),
-        child: Column(
+        child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [_ScaleBar(), XSmallGap(), _TimeGradientLegend()],

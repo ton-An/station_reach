@@ -31,7 +31,7 @@ class _Controls extends StatelessWidget {
                 iconColor: theme.colors.accent,
               ),
             ),
-            XSmallGap(),
+            const XSmallGap(),
             PointerInterceptor(
               child: CustomIconButton(
                 onPressed: () {
@@ -44,8 +44,8 @@ class _Controls extends StatelessWidget {
                 iconColor: theme.colors.error,
               ),
             ),
-            XSmallGap(),
-            PointerInterceptor(child: _AttributionLegend()),
+            const XSmallGap(),
+            PointerInterceptor(child: const _AttributionLegend()),
           ],
         ),
       ),

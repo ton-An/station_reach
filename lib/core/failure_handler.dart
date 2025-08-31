@@ -38,21 +38,21 @@ class FailureHandlerImpl extends FailureHandler {
   Failure dioExceptionMapper({required DioException dioException}) {
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
-        return ConnectionTimeoutFailure();
+        return const ConnectionTimeoutFailure();
       case DioExceptionType.sendTimeout:
-        return SendTimeoutFailure();
+        return const SendTimeoutFailure();
       case DioExceptionType.receiveTimeout:
-        return ReceiveTimeoutFailure();
+        return const ReceiveTimeoutFailure();
       case DioExceptionType.badCertificate:
-        return BadCertificateFailure();
+        return const BadCertificateFailure();
       case DioExceptionType.badResponse:
-        return BadResponseFailure();
+        return const BadResponseFailure();
       case DioExceptionType.cancel:
-        return RequestCancelledFailure();
+        return const RequestCancelledFailure();
       case DioExceptionType.connectionError:
-        return ConnectionFailure();
+        return const ConnectionFailure();
       case DioExceptionType.unknown:
-        return UnknownRequestFailure();
+        return const UnknownRequestFailure();
     }
   }
 }

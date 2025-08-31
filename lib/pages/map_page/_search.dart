@@ -42,7 +42,7 @@ class _Search extends StatelessWidget {
                             )!.searchStations,
                             cursorHeight: 20,
                             padding: EdgeInsets.zero,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               borderRadius: BorderRadius.zero,
                               color: Colors.transparent,
                             ),
@@ -74,7 +74,7 @@ class _Search extends StatelessWidget {
                           child: Text(
                             AppLocalizations.of(context)!.results,
                             style: theme.text.subhead.copyWith(
-                              fontVariations: [FontVariation('wght', 600)],
+                              fontVariations: [const FontVariation('wght', 600)],
                               color: theme.colors.primary.withValues(alpha: .8),
                             ),
                           ),

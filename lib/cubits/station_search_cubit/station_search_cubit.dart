@@ -19,7 +19,7 @@ class StationSearchCubit extends Cubit<StationSearchState> {
 
   Future<void> searchStations(String query) async {
     if (query.isEmpty) {
-      emit(StationSearchStateSuccess(stations: []));
+      emit(StationSearchStateSuccess(stations: const []));
       return;
     }
 
@@ -46,7 +46,7 @@ class StationSearchCubit extends Cubit<StationSearchState> {
           response.statusCode != HttpStatus.ok) {
         throw StatusCodeNotOkFailure(statusCode: response.statusCode!);
       } else {
-        throw UnknownRequestFailure();
+        throw const UnknownRequestFailure();
       }
     } on DioException catch (diaException) {
       final Failure failure = failureHandler.dioExceptionMapper(

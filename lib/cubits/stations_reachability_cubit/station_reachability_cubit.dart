@@ -18,7 +18,7 @@ class StationReachabilityCubit extends Cubit<StationReachabilityState> {
   Future<void> getReachability(Station station) async {
     emit(StationReachabilityStateLoading());
 
-    final String query = '''
+    const String query = '''
 query (\$stopIds: [String!]!, \$start: Long!, \$range: Int!) {
   stops(ids: \$stopIds) {
     gtfsId

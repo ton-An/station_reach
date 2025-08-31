@@ -49,7 +49,7 @@ class MapPage extends StatelessWidget {
             );
           }
         },
-        child: Scaffold(body: Stack(children: [_Map(), _Search()])),
+        child: const Scaffold(body: Stack(children: [_Map(), _Search()])),
       ),
     );
   }

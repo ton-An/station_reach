@@ -44,19 +44,19 @@ class _MainAppState extends State<MainApp> {
         colors: WebfabrikColorThemeData(
           primary: const Color.fromARGB(255, 83, 196, 108),
           primaryTranslucent: const Color.fromARGB(60, 83, 196, 108),
-          accent: Color.fromARGB(255, 7, 114, 255),
-          translucentBackground: Color(0xFFFFFFFF).withValues(alpha: .95),
+          accent: const Color.fromARGB(255, 7, 114, 255),
+          translucentBackground: const Color(0xFFFFFFFF).withValues(alpha: .95),
           timelineGradient: [
-            Color.fromARGB(255, 0, 150, 136),
-            Color.fromARGB(255, 76, 175, 80),
-            Color.fromARGB(255, 255, 245, 59),
-            Color.fromARGB(255, 255, 229, 59),
-            Color.fromARGB(255, 255, 152, 0),
-            Color.fromARGB(255, 244, 67, 54),
-            Color.fromARGB(255, 156, 39, 176),
+            const Color.fromARGB(255, 0, 150, 136),
+            const Color.fromARGB(255, 76, 175, 80),
+            const Color.fromARGB(255, 255, 245, 59),
+            const Color.fromARGB(255, 255, 229, 59),
+            const Color.fromARGB(255, 255, 152, 0),
+            const Color.fromARGB(255, 244, 67, 54),
+            const Color.fromARGB(255, 156, 39, 176),
           ],
         ),
-        text: WebfabrikTextThemeData(
+        text: const WebfabrikTextThemeData(
           largeTitle: TextStyle(
             fontFamily: 'Inter',
             fontSize: 34,

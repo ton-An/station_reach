@@ -23,7 +23,7 @@ class _AttributionLegend extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: theme.spacing.xSmall),
-                child: Dot(),
+                child: const Dot(),
               ),
               _AttributionLink(
                 text: AppLocalizations.of(context)!.mapTilerAttribution,
@@ -31,7 +31,7 @@ class _AttributionLegend extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: theme.spacing.xSmall),
-                child: Dot(),
+                child: const Dot(),
               ),
               _AttributionLink(
                 text: AppLocalizations.of(context)!.mapLibreAttribution,
