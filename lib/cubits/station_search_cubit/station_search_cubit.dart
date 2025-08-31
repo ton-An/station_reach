@@ -35,9 +35,9 @@ class StationSearchCubit extends Cubit<StationSearchState> {
       '${Constants.apiUrl}geocode/stopClusters?query=$query',
     );
 
-    List locations = [];
-
     try {
+      List locations = [];
+
       final Response response = await dio.getUri(url);
 
       if (response.statusCode == HttpStatus.ok) {
@@ -48,21 +48,21 @@ class StationSearchCubit extends Cubit<StationSearchState> {
       } else {
         throw const UnknownRequestFailure();
       }
-    } on DioException catch (diaException) {
+
+      final List<Station> stations = locations.map((location) {
+        return Station.fromJson(location);
+      }).toList();
+
+      emit(StationSearchStateSuccess(stations: stations));
+    } on DioException catch (dioException) {
       final Failure failure = failureHandler.dioExceptionMapper(
-        dioException: diaException,
+        dioException: dioException,
       );
 
       emit(StationSearchStateFailure(failure: failure));
     } on Failure catch (failure) {
       emit(StationSearchStateFailure(failure: failure));
     }
-
-    final List<Station> stations = locations.map((location) {
-      return Station.fromJson(location);
-    }).toList();
-
-    emit(StationSearchStateSuccess(stations: stations));
   }
 
   void collapseSearch() {
