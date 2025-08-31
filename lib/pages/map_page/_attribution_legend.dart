@@ -37,6 +37,22 @@ class _AttributionLegend extends StatelessWidget {
                 text: AppLocalizations.of(context)!.mapLibreAttribution,
                 url: 'https://maplibre.org/',
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: theme.spacing.xSmall),
+                child: const Dot(),
+              ),
+              _AttributionLink(
+                text: AppLocalizations.of(context)!.dataSourcesAttribution,
+                url: 'https://transitous.org/sources/',
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: theme.spacing.xSmall),
+                child: const Dot(),
+              ),
+              _AttributionLink(
+                text: AppLocalizations.of(context)!.transitousAttribution,
+                url: 'https://transitous.org/',
+              ),
             ],
           ),
         ),

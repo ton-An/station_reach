@@ -25,4 +25,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mapLibreAttribution => '© MapLibre';
+
+  @override
+  String get dataSourcesAttribution => 'Data Sources';
+
+  @override
+  String get transitousAttribution => 'Processed by Transitous';
 }

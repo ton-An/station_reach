@@ -129,6 +129,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'© MapLibre'**
   String get mapLibreAttribution;
+
+  /// No description provided for @dataSourcesAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Sources'**
+  String get dataSourcesAttribution;
+
+  /// No description provided for @transitousAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Processed by Transitous'**
+  String get transitousAttribution;
 }
 
 class _AppLocalizationsDelegate

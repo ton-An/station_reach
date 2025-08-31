@@ -4,5 +4,7 @@
     "results": "Results",
     "searchStations": "Search Stations",
     "mapTilerAttribution": "© MapTiler",
-    "mapLibreAttribution": "© MapLibre"
+    "mapLibreAttribution": "© MapLibre",
+    "dataSourcesAttribution": "Data Sources",
+    "transitousAttribution": "Processed by Transitous"
 }
