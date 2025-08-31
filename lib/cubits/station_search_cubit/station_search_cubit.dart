@@ -31,7 +31,9 @@ class StationSearchCubit extends Cubit<StationSearchState> {
 
     emit(StationSearchStateLoading(stations: previousStations));
 
-    final Uri url = Uri.parse('${Constants.apiUrl}/locations?query=$query');
+    final Uri url = Uri.parse(
+      '${Constants.apiUrl}geocode/stopClusters?query=$query',
+    );
 
     List locations = [];
 
@@ -56,9 +58,9 @@ class StationSearchCubit extends Cubit<StationSearchState> {
       emit(StationSearchStateFailure(failure: failure));
     }
 
-    final List<Station> stations = locations
-        .map((location) => Station.fromJson(location))
-        .toList();
+    final List<Station> stations = locations.map((location) {
+      return Station.fromJson(location);
+    }).toList();
 
     emit(StationSearchStateSuccess(stations: stations));
   }
