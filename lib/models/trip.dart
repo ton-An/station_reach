@@ -14,7 +14,7 @@ class Trip {
       seconds: trip['scheduledDeparture'],
     );
 
-    final List<Map> stops = trip['trip']['stoptimes'];
+    final List stops = trip['trip']['stoptimes'];
 
     final List<ReachableStation> computedStops = <ReachableStation>[];
 
