@@ -45,7 +45,7 @@ class _ScaleBar extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               color: theme.colors.text,
-              borderRadius: BorderRadius.circular(1),
+              borderRadius: BorderRadius.circular(1.2),
             ),
           ),
         ],
