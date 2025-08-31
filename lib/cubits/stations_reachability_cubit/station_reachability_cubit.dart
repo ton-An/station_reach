@@ -1,9 +1,7 @@
 // https://v6.db.transport.rest/stops/8010159/departures?duration=12220&stopovers=true&profile=dbweb
 
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:station_reach/constants.dart';
 import 'package:station_reach/core/failure_handler.dart';
 import 'package:station_reach/cubits/stations_reachability_cubit/station_reachability_states.dart';
@@ -11,10 +9,11 @@ import 'package:station_reach/models/station.dart';
 import 'package:station_reach/models/trip.dart';
 
 class StationReachabilityCubit extends Cubit<StationReachabilityState> {
-  StationReachabilityCubit({required this.failureHandler})
+  StationReachabilityCubit({required this.failureHandler, required this.dio})
     : super(StationReachabilityStateInitial());
 
   final FailureHandler failureHandler;
+  final Dio dio;
 
   Future<void> getReachability(Station station) async {
     emit(StationReachabilityStateLoading());
@@ -62,18 +61,18 @@ query (\$stopIds: [String!]!, \$start: Long!, \$range: Int!) {
       'range': 86400,
     };
 
-    final response = await http.post(
+    final response = await dio.postUri(
       url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: jsonEncode({'query': query, 'variables': queryVariables}),
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+      data: {'query': query, 'variables': queryVariables},
     );
 
-    final Map<String, dynamic> responseBody = jsonDecode(response.body);
-
-    final List stations = responseBody['data']['stops'] as List;
+    final List stations = response.data['data']['stops'] as List;
 
     stations.removeWhere((station) => station == null);
 
