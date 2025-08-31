@@ -31,4 +31,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get transitousAttribution => 'Processed by Transitous';
+
+  @override
+  String get thirtyMin => '30min';
+
+  @override
+  String get fourteenHoursPlus => '14h+';
 }

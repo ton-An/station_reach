@@ -18,7 +18,6 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_attribution_legend.dart';
 part '_controls.dart';
-part '_legend_container.dart';
 part '_legends.dart';
 part '_map.dart';
 part '_scale_bar.dart';

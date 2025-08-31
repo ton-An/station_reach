@@ -6,5 +6,7 @@
     "mapTilerAttribution": "© MapTiler",
     "mapLibreAttribution": "© MapLibre",
     "dataSourcesAttribution": "Data Sources",
-    "transitousAttribution": "Processed by Transitous"
+    "transitousAttribution": "Processed by Transitous",
+    "thirtyMin": "30min",
+    "fourteenHoursPlus": "14h+"
 }

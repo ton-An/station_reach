@@ -141,6 +141,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Processed by Transitous'**
   String get transitousAttribution;
+
+  /// No description provided for @thirtyMin.
+  ///
+  /// In en, this message translates to:
+  /// **'30min'**
+  String get thirtyMin;
+
+  /// No description provided for @fourteenHoursPlus.
+  ///
+  /// In en, this message translates to:
+  /// **'14h+'**
+  String get fourteenHoursPlus;
 }
 
 class _AppLocalizationsDelegate
