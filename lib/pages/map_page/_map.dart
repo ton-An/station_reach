@@ -9,6 +9,7 @@ class _Map extends StatefulWidget {
 
 class _MapState extends State<_Map> {
   final Map<int, List<ReachableStation>> _reachableStations = {};
+  late MapController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +33,10 @@ class _MapState extends State<_Map> {
             onStyleLoaded: (style) {
               style.setProjection(MapProjection.globe);
             },
+            onMapCreated: (controller) {
+              this.controller = controller;
+            },
+            onEvent: (event) => _onEvent(event, state),
             layers: [
               if (_reachableStations.isNotEmpty)
                 for (final key in _reachableStations.keys)
@@ -92,5 +97,38 @@ class _MapState extends State<_Map> {
     Color color = Color.lerp(colorStart, colorEnd, localT)!;
 
     return color;
+  }
+
+  void _onEvent(MapEvent event, StationReachabilityState state) {
+    if (event is MapEventClick && state is StationReachabilityStateSuccess) {
+      final Position clickedPoint = event.point;
+
+      final double metersPerPixel = controller.getMetersPerPixelAtLatitudeSync(
+        clickedPoint.lat.toDouble(),
+      );
+
+      final maxDistance = metersPerPixel * 10;
+
+      for (final Trip trip in state.trips) {
+        for (final stop in trip.stops) {
+          final double distance = geo.Geolocator.distanceBetween(
+            stop.latitude,
+            stop.longitude,
+            clickedPoint.lat.toDouble(),
+            clickedPoint.lng.toDouble(),
+          );
+
+          if (distance < maxDistance) {
+            showModalBottomSheet(
+              context: context,
+              barrierColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              builder: (context) => _TripInfo(trip: trip),
+            );
+            return;
+          }
+        }
+      }
+    }
   }
 }

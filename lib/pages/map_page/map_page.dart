@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart' as geo;
 import 'package:maplibre/maplibre.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
@@ -23,6 +24,7 @@ part '_map.dart';
 part '_scale_bar.dart';
 part '_search.dart';
 part '_time_gradient_legend.dart';
+part '_trip_info.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
