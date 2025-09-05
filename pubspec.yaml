@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.2
   pointer_interceptor: ^0.10.1+2
+  geolocator: ^14.0.2
 
 dev_dependencies:
   flutter_test:
