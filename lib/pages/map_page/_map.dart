@@ -9,7 +9,7 @@ class _Map extends StatefulWidget {
 
 class _MapState extends State<_Map> {
   final Map<int, List<ReachableStation>> _reachableStations = {};
-  Trip? _highlightedTrip;
+  final List<Trip> _highlightedTrips = [];
   late MapController controller;
 
   @override
@@ -19,7 +19,7 @@ class _MapState extends State<_Map> {
     return BlocListener<StationReachabilityCubit, StationReachabilityState>(
       listener: (context, state) {
         setState(() {
-          _highlightedTrip = null;
+          _highlightedTrips.clear();
         });
 
         if (state is StationReachabilityStateSuccess) {
@@ -43,6 +43,23 @@ class _MapState extends State<_Map> {
             },
             onEvent: (event) => _onEvent(event, state),
             layers: <Layer>[
+              for (int i = 0; i < _highlightedTrips.length; i++)
+                PolylineLayer(
+                  polylines: [
+                    LineString(
+                      coordinates: [
+                        for (final stop in _highlightedTrips[i].stops)
+                          Position(stop.longitude, stop.latitude),
+                      ],
+                    ),
+                  ],
+                  color: _interpolateColors(
+                    theme.colors.timelineGradient,
+                    i / max(_highlightedTrips.length - 1, 1),
+                  ),
+                  width: 5,
+                  dashArray: [(.2 + i * .42).ceil(), 2],
+                ),
               if (_reachableStations.isNotEmpty)
                 for (final key in _reachableStations.keys)
                   CircleLayer(
@@ -57,24 +74,9 @@ class _MapState extends State<_Map> {
                     ],
                     color: _interpolateColors(
                       theme.colors.timelineGradient,
-                      key / (_reachableStations.keys.length - 1),
+                      key / max(_reachableStations.keys.length - 1, 1),
                     ),
                   ),
-              if (_highlightedTrip != null)
-                PolylineLayer(
-                  polylines: [
-                    LineString(
-                      coordinates: [
-                        for (final stop in _highlightedTrip!.stops)
-                          Position(stop.longitude, stop.latitude),
-                      ],
-                    ),
-                  ],
-                  color: theme.colors.accent,
-                  width: 4,
-                  blur: 20,
-                  dashArray: const [2, 2],
-                ),
             ].reversed.toList(),
             children: const [_Legends(), _Controls()],
           );
@@ -129,6 +131,9 @@ class _MapState extends State<_Map> {
 
       final maxDistance = metersPerPixel * 10;
 
+      _highlightedTrips.clear();
+
+      ReachableStation? highlightedStop;
       for (final Trip trip in state.trips) {
         for (final stop in trip.stops) {
           final double distance = geo.Geolocator.distanceBetween(
@@ -139,19 +144,18 @@ class _MapState extends State<_Map> {
           );
 
           if (distance < maxDistance) {
-            setState(() {
-              _highlightedTrip = trip;
-            });
-            showModalBottomSheet(
-              context: context,
-              barrierColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
-              builder: (context) => _TripInfo(trip: trip),
-            );
-            return;
+            highlightedStop ??= stop;
+
+            if (highlightedStop.id == stop.id) {
+              print(1);
+              _highlightedTrips.add(trip);
+            }
           }
         }
       }
+
+      setState(() {});
+      print(_highlightedTrips);
     }
   }
 }

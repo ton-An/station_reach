@@ -1,10 +1,10 @@
 import 'package:station_reach/models/reachable_station.dart';
 
 class Trip {
-
   factory Trip.fromJson(Map json) {
     final Map<String, dynamic> trip = json['stoptimes'][0];
 
+    final Duration arrivalTime = Duration(seconds: trip['scheduledArrival']);
     final Duration departureTime = Duration(
       seconds: trip['scheduledDeparture'],
     );
@@ -16,7 +16,7 @@ class Trip {
     for (final Map stop in stops) {
       final stopArrivalTime = Duration(seconds: stop['scheduledArrival']);
 
-      if (stopArrivalTime < departureTime) {
+      if (stopArrivalTime < arrivalTime) {
         continue;
       }
 
