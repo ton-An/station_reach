@@ -36,7 +36,12 @@ query (\$stopIds: [String!]!, \$start: Long!, \$range: Int!) {
     ) {
       pattern {
         id
-        route { shortName longName }
+        route {
+          shortName
+          mode
+          type
+          agency { id name }
+        }
       }
       stoptimes {
         serviceDay

@@ -1,3 +1,4 @@
+import 'package:station_reach/enums/transit_mode.dart';
 import 'package:station_reach/models/reachable_station.dart';
 
 class Trip {
@@ -37,15 +38,26 @@ class Trip {
       );
     }
 
+    final TransitMode mode = TransitMode.fromString(
+      json['pattern']['route']['mode'],
+    );
+
     return Trip(
       id: json['pattern']['id'],
       name: json['pattern']['route']['shortName'],
+      mode: mode,
       stops: computedStops,
     );
   }
-  Trip({required this.id, required this.name, required this.stops});
+  Trip({
+    required this.id,
+    required this.name,
+    required this.mode,
+    required this.stops,
+  });
 
   final String id;
   final String name;
+  final TransitMode mode;
   final List<ReachableStation> stops;
 }
