@@ -147,7 +147,6 @@ class _MapState extends State<_Map> {
             highlightedStop ??= stop;
 
             if (highlightedStop.id == stop.id) {
-              print(1);
               _highlightedTrips.add(trip);
             }
           }
@@ -155,7 +154,15 @@ class _MapState extends State<_Map> {
       }
 
       setState(() {});
-      print(_highlightedTrips);
+
+      if (_highlightedTrips.isNotEmpty) {
+        showModalBottomSheet(
+          context: context,
+          barrierColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          builder: (context) => _HighlightedTripsInfo(trips: _highlightedTrips),
+        );
+      }
     }
   }
 }
