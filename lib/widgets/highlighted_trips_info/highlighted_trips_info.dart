@@ -1,8 +1,13 @@
-import 'package:flutter/widgets.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:station_reach/core/helpers/color_helper.dart';
+import 'package:station_reach/enums/transit_mode.dart';
 import 'package:station_reach/models/trip.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+part '_transport_mode_icon.dart';
 part '_trip_selector.dart';
 
 class HighlightedTripsInfo extends StatefulWidget {
@@ -44,7 +49,11 @@ class _HighlightedTripsInfoState extends State<HighlightedTripsInfo> {
                   child: ListView.builder(
                     itemCount: widget.trips.length,
                     itemBuilder: (context, index) => _TripSelector(
-                      trips: widget.trips,
+                      trip: widget.trips[index],
+                      backgroundColor: ColorHelper.interpolateColors(
+                        theme.colors.timelineGradient,
+                        index / max(widget.trips.length - 1, 1),
+                      ),
                       isSelected: _selectedTrip == widget.trips[index],
                       onPressed: () {
                         setState(() {

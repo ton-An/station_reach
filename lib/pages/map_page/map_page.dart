@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:maplibre/maplibre.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:station_reach/core/helpers/color_helper.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:station_reach/cubits/station_search_cubit/station_search_cubit.dart';
 import 'package:station_reach/cubits/station_search_cubit/station_search_states.dart';
