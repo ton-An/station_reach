@@ -1,15 +1,20 @@
-part of 'map_page.dart';
+import 'package:flutter/widgets.dart';
+import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:station_reach/models/trip.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-class _HighlightedTripsInfo extends StatefulWidget {
-  const _HighlightedTripsInfo({required this.trips});
+part '_trip_selector.dart';
+
+class HighlightedTripsInfo extends StatefulWidget {
+  const HighlightedTripsInfo({required this.trips});
 
   final List<Trip> trips;
 
   @override
-  State<_HighlightedTripsInfo> createState() => _HighlightedTripsInfoState();
+  State<HighlightedTripsInfo> createState() => _HighlightedTripsInfoState();
 }
 
-class _HighlightedTripsInfoState extends State<_HighlightedTripsInfo> {
+class _HighlightedTripsInfoState extends State<HighlightedTripsInfo> {
   late Trip _selectedTrip;
 
   @override
@@ -38,16 +43,18 @@ class _HighlightedTripsInfoState extends State<_HighlightedTripsInfo> {
                   flex: 1,
                   child: ListView.builder(
                     itemCount: widget.trips.length,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
+                    itemBuilder: (context, index) => _TripSelector(
+                      trips: widget.trips,
+                      isSelected: _selectedTrip == widget.trips[index],
+                      onPressed: () {
                         setState(() {
                           _selectedTrip = widget.trips[index];
                         });
                       },
-                      child: Text(widget.trips[index].name),
                     ),
                   ),
                 ),
+                MediumGap(),
                 Expanded(
                   flex: 2,
                   child: ListView.builder(

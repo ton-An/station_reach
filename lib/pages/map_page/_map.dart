@@ -160,7 +160,7 @@ class _MapState extends State<_Map> {
           context: context,
           barrierColor: Colors.transparent,
           backgroundColor: Colors.transparent,
-          builder: (context) => _HighlightedTripsInfo(trips: _highlightedTrips),
+          builder: (context) => HighlightedTripsInfo(trips: _highlightedTrips),
         );
       }
     }

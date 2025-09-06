@@ -15,6 +15,7 @@ import 'package:station_reach/models/reachable_station.dart';
 import 'package:station_reach/models/trip.dart';
 import 'package:station_reach/secrets.dart';
 import 'package:station_reach/widgets/fade_gesture_detector.dart';
+import 'package:station_reach/widgets/highlighted_trips_info/highlighted_trips_info.dart';
 import 'package:station_reach/widgets/icon_button.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -26,7 +27,6 @@ part '_map.dart';
 part '_scale_bar.dart';
 part '_search.dart';
 part '_time_gradient_legend.dart';
-part '_trip_info.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
