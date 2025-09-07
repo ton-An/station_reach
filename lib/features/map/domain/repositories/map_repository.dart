@@ -9,6 +9,6 @@ abstract class MapRepository {
   });
 
   Future<Either<Failure, List<Trip>>> getStationReachability({
-    required String stationId,
+    required Station station,
   });
 }

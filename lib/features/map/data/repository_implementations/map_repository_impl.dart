@@ -35,11 +35,11 @@ class MapRepositoryImpl extends MapRepository {
 
   @override
   Future<Either<Failure, List<Trip>>> getStationReachability({
-    required String stationId,
+    required Station station,
   }) async {
     try {
       final List<Trip> trips = await mapRemoteDataSource.getStationReachability(
-        stationId: stationId,
+        station: station,
       );
       return Right(trips);
     } on DioException catch (dioException) {
