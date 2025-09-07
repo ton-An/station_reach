@@ -1,34 +1,17 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:station_reach/core/constants.dart';
-import 'package:station_reach/core/data/repository/failure_handler.dart';
-import 'package:station_reach/core/failures/networking/status_code_not_ok_failure.dart';
-import 'package:station_reach/core/failures/networking/unknown_request_failure.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
+import 'package:station_reach/features/map/domain/usecases/search_stations.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_states.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class StationSearchCubit extends Cubit<StationSearchState> {
-  StationSearchCubit({required this.dio, required this.failureHandler})
+  StationSearchCubit({required this.searchStationsUsecase})
     : super(StationSearchStateInitial());
 
-  final Dio dio;
-  final FailureHandler failureHandler;
+  final SearchStations searchStationsUsecase;
 
   Future<void> searchStations(String query) async {
-    RegExp queryNormalizer = RegExp(
-      r'([+ - && || ! ( ) { } \[ \] ^ " ~ * ? : \\ /])',
-    );
-
-    final String normalizedQuery = query.replaceAll(queryNormalizer, '');
-
-    if (normalizedQuery.isEmpty) {
-      emit(StationSearchStateSuccess(stations: const []));
-      return;
-    }
-
     List<Station> previousStations = [];
 
     if (state is StationSearchDataState) {
@@ -37,38 +20,13 @@ class StationSearchCubit extends Cubit<StationSearchState> {
 
     emit(StationSearchStateLoading(stations: previousStations));
 
-    final Uri url = Uri.parse(
-      '${Constants.otpUrl}geocode/stopClusters?query=$normalizedQuery',
+    final Either<Failure, List<Station>> searchStationsEither =
+        await searchStationsUsecase(query: query);
+
+    searchStationsEither.fold(
+      (failure) => emit(StationSearchStateFailure(failure: failure)),
+      (stations) => emit(StationSearchStateSuccess(stations: stations)),
     );
-
-    try {
-      List locations = [];
-
-      final Response response = await dio.getUri(url);
-
-      if (response.statusCode == HttpStatus.ok) {
-        locations = response.data;
-      } else if (response.statusCode != null &&
-          response.statusCode != HttpStatus.ok) {
-        throw StatusCodeNotOkFailure(statusCode: response.statusCode!);
-      } else {
-        throw const UnknownRequestFailure();
-      }
-
-      final List<Station> stations = locations.map((location) {
-        return Station.fromJson(location);
-      }).toList();
-
-      emit(StationSearchStateSuccess(stations: stations));
-    } on DioException catch (dioException) {
-      final Failure failure = failureHandler.dioExceptionMapper(
-        dioException: dioException,
-      );
-
-      emit(StationSearchStateFailure(failure: failure));
-    } on Failure catch (failure) {
-      emit(StationSearchStateFailure(failure: failure));
-    }
   }
 
   void collapseSearch() {

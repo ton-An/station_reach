@@ -19,9 +19,12 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
 
     final Response response = await dio.getUri(url);
 
-    final List<Station> stations = response.data.map((location) {
-      return Station.fromJson(location);
-    }).toList();
+    final List<Station> stations = response.data
+        .map((location) {
+          return Station.fromJson(location);
+        })
+        .toList()
+        .cast<Station>();
 
     return stations;
   }
