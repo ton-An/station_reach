@@ -1,9 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:station_reach/core/constants.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
+import 'package:station_reach/features/map/domain/models/trip.dart';
 
 abstract class MapRemoteDataSource {
   Future<List<Station>> searchStations({required String query});
+
+  Future<List<Trip>> getStationReachability({required String stationId});
 }
 
 class MapRemoteDataSourceImpl extends MapRemoteDataSource {
@@ -27,5 +30,11 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
         .cast<Station>();
 
     return stations;
+  }
+
+  @override
+  Future<List<Trip>> getStationReachability({required String stationId}) {
+    // TODO: implement getStationReachability
+    throw UnimplementedError();
   }
 }

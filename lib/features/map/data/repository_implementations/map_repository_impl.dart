@@ -30,16 +30,23 @@ class MapRepositoryImpl extends MapRepository {
         dioException: dioException,
       );
       return Left(failure);
-    } on Failure catch (failure) {
-      return Left(failure);
     }
   }
 
   @override
   Future<Either<Failure, List<Trip>>> getStationReachability({
     required String stationId,
-  }) {
-    // TODO: implement getStationReachability
-    throw UnimplementedError();
+  }) async {
+    try {
+      final List<Trip> trips = await mapRemoteDataSource.getStationReachability(
+        stationId: stationId,
+      );
+      return Right(trips);
+    } on DioException catch (dioException) {
+      final Failure failure = failureHandler.dioExceptionMapper(
+        dioException: dioException,
+      );
+      return Left(failure);
+    }
   }
 }
