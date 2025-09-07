@@ -4,6 +4,7 @@ import 'package:station_reach/core/data/repository/failure_handler.dart';
 import 'package:station_reach/features/map/data/datasources/map_remote_data_source.dart';
 import 'package:station_reach/features/map/data/repository_implementations/map_repository_impl.dart';
 import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
+import 'package:station_reach/features/map/domain/usecases/get_station_reachability.dart';
 import 'package:station_reach/features/map/domain/usecases/search_stations.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
@@ -21,11 +22,12 @@ void initGetIt() {
     () => StationSearchCubit(searchStationsUsecase: getIt()),
   );
   getIt.registerFactory(
-    () => StationReachabilityCubit(failureHandler: getIt(), dio: getIt()),
+    () => StationReachabilityCubit(getStationReachability: getIt()),
   );
 
   // -- Domain -- //
   getIt.registerFactory(() => SearchStations(mapRepository: getIt()));
+  getIt.registerFactory(() => GetStationReachability(mapRepository: getIt()));
 
   // -- Data -- //
   getIt.registerFactory<MapRepository>(
