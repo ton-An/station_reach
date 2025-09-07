@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:station_reach/core/helpers/color_helper.dart';
-import 'package:station_reach/enums/transit_mode.dart';
-import 'package:station_reach/models/trip.dart';
+import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
+import 'package:station_reach/features/map/domain/models/trip.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_transport_mode_icon.dart';

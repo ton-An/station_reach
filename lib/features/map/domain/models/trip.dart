@@ -1,5 +1,5 @@
-import 'package:station_reach/enums/transit_mode.dart';
-import 'package:station_reach/models/reachable_station.dart';
+import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
+import 'package:station_reach/features/map/domain/models/reachable_station.dart';
 
 class Trip {
   factory Trip.fromJson(Map json) {

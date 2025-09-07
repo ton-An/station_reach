@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:station_reach/models/station.dart';
+import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 abstract class StationSearchState extends Equatable {

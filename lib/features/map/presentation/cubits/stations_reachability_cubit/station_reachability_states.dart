@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:station_reach/models/trip.dart';
+import 'package:station_reach/features/map/domain/models/trip.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 abstract class StationReachabilityState extends Equatable {

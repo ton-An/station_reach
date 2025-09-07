@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:station_reach/constants.dart';
-import 'package:station_reach/core/failure_handler.dart';
+import 'package:station_reach/core/constants.dart';
+import 'package:station_reach/core/data/repository/failure_handler.dart';
 import 'package:station_reach/core/failures/networking/status_code_not_ok_failure.dart';
 import 'package:station_reach/core/failures/networking/unknown_request_failure.dart';
-import 'package:station_reach/cubits/station_search_cubit/station_search_states.dart';
-import 'package:station_reach/models/station.dart';
+import 'package:station_reach/features/map/domain/models/station.dart';
+import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_states.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class StationSearchCubit extends Cubit<StationSearchState> {

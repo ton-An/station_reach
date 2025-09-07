@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:station_reach/widgets/fade_gesture_detector.dart';
+import 'package:station_reach/core/widgets/fade_gesture_detector.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class CustomIconButton extends StatelessWidget {

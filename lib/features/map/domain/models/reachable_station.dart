@@ -1,4 +1,4 @@
-import 'package:station_reach/models/station.dart';
+import 'package:station_reach/features/map/domain/models/station.dart';
 
 class ReachableStation extends Station {
   ReachableStation({
