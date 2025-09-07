@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
-import 'package:station_reach/features/map/domain/respositories/map_repository.dart';
+import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class SearchStations {

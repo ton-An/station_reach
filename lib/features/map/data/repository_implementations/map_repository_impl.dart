@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:station_reach/core/data/repository/failure_handler.dart';
 import 'package:station_reach/features/map/data/datasources/map_remote_data_source.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
-import 'package:station_reach/features/map/domain/respositories/map_repository.dart';
+import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class MapRepositoryImpl extends MapRepository {
