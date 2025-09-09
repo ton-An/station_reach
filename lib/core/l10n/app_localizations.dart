@@ -139,7 +139,7 @@ abstract class AppLocalizations {
   /// No description provided for @transitousAttribution.
   ///
   /// In en, this message translates to:
-  /// **'Processed by Transitous'**
+  /// **'Data processed by Transitous'**
   String get transitousAttribution;
 
   /// No description provided for @thirtyMin.
