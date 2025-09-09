@@ -40,23 +40,23 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return WebfabrikTheme(
-      data: WebfabrikThemeData(
+      data: const WebfabrikThemeData(
         colors: WebfabrikColorThemeData(
-          primary: const Color.fromARGB(255, 83, 196, 108),
-          primaryTranslucent: const Color.fromARGB(60, 83, 196, 108),
-          accent: const Color.fromARGB(255, 7, 114, 255),
-          translucentBackground: const Color(0xFFFFFFFF).withValues(alpha: .95),
+          primary: Color.fromARGB(255, 83, 196, 108),
+          primaryTranslucent: Color.fromARGB(60, 83, 196, 108),
+          accent: Color.fromARGB(255, 7, 114, 255),
+          // translucentBackground: const Color(0xFFFFFFFF).withValues(alpha: .95),
           timelineGradient: [
-            const Color.fromARGB(255, 0, 150, 136),
-            const Color.fromARGB(255, 76, 175, 80),
-            const Color.fromARGB(255, 255, 245, 59),
-            const Color.fromARGB(255, 255, 229, 59),
-            const Color.fromARGB(255, 255, 152, 0),
-            const Color.fromARGB(255, 244, 67, 54),
-            const Color.fromARGB(255, 156, 39, 176),
+            Color.fromARGB(255, 0, 150, 136),
+            Color.fromARGB(255, 76, 175, 80),
+            Color.fromARGB(255, 255, 245, 59),
+            Color.fromARGB(255, 255, 229, 59),
+            Color.fromARGB(255, 255, 152, 0),
+            Color.fromARGB(255, 244, 67, 54),
+            Color.fromARGB(255, 156, 39, 176),
           ],
         ),
-        text: const WebfabrikTextThemeData(
+        text: WebfabrikTextThemeData(
           largeTitle: TextStyle(
             fontFamily: 'Inter',
             fontSize: 34,
@@ -64,7 +64,6 @@ class _MainAppState extends State<MainApp> {
             height: 41 / 34,
             color: CupertinoColors.label,
           ),
-
           title1: TextStyle(
             fontFamily: 'Inter',
             fontSize: 28,
@@ -72,7 +71,6 @@ class _MainAppState extends State<MainApp> {
             height: 34 / 28,
             color: CupertinoColors.label,
           ),
-
           title2: TextStyle(
             fontFamily: 'Inter',
             fontSize: 22,
@@ -80,7 +78,6 @@ class _MainAppState extends State<MainApp> {
             height: 28 / 22,
             color: CupertinoColors.label,
           ),
-
           title3: TextStyle(
             fontFamily: 'Inter',
             fontSize: 20,
@@ -88,7 +85,6 @@ class _MainAppState extends State<MainApp> {
             height: 25 / 20,
             color: CupertinoColors.label,
           ),
-
           headline: TextStyle(
             fontFamily: 'Inter',
             fontSize: 17,
@@ -96,7 +92,6 @@ class _MainAppState extends State<MainApp> {
             height: 22 / 17,
             color: CupertinoColors.label,
           ),
-
           body: TextStyle(
             fontFamily: 'Inter',
             fontSize: 18,
@@ -104,7 +99,6 @@ class _MainAppState extends State<MainApp> {
             height: 22 / 17,
             color: CupertinoColors.label,
           ),
-
           callout: TextStyle(
             fontFamily: 'Inter',
             fontSize: 16,
@@ -112,7 +106,6 @@ class _MainAppState extends State<MainApp> {
             height: 21 / 16,
             color: CupertinoColors.label,
           ),
-
           subhead: TextStyle(
             fontFamily: 'Inter',
             fontSize: 15,
@@ -120,7 +113,6 @@ class _MainAppState extends State<MainApp> {
             height: 20 / 15,
             color: CupertinoColors.label,
           ),
-
           footnote: TextStyle(
             fontFamily: 'Inter',
             fontSize: 13.0,
@@ -128,7 +120,6 @@ class _MainAppState extends State<MainApp> {
             height: 18 / 13,
             color: CupertinoColors.label,
           ),
-
           caption1: TextStyle(
             fontFamily: 'Inter',
             fontSize: 12,
@@ -136,7 +127,6 @@ class _MainAppState extends State<MainApp> {
             height: 16 / 12,
             color: CupertinoColors.label,
           ),
-
           caption2: TextStyle(
             fontFamily: 'Inter',
             fontSize: 11,
@@ -157,6 +147,7 @@ class _MainAppState extends State<MainApp> {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
+            WebfabrikLocalizations.delegate,
           ],
           supportedLocales: const [
             Locale('en'), // English

@@ -11,7 +11,7 @@ part '_transport_mode_icon.dart';
 part '_trip_selector.dart';
 
 class HighlightedTripsInfo extends StatefulWidget {
-  const HighlightedTripsInfo({required this.trips});
+  const HighlightedTripsInfo({super.key, required this.trips});
 
   final List<Trip> trips;
 
@@ -63,7 +63,7 @@ class _HighlightedTripsInfoState extends State<HighlightedTripsInfo> {
                     ),
                   ),
                 ),
-                MediumGap(),
+                const MediumGap(),
                 Expanded(
                   flex: 2,
                   child: ListView.builder(

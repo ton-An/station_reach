@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +18,12 @@ import 'package:station_reach/features/map/presentation/cubits/station_search_cu
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_states.dart';
-import 'package:station_reach/features/map/presentation/widgets/highlighted_trips_info/highlighted_trips_info.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_attribution_legend.dart';
 part '_controls.dart';
+part '_highlighted_trips_modal.dart';
 part '_legends.dart';
 part '_map.dart';
 part '_scale_bar.dart';
@@ -53,7 +54,9 @@ class MapPage extends StatelessWidget {
             );
           }
         },
-        child: const Scaffold(body: Stack(children: [_Map(), _Search()])),
+        child: const Scaffold(
+          body: Stack(children: [_Map(), _Search(), _HighlightedTripsModal()]),
+        ),
       ),
     );
   }

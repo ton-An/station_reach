@@ -138,15 +138,6 @@ class _MapState extends State<_Map> {
       }
 
       setState(() {});
-
-      if (_highlightedTrips.isNotEmpty) {
-        showModalBottomSheet(
-          context: context,
-          barrierColor: Colors.transparent,
-          backgroundColor: Colors.transparent,
-          builder: (context) => HighlightedTripsInfo(trips: _highlightedTrips),
-        );
-      }
     }
   }
 }

@@ -12,41 +12,56 @@ class _TimeGradientLegend extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return Container(
-      padding: EdgeInsets.all(theme.spacing.small + theme.spacing.tiny),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(9),
+    final List<Color> timelineGradient = theme.colors.timelineGradient
+        .map((color) => color.withValues(alpha: .85))
+        .toList();
 
-        color: theme.colors.translucentBackground,
-      ),
-      child: Container(
-        width: 200,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(theme.radii.small),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+            child: Container(
+              padding: EdgeInsets.all(theme.spacing.small + 1),
+              color: theme.colors.translucentBackground,
 
-          gradient: LinearGradient(colors: theme.colors.timelineGradient),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(theme.spacing.small),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.thirtyMin,
-                style: theme.text.subhead.copyWith(
-                  color: theme.colors.background,
+              child: Container(
+                width: 250,
+                height: 36,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(theme.radii.small * .7),
+                  gradient: LinearGradient(colors: timelineGradient),
                 ),
               ),
-              Text(
-                AppLocalizations.of(context)!.fourteenHoursPlus,
-                style: theme.text.subhead.copyWith(
-                  color: theme.colors.background,
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
+        Positioned.fill(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: theme.spacing.xSmall + theme.spacing.xTiny,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.thirtyMin,
+                  style: theme.text.subhead.copyWith(
+                    color: theme.colors.background,
+                  ),
+                ),
+                Text(
+                  AppLocalizations.of(context)!.fourteenHoursPlus,
+                  style: theme.text.subhead.copyWith(
+                    color: theme.colors.background,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
