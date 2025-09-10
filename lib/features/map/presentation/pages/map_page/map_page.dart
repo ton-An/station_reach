@@ -55,11 +55,17 @@ class MapPage extends StatelessWidget {
           }
         },
         child: const Scaffold(
+          resizeToAvoidBottomInset: false,
           body: Stack(
             children: [
               _Map(),
               Positioned.fill(
-                child: Column(children: [_Search(), _HighlightedTripsModal()]),
+                child: Column(
+                  children: [
+                    _Search(),
+                    Expanded(child: _HighlightedTripsModal()),
+                  ],
+                ),
               ),
             ],
           ),
