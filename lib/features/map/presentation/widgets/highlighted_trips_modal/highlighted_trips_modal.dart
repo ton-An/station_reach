@@ -83,6 +83,7 @@ class HighlightedTripsModal extends StatelessWidget {
                         //     arguments: state.trips[index],
                         //   );
                       },
+                      showDivider: index != state.trips.length - 1,
                     ),
                   )
                 : ListView(
