@@ -8,6 +8,7 @@ import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/trip_selection_cubit/trip_selection_cubit.dart';
 import 'package:station_reach/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -189,6 +190,9 @@ class _MainAppState extends State<MainApp> {
                       ),
                       BlocProvider(
                         create: (context) => getIt<StationSelectionCubit>(),
+                      ),
+                      BlocProvider(
+                        create: (context) => getIt<TripSelectionCubit>(),
                       ),
                     ],
                     child: const MapPage(),

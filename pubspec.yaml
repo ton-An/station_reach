@@ -28,7 +28,8 @@ dependencies:
   url_launcher: ^6.3.2
   pointer_interceptor: ^0.10.1+2
   geolocator: ^14.0.2
-
+  carousel_slider: ^5.1.1
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter

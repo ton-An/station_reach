@@ -1,5 +1,4 @@
 class Station {
-
   factory Station.fromJson(Map json) {
     return Station(
       id: json['primary']?['id'] ?? json['id'] ?? json['gtfsId'],

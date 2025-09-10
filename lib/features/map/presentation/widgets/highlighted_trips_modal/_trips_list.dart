@@ -24,10 +24,9 @@ class _TripsList extends StatelessWidget {
                 index / max(state.trips.length - 1, 1),
               ),
               onPressed: () {
-                //   context.goNamed(
-                //     SingleTripPage.pageName,
-                //     arguments: state.trips[index],
-                //   );
+                context.read<TripSelectionCubit>().selectTrip(
+                  state.trips[index],
+                );
               },
               showDivider: index != state.trips.length - 1,
             ),
