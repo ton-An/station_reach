@@ -153,6 +153,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'14h+'**
   String get fourteenHoursPlus;
+
+  /// No description provided for @noStationSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No station selected'**
+  String get noStationSelected;
 }
 
 class _AppLocalizationsDelegate

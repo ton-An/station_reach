@@ -40,7 +40,7 @@ class _TripsList extends StatelessWidget {
           children: [
             Text(
               textAlign: TextAlign.center,
-              'No station selected',
+              AppLocalizations.of(context)!.noStationSelected,
               style: theme.text.body.copyWith(color: theme.colors.hint),
             ),
           ],
