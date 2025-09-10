@@ -76,28 +76,20 @@ class _Search extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if (state is StationSearchDataState &&
-                              state.stations.isNotEmpty) ...[
-                            Padding(
-                              padding: EdgeInsets.only(
-                                left: theme.spacing.xSmall,
-                              ),
-                              child: Text(
-                                AppLocalizations.of(context)!.results,
-                                style: theme.text.subhead.copyWith(
-                                  fontVariations: [
-                                    const FontVariation('wght', 600),
-                                  ],
-                                  color: theme.colors.primary.withValues(
-                                    alpha: .8,
-                                  ),
-                                ),
-                              ),
+                          AnimatedContainer(
+                            duration: theme.durations.short,
+                            constraints: BoxConstraints(
+                              maxHeight: state is StationSearchDataState
+                                  ? 250
+                                  : 0,
                             ),
-                            ConstrainedBox(
-                              constraints: const BoxConstraints(maxHeight: 260),
+                            child: AnimatedSize(
+                              duration: theme.durations.short,
+                              curve: Curves.easeOut,
                               child: ListView.builder(
-                                itemCount: state.stations.length,
+                                itemCount: state is StationSearchDataState
+                                    ? state.stations.length
+                                    : 0,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   return FadeGestureDetector(
@@ -112,30 +104,26 @@ class _Search extends StatelessWidget {
                                           .collapseSearch();
                                     },
                                     minOpacity: index.isEven ? .1 : .6,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: index.isEven
-                                            ? theme.colors.translucentBackground
-                                            : theme.colors.primaryTranslucent,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: theme.spacing.xSmall,
+                                        left: theme.spacing.xSmall,
+                                        bottom: theme.spacing.xSmall,
                                       ),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          top: theme.spacing.xSmall,
-                                          left: theme.spacing.xSmall,
-                                          bottom: theme.spacing.xSmall,
-                                        ),
-                                        child: Text(
-                                          state.stations[index].name,
-                                          style: theme.text.body,
-                                        ),
+                                      child: Text(
+                                        (state as StationSearchDataState)
+                                            .stations[index]
+                                            .name,
+                                        style: theme.text.body,
                                       ),
                                     ),
                                   );
                                 },
                               ),
                             ),
-                          ],
+                          ),
                         ],
+                        // ],
                       ),
                     ),
                   ),
