@@ -62,8 +62,8 @@ class _MapState extends State<_Map> {
                           theme.colors.timelineGradient,
                           i / max(tripsSelectionState.trips.length - 1, 1),
                         ),
-                        width: 5,
-                        dashArray: [(.2 + i * .42).ceil(), 2],
+                        width: 7,
+                        // dashArray: [(.2 + i * .42).ceil(), 2],
                       ),
                   if (_reachableStations.isNotEmpty)
                     for (final key in _reachableStations.keys)
@@ -81,6 +81,7 @@ class _MapState extends State<_Map> {
                           theme.colors.timelineGradient,
                           key / max(_reachableStations.keys.length - 1, 1),
                         ),
+                        radius: 8,
                       ),
                 ].reversed.toList(),
                 children: const [_Legends(), _Controls()],

@@ -17,7 +17,7 @@ class _Legends extends StatelessWidget {
         child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: [_ScaleBar(), XSmallGap(), _TimeGradientLegend()],
+          // children: [_ScaleBar(), XSmallGap(), _TimeGradientLegend()],
         ),
       ),
     );

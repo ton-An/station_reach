@@ -1,11 +1,28 @@
-part of 'map_page.dart';
+import 'dart:math';
+import 'dart:ui';
 
-class _HighlightedTripsModal extends StatelessWidget {
-  const _HighlightedTripsModal();
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:station_reach/core/helpers/color_helper.dart';
+import 'package:station_reach/core/l10n/app_localizations.dart';
+import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
+import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_states.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
+
+part '_time_gradient_legend.dart';
+part '_transport_mode_icon.dart';
+part '_trip_page_link.dart';
+
+class HighlightedTripsModal extends StatelessWidget {
+  const HighlightedTripsModal();
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StationReachabilityCubit, StationReachabilityState>(
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
+    return BlocBuilder<TripsSelectionCubit, TripsSelectionState>(
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.only(
@@ -48,13 +65,25 @@ class _HighlightedTripsModal extends StatelessWidget {
                 ),
               ],
             ),
-            builder: (context, scrollController) =>
-                state is StationReachabilityStateSuccess
+            builder: (context, scrollController) => state is TripsSelectedState
                 ? ListView.builder(
                     controller: scrollController,
                     itemCount: state.trips.length,
-                    itemBuilder: (context, index) =>
-                        Text(state.trips[index].name),
+                    padding: EdgeInsets.all(theme.spacing.medium),
+                    itemBuilder: (context, index) => _TripPageLink(
+                      tripName: state.trips[index].name,
+                      mode: state.trips[index].mode,
+                      iconBackgroundColor: ColorHelper.interpolateColors(
+                        theme.colors.timelineGradient,
+                        index / max(state.trips.length - 1, 1),
+                      ),
+                      onPressed: () {
+                        //   context.goNamed(
+                        //     SingleTripPage.pageName,
+                        //     arguments: state.trips[index],
+                        //   );
+                      },
+                    ),
                   )
                 : ListView(
                     controller: scrollController,

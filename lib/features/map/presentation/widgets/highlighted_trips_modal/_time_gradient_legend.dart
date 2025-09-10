@@ -1,9 +1,9 @@
-part of 'map_page.dart';
-
 /*
   To-Dos:
     - [ ] Maybe add interactivity to the legend? (e.g. highlight stops with certain durations)
 */
+
+part of 'highlighted_trips_modal.dart';
 
 class _TimeGradientLegend extends StatelessWidget {
   const _TimeGradientLegend();

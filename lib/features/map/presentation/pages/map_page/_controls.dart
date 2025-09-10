@@ -45,7 +45,6 @@ class _Controls extends StatelessWidget {
               ),
             ),
             const XSmallGap(),
-            PointerInterceptor(child: const _AttributionLegend()),
           ],
         ),
       ),

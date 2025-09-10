@@ -13,7 +13,7 @@ class TripsSelectionCubit extends Cubit<TripsSelectionState> {
     required double metersPerPixel,
     required List<Trip> trips,
   }) {
-    final maxDistance = metersPerPixel * 10;
+    final maxDistance = metersPerPixel * 30;
 
     ReachableStation? highlightedStop;
 
