@@ -9,7 +9,7 @@ class _Map extends StatefulWidget {
 
 class _MapState extends State<_Map> {
   final Map<int, List<ReachableStation>> _reachableStations = {};
-  final List<Trip> _highlightedTrips = [];
+
   late MapController controller;
 
   @override
@@ -18,67 +18,74 @@ class _MapState extends State<_Map> {
 
     return BlocListener<StationReachabilityCubit, StationReachabilityState>(
       listener: (context, state) {
-        setState(() {
-          _highlightedTrips.clear();
-        });
+        context.read<TripsSelectionCubit>().unselectTrips();
 
         if (state is StationReachabilityStateSuccess) {
           _sortStationsByDuration(state.trips);
         }
       },
-      child: BlocBuilder<StationReachabilityCubit, StationReachabilityState>(
-        builder: (context, state) {
-          return MapLibreMap(
-            options: MapOptions(
-              initCenter: Position(9.17, 47.68),
-              initZoom: 4,
-              initStyle:
-                  'https://api.maptiler.com/maps/streets-v2/style.json?key=${Secrets.maptilerKey}',
-            ),
-            onStyleLoaded: (style) {
-              style.setProjection(MapProjection.globe);
-            },
-            onMapCreated: (controller) {
-              this.controller = controller;
-            },
-            onEvent: (event) => _onEvent(event, state),
-            layers: <Layer>[
-              for (int i = 0; i < _highlightedTrips.length; i++)
-                PolylineLayer(
-                  polylines: [
-                    LineString(
-                      coordinates: [
-                        for (final stop in _highlightedTrips[i].stops)
-                          Position(stop.longitude, stop.latitude),
-                      ],
-                    ),
-                  ],
-                  color: ColorHelper.interpolateColors(
-                    theme.colors.timelineGradient,
-                    i / max(_highlightedTrips.length - 1, 1),
-                  ),
-                  width: 5,
-                  dashArray: [(.2 + i * .42).ceil(), 2],
+      child: BlocBuilder<TripsSelectionCubit, TripsSelectionState>(
+        builder: (context, tripsSelectionState) {
+          return BlocBuilder<
+            StationReachabilityCubit,
+            StationReachabilityState
+          >(
+            builder: (context, stationReachabilityState) {
+              return MapLibreMap(
+                options: MapOptions(
+                  initCenter: Position(9.17, 47.68),
+                  initZoom: 4,
+                  initStyle:
+                      'https://api.maptiler.com/maps/streets-v2/style.json?key=${Secrets.maptilerKey}',
                 ),
-              if (_reachableStations.isNotEmpty)
-                for (final key in _reachableStations.keys)
-                  CircleLayer(
-                    points: [
-                      for (final station in _reachableStations[key]!)
-                        Point(
-                          coordinates: Position(
-                            station.longitude,
-                            station.latitude,
+                onStyleLoaded: (style) {
+                  style.setProjection(MapProjection.globe);
+                },
+                onMapCreated: (controller) {
+                  this.controller = controller;
+                },
+                onEvent: (event) => _onEvent(event, stationReachabilityState),
+                layers: <Layer>[
+                  if (tripsSelectionState is TripsSelectedState)
+                    for (int i = 0; i < tripsSelectionState.trips.length; i++)
+                      PolylineLayer(
+                        polylines: [
+                          LineString(
+                            coordinates: [
+                              for (final stop
+                                  in tripsSelectionState.trips[i].stops)
+                                Position(stop.longitude, stop.latitude),
+                            ],
                           ),
+                        ],
+                        color: ColorHelper.interpolateColors(
+                          theme.colors.timelineGradient,
+                          i / max(tripsSelectionState.trips.length - 1, 1),
                         ),
-                    ],
-                    color: ColorHelper.interpolateColors(
-                      theme.colors.timelineGradient,
-                      key / max(_reachableStations.keys.length - 1, 1),
-                    ),
-                  ),
-            ].reversed.toList(),
-            children: const [_Legends(), _Controls()],
+                        width: 5,
+                        dashArray: [(.2 + i * .42).ceil(), 2],
+                      ),
+                  if (_reachableStations.isNotEmpty)
+                    for (final key in _reachableStations.keys)
+                      CircleLayer(
+                        points: [
+                          for (final station in _reachableStations[key]!)
+                            Point(
+                              coordinates: Position(
+                                station.longitude,
+                                station.latitude,
+                              ),
+                            ),
+                        ],
+                        color: ColorHelper.interpolateColors(
+                          theme.colors.timelineGradient,
+                          key / max(_reachableStations.keys.length - 1, 1),
+                        ),
+                      ),
+                ].reversed.toList(),
+                children: const [_Legends(), _Controls()],
+              );
+            },
           );
         },
       ),
@@ -105,39 +112,23 @@ class _MapState extends State<_Map> {
     setState(() {});
   }
 
-  void _onEvent(MapEvent event, StationReachabilityState state) {
-    if (event is MapEventClick && state is StationReachabilityStateSuccess) {
+  void _onEvent(
+    MapEvent event,
+    StationReachabilityState stationReachabilityState,
+  ) {
+    if (event is MapEventClick &&
+        stationReachabilityState is StationReachabilityStateSuccess) {
       final Position clickedPoint = event.point;
 
       final double metersPerPixel = controller.getMetersPerPixelAtLatitudeSync(
         clickedPoint.lat.toDouble(),
       );
 
-      final maxDistance = metersPerPixel * 10;
-
-      _highlightedTrips.clear();
-
-      ReachableStation? highlightedStop;
-      for (final Trip trip in state.trips) {
-        for (final stop in trip.stops) {
-          final double distance = geo.Geolocator.distanceBetween(
-            stop.latitude,
-            stop.longitude,
-            clickedPoint.lat.toDouble(),
-            clickedPoint.lng.toDouble(),
-          );
-
-          if (distance < maxDistance) {
-            highlightedStop ??= stop;
-
-            if (highlightedStop.id == stop.id) {
-              _highlightedTrips.add(trip);
-            }
-          }
-        }
-      }
-
-      setState(() {});
+      context.read<TripsSelectionCubit>().selectTrips(
+        clickedPoint: clickedPoint,
+        metersPerPixel: metersPerPixel,
+        trips: stationReachabilityState.trips,
+      );
     }
   }
 }

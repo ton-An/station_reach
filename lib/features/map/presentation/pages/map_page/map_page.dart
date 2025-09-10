@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart' as geo;
 import 'package:maplibre/maplibre.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:station_reach/core/helpers/color_helper.dart';
@@ -18,6 +17,8 @@ import 'package:station_reach/features/map/presentation/cubits/station_search_cu
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_states.dart';
+import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_states.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
