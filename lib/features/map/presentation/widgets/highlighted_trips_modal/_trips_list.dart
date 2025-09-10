@@ -1,0 +1,51 @@
+part of 'highlighted_trips_modal.dart';
+
+class _TripsList extends StatelessWidget {
+  const _TripsList({required this.scrollController});
+
+  final ScrollController scrollController;
+
+  @override
+  Widget build(BuildContext context) {
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
+    return BlocBuilder<StationSelectionCubit, StationSelectionState>(
+      builder: (context, state) {
+        if (state is StationSelectedState) {
+          return ListView.builder(
+            controller: scrollController,
+            itemCount: state.trips.length,
+            padding: EdgeInsets.all(theme.spacing.medium),
+            itemBuilder: (context, index) => _TripPageLink(
+              tripName: state.trips[index].name,
+              mode: state.trips[index].mode,
+              iconBackgroundColor: ColorHelper.interpolateColors(
+                theme.colors.timelineGradient,
+                index / max(state.trips.length - 1, 1),
+              ),
+              onPressed: () {
+                //   context.goNamed(
+                //     SingleTripPage.pageName,
+                //     arguments: state.trips[index],
+                //   );
+              },
+              showDivider: index != state.trips.length - 1,
+            ),
+          );
+        }
+
+        return ListView(
+          controller: scrollController,
+          padding: EdgeInsets.only(top: theme.spacing.xMedium),
+          children: [
+            Text(
+              textAlign: TextAlign.center,
+              'No station selected',
+              style: theme.text.body.copyWith(color: theme.colors.hint),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

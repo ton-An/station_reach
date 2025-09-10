@@ -14,6 +14,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 part '_time_gradient_legend.dart';
 part '_transport_mode_icon.dart';
 part '_trip_page_link.dart';
+part '_trips_list.dart';
 
 class HighlightedTripsModal extends StatelessWidget {
   const HighlightedTripsModal();
@@ -66,31 +67,7 @@ class HighlightedTripsModal extends StatelessWidget {
               ],
             ),
             builder: (context, scrollController) =>
-                state is StationSelectedState
-                ? ListView.builder(
-                    controller: scrollController,
-                    itemCount: state.trips.length,
-                    padding: EdgeInsets.all(theme.spacing.medium),
-                    itemBuilder: (context, index) => _TripPageLink(
-                      tripName: state.trips[index].name,
-                      mode: state.trips[index].mode,
-                      iconBackgroundColor: ColorHelper.interpolateColors(
-                        theme.colors.timelineGradient,
-                        index / max(state.trips.length - 1, 1),
-                      ),
-                      onPressed: () {
-                        //   context.goNamed(
-                        //     SingleTripPage.pageName,
-                        //     arguments: state.trips[index],
-                        //   );
-                      },
-                      showDivider: index != state.trips.length - 1,
-                    ),
-                  )
-                : ListView(
-                    controller: scrollController,
-                    children: const [Text('No trips')],
-                  ),
+                _TripsList(scrollController: scrollController),
           ),
         );
       },
