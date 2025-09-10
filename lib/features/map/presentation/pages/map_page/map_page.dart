@@ -14,10 +14,10 @@ import 'package:station_reach/features/map/domain/models/reachable_station.dart'
 import 'package:station_reach/features/map/domain/models/trip.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_states.dart';
+import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_states.dart';
-import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_cubit.dart';
-import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_states.dart';
 import 'package:station_reach/features/map/presentation/widgets/highlighted_trips_modal/highlighted_trips_modal.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 

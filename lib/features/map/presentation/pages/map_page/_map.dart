@@ -18,14 +18,14 @@ class _MapState extends State<_Map> {
 
     return BlocListener<StationReachabilityCubit, StationReachabilityState>(
       listener: (context, state) {
-        context.read<TripsSelectionCubit>().unselectTrips();
+        context.read<StationSelectionCubit>().unselectStation();
 
         if (state is StationReachabilityStateSuccess) {
           _sortStationsByDuration(state.trips);
         }
       },
-      child: BlocBuilder<TripsSelectionCubit, TripsSelectionState>(
-        builder: (context, tripsSelectionState) {
+      child: BlocBuilder<StationSelectionCubit, StationSelectionState>(
+        builder: (context, stationSelectionState) {
           return BlocBuilder<
             StationReachabilityCubit,
             StationReachabilityState
@@ -46,21 +46,21 @@ class _MapState extends State<_Map> {
                 },
                 onEvent: (event) => _onEvent(event, stationReachabilityState),
                 layers: <Layer>[
-                  if (tripsSelectionState is TripsSelectedState)
-                    for (int i = 0; i < tripsSelectionState.trips.length; i++)
+                  if (stationSelectionState is StationSelectedState)
+                    for (int i = 0; i < stationSelectionState.trips.length; i++)
                       PolylineLayer(
                         polylines: [
                           LineString(
                             coordinates: [
                               for (final stop
-                                  in tripsSelectionState.trips[i].stops)
+                                  in stationSelectionState.trips[i].stops)
                                 Position(stop.longitude, stop.latitude),
                             ],
                           ),
                         ],
                         color: ColorHelper.interpolateColors(
                           theme.colors.timelineGradient,
-                          i / max(tripsSelectionState.trips.length - 1, 1),
+                          i / max(stationSelectionState.trips.length - 1, 1),
                         ),
                         width: 7,
                         // dashArray: [(.2 + i * .42).ceil(), 2],
@@ -125,7 +125,7 @@ class _MapState extends State<_Map> {
         clickedPoint.lat.toDouble(),
       );
 
-      context.read<TripsSelectionCubit>().selectTrips(
+      context.read<StationSelectionCubit>().selectStation(
         clickedPoint: clickedPoint,
         metersPerPixel: metersPerPixel,
         trips: stationReachabilityState.trips,

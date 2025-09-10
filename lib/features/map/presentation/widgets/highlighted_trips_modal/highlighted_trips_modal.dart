@@ -7,8 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:station_reach/core/helpers/color_helper.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
-import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_cubit.dart';
-import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_states.dart';
+import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_time_gradient_legend.dart';
@@ -22,7 +22,7 @@ class HighlightedTripsModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return BlocBuilder<TripsSelectionCubit, TripsSelectionState>(
+    return BlocBuilder<StationSelectionCubit, StationSelectionState>(
       builder: (context, state) {
         return Padding(
           padding: EdgeInsets.only(
@@ -65,7 +65,8 @@ class HighlightedTripsModal extends StatelessWidget {
                 ),
               ],
             ),
-            builder: (context, scrollController) => state is TripsSelectedState
+            builder: (context, scrollController) =>
+                state is StationSelectedState
                 ? ListView.builder(
                     controller: scrollController,
                     itemCount: state.trips.length,

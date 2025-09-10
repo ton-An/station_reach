@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:station_reach/features/map/domain/models/trip.dart';
 
-abstract class TripsSelectionState extends Equatable {
+abstract class StationSelectionState extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class TripsUnselectedState extends TripsSelectionState {}
+class StationUnselectedState extends StationSelectionState {}
 
-class TripsSelectedState extends TripsSelectionState {
-  TripsSelectedState({required this.trips});
+class StationSelectedState extends StationSelectionState {
+  StationSelectedState({required this.trips});
 
   final List<Trip> trips;
 

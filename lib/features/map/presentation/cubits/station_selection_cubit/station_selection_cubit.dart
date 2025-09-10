@@ -3,12 +3,12 @@ import 'package:geolocator/geolocator.dart' as geo;
 import 'package:maplibre/maplibre.dart';
 import 'package:station_reach/features/map/domain/models/reachable_station.dart';
 import 'package:station_reach/features/map/domain/models/trip.dart';
-import 'package:station_reach/features/map/presentation/cubits/trips_selection_cubit/trips_selection_states.dart';
+import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
 
-class TripsSelectionCubit extends Cubit<TripsSelectionState> {
-  TripsSelectionCubit() : super(TripsUnselectedState());
+class StationSelectionCubit extends Cubit<StationSelectionState> {
+  StationSelectionCubit() : super(StationUnselectedState());
 
-  void selectTrips({
+  void selectStation({
     required Position clickedPoint,
     required double metersPerPixel,
     required List<Trip> trips,
@@ -38,10 +38,10 @@ class TripsSelectionCubit extends Cubit<TripsSelectionState> {
       }
     }
 
-    emit(TripsSelectedState(trips: highlightedTrips));
+    emit(StationSelectedState(trips: highlightedTrips));
   }
 
-  void unselectTrips() {
-    emit(TripsUnselectedState());
+  void unselectStation() {
+    emit(StationUnselectedState());
   }
 }
