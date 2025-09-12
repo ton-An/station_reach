@@ -1,5 +1,8 @@
 part of 'map_page.dart';
 
+// when polylines go between the same station, they should overlay each other with gaps and not with different thicknesses
+// maybe color the polylines according to the durations. if there are overlays and same duration. use different saturation values
+
 class _Map extends StatefulWidget {
   const _Map();
 
@@ -8,9 +11,44 @@ class _Map extends StatefulWidget {
 }
 
 class _MapState extends State<_Map> {
-  final Map<int, List<ReachableStation>> _reachableStations = {};
-
   late MapController controller;
+  final List<Polyline> _tripsPolylines = [];
+  final List<CircleMarker<ReachableStation>> _reachableStationsLayers = [];
+
+  late LayerHitNotifier<ReachableStation> hitNotifier;
+
+  ReachableStation? _hitStation;
+
+  @override
+  void initState() {
+    super.initState();
+    hitNotifier = ValueNotifier(null)
+      ..addListener(() {
+        final LayerHitResult<ReachableStation>? result = hitNotifier.value;
+
+        if (result != null &&
+            context.read<StationReachabilityCubit>().state
+                is StationReachabilityStateSuccess) {
+          _hitStation = result.hitValues.first;
+        }
+      });
+  }
+
+  void _onMarkerHit() {
+    context.read<StationSelectionCubit>().selectStation(
+      station: _hitStation!,
+      trips:
+          (context.read<StationReachabilityCubit>().state
+                  as StationReachabilityStateSuccess)
+              .trips,
+    );
+  }
+
+  @override
+  void dispose() {
+    hitNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,71 +59,68 @@ class _MapState extends State<_Map> {
         context.read<StationSelectionCubit>().unselectStation();
 
         if (state is StationReachabilityStateSuccess) {
-          _sortStationsByDuration(state.trips);
+          _generateStationMarkers(state.trips);
         }
       },
-      child: BlocBuilder<StationSelectionCubit, StationSelectionState>(
+      child: BlocConsumer<StationSelectionCubit, StationSelectionState>(
+        listener: (context, stationSelectionState) {
+          if (stationSelectionState is StationSelectedState) {
+            _generateTripsPolylines(stationSelectionState.trips);
+          }
+        },
         builder: (context, stationSelectionState) {
           return BlocBuilder<
             StationReachabilityCubit,
             StationReachabilityState
           >(
             builder: (context, stationReachabilityState) {
-              return MapLibreMap(
+              return FlutterMap(
                 options: MapOptions(
-                  initCenter: Position(9.17, 47.68),
-                  initZoom: 4,
-                  initStyle:
-                      'https://api.maptiler.com/maps/streets-v2/style.json?key=${Secrets.maptilerKey}',
+                  initialCenter: LatLng(47.68, 11.72),
+                  initialZoom: 4,
+                  onMapEvent: (event) {
+                    if (event is MapEventMove) {
+                      _hitStation = null;
+                    }
+                  },
                 ),
-                onStyleLoaded: (style) {
-                  style.setProjection(MapProjection.globe);
-                },
-                onMapCreated: (controller) {
-                  this.controller = controller;
-                },
-                onEvent: (event) => _onEvent(event, stationReachabilityState),
-                layers: <Layer>[
-                  if (stationSelectionState is StationSelectedState)
-                    for (int i = 0; i < stationSelectionState.trips.length; i++)
-                      PolylineLayer(
-                        polylines: [
-                          LineString(
-                            coordinates: [
-                              for (final stop
-                                  in stationSelectionState.trips[i].stops)
-                                Position(stop.longitude, stop.latitude),
-                            ],
-                          ),
-                        ],
-                        color: ColorHelper.interpolateColors(
-                          theme.colors.timelineGradient,
-                          i / max(stationSelectionState.trips.length - 1, 1),
-                        ),
-                        width: 7,
-                        // dashArray: [(.2 + i * .42).ceil(), 2],
-                      ),
-                  if (_reachableStations.isNotEmpty)
-                    for (final key in _reachableStations.keys)
-                      CircleLayer(
-                        points: [
-                          for (final station in _reachableStations[key]!)
-                            Point(
-                              coordinates: Position(
-                                station.longitude,
-                                station.latitude,
-                              ),
-                            ),
-                        ],
-                        color: ColorHelper.interpolateColors(
-                          theme.colors.timelineGradient,
-                          key / max(_reachableStations.keys.length - 1, 1),
-                        ),
-                        radius: 8,
-                      ),
-                ].reversed.toList(),
-                children: const [_Legends(), _Controls()],
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    subdomains: const ['a', 'b', 'c'],
+                    userAgentPackageName: 'com.stationreach.app',
+                  ),
+
+                  TranslucentPointer(
+                    child: CircleLayer(
+                      circles: _reachableStationsLayers,
+                      hitNotifier: hitNotifier,
+                    ),
+                  ),
+
+                  RawGestureDetector(
+                    gestures: <Type, GestureRecognizerFactory>{
+                      TapGestureRecognizer:
+                          GestureRecognizerFactoryWithHandlers<
+                            TapGestureRecognizer
+                          >(() => TapGestureRecognizer(), (r) {
+                            r.onTap = () {
+                              if (_hitStation != null) {
+                                _onMarkerHit();
+                              }
+                            };
+                          }),
+                    },
+                  ),
+
+                  TranslucentPointer(
+                    child: PolylineLayer(polylines: _tripsPolylines),
+                  ),
+                ],
               );
+
+              // );
             },
           );
         },
@@ -93,42 +128,101 @@ class _MapState extends State<_Map> {
     );
   }
 
-  void _sortStationsByDuration(List<Trip> trips) {
-    _reachableStations.clear();
+  void _generateStationMarkers(List<Trip> trips) {
+    _reachableStationsLayers.clear();
+
+    final Map<String, dynamic> reachableStations = {};
 
     for (final trip in trips) {
       for (final station in trip.stops) {
         final duration = station.duration.inMinutes;
 
-        int key = (duration ~/ 30).clamp(0, 28);
+        int durationIn30Minutes = (duration ~/ 30).clamp(0, 28);
 
-        if (_reachableStations.containsKey(key)) {
-          _reachableStations[key]!.add(station);
-        } else {
-          _reachableStations[key] = [station];
+        if (reachableStations[station.id] == null ||
+            reachableStations[station.id]!['duration'] > durationIn30Minutes) {
+          reachableStations[station.id] = {
+            'duration': durationIn30Minutes,
+            'station': station,
+          };
         }
       }
+    }
+
+    for (final stationId in reachableStations.keys) {
+      _reachableStationsLayers.add(
+        CircleMarker(
+          point: LatLng(
+            reachableStations[stationId]['station'].latitude,
+            reachableStations[stationId]['station'].longitude,
+          ),
+          // point: LatLng(8.127, 47.68),
+          radius: 8,
+          color: ColorHelper.interpolateColors(
+            WebfabrikTheme.of(context).colors.timelineGradient,
+            reachableStations[stationId]['duration'] / 28,
+          ),
+          borderStrokeWidth: 20,
+          borderColor: Colors.transparent,
+          hitValue: reachableStations[stationId]['station'],
+        ),
+      );
     }
 
     setState(() {});
   }
 
-  void _onEvent(
-    MapEvent event,
-    StationReachabilityState stationReachabilityState,
-  ) {
-    if (event is MapEventClick &&
-        stationReachabilityState is StationReachabilityStateSuccess) {
-      final Position clickedPoint = event.point;
+  void _generateTripsPolylines(List<Trip> trips) {
+    _tripsPolylines.clear();
 
-      final double metersPerPixel = controller.getMetersPerPixelAtLatitudeSync(
-        clickedPoint.lat.toDouble(),
+    for (final trip in trips) {
+      final Color color = ColorHelper.interpolateColors(
+        WebfabrikTheme.of(context).colors.timelineGradient,
+        trips.indexOf(trip) / max(trips.length - 1, 1),
       );
+      final HSLColor hslColor = HSLColor.fromColor(color);
 
-      context.read<StationSelectionCubit>().selectStation(
-        clickedPoint: clickedPoint,
-        metersPerPixel: metersPerPixel,
-        trips: stationReachabilityState.trips,
+      const double lightnessChangeAmount = .1;
+
+      final bool isDark = hslColor.lightness < 0.5;
+      final double adjustedLightness =
+          (isDark
+                  ? hslColor.lightness + lightnessChangeAmount
+                  : hslColor.lightness - lightnessChangeAmount)
+              .clamp(0.0, 1.0);
+
+      final Color lighterColor = hslColor
+          .withLightness(adjustedLightness)
+          .toColor();
+
+      _tripsPolylines.insert(
+        0,
+        Polyline(
+          points: [
+            for (final stop in trip.stops)
+              LatLng(stop.latitude, stop.longitude),
+          ],
+          strokeWidth: 10,
+          strokeCap: StrokeCap.round,
+          strokeJoin: StrokeJoin.round,
+          color: lighterColor,
+          pattern: StrokePattern.dashed(segments: const [20, 20]),
+        ),
+      );
+      _tripsPolylines.insert(
+        0,
+        Polyline(
+          points: [
+            for (final stop in trip.stops)
+              LatLng(stop.latitude, stop.longitude),
+          ],
+          strokeWidth: 9,
+          strokeCap: StrokeCap.round,
+          strokeJoin: StrokeJoin.round,
+          borderStrokeWidth: trips.indexOf(trip) / trips.length * 12,
+          borderColor: color.withValues(alpha: .5),
+          color: color,
+        ),
       );
     }
   }

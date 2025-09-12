@@ -83,18 +83,6 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
                         Attribution(
                           name: AppLocalizations.of(
                             context,
-                          )!.mapLibreAttribution,
-                          url: 'https://maplibre.org/',
-                        ),
-                        Attribution(
-                          name: AppLocalizations.of(
-                            context,
-                          )!.mapTilerAttribution,
-                          url: 'https://www.maptiler.com/',
-                        ),
-                        Attribution(
-                          name: AppLocalizations.of(
-                            context,
                           )!.openStreetMapAttribution,
                           url: 'https://www.openstreetmap.org/copyright',
                         ),
