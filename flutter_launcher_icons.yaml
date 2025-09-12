@@ -4,7 +4,9 @@ flutter_launcher_icons:
 
   android: false
 
-  ios: false
+  ios: true
+  remove_alpha_ios: true
+  background_color_ios: #ffffff
 
   web:
     generate: true
