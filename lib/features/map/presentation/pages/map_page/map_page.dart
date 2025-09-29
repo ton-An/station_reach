@@ -1,13 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:maplibre/maplibre.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:station_reach/core/helpers/color_helper.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
-import 'package:station_reach/core/secrets.dart';
 import 'package:station_reach/core/widgets/fade_gesture_detector.dart';
 import 'package:station_reach/core/widgets/icon_button.dart';
 import 'package:station_reach/features/map/domain/models/reachable_station.dart';
@@ -24,7 +25,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 part '_controls.dart';
 part '_legends.dart';
 part '_map.dart';
-part '_scale_bar.dart';
+// part '_scale_bar.dart';
 part '_search.dart';
 
 class MapPage extends StatelessWidget {

@@ -77,14 +77,14 @@ class _Search extends StatelessWidget {
                             ),
                           ),
                           AnimatedContainer(
-                            duration: theme.durations.short,
+                            duration: theme.durations.xTiny,
                             constraints: BoxConstraints(
                               maxHeight: state is StationSearchDataState
                                   ? 250
                                   : 0,
                             ),
                             child: AnimatedSize(
-                              duration: theme.durations.short,
+                              duration: theme.durations.xTiny,
                               curve: Curves.easeOut,
                               child: ListView.builder(
                                 itemCount: state is StationSearchDataState

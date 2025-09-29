@@ -140,6 +140,7 @@ class _MainAppState extends State<MainApp> {
       ),
       child: MultiBlocProvider(
         providers: [BlocProvider(create: (context) => inAppNotificationCubit)],
+
         child: CupertinoApp.router(
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appName,

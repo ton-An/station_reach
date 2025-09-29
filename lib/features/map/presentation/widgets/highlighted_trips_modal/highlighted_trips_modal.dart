@@ -21,7 +21,7 @@ part '_trip_page_link.dart';
 part '_trips_list.dart';
 
 class HighlightedTripsModal extends StatefulWidget {
-  const HighlightedTripsModal();
+  const HighlightedTripsModal({super.key});
 
   @override
   State<HighlightedTripsModal> createState() => _HighlightedTripsModalState();
@@ -80,18 +80,6 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
                     const _TimeGradientLegend(),
                     AttributionLegend(
                       attributions: [
-                        Attribution(
-                          name: AppLocalizations.of(
-                            context,
-                          )!.mapLibreAttribution,
-                          url: 'https://maplibre.org/',
-                        ),
-                        Attribution(
-                          name: AppLocalizations.of(
-                            context,
-                          )!.mapTilerAttribution,
-                          url: 'https://www.maptiler.com/',
-                        ),
                         Attribution(
                           name: AppLocalizations.of(
                             context,
