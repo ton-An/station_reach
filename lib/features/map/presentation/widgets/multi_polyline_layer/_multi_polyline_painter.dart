@@ -46,7 +46,8 @@ class _PolylinePainter<R extends Object> extends CustomPainter
     WorldWorkControl checkIfHit(double shift) {
       final (offsets, _) = _helper.getOffsetsXY(
         points: projectedPolyline.points,
-        shift: shift,
+        xShift: shift,
+        yShift: 0,
       );
       if (!areOffsetsVisible(offsets)) return WorldWorkControl.invisible;
 
@@ -141,19 +142,16 @@ class _PolylinePainter<R extends Object> extends CustomPainter
 
       final double indexShift =
           differenceToMiddle *
-          clampDouble((camera.zoom / 7) * (camera.zoom / 7), 0, 2);
-
-      print('indexShift: $indexShift');
-      print('camera.zoom: ${camera.zoom}');
-
-      // if (index < polylinesListMiddle) {
+          clampDouble((camera.zoom / 7) * (camera.zoom / 7), 0, 4);
 
       /// Draws on a "single-world"
       WorldWorkControl drawIfVisible(double shift) {
         // print('shift: $shift');
         final (offsets, _) = _helper.getOffsetsXY(
           points: projectedPolyline.points,
-          shift: shift + indexShift,
+          xShift: shift + indexShift,
+          // yShift: indexShift * 5,
+          yShift: indexShift,
         );
         if (!areOffsetsVisible(offsets)) return WorldWorkControl.invisible;
 

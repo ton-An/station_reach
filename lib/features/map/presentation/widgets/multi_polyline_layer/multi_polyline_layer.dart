@@ -5,17 +5,18 @@ import 'dart:ui' as ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map/src/geo/crs.dart';
 import 'package:flutter_map/src/layer/shared/feature_layer_utils.dart';
 import 'package:flutter_map/src/layer/shared/layer_interactivity/internal_hit_detectable.dart';
 import 'package:flutter_map/src/layer/shared/layer_projection_simplification/state.dart';
 import 'package:flutter_map/src/layer/shared/layer_projection_simplification/widget.dart';
 import 'package:flutter_map/src/layer/shared/line_patterns/pixel_hiker.dart';
 import 'package:flutter_map/src/misc/extensions.dart';
-import 'package:flutter_map/src/misc/offsets.dart';
 import 'package:flutter_map/src/misc/simplify.dart';
 import 'package:latlong2/latlong.dart';
 
 part '_multi_polyline_painter.dart';
+part '_offset_helper.dart';
 part '_projected_multi_polyline.dart';
 
 /// A multi [Polyline] (aka. LineString) layer for [FlutterMap].

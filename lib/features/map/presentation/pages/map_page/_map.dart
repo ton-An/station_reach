@@ -194,7 +194,7 @@ class _MapState extends State<_Map> {
             for (final stop in trip.stops)
               LatLng(stop.latitude, stop.longitude),
           ],
-          strokeWidth: 4,
+          strokeWidth: 5,
           strokeCap: StrokeCap.round,
           strokeJoin: StrokeJoin.round,
           color: color,
