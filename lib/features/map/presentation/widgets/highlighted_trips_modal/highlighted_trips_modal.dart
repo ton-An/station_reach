@@ -72,7 +72,9 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
                 bottom: MediaQuery.of(context).viewInsets.bottom,
               ),
               child: WebfabrikModal(
-                title: 'Trips',
+                title: tripSelectionState is TripSelectionStateSelected
+                    ? _selectedTrip?.name ?? ''
+                    : 'Trips',
                 secondaryButtons: const [],
                 legend: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

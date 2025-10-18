@@ -7,6 +7,7 @@ class _TripPageLink extends StatelessWidget {
     required this.onPressed,
     this.showDivider = true,
     required this.iconBackgroundColor,
+    required this.duration,
   });
 
   final String tripName;
@@ -14,6 +15,8 @@ class _TripPageLink extends StatelessWidget {
   final VoidCallback onPressed;
   final bool showDivider;
   final Color iconBackgroundColor;
+  final Duration duration;
+
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
@@ -35,8 +38,21 @@ class _TripPageLink extends StatelessWidget {
                     backgroundColor: iconBackgroundColor.withValues(alpha: .40),
                   ),
                   const XXSmallGap(),
+                  Text(tripName, style: theme.text.body.copyWith()),
+
+                  const XSmallGap(),
+                  const Dot(),
+                  const XSmallGap(),
                   Expanded(
-                    child: Text(tripName, style: theme.text.body.copyWith()),
+                    child: Text(
+                      TimeDateFormatter.formatDuration(duration),
+                      style: theme.text.body.copyWith(
+                        color: ColorHelper.interpolateColors(
+                          WebfabrikTheme.of(context).colors.timelineGradient,
+                          (duration.inMinutes ~/ 30).clamp(0, 28) / 28,
+                        ),
+                      ),
+                    ),
                   ),
                   SmallIconButton(
                     icon: CupertinoIcons.forward,

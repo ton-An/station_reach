@@ -19,6 +19,7 @@ class _TripsList extends StatelessWidget {
             itemBuilder: (context, index) => _TripPageLink(
               tripName: state.trips[index].name,
               mode: state.trips[index].mode,
+              duration: state.trips[index].stops.last.duration,
               iconBackgroundColor: ColorHelper.interpolateColors(
                 WebfabrikTheme.of(context).colors.secondaryGradient,
                 index / max(state.trips.length - 1, 1),
