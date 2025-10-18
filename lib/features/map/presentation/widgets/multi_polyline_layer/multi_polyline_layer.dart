@@ -15,21 +15,20 @@ import 'package:flutter_map/src/misc/offsets.dart';
 import 'package:flutter_map/src/misc/simplify.dart';
 import 'package:latlong2/latlong.dart';
 
-part '_multi_polyline.dart';
 part '_multi_polyline_painter.dart';
 part '_projected_multi_polyline.dart';
 
-/// A [MultiPolyline] (aka. LineString) layer for [FlutterMap].
+/// A multi [Polyline] (aka. LineString) layer for [FlutterMap].
 @immutable
 base class MultiPolylineLayer<R extends Object>
     extends ProjectionSimplificationManagementSupportedWidget {
-  /// [MultiPolyline]s to draw
-  final List<MultiPolyline<R>> polylines;
+  /// [Polyline]s to draw
+  final List<Polyline<R>> polylines;
 
   /// Acceptable extent outside of viewport before culling polyline segments
   ///
-  /// May need to be increased if the [MultiPolyline.strokeWidth] +
-  /// [MultiPolyline.borderStrokeWidth] is large. See the
+  /// May need to be increased if the [Polyline.strokeWidth] +
+  /// [Polyline.borderStrokeWidth] is large. See the
   /// [online documentation](https://docs.fleaflet.dev/layers/polyline-layer#culling)
   /// for more info.
   ///
@@ -39,7 +38,7 @@ base class MultiPolylineLayer<R extends Object>
   /// {@macro fm.lhn.layerHitNotifier.usage}
   final LayerHitNotifier<R>? hitNotifier;
 
-  /// The minimum radius of the hittable area around each [MultiPolyline] in logical
+  /// The minimum radius of the hittable area around each [Polyline] in logical
   /// pixels
   ///
   /// The entire visible area is always hittable, but if the visible area is
@@ -78,13 +77,13 @@ class _PolylineLayerState<R extends Object> extends State<MultiPolylineLayer<R>>
     with
         ProjectionSimplificationManagement<
           _ProjectedPolyline<R>,
-          MultiPolyline<R>,
+          Polyline<R>,
           MultiPolylineLayer<R>
         > {
   @override
   _ProjectedPolyline<R> projectElement({
     required Projection projection,
-    required MultiPolyline<R> element,
+    required Polyline<R> element,
   }) => _ProjectedPolyline._fromPolyline(
     projection,
     element,
@@ -105,7 +104,7 @@ class _PolylineLayerState<R extends Object> extends State<MultiPolylineLayer<R>>
   );
 
   @override
-  List<MultiPolyline<R>> get elements => widget.polylines;
+  List<Polyline<R>> get elements => widget.polylines;
 
   @override
   Widget build(BuildContext context) {

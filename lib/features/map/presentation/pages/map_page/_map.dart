@@ -12,7 +12,7 @@ class _Map extends StatefulWidget {
 
 class _MapState extends State<_Map> {
   late MapController controller;
-  final List<MultiPolyline> _tripsPolylines = [];
+  final List<Polyline> _tripsPolylines = [];
   final List<CircleMarker<ReachableStation>> _reachableStationsLayers = [];
 
   late LayerHitNotifier<ReachableStation> hitNotifier;
@@ -180,53 +180,23 @@ class _MapState extends State<_Map> {
 
   void _generateTripsPolylines(List<Trip> trips) {
     _tripsPolylines.clear();
-    print(trips.length);
+
     for (final trip in trips) {
       final Color color = ColorHelper.interpolateColors(
-        WebfabrikTheme.of(context).colors.timelineGradient,
+        WebfabrikTheme.of(context).colors.secondaryGradient,
         trips.indexOf(trip) / max(trips.length - 1, 1),
       );
-      final HSLColor hslColor = HSLColor.fromColor(color);
-
-      const double lightnessChangeAmount = .1;
-
-      final bool isDark = hslColor.lightness < 0.5;
-      final double adjustedLightness =
-          (isDark
-                  ? hslColor.lightness + lightnessChangeAmount
-                  : hslColor.lightness - lightnessChangeAmount)
-              .clamp(0.0, 1.0);
-
-      final Color lighterColor = hslColor
-          .withLightness(adjustedLightness)
-          .toColor();
 
       _tripsPolylines.insert(
         0,
-        MultiPolyline(
+        Polyline(
           points: [
             for (final stop in trip.stops)
               LatLng(stop.latitude, stop.longitude),
           ],
-          strokeWidth: 10,
+          strokeWidth: 4,
           strokeCap: StrokeCap.round,
           strokeJoin: StrokeJoin.round,
-          color: lighterColor,
-          pattern: StrokePattern.dashed(segments: const [20, 20]),
-        ),
-      );
-      _tripsPolylines.insert(
-        0,
-        MultiPolyline(
-          points: [
-            for (final stop in trip.stops)
-              LatLng(stop.latitude, stop.longitude),
-          ],
-          strokeWidth: 9,
-          strokeCap: StrokeCap.round,
-          strokeJoin: StrokeJoin.round,
-          borderStrokeWidth: trips.indexOf(trip) / trips.length * 12,
-          borderColor: color.withValues(alpha: .5),
           color: color,
         ),
       );

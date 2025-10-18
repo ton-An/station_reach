@@ -55,7 +55,6 @@ class _MainAppState extends State<MainApp> {
             Color.fromARGB(255, 255, 229, 59),
             Color.fromARGB(255, 255, 152, 0),
             Color.fromARGB(255, 244, 67, 54),
-            Color.fromARGB(255, 156, 39, 176),
           ],
         ),
         text: WebfabrikTextThemeData(

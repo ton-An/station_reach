@@ -20,7 +20,7 @@ class _TripsList extends StatelessWidget {
               tripName: state.trips[index].name,
               mode: state.trips[index].mode,
               iconBackgroundColor: ColorHelper.interpolateColors(
-                theme.colors.timelineGradient,
+                WebfabrikTheme.of(context).colors.secondaryGradient,
                 index / max(state.trips.length - 1, 1),
               ),
               onPressed: () {

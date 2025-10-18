@@ -2,7 +2,7 @@ part of 'multi_polyline_layer.dart';
 
 @immutable
 class _ProjectedPolyline<R extends Object> with HitDetectableElement<R> {
-  final MultiPolyline<R> polyline;
+  final Polyline<R> polyline;
   final List<Offset> points;
 
   @override
@@ -12,7 +12,7 @@ class _ProjectedPolyline<R extends Object> with HitDetectableElement<R> {
 
   _ProjectedPolyline._fromPolyline(
     Projection projection,
-    MultiPolyline<R> polyline,
+    Polyline<R> polyline,
     bool drawInSingleWorld,
   ) : this._(
         polyline: polyline,

@@ -127,17 +127,33 @@ class _PolylinePainter<R extends Object> extends CustomPainter
       paint = Paint();
     }
 
+    final double polylinesListMiddle = polylines.length / 2;
+
     for (final projectedPolyline in polylines) {
+      int index = polylines.indexOf(projectedPolyline);
+      print('index: $index');
       final polyline = projectedPolyline.polyline;
       if (polyline.points.isEmpty) {
         continue;
       }
 
+      final double differenceToMiddle = polylinesListMiddle - index;
+
+      final double indexShift =
+          differenceToMiddle *
+          clampDouble((camera.zoom / 7) * (camera.zoom / 7), 0, 2);
+
+      print('indexShift: $indexShift');
+      print('camera.zoom: ${camera.zoom}');
+
+      // if (index < polylinesListMiddle) {
+
       /// Draws on a "single-world"
       WorldWorkControl drawIfVisible(double shift) {
+        // print('shift: $shift');
         final (offsets, _) = _helper.getOffsetsXY(
           points: projectedPolyline.points,
-          shift: shift,
+          shift: shift + indexShift,
         );
         if (!areOffsetsVisible(offsets)) return WorldWorkControl.invisible;
 
@@ -273,7 +289,7 @@ class _PolylinePainter<R extends Object> extends CustomPainter
     drawPaths();
   }
 
-  ui.Gradient _paintGradient(MultiPolyline polyline, List<Offset> offsets) =>
+  ui.Gradient _paintGradient(Polyline polyline, List<Offset> offsets) =>
       ui.Gradient.linear(
         offsets.first,
         offsets.last,
@@ -281,13 +297,13 @@ class _PolylinePainter<R extends Object> extends CustomPainter
         _getColorsStop(polyline),
       );
 
-  List<double>? _getColorsStop(MultiPolyline polyline) =>
+  List<double>? _getColorsStop(Polyline polyline) =>
       (polyline.colorsStop != null &&
           polyline.colorsStop!.length == polyline.gradientColors!.length)
       ? polyline.colorsStop
       : _calculateColorsStop(polyline);
 
-  List<double> _calculateColorsStop(MultiPolyline polyline) {
+  List<double> _calculateColorsStop(Polyline polyline) {
     final colorsStopInterval = 1.0 / polyline.gradientColors!.length;
     return polyline.gradientColors!
         .map(
