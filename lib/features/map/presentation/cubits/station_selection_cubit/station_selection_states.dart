@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:station_reach/features/map/domain/models/reachable_station.dart';
 import 'package:station_reach/features/map/domain/models/trip.dart';
 
 abstract class StationSelectionState extends Equatable {
@@ -9,8 +10,9 @@ abstract class StationSelectionState extends Equatable {
 class StationUnselectedState extends StationSelectionState {}
 
 class StationSelectedState extends StationSelectionState {
-  StationSelectedState({required this.trips});
+  StationSelectedState({required this.station, required this.trips});
 
+  final ReachableStation station;
   final List<Trip> trips;
 
   @override

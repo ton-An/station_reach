@@ -132,7 +132,7 @@ class _PolylinePainter<R extends Object> extends CustomPainter
 
     for (final projectedPolyline in polylines) {
       int index = polylines.indexOf(projectedPolyline);
-      print('index: $index');
+
       final polyline = projectedPolyline.polyline;
       if (polyline.points.isEmpty) {
         continue;
@@ -146,7 +146,6 @@ class _PolylinePainter<R extends Object> extends CustomPainter
 
       /// Draws on a "single-world"
       WorldWorkControl drawIfVisible(double shift) {
-        // print('shift: $shift');
         final (offsets, _) = _helper.getOffsetsXY(
           points: projectedPolyline.points,
           xShift: shift + indexShift,

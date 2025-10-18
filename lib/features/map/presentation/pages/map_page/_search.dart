@@ -74,7 +74,7 @@ class _Search extends StatelessWidget {
                                       child: Icon(
                                         Icons.search_rounded,
                                         size: 28,
-                                        color: theme.colors.primary,
+                                        color: theme.colors.hint,
                                       ),
                                     ),
                                     suffix: AnimatedOpacity(

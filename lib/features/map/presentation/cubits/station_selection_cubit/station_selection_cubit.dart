@@ -20,7 +20,7 @@ class StationSelectionCubit extends Cubit<StationSelectionState> {
       }
     }
 
-    emit(StationSelectedState(trips: highlightedTrips));
+    emit(StationSelectedState(station: station, trips: highlightedTrips));
   }
 
   void unselectStation() {

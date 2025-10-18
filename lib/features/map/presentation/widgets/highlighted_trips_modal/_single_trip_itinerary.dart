@@ -18,7 +18,6 @@ class _SingleTripItinerary extends StatelessWidget {
       itemCount: trip!.stops.length,
       padding: EdgeInsets.all(theme.spacing.medium),
       itemBuilder: (context, index) {
-        print((trip!.stops[index].duration.inMinutes ~/ 30));
         return Column(
           children: [
             WebfabrikListItem(

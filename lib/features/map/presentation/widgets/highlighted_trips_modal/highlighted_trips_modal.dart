@@ -36,6 +36,12 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
   void initState() {
     super.initState();
     pageController = PageController();
+
+    pageController.addListener(() {
+      if (pageController.page == 0) {
+        context.read<TripSelectionCubit>().unselectTrip();
+      }
+    });
   }
 
   @override
@@ -74,7 +80,14 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
               child: WebfabrikModal(
                 title: tripSelectionState is TripSelectionStateSelected
                     ? _selectedTrip?.name ?? ''
+                    : stationSelectionState is StationSelectedState
+                    ? stationSelectionState.station.name
                     : 'Trips',
+                displayBackButton:
+                    tripSelectionState is TripSelectionStateSelected,
+                onBackPressed: () {
+                  context.read<TripSelectionCubit>().unselectTrip();
+                },
                 secondaryButtons: const [],
                 legend: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,16 +129,6 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
                       scrollController: scrollController,
                     ),
                   ],
-                  // options: FlutterCarouselOptions(
-                  //   controller: carouselController,
-                  //   // viewportFraction: 1,
-                  //   showIndicator: false,
-                  //   padEnds: false,
-                  //   // disableCenter: true,
-                  //   physics: const NeverScrollableScrollPhysics(),
-                  //   autoPlayCurve: Curves.easeOut,
-                  //   autoPlayAnimationDuration: const Duration(milliseconds: 240),
-                  // ),
                 ),
               ),
             );
