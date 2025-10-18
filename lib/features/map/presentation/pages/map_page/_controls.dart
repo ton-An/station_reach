@@ -22,10 +22,10 @@ class _Controls extends StatelessWidget {
             PointerInterceptor(
               child: CustomIconButton(
                 onPressed: () {
-                  controller.animateCamera(
-                    zoom: controller.getCamera().zoom + 1,
-                    nativeDuration: theme.durations.short,
-                  );
+                  // controller.animateCamera(
+                  //   zoom: controller.getCamera().zoom + 1,
+                  //   nativeDuration: theme.durations.short,
+                  // );
                 },
                 icon: Icons.add_rounded,
                 iconColor: theme.colors.accent,
@@ -35,10 +35,10 @@ class _Controls extends StatelessWidget {
             PointerInterceptor(
               child: CustomIconButton(
                 onPressed: () {
-                  controller.animateCamera(
-                    zoom: controller.getCamera().zoom - 1,
-                    nativeDuration: theme.durations.short,
-                  );
+                  // controller.animateCamera(
+                  //   zoom: controller.getCamera().zoom - 1,
+                  //   nativeDuration: theme.durations.short,
+                  // );
                 },
                 icon: Icons.remove_rounded,
                 iconColor: theme.colors.error,
