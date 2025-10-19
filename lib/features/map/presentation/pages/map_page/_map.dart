@@ -163,12 +163,12 @@ class _MapState extends State<_Map> {
             reachableStations[stationId]['station'].longitude,
           ),
           // point: LatLng(8.127, 47.68),
-          radius: 11,
+          radius: 8,
           color: ColorHelper.interpolateColors(
             WebfabrikTheme.of(context).colors.timelineGradient,
             reachableStations[stationId]['duration'] / 28,
-          ),
-          borderStrokeWidth: 20,
+          ).withValues(alpha: .75),
+          borderStrokeWidth: 26,
           borderColor: Colors.transparent,
           hitValue: reachableStations[stationId]['station'],
         ),
@@ -185,7 +185,7 @@ class _MapState extends State<_Map> {
       final Color color = ColorHelper.interpolateColors(
         WebfabrikTheme.of(context).colors.secondaryGradient,
         trips.indexOf(trip) / max(trips.length - 1, 1),
-      );
+      ).withValues(alpha: .7);
 
       _tripsPolylines.insert(
         0,

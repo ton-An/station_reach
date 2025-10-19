@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
+import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:station_reach/core/helpers/color_helper.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:station_reach/core/widgets/fade_gesture_detector.dart';

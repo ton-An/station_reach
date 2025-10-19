@@ -27,8 +27,16 @@ class _Search extends StatelessWidget {
                         filter: theme.misc.blurFilter,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              theme.radii.button,
+                            ),
                             color: theme.colors.background.withValues(
                               alpha: .65,
+                            ),
+                            border: Border.all(
+                              color: theme.colors.hint.withValues(alpha: .35),
+                              strokeAlign: BorderSide.strokeAlignInside,
+                              width: 2,
                             ),
                           ),
                           child: Column(
@@ -59,6 +67,7 @@ class _Search extends StatelessWidget {
                                       color: Colors.transparent,
                                     ),
                                     cursorColor: theme.colors.primary,
+                                    autocorrect: false,
                                     onChanged: (String locationQuery) {
                                       context
                                           .read<StationSearchCubit>()
@@ -74,34 +83,17 @@ class _Search extends StatelessWidget {
                                       child: Icon(
                                         Icons.search_rounded,
                                         size: 28,
-                                        color: theme.colors.hint,
-                                      ),
-                                    ),
-                                    suffix: AnimatedOpacity(
-                                      opacity:
-                                          stationSearchState
-                                                  is StationSearchStateLoading ||
-                                              stationReachabilityState
-                                                  is StationReachabilityStateLoading
-                                          ? 1
-                                          : 0,
-                                      duration: theme.durations.xTiny,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          right: theme.spacing.medium,
-                                        ),
-                                        child: LoadingIndicator(
-                                          // color: theme
-                                          //     .colors
-                                          //     .translucentBackgroundContrast,
+                                        color: theme.colors.hint.withValues(
+                                          alpha: .45,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
+
                               AnimatedContainer(
-                                duration: theme.durations.xTiny,
+                                duration: theme.durations.tiny,
                                 constraints: BoxConstraints(
                                   maxHeight:
                                       stationSearchState
@@ -131,6 +123,8 @@ class _Search extends StatelessWidget {
                                           context
                                               .read<StationSearchCubit>()
                                               .collapseSearch();
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
                                         },
                                         minOpacity: index.isEven ? .1 : .6,
                                         child: Padding(
@@ -151,6 +145,28 @@ class _Search extends StatelessWidget {
                                     },
                                   ),
                                 ),
+                              ),
+
+                              AnimatedSize(
+                                duration: theme.durations.xTiny,
+                                child:
+                                    stationSearchState
+                                            is StationSearchStateLoading ||
+                                        stationReachabilityState
+                                            is StationReachabilityStateLoading
+                                    ? Shimmer(
+                                        colorOpacity: .5,
+                                        duration: theme.durations.xHuge,
+                                        child: Container(
+                                          height: 8,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color:
+                                                theme.colors.primaryTranslucent,
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
                               ),
                             ],
                             // ],
