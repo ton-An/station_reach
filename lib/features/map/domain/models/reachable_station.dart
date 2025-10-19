@@ -6,9 +6,21 @@ class ReachableStation extends Station {
     required super.name,
     required super.latitude,
     required super.longitude,
+    super.countryCode,
     required super.childrenIds,
     required this.duration,
   });
 
   final Duration duration;
+
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    latitude,
+    longitude,
+    countryCode,
+    childrenIds,
+    duration,
+  ];
 }

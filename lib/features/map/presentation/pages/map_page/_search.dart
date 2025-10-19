@@ -112,6 +112,29 @@ class _Search extends StatelessWidget {
                                         : 0,
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
+                                      String? area;
+
+                                      if (stationSearchState
+                                          is StationSearchDataState) {
+                                        final String? stationArea =
+                                            stationSearchState
+                                                .stations[index]
+                                                .area;
+                                        final String? countryCode =
+                                            stationSearchState
+                                                .stations[index]
+                                                .countryCode;
+
+                                        if (stationArea != null &&
+                                            countryCode != null) {
+                                          area = '$stationArea, $countryCode';
+                                        } else if (stationArea != null) {
+                                          area = stationArea;
+                                        } else if (countryCode != null) {
+                                          area = countryCode;
+                                        }
+                                      }
+
                                       return FadeGestureDetector(
                                         onTap: () {
                                           context
@@ -133,12 +156,29 @@ class _Search extends StatelessWidget {
                                             left: theme.spacing.xSmall,
                                             bottom: theme.spacing.xSmall,
                                           ),
-                                          child: Text(
-                                            (stationSearchState
-                                                    as StationSearchDataState)
-                                                .stations[index]
-                                                .name,
-                                            style: theme.text.body,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                (stationSearchState
+                                                        as StationSearchDataState)
+                                                    .stations[index]
+                                                    .name,
+                                                style: theme.text.body,
+                                              ),
+                                              if (area != null) ...[
+                                                const XSmallGap(),
+                                                const Dot(),
+                                                const XSmallGap(),
+                                                Text(
+                                                  area,
+                                                  style: theme.text.body
+                                                      .copyWith(
+                                                        color:
+                                                            theme.colors.hint,
+                                                      ),
+                                                ),
+                                              ],
+                                            ],
                                           ),
                                         ),
                                       );

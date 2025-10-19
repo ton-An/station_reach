@@ -138,7 +138,11 @@ class _PolylinePainter<R extends Object> extends CustomPainter
         continue;
       }
 
-      final double differenceToMiddle = polylinesListMiddle - index;
+      final double differenceToMiddle = clampDouble(
+        polylinesListMiddle - index,
+        0,
+        10,
+      );
 
       final double indexShift =
           differenceToMiddle *

@@ -1,5 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:station_reach/core/constants.dart';
+import 'package:station_reach/features/map/domain/models/reachable_station.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:station_reach/features/map/domain/models/trip.dart';
 
@@ -17,7 +18,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
   @override
   Future<List<Station>> searchStations({required String query}) async {
     final Uri url = Uri.parse(
-      '${Constants.otpUrl}geocode/stopClusters?query=$query',
+      'https://api.transitous.org/api/v1/geocode?text=$query&type=STOP',
     );
 
     final Response response = await dio.getUri(url);
@@ -34,72 +35,31 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
 
   @override
   Future<List<Trip>> getStationReachability({required Station station}) async {
-    const String query = '''
-query (\$stopIds: [String!]!, \$start: Long!, \$range: Int!) {
-  stops(ids: \$stopIds) {
-    gtfsId
-    name
-    stoptimesForPatterns(
-      startTime: \$start
-      timeRange: \$range
-      numberOfDepartures: 1
-      omitNonPickups: false
-    ) {
-      pattern {
-        id
-        route {
-          shortName
-          mode
-          type
-          agency { id name }
-        }
-      }
-      stoptimes {
-        serviceDay
-        scheduledDeparture
-        scheduledArrival
-        headsign
-        trip {
-          gtfsId
-          stoptimes {
-            stop { gtfsId name lat lon }
-            scheduledArrival
-          }
-        }
-      }
-    }
-  }
-}
-''';
-
-    final Uri url = Uri.parse('${Constants.otpUrl}gtfs/v1');
-
-    final Map<String, dynamic> queryVariables = {
-      'stopIds': [station.id, ...station.childrenIds],
-      'start': 0,
-      'range': 86400,
-    };
-
-    final Response response = await dio.postUri(
-      url,
-      options: Options(
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ),
-      data: {'query': query, 'variables': queryVariables},
+    final Uri url = Uri.parse(
+      'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=1000&fetchStops=true',
     );
 
-    List stations = response.data['data']['stops'] as List;
-
-    stations.removeWhere((station) => station == null);
+    final Response response = await dio.getUri(url);
 
     final List<Trip> trips = [];
+    final listEquality = const DeepCollectionEquality().equals;
 
-    for (final Map station in stations) {
-      for (final Map stoptimesForPattern in station['stoptimesForPatterns']) {
-        trips.add(Trip.fromJson(stoptimesForPattern));
+    List<List<ReachableStation>> stopTimes = [];
+
+    for (final Map tripMap in response.data['stopTimes']) {
+      final Trip trip = Trip.fromJson(tripMap, station);
+
+      bool isDuplicate = false;
+      for (final List<ReachableStation> stopTime in stopTimes) {
+        if (listEquality(stopTime, trip.stops)) {
+          isDuplicate = true;
+          break;
+        }
+      }
+
+      if (!isDuplicate) {
+        stopTimes.add(trip.stops);
+        trips.add(trip);
       }
     }
 

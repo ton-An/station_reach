@@ -1,18 +1,27 @@
-class Station {
+import 'package:equatable/equatable.dart';
+
+class Station extends Equatable {
   factory Station.fromJson(Map json) {
+    String? area;
+
+    adminLevelLoop:
+    for (double adminLevel = 7; adminLevel >= 0; adminLevel--) {
+      for (final Map stationArea in json['areas']) {
+        if (stationArea['adminLevel'] == adminLevel) {
+          area = stationArea['name'];
+          break adminLevelLoop;
+        }
+      }
+    }
+
     return Station(
-      id: json['primary']?['id'] ?? json['id'] ?? json['gtfsId'],
-      name: json['description'] ?? json['name'] ?? json['primary']?['name'],
-      latitude:
-          json['lat'] ?? json['lat'] ?? json['primary']?['coordinate']['lat'],
-      longitude:
-          json['lon'] ?? json['lon'] ?? json['primary']?['coordinate']['lon'],
-      childrenIds:
-          json['secondaries']
-              ?.map((secondary) => secondary['id'])
-              .toList()
-              .cast<String>() ??
-          [],
+      id: json['id'],
+      name: json['name'],
+      latitude: json['lat'],
+      longitude: json['lon'],
+      countryCode: json['country'],
+      area: area,
+      childrenIds: [],
     );
   }
   Station({
@@ -20,6 +29,8 @@ class Station {
     required this.name,
     required this.latitude,
     required this.longitude,
+    this.countryCode,
+    this.area,
     required this.childrenIds,
   });
 
@@ -27,15 +38,18 @@ class Station {
   final String name;
   final double latitude;
   final double longitude;
+  final String? countryCode;
+  final String? area;
   final List<String> childrenIds;
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'latitude': latitude,
-      'longitude': longitude,
-      'childrenIds': childrenIds,
-    };
-  }
+  @override
+  List<Object?> get props => [
+    id,
+    name,
+    latitude,
+    longitude,
+    countryCode,
+    area,
+    childrenIds,
+  ];
 }
