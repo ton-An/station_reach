@@ -11,7 +11,7 @@ class _Map extends StatefulWidget {
 }
 
 class _MapState extends State<_Map> {
-  late MapController controller;
+  late MapController mapController;
   final List<Polyline> _tripsPolylines = [];
   final List<CircleMarker<ReachableStation>> _reachableStationsLayers = [];
 
@@ -22,6 +22,7 @@ class _MapState extends State<_Map> {
   @override
   void initState() {
     super.initState();
+    mapController = MapController();
     hitNotifier = ValueNotifier(null)
       ..addListener(() {
         final LayerHitResult<ReachableStation>? result = hitNotifier.value;
@@ -52,14 +53,17 @@ class _MapState extends State<_Map> {
 
   @override
   Widget build(BuildContext context) {
-    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
-
     return BlocListener<StationReachabilityCubit, StationReachabilityState>(
       listener: (context, state) {
         context.read<StationSelectionCubit>().unselectStation();
 
         if (state is StationReachabilityStateSuccess) {
           _generateStationMarkers(state.trips);
+          print(state.station.latitude);
+          mapController.move(
+            LatLng(state.station.latitude, state.station.longitude),
+            6,
+          );
         }
       },
       child: BlocConsumer<StationSelectionCubit, StationSelectionState>(
@@ -75,9 +79,11 @@ class _MapState extends State<_Map> {
           >(
             builder: (context, stationReachabilityState) {
               return FlutterMap(
+                mapController: mapController,
                 options: MapOptions(
-                  initialCenter: LatLng(47.68, 11.72),
-                  initialZoom: 7,
+                  initialCenter: LatLng(42.68, 10.127),
+                  initialZoom: 4,
+                  minZoom: 1.5,
                   onTap: (_, _) {
                     if (_hitStation != null) {
                       _onMarkerHit();

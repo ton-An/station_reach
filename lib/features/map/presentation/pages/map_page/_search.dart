@@ -146,6 +146,7 @@ class _Search extends StatelessWidget {
                                           context
                                               .read<StationSearchCubit>()
                                               .collapseSearch();
+
                                           FocusManager.instance.primaryFocus
                                               ?.unfocus();
                                         },
