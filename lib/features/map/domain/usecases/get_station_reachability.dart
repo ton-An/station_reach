@@ -43,7 +43,7 @@ class GetStationDepartures {
   }) async {
     final List<Departure> departureModels = [];
 
-    List<List<ReachableStation>> stopTimes = [];
+    List<List<Stop>> alreadyAddedStops = [];
 
     for (final Map<String, dynamic> departureMap in departureMaps) {
       final Departure departureModel = _convertToDepartureModel(
@@ -53,7 +53,7 @@ class GetStationDepartures {
 
       bool isDuplicate = false;
 
-      for (final List<ReachableStation> stopTime in stopTimes) {
+      for (final List<Stop> stopTime in alreadyAddedStops) {
         if (deepCollectionEquality.equals(stopTime, departureModel.stops)) {
           isDuplicate = true;
           break;
@@ -61,7 +61,7 @@ class GetStationDepartures {
       }
 
       if (!isDuplicate) {
-        stopTimes.add(departureModel.stops);
+        alreadyAddedStops.add(departureModel.stops);
         departureModels.add(departureModel);
       }
     }
@@ -88,10 +88,10 @@ class GetStationDepartures {
 
     final TransitMode mode = TransitMode.fromString(departureMap['mode']);
 
-    final List<ReachableStation> stops = [];
+    final List<Stop> stops = [];
 
     stops.add(
-      ReachableStation(
+      Stop(
         id: station.id,
         name: station.name,
         latitude: station.latitude,
@@ -119,7 +119,7 @@ class GetStationDepartures {
       final Duration duration = scheduledArrival.difference(departureTime);
 
       stops.add(
-        ReachableStation(
+        Stop(
           id: stopId,
           name: stopName,
           latitude: stopLatitude,

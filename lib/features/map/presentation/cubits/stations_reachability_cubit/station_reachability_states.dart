@@ -16,15 +16,15 @@ class StationReachabilityStateLoading extends StationReachabilityState {}
 
 class StationReachabilityStateSuccess extends StationReachabilityState {
   const StationReachabilityStateSuccess({
-    required this.trips,
+    required this.departures,
     required this.station,
   });
 
-  final List<Departure> trips;
+  final List<Departure> departures;
   final Station station;
 
   @override
-  List<Object?> get props => [trips, station];
+  List<Object?> get props => [departures, station];
 }
 
 class StationReachabilityStateFailure extends StationReachabilityState {

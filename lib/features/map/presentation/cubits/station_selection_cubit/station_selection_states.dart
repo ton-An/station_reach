@@ -10,11 +10,11 @@ abstract class StationSelectionState extends Equatable {
 class StationUnselectedState extends StationSelectionState {}
 
 class StationSelectedState extends StationSelectionState {
-  StationSelectedState({required this.station, required this.trips});
+  StationSelectedState({required this.selectedStop, required this.departures});
 
-  final ReachableStation station;
-  final List<Departure> trips;
+  final Stop selectedStop;
+  final List<Departure> departures;
 
   @override
-  List<Object?> get props => [trips];
+  List<Object?> get props => [selectedStop, departures];
 }

@@ -13,11 +13,11 @@ class _Map extends StatefulWidget {
 class _MapState extends State<_Map> {
   late MapController mapController;
   final List<Polyline> _tripsPolylines = [];
-  final List<CircleMarker<ReachableStation>> _reachableStationsLayers = [];
+  final List<CircleMarker<Stop>> _reachableStationsLayers = [];
 
-  late LayerHitNotifier<ReachableStation> hitNotifier;
+  late LayerHitNotifier<Stop> hitNotifier;
 
-  ReachableStation? _hitStation;
+  Stop? _hitStation;
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _MapState extends State<_Map> {
     mapController = MapController();
     hitNotifier = ValueNotifier(null)
       ..addListener(() {
-        final LayerHitResult<ReachableStation>? result = hitNotifier.value;
+        final LayerHitResult<Stop>? result = hitNotifier.value;
 
         if (result != null &&
             context.read<StationReachabilityCubit>().state
@@ -37,11 +37,11 @@ class _MapState extends State<_Map> {
 
   void _onMarkerHit() {
     context.read<StationSelectionCubit>().selectStation(
-      station: _hitStation!,
-      trips:
+      selectedStop: _hitStation!,
+      departures:
           (context.read<StationReachabilityCubit>().state
                   as StationReachabilityStateSuccess)
-              .trips,
+              .departures,
     );
   }
 
@@ -58,7 +58,7 @@ class _MapState extends State<_Map> {
         context.read<StationSelectionCubit>().unselectStation();
 
         if (state is StationReachabilityStateSuccess) {
-          _generateStationMarkers(state.trips);
+          _generateStationMarkers(state.departures);
           print(state.station.latitude);
           mapController.move(
             LatLng(state.station.latitude, state.station.longitude),
@@ -69,7 +69,7 @@ class _MapState extends State<_Map> {
       child: BlocConsumer<StationSelectionCubit, StationSelectionState>(
         listener: (context, stationSelectionState) {
           if (stationSelectionState is StationSelectedState) {
-            _generateTripsPolylines(stationSelectionState.trips);
+            _generateTripsPolylines(stationSelectionState.departures);
           }
         },
         builder: (context, stationSelectionState) {

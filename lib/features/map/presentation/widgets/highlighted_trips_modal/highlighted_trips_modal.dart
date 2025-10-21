@@ -81,7 +81,7 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
                 title: tripSelectionState is TripSelectionStateSelected
                     ? _selectedTrip?.name ?? ''
                     : stationSelectionState is StationSelectedState
-                    ? stationSelectionState.station.name
+                    ? stationSelectionState.selectedStop.name
                     : 'Trips',
                 displayBackButton:
                     tripSelectionState is TripSelectionStateSelected,

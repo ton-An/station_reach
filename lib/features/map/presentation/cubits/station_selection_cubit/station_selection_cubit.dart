@@ -7,20 +7,25 @@ class StationSelectionCubit extends Cubit<StationSelectionState> {
   StationSelectionCubit() : super(StationUnselectedState());
 
   void selectStation({
-    required ReachableStation station,
-    required List<Departure> trips,
+    required Stop selectedStop,
+    required List<Departure> departures,
   }) {
-    final List<Departure> highlightedTrips = [];
+    final List<Departure> highlightedDepartures = [];
 
-    for (final Departure trip in trips) {
-      for (final stop in trip.stops) {
-        if (stop.id == station.id) {
-          highlightedTrips.add(trip);
+    for (final Departure departure in departures) {
+      for (final stop in departure.stops) {
+        if (stop.id == selectedStop.id) {
+          highlightedDepartures.add(departure);
         }
       }
     }
 
-    emit(StationSelectedState(station: station, trips: highlightedTrips));
+    emit(
+      StationSelectedState(
+        selectedStop: selectedStop,
+        departures: highlightedDepartures,
+      ),
+    );
   }
 
   void unselectStation() {

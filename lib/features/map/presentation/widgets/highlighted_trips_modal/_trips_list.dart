@@ -14,22 +14,22 @@ class _TripsList extends StatelessWidget {
         if (state is StationSelectedState) {
           return ListView.builder(
             controller: scrollController,
-            itemCount: state.trips.length,
+            itemCount: state.departures.length,
             padding: EdgeInsets.all(theme.spacing.medium),
             itemBuilder: (context, index) => _TripPageLink(
-              tripName: state.trips[index].name,
-              mode: state.trips[index].mode,
-              duration: state.trips[index].stops.last.duration,
+              tripName: state.departures[index].name,
+              mode: state.departures[index].mode,
+              duration: state.departures[index].stops.last.duration,
               iconBackgroundColor: ColorHelper.interpolateColors(
                 WebfabrikTheme.of(context).colors.secondaryGradient,
-                index / max(state.trips.length - 1, 1),
+                index / max(state.departures.length - 1, 1),
               ),
               onPressed: () {
                 context.read<TripSelectionCubit>().selectTrip(
-                  state.trips[index],
+                  state.departures[index],
                 );
               },
-              showDivider: index != state.trips.length - 1,
+              showDivider: index != state.departures.length - 1,
             ),
           );
         }
