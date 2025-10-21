@@ -47,11 +47,12 @@ class Trip {
     final TransitMode mode = TransitMode.fromString(json['mode']);
     return Trip(
       id: json['tripId'],
-      name: json['routeShortName'] != null
-          ? json['routeShortName']
-          : json['tripShortName'] != ''
-          ? json['tripShortName']
-          : json['routeLongName'],
+      name:
+          json['displayName'] ??
+          (json['routeShortName'] ??
+              (json['tripShortName'] != ''
+                  ? json['tripShortName']
+                  : json['routeLongName'])),
       mode: mode,
       stops: computedStops,
     );
