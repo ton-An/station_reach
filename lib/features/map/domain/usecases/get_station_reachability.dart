@@ -1,9 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
-import 'package:station_reach/features/map/domain/models/reachable_station.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
+import 'package:station_reach/features/map/domain/models/stop.dart';
 import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -25,118 +24,41 @@ class GetStationDepartures {
   Future<Either<Failure, List<Departure>>> _getStationDepartures({
     required Station station,
   }) async {
-    final Either<Failure, List> departureMapsEither = await mapRepository
-        .getStationDepartures(station: station);
+    final Either<Failure, List<Departure>> departuresEither =
+        await mapRepository.getStationDepartures(station: station);
 
-    return departureMapsEither.fold(
-      (failure) => Left(failure),
-      (departureMaps) => _convertToDepartureModels(
-        station: station,
-        departureMaps: departureMaps,
-      ),
+    return departuresEither.fold(
+      (Failure failure) => Left(failure),
+      (List<Departure> departures) =>
+          _filterDuplicateDepartures(station: station, departures: departures),
     );
   }
 
-  Future<Either<Failure, List<Departure>>> _convertToDepartureModels({
+  Future<Either<Failure, List<Departure>>> _filterDuplicateDepartures({
     required Station station,
-    required List departureMaps,
+    required List<Departure> departures,
   }) async {
-    final List<Departure> departureModels = [];
+    final List<Departure> filteredDepartures = [];
 
-    List<List<Stop>> alreadyAddedStops = [];
+    List<List<Stop>> alreadyFilteredStops = [];
 
-    for (final Map departureMap in departureMaps) {
-      final Departure departureModel = _convertToDepartureModel(
-        station: station,
-        departureMap: departureMap,
-      );
-
+    for (final Departure departure in departures) {
       bool isDuplicate = false;
 
-      for (final List<Stop> stopTime in alreadyAddedStops) {
-        if (deepCollectionEquality.equals(stopTime, departureModel.stops)) {
+      for (final List<Stop> stopTime in alreadyFilteredStops) {
+        if (deepCollectionEquality.equals(stopTime, departure.stops)) {
           isDuplicate = true;
           break;
         }
       }
 
       if (!isDuplicate) {
-        alreadyAddedStops.add(departureModel.stops);
-        departureModels.add(departureModel);
+        alreadyFilteredStops.add(departure.stops);
+        filteredDepartures.add(departure);
       }
     }
 
-    return _sortDepartures(departures: departureModels);
-  }
-
-  Departure _convertToDepartureModel({
-    required Station station,
-    required Map departureMap,
-  }) {
-    final String id = departureMap['tripId'];
-    late final String name;
-
-    if (departureMap['displayName'] != null) {
-      name = departureMap['displayName'];
-    } else if (departureMap['routeShortName'] != null) {
-      name = departureMap['routeShortName'];
-    } else if (departureMap['tripShortName'] != null) {
-      name = departureMap['tripShortName'];
-    } else {
-      name = departureMap['routeLongName'];
-    }
-
-    final TransitMode mode = TransitMode.fromString(departureMap['mode']);
-
-    final List<Stop> stops = [];
-
-    stops.add(
-      Stop(
-        id: station.id,
-        name: station.name,
-        latitude: station.latitude,
-        longitude: station.longitude,
-        duration: Duration.zero,
-      ),
-    );
-
-    final DateTime departureTime = DateTime.parse(
-      departureMap['place']['scheduledDeparture'],
-    );
-
-    final List<Map<String, dynamic>> stopMaps = departureMap['nextStops'];
-
-    for (final Map<String, dynamic> stopMap in stopMaps) {
-      final String stopId = stopMap['stopId'];
-      final String stopName = stopMap['name'];
-      final double stopLatitude = stopMap['lat'];
-      final double stopLongitude = stopMap['lon'];
-
-      final DateTime scheduledArrival = DateTime.parse(
-        stopMap['scheduledArrival'],
-      );
-
-      final Duration duration = scheduledArrival.difference(departureTime);
-
-      stops.add(
-        Stop(
-          id: stopId,
-          name: stopName,
-          latitude: stopLatitude,
-          longitude: stopLongitude,
-          duration: duration,
-        ),
-      );
-    }
-
-    final Departure departure = Departure(
-      id: id,
-      name: name,
-      mode: mode,
-      stops: stops,
-    );
-
-    return departure;
+    return _sortDepartures(departures: filteredDepartures);
   }
 
   Future<Either<Failure, List<Departure>>> _sortDepartures({

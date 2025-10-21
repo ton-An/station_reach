@@ -13,7 +13,7 @@ import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:station_reach/core/widgets/fade_gesture_detector.dart';
 import 'package:station_reach/core/widgets/icon_button.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
-import 'package:station_reach/features/map/domain/models/reachable_station.dart';
+import 'package:station_reach/features/map/domain/models/stop.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';

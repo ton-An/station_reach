@@ -1,7 +1,7 @@
 import 'package:station_reach/features/map/domain/models/station.dart';
 
 class Stop extends Station {
-  Stop({
+  const Stop({
     required super.id,
     required super.name,
     required super.latitude,

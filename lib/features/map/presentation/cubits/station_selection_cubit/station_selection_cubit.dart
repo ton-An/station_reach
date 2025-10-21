@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
-import 'package:station_reach/features/map/domain/models/reachable_station.dart';
+import 'package:station_reach/features/map/domain/models/stop.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
 
 class StationSelectionCubit extends Cubit<StationSelectionState> {

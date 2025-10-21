@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:station_reach/core/data/repository/failure_handler.dart';
 import 'package:station_reach/features/map/data/datasources/map_remote_data_source.dart';
+import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -16,13 +17,15 @@ class MapRepositoryImpl extends MapRepository {
   final FailureHandler failureHandler;
 
   @override
-  Future<Either<Failure, List>> searchStations({required String query}) async {
+  Future<Either<Failure, List<Station>>> searchStations({
+    required String query,
+  }) async {
     try {
-      final List stationMaps = await mapRemoteDataSource.searchStations(
+      final List<Station> stations = await mapRemoteDataSource.searchStations(
         query: query,
       );
 
-      return Right(stationMaps);
+      return Right(stations);
     } on DioException catch (dioException) {
       final Failure failure = failureHandler.dioExceptionMapper(
         dioException: dioException,
@@ -33,15 +36,14 @@ class MapRepositoryImpl extends MapRepository {
   }
 
   @override
-  Future<Either<Failure, List>> getStationDepartures({
+  Future<Either<Failure, List<Departure>>> getStationDepartures({
     required Station station,
   }) async {
     try {
-      final List departureMaps = await mapRemoteDataSource.getStationDepartures(
-        station: station,
-      );
+      final List<Departure> departures = await mapRemoteDataSource
+          .getStationDepartures(station: station);
 
-      return Right(departureMaps);
+      return Right(departures);
     } on DioException catch (dioException) {
       final Failure failure = failureHandler.dioExceptionMapper(
         dioException: dioException,

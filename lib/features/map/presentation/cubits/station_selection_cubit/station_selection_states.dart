@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
-import 'package:station_reach/features/map/domain/models/reachable_station.dart';
+import 'package:station_reach/features/map/domain/models/stop.dart';
 
 abstract class StationSelectionState extends Equatable {
   @override
