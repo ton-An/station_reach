@@ -18,7 +18,10 @@ class _DeparturesList extends StatelessWidget {
             padding: EdgeInsets.all(theme.spacing.medium),
             itemBuilder: (context, index) => _DepartureListItem(
               departure: state.departures[index],
-              duration: state.departures[index].stops.last.duration,
+              duration: state.departures[index].stops
+                  .where((stop) => stop.id == state.selectedStop.id)
+                  .first
+                  .duration,
               iconBackgroundColor: ColorHelper.interpolateColors(
                 WebfabrikTheme.of(context).colors.secondaryGradient,
                 index / max(state.departures.length - 1, 1),
@@ -39,7 +42,7 @@ class _DeparturesList extends StatelessWidget {
           children: [
             Text(
               textAlign: TextAlign.center,
-              AppLocalizations.of(context)!.noStationSelected,
+              AppLocalizations.of(context)!.noStopSelected,
               style: theme.text.body.copyWith(color: theme.colors.hint),
             ),
           ],
