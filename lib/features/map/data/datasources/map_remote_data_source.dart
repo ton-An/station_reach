@@ -43,8 +43,8 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     final String name = stationMap['name'];
     final double latitude = stationMap['lat'];
     final double longitude = stationMap['lon'];
+    final String? countryCode = stationMap['country'];
     String? area;
-    String? countryCode;
 
     adminLevelLoop:
     for (double adminLevel = 7; adminLevel >= 0; adminLevel--) {
