@@ -19,7 +19,7 @@ import 'package:station_reach/features/map/presentation/cubits/station_selection
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_states.dart';
-import 'package:station_reach/features/map/presentation/widgets/highlighted_trips_modal/highlighted_trips_modal.dart';
+import 'package:station_reach/features/map/presentation/widgets/highlighted_departures_modal/highlighted_departures_modal.dart';
 import 'package:station_reach/features/map/presentation/widgets/multi_polyline_layer/multi_polyline_layer.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -64,7 +64,7 @@ class MapPage extends StatelessWidget {
                 child: Column(
                   children: [
                     _Search(),
-                    Expanded(child: HighlightedTripsModal()),
+                    Expanded(child: HighlightedDeparturesModal()),
                   ],
                 ),
               ),

@@ -1,7 +1,7 @@
-part of 'highlighted_trips_modal.dart';
+part of 'highlighted_departures_modal.dart';
 
-class _TripsList extends StatelessWidget {
-  const _TripsList({required this.scrollController});
+class _DeparturesList extends StatelessWidget {
+  const _DeparturesList({required this.scrollController});
 
   final ScrollController scrollController;
 
@@ -16,16 +16,15 @@ class _TripsList extends StatelessWidget {
             controller: scrollController,
             itemCount: state.departures.length,
             padding: EdgeInsets.all(theme.spacing.medium),
-            itemBuilder: (context, index) => _TripPageLink(
-              tripName: state.departures[index].name,
-              mode: state.departures[index].mode,
+            itemBuilder: (context, index) => _DepartureListItem(
+              departure: state.departures[index],
               duration: state.departures[index].stops.last.duration,
               iconBackgroundColor: ColorHelper.interpolateColors(
                 WebfabrikTheme.of(context).colors.secondaryGradient,
                 index / max(state.departures.length - 1, 1),
               ),
               onPressed: () {
-                context.read<TripSelectionCubit>().selectTrip(
+                context.read<DepartureSelectionCubit>().selectDeparture(
                   state.departures[index],
                 );
               },

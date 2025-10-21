@@ -40,4 +40,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noStationSelected => 'No station selected';
+
+  @override
+  String get departures => 'Departures';
 }

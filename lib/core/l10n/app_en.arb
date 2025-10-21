@@ -9,5 +9,6 @@
     "transitousAttribution": "Data processed by Transitous",
     "thirtyMin": "30min",
     "fourteenHoursPlus": "14h+",
-    "noStationSelected": "No station selected"
+    "noStationSelected": "No station selected",
+    "departures": "Departures"
 }

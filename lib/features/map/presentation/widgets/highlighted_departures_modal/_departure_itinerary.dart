@@ -1,12 +1,12 @@
-part of 'highlighted_trips_modal.dart';
+part of 'highlighted_departures_modal.dart';
 
-class _SingleTripItinerary extends StatelessWidget {
-  const _SingleTripItinerary({
-    required this.trip,
+class _DeparturesItinerary extends StatelessWidget {
+  const _DeparturesItinerary({
+    required Departure? departure,
     required this.scrollController,
-  });
+  }) : _selectedDeparture = departure;
 
-  final Departure? trip;
+  final Departure? _selectedDeparture;
   final ScrollController scrollController;
 
   @override
@@ -15,22 +15,22 @@ class _SingleTripItinerary extends StatelessWidget {
 
     return ListView.builder(
       controller: scrollController,
-      itemCount: trip!.stops.length,
+      itemCount: _selectedDeparture!.stops.length,
       padding: EdgeInsets.all(theme.spacing.medium),
       itemBuilder: (context, index) {
         return Column(
           children: [
             WebfabrikListItem(
-              title: trip!.stops[index].name,
+              title: _selectedDeparture!.stops[index].name,
               subtitle: TimeDateFormatter.formatDuration(
-                trip!.stops[index].duration,
+                _selectedDeparture!.stops[index].duration,
               ),
               icon: WebfabrikListIcon(
                 iconData: WebfabrikIconData(
                   icon: Icons.location_on,
                   color: ColorHelper.interpolateColors(
                     theme.colors.timelineGradient,
-                    (trip!.stops[index].duration.inMinutes ~/ 30)
+                    (_selectedDeparture!.stops[index].duration.inMinutes ~/ 30)
                             .clamp(0, 28)
                             .toDouble() /
                         28,
@@ -38,14 +38,14 @@ class _SingleTripItinerary extends StatelessWidget {
                 ),
               ),
             ),
-            if (index != trip!.stops.length - 1)
+            if (index != _selectedDeparture!.stops.length - 1)
               Row(
                 children: [
                   SizedBox(width: theme.spacing.xMedium - theme.spacing.tiny),
                   const DottedTimeline(),
                   const MediumGap(),
                   Text(
-                    '+ ${TimeDateFormatter.formatDuration(trip!.stops[index + 1].duration - trip!.stops[index].duration)}',
+                    '+ ${TimeDateFormatter.formatDuration(_selectedDeparture!.stops[index + 1].duration - _selectedDeparture!.stops[index].duration)}',
                     style: theme.text.body.copyWith(color: theme.colors.hint),
                   ),
                 ],

@@ -159,6 +159,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No station selected'**
   String get noStationSelected;
+
+  /// No description provided for @departures.
+  ///
+  /// In en, this message translates to:
+  /// **'Departures'**
+  String get departures;
 }
 
 class _AppLocalizationsDelegate

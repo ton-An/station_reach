@@ -1,21 +1,19 @@
-part of 'highlighted_trips_modal.dart';
+part of 'highlighted_departures_modal.dart';
 
-class _TripPageLink extends StatelessWidget {
-  const _TripPageLink({
-    required this.tripName,
-    required this.mode,
+class _DepartureListItem extends StatelessWidget {
+  const _DepartureListItem({
+    required this.departure,
     required this.onPressed,
-    this.showDivider = true,
     required this.iconBackgroundColor,
     required this.duration,
+    this.showDivider = true,
   });
 
-  final String tripName;
-  final TransitMode mode;
+  final Departure departure;
   final VoidCallback onPressed;
-  final bool showDivider;
   final Color iconBackgroundColor;
   final Duration duration;
+  final bool showDivider;
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +32,18 @@ class _TripPageLink extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _TransitModeIcon(
-                    mode: mode,
+                    mode: departure.mode,
                     backgroundColor: iconBackgroundColor.withValues(alpha: .40),
                   ),
+
                   const XXSmallGap(),
-                  Text(tripName, style: theme.text.body.copyWith()),
+
+                  Text(departure.name, style: theme.text.body.copyWith()),
 
                   const XSmallGap(),
                   const Dot(),
                   const XSmallGap(),
+
                   Expanded(
                     child: Text(
                       TimeDateFormatter.formatDuration(duration),
@@ -54,6 +55,7 @@ class _TripPageLink extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   SmallIconButton(
                     icon: CupertinoIcons.forward,
                     onPressed: onPressed,
@@ -64,6 +66,7 @@ class _TripPageLink extends StatelessWidget {
               ),
             ),
           ),
+
           if (showDivider)
             Container(
               height: 1,

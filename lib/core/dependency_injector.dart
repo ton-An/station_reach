@@ -7,10 +7,10 @@ import 'package:station_reach/features/map/data/repository_implementations/map_r
 import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
 import 'package:station_reach/features/map/domain/usecases/get_station_reachability.dart';
 import 'package:station_reach/features/map/domain/usecases/search_stations.dart';
+import 'package:station_reach/features/map/presentation/cubits/departure_selection_cubit/departure_selection_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
-import 'package:station_reach/features/map/presentation/cubits/trip_selection_cubit/trip_selection_cubit.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -28,7 +28,7 @@ void initGetIt() {
     () => StationReachabilityCubit(getStationDepartures: getIt()),
   );
   getIt.registerFactory(() => StationSelectionCubit());
-  getIt.registerFactory(() => TripSelectionCubit());
+  getIt.registerFactory(() => DepartureSelectionCubit());
 
   // -- Domain -- //
   getIt.registerFactory(() => SearchStations(mapRepository: getIt()));

@@ -3,7 +3,7 @@
     - [ ] Maybe add interactivity to the legend? (e.g. highlight stops with certain durations)
 */
 
-part of 'highlighted_trips_modal.dart';
+part of 'highlighted_departures_modal.dart';
 
 class _TimeGradientLegend extends StatelessWidget {
   const _TimeGradientLegend();
