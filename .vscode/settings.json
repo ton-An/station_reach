@@ -1,8 +1,19 @@
 {
-    "cSpell.words": [
-        "gtfs",
-        "headsign",
-        "stoptimes",
-        "wght"
-    ]
+  "cSpell.words": [
+    "aabb",
+    "Dropoff",
+    "epsg",
+    "gtfs",
+    "headsign",
+    "highspeed",
+    "HIGHSPEED",
+    "Hitbox",
+    "maptiler",
+    "MAPTILER",
+    "monomorphize",
+    "stationreach",
+    "stoptimes",
+    "transitous",
+    "wght"
+  ]
 }

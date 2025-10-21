@@ -30,11 +30,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataSourcesAttribution => 'Data Sources';
 
   @override
-  String get transitousAttribution => 'Processed by Transitous';
+  String get transitousAttribution => 'Data processed by Transitous';
 
   @override
   String get thirtyMin => '30min';
 
   @override
   String get fourteenHoursPlus => '14h+';
+
+  @override
+  String get noStopSelected => 'No stop selected';
+
+  @override
+  String get departures => 'Departures';
 }

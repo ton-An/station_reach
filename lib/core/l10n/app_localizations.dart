@@ -139,7 +139,7 @@ abstract class AppLocalizations {
   /// No description provided for @transitousAttribution.
   ///
   /// In en, this message translates to:
-  /// **'Processed by Transitous'**
+  /// **'Data processed by Transitous'**
   String get transitousAttribution;
 
   /// No description provided for @thirtyMin.
@@ -153,6 +153,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'14h+'**
   String get fourteenHoursPlus;
+
+  /// No description provided for @noStopSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'No stop selected'**
+  String get noStopSelected;
+
+  /// No description provided for @departures.
+  ///
+  /// In en, this message translates to:
+  /// **'Departures'**
+  String get departures;
 }
 
 class _AppLocalizationsDelegate

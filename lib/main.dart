@@ -5,10 +5,17 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:station_reach/core/dependency_injector.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
-import 'package:station_reach/cubits/station_search_cubit/station_search_cubit.dart';
-import 'package:station_reach/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
-import 'package:station_reach/pages/map_page/map_page.dart';
+import 'package:station_reach/features/map/presentation/cubits/departure_selection_cubit/departure_selection_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_cubit.dart';
+import 'package:station_reach/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
+
+/*
+  To-Do:
+    - [ ] Add docs
+*/
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,23 +47,22 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return WebfabrikTheme(
-      data: WebfabrikThemeData(
+      data: const WebfabrikThemeData(
         colors: WebfabrikColorThemeData(
-          primary: const Color.fromARGB(255, 83, 196, 108),
-          primaryTranslucent: const Color.fromARGB(60, 83, 196, 108),
-          accent: const Color.fromARGB(255, 7, 114, 255),
-          translucentBackground: const Color(0xFFFFFFFF).withValues(alpha: .95),
+          primary: Color.fromARGB(255, 83, 196, 108),
+          primaryTranslucent: Color.fromARGB(60, 83, 196, 108),
+          accent: Color.fromARGB(255, 7, 114, 255),
+          // translucentBackground: const Color(0xFFFFFFFF).withValues(alpha: .95),
           timelineGradient: [
-            const Color.fromARGB(255, 0, 150, 136),
-            const Color.fromARGB(255, 76, 175, 80),
-            const Color.fromARGB(255, 255, 245, 59),
-            const Color.fromARGB(255, 255, 229, 59),
-            const Color.fromARGB(255, 255, 152, 0),
-            const Color.fromARGB(255, 244, 67, 54),
-            const Color.fromARGB(255, 156, 39, 176),
+            Color.fromARGB(255, 0, 150, 136),
+            Color.fromARGB(255, 76, 175, 80),
+            Color.fromARGB(255, 255, 245, 59),
+            Color.fromARGB(255, 255, 229, 59),
+            Color.fromARGB(255, 255, 152, 0),
+            Color.fromARGB(255, 244, 67, 54),
           ],
         ),
-        text: const WebfabrikTextThemeData(
+        text: WebfabrikTextThemeData(
           largeTitle: TextStyle(
             fontFamily: 'Inter',
             fontSize: 34,
@@ -64,7 +70,6 @@ class _MainAppState extends State<MainApp> {
             height: 41 / 34,
             color: CupertinoColors.label,
           ),
-
           title1: TextStyle(
             fontFamily: 'Inter',
             fontSize: 28,
@@ -72,7 +77,6 @@ class _MainAppState extends State<MainApp> {
             height: 34 / 28,
             color: CupertinoColors.label,
           ),
-
           title2: TextStyle(
             fontFamily: 'Inter',
             fontSize: 22,
@@ -80,7 +84,6 @@ class _MainAppState extends State<MainApp> {
             height: 28 / 22,
             color: CupertinoColors.label,
           ),
-
           title3: TextStyle(
             fontFamily: 'Inter',
             fontSize: 20,
@@ -88,7 +91,6 @@ class _MainAppState extends State<MainApp> {
             height: 25 / 20,
             color: CupertinoColors.label,
           ),
-
           headline: TextStyle(
             fontFamily: 'Inter',
             fontSize: 17,
@@ -96,7 +98,6 @@ class _MainAppState extends State<MainApp> {
             height: 22 / 17,
             color: CupertinoColors.label,
           ),
-
           body: TextStyle(
             fontFamily: 'Inter',
             fontSize: 18,
@@ -104,7 +105,6 @@ class _MainAppState extends State<MainApp> {
             height: 22 / 17,
             color: CupertinoColors.label,
           ),
-
           callout: TextStyle(
             fontFamily: 'Inter',
             fontSize: 16,
@@ -112,7 +112,6 @@ class _MainAppState extends State<MainApp> {
             height: 21 / 16,
             color: CupertinoColors.label,
           ),
-
           subhead: TextStyle(
             fontFamily: 'Inter',
             fontSize: 15,
@@ -120,7 +119,6 @@ class _MainAppState extends State<MainApp> {
             height: 20 / 15,
             color: CupertinoColors.label,
           ),
-
           footnote: TextStyle(
             fontFamily: 'Inter',
             fontSize: 13.0,
@@ -128,7 +126,6 @@ class _MainAppState extends State<MainApp> {
             height: 18 / 13,
             color: CupertinoColors.label,
           ),
-
           caption1: TextStyle(
             fontFamily: 'Inter',
             fontSize: 12,
@@ -136,7 +133,6 @@ class _MainAppState extends State<MainApp> {
             height: 16 / 12,
             color: CupertinoColors.label,
           ),
-
           caption2: TextStyle(
             fontFamily: 'Inter',
             fontSize: 11,
@@ -148,6 +144,7 @@ class _MainAppState extends State<MainApp> {
       ),
       child: MultiBlocProvider(
         providers: [BlocProvider(create: (context) => inAppNotificationCubit)],
+
         child: CupertinoApp.router(
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appName,
@@ -157,6 +154,7 @@ class _MainAppState extends State<MainApp> {
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
+            WebfabrikLocalizations.delegate,
           ],
           supportedLocales: const [
             Locale('en'), // English
@@ -193,7 +191,13 @@ class _MainAppState extends State<MainApp> {
                         create: (context) => getIt<StationSearchCubit>(),
                       ),
                       BlocProvider(
-                        create: (context) => getIt<StationReachabilityCubit>(),
+                        create: (context) => getIt<StationDeparturesCubit>(),
+                      ),
+                      BlocProvider(
+                        create: (context) => getIt<StationSelectionCubit>(),
+                      ),
+                      BlocProvider(
+                        create: (context) => getIt<DepartureSelectionCubit>(),
                       ),
                     ],
                     child: const MapPage(),
