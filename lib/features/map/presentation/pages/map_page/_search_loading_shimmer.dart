@@ -21,7 +21,7 @@ class _LoadingShimmer extends StatelessWidget {
                       colorOpacity: .5,
                       duration: theme.durations.xHuge,
                       child: Container(
-                        height: 80,
+                        height: 8,
                         width: double.infinity,
                         decoration: BoxDecoration(
                           color: theme.colors.primaryTranslucent,
