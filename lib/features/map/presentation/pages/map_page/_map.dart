@@ -59,7 +59,6 @@ class _MapState extends State<_Map> {
 
         if (state is StationReachabilityStateSuccess) {
           _generateStationMarkers(state.departures);
-          print(state.station.latitude);
           mapController.move(
             LatLng(state.station.latitude, state.station.longitude),
             6,
@@ -81,7 +80,7 @@ class _MapState extends State<_Map> {
               return FlutterMap(
                 mapController: mapController,
                 options: MapOptions(
-                  initialCenter: LatLng(42.68, 10.127),
+                  initialCenter: const LatLng(42.68, 10.127),
                   initialZoom: 4,
                   minZoom: 1.5,
                   onTap: (_, _) {
@@ -98,9 +97,9 @@ class _MapState extends State<_Map> {
                 children: [
                   TileLayer(
                     urlTemplate:
-                        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                     subdomains: const ['a', 'b', 'c'],
-                    userAgentPackageName: 'com.stationreach.app',
+                    userAgentPackageName: 'eu.antons-webfabrik.station-reach',
                   ),
 
                   TranslucentPointer(
@@ -207,25 +206,5 @@ class _MapState extends State<_Map> {
         ),
       );
     }
-  }
-
-  void _onEvent(
-    MapEvent event,
-    StationReachabilityState stationReachabilityState,
-  ) {
-    // if (event is MapEventClick &&
-    //     stationReachabilityState is StationReachabilityStateSuccess) {
-    //   final Position clickedPoint = event.point;
-
-    //   final double metersPerPixel = controller.getMetersPerPixelAtLatitudeSync(
-    //     clickedPoint.lat.toDouble(),
-    //   );
-
-    //   context.read<StationSelectionCubit>().selectStation(
-    //     clickedPoint: clickedPoint,
-    //     metersPerPixel: metersPerPixel,
-    //     trips: stationReachabilityState.trips,
-    //   );
-    // }
   }
 }

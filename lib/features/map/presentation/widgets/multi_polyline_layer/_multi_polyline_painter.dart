@@ -1,19 +1,11 @@
+// ignore_for_file: invalid_use_of_internal_member
+
 part of 'multi_polyline_layer.dart';
 
 /// The [CustomPainter] used to draw [Polyline]s for the [MultiPolylineLayer].
-// TODO: We should consider exposing this publicly, as with [CirclePainter] -
 // but the projected objects are private at the moment.
 class _PolylinePainter<R extends Object> extends CustomPainter
     with HitDetectablePainter<R, _ProjectedPolyline<R>>, FeatureLayerUtils {
-  final List<_ProjectedPolyline<R>> polylines;
-  final double minimumHitbox;
-
-  @override
-  final MapCamera camera;
-
-  @override
-  final LayerHitNotifier<R>? hitNotifier;
-
   /// Create a new [_PolylinePainter] instance
   _PolylinePainter({
     required this.polylines,
@@ -23,6 +15,14 @@ class _PolylinePainter<R extends Object> extends CustomPainter
   }) {
     _helper = OffsetHelper(camera: camera);
   }
+  final List<_ProjectedPolyline<R>> polylines;
+  final double minimumHitbox;
+
+  @override
+  final MapCamera camera;
+
+  @override
+  final LayerHitNotifier<R>? hitNotifier;
 
   late final OffsetHelper _helper;
 
@@ -34,7 +34,6 @@ class _PolylinePainter<R extends Object> extends CustomPainter
   }) {
     final polyline = projectedPolyline.polyline;
 
-    // TODO: We should check the bounding box here, for efficiency
     // However, we need to account for:
     //  * map rotation
     //  * extended bbox that accounts for `minimumHitbox`

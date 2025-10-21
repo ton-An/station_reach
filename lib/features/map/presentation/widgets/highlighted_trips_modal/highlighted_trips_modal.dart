@@ -46,8 +46,6 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
 
   @override
   Widget build(BuildContext context) {
-    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
-
     return BlocConsumer<TripSelectionCubit, TripSelectionState>(
       listener: (context, tripSelectionState) {
         if (tripSelectionState is TripSelectionStateSelected) {
@@ -94,7 +92,7 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
                   children: [
                     const _TimeGradientLegend(),
                     AttributionLegend(
-                      additionalWidgets: [
+                      additionalWidgets: const [
                         OSSInfo(
                           repositoryUrl:
                               'https://github.com/ton-An/station_reach',

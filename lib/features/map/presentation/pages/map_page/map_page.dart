@@ -11,7 +11,6 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:station_reach/core/helpers/color_helper.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:station_reach/core/widgets/fade_gesture_detector.dart';
-import 'package:station_reach/core/widgets/icon_button.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/stop.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_cubit.dart';
@@ -24,10 +23,7 @@ import 'package:station_reach/features/map/presentation/widgets/highlighted_trip
 import 'package:station_reach/features/map/presentation/widgets/multi_polyline_layer/multi_polyline_layer.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-part '_controls.dart';
-part '_legends.dart';
 part '_map.dart';
-// part '_scale_bar.dart';
 part '_search.dart';
 
 class MapPage extends StatelessWidget {

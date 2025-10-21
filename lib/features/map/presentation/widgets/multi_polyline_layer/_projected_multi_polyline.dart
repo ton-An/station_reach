@@ -1,13 +1,8 @@
 part of 'multi_polyline_layer.dart';
 
 @immutable
+// ignore: invalid_use_of_internal_member
 class _ProjectedPolyline<R extends Object> with HitDetectableElement<R> {
-  final Polyline<R> polyline;
-  final List<Offset> points;
-
-  @override
-  R? get hitValue => polyline.hitValue;
-
   const _ProjectedPolyline._({required this.polyline, required this.points});
 
   _ProjectedPolyline._fromPolyline(
@@ -21,4 +16,9 @@ class _ProjectedPolyline<R extends Object> with HitDetectableElement<R> {
           projectToSingleWorld: drawInSingleWorld,
         ),
       );
+  final Polyline<R> polyline;
+  final List<Offset> points;
+
+  @override
+  R? get hitValue => polyline.hitValue;
 }

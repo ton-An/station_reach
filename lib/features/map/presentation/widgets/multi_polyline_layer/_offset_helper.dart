@@ -18,7 +18,6 @@ class OffsetHelper {
     return Offset(x - _origin.dx + shift, y - _origin.dy);
   }
 
-  // TODO not sure if still relevant
   /// Calculate the [Offset]s for the list of [LatLng] points.
   List<Offset> getOffsets(List<LatLng> points) {
     // Critically create as little garbage as possible. This is called on every frame.
@@ -103,6 +102,7 @@ class OffsetHelper {
 
     // Optimization: monomorphize the CrsWithStaticTransformation-case to avoid
     // the virtual function overhead.
+    // ignore: invalid_use_of_internal_member
     if (crs case final CrsWithStaticTransformation crs) {
       final v = List<Offset>.filled(len, Offset.zero, growable: true);
       for (int i = 0; i < len; ++i) {

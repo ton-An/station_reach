@@ -1,3 +1,5 @@
+// ignore_for_file: implementation_imports
+
 import 'dart:core';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
@@ -23,6 +25,17 @@ part '_projected_multi_polyline.dart';
 @immutable
 base class MultiPolylineLayer<R extends Object>
     extends ProjectionSimplificationManagementSupportedWidget {
+  /// Create a new [MultiPolylineLayer] to use as child inside [FlutterMap.children].
+  const MultiPolylineLayer({
+    super.key,
+    required this.polylines,
+    this.cullingMargin = 10,
+    this.hitNotifier,
+    this.minimumHitbox = 10,
+    this.drawInSingleWorld = false,
+    super.simplificationTolerance,
+  }) : super();
+
   /// [Polyline]s to draw
   final List<Polyline<R>> polylines;
 
@@ -58,17 +71,6 @@ base class MultiPolylineLayer<R extends Object>
   ///
   /// Defaults to `false`.
   final bool drawInSingleWorld;
-
-  /// Create a new [MultiPolylineLayer] to use as child inside [FlutterMap.children].
-  const MultiPolylineLayer({
-    super.key,
-    required this.polylines,
-    this.cullingMargin = 10,
-    this.hitNotifier,
-    this.minimumHitbox = 10,
-    this.drawInSingleWorld = false,
-    super.simplificationTolerance,
-  }) : super();
 
   @override
   State<MultiPolylineLayer<R>> createState() => _PolylineLayerState<R>();
@@ -219,14 +221,12 @@ class _PolylineLayerState<R extends Object> extends State<MultiPolylineLayer<R>>
         return false;
       }
 
-      // TODO: think about how to cull polylines that go beyond -180/180.
       // As the notions of projected west/east as min/max are not reliable.
       if (stretchesBeyondTheLimits()) {
         yield projectedPolyline;
         continue;
       }
 
-      // TODO: think about how to cull when the camera bounds go beyond -180/180.
       if (!areLongitudeBoundsReliable()) {
         yield projectedPolyline;
         continue;

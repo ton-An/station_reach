@@ -1,8 +1,14 @@
 {
-    "cSpell.words": [
-        "gtfs",
-        "headsign",
-        "stoptimes",
-        "wght"
-    ]
+  "cSpell.words": [
+    "aabb",
+    "epsg",
+    "gtfs",
+    "headsign",
+    "Hitbox",
+    "monomorphize",
+    "stationreach",
+    "stoptimes",
+    "transitous",
+    "wght"
+  ]
 }
