@@ -22,8 +22,8 @@ class StationSearchStateLoading extends StationSearchDataState {
   StationSearchStateLoading({required super.stations});
 }
 
-class StationSearchStateSuccess extends StationSearchDataState {
-  StationSearchStateSuccess({required super.stations});
+class StationSearchStateLoaded extends StationSearchDataState {
+  StationSearchStateLoaded({required super.stations});
 }
 
 class StationSearchStateFailure extends StationSearchState {

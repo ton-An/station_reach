@@ -25,7 +25,7 @@ class StationSearchCubit extends Cubit<StationSearchState> {
 
     searchStationsEither.fold(
       (failure) => emit(StationSearchStateFailure(failure: failure)),
-      (stations) => emit(StationSearchStateSuccess(stations: stations)),
+      (stations) => emit(StationSearchStateLoaded(stations: stations)),
     );
   }
 
