@@ -141,9 +141,9 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
       departureMap['place']['scheduledDeparture'],
     );
 
-    final List<Map<String, dynamic>> stopMaps = departureMap['nextStops'];
+    final List stopMaps = departureMap['nextStops'];
 
-    for (final Map<String, dynamic> stopMap in stopMaps) {
+    for (final Map stopMap in stopMaps) {
       final String stopId = stopMap['stopId'];
       final String stopName = stopMap['name'];
       final double stopLatitude = stopMap['lat'];
