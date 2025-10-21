@@ -30,6 +30,7 @@ dependencies:
   shimmer_animation: ^2.2.2
   collection: ^1.19.1
   latlong2: ^0.9.1
+  pointer_interceptor: ^0.10.1+2
 
 dev_dependencies:
   flutter_test:
