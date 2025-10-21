@@ -32,7 +32,7 @@ class _SearchResults extends StatelessWidget {
                       stationSearchState.stations[index].countryCode;
 
                   if (stationArea != null && countryCode != null) {
-                    area = '$stationArea, $countryCode';
+                    area = '$countryCode, $stationArea';
                   } else if (stationArea != null) {
                     area = stationArea;
                   } else if (countryCode != null) {
@@ -68,10 +68,14 @@ class _SearchResults extends StatelessWidget {
                           const XSmallGap(),
                           const Dot(),
                           const XSmallGap(),
-                          Text(
-                            area,
-                            style: theme.text.body.copyWith(
-                              color: theme.colors.hint,
+                          Expanded(
+                            child: Text(
+                              area,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.text.body.copyWith(
+                                color: theme.colors.hint,
+                              ),
                             ),
                           ),
                         ],
