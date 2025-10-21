@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fourteenHoursPlus => '14h+';
 
   @override
-  String get noStationSelected => 'No station selected';
+  String get noStopSelected => 'No stop selected';
 
   @override
   String get departures => 'Departures';
