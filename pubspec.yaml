@@ -18,7 +18,7 @@ dependencies:
   fpdart: ^1.1.1
   get_it: ^8.2.0
   go_router: ^16.2.0
-  maplibre: ^0.2.2
+
   webfabrik_theme:
     git: https://github.com/ton-An/webfabrik_theme
   intl: ^0.20.2
@@ -26,11 +26,8 @@ dependencies:
   dio: ^5.9.0
   cupertino_icons: ^1.0.8
   url_launcher: ^6.3.2
-  pointer_interceptor: ^0.10.1+2
-  geolocator: ^14.0.2
   carousel_slider: ^5.1.1
   flutter_map: ^8.2.1
-  vector_map_tiles: ^9.0.0-beta.8
   shimmer_animation: ^2.2.2
   collection: ^1.19.1
   latlong2: ^0.9.1
