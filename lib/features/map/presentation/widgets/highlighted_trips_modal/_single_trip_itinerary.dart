@@ -6,7 +6,7 @@ class _SingleTripItinerary extends StatelessWidget {
     required this.scrollController,
   });
 
-  final Trip? trip;
+  final Departure? trip;
   final ScrollController scrollController;
 
   @override

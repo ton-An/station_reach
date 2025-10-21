@@ -1,13 +1,12 @@
-import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:station_reach/features/map/domain/models/reachable_station.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
-import 'package:station_reach/features/map/domain/models/trip.dart';
 
 abstract class MapRemoteDataSource {
   Future<List<Station>> searchStations({required String query});
 
-  Future<List<Trip>> getStationReachability({required Station station});
+  Future<List<Map<String, dynamic>>> getStationDepartures({
+    required Station station,
+  });
 }
 
 class MapRemoteDataSourceImpl extends MapRemoteDataSource {
@@ -34,11 +33,13 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
   }
 
   @override
-  Future<List<Trip>> getStationReachability({required Station station}) async {
+  Future<List<Map<String, dynamic>>> getStationDepartures({
+    required Station station,
+  }) async {
     final String urlString =
         'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200';
 
-    final List stoptimes = [];
+    final List<Map<String, dynamic>> departures = [];
 
     String? nextPageCursor;
 
@@ -54,32 +55,10 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
 
       final Response response = await dio.get(computedUrlString);
 
-      stoptimes.addAll(response.data['stopTimes']);
+      departures.addAll(response.data['stopTimes']);
       nextPageCursor = response.data['nextPageCursor'];
     }
 
-    final List<Trip> trips = [];
-    final listEquality = const DeepCollectionEquality().equals;
-
-    List<List<ReachableStation>> stopTimes = [];
-
-    for (final Map tripMap in stoptimes) {
-      final Trip trip = Trip.fromJson(tripMap, station);
-
-      bool isDuplicate = false;
-      for (final List<ReachableStation> stopTime in stopTimes) {
-        if (listEquality(stopTime, trip.stops)) {
-          isDuplicate = true;
-          break;
-        }
-      }
-
-      if (!isDuplicate) {
-        stopTimes.add(trip.stops);
-        trips.add(trip);
-      }
-    }
-
-    return trips;
+    return departures;
   }
 }

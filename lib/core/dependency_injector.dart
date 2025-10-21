@@ -24,14 +24,14 @@ void initGetIt() {
     () => StationSearchCubit(searchStationsUsecase: getIt()),
   );
   getIt.registerFactory(
-    () => StationReachabilityCubit(getStationReachability: getIt()),
+    () => StationReachabilityCubit(getStationDepartures: getIt()),
   );
   getIt.registerFactory(() => StationSelectionCubit());
   getIt.registerFactory(() => TripSelectionCubit());
 
   // -- Domain -- //
   getIt.registerFactory(() => SearchStations(mapRepository: getIt()));
-  getIt.registerFactory(() => GetStationReachability(mapRepository: getIt()));
+  getIt.registerFactory(() => GetStationDepartures(mapRepository: getIt()));
 
   // -- Data -- //
   getIt.registerFactory<MapRepository>(

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:pointer_interceptor/pointer_interceptor.dart';
 import 'package:station_reach/core/helpers/color_helper.dart';
 import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
-import 'package:station_reach/features/map/domain/models/trip.dart';
+import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_transport_mode_icon.dart';
@@ -13,14 +13,14 @@ part '_trip_selector.dart';
 class HighlightedTripsInfo extends StatefulWidget {
   const HighlightedTripsInfo({super.key, required this.trips});
 
-  final List<Trip> trips;
+  final List<Departure> trips;
 
   @override
   State<HighlightedTripsInfo> createState() => _HighlightedTripsInfoState();
 }
 
 class _HighlightedTripsInfoState extends State<HighlightedTripsInfo> {
-  late Trip _selectedTrip;
+  late Departure _selectedTrip;
 
   @override
   void initState() {

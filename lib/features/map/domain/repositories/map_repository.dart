@@ -1,6 +1,5 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
-import 'package:station_reach/features/map/domain/models/trip.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 abstract class MapRepository {
@@ -8,7 +7,7 @@ abstract class MapRepository {
     required String query,
   });
 
-  Future<Either<Failure, List<Trip>>> getStationReachability({
+  Future<Either<Failure, List<Map<String, dynamic>>>> getStationDepartures({
     required Station station,
   });
 }

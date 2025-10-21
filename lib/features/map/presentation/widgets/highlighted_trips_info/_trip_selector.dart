@@ -8,7 +8,7 @@ class _TripSelector extends StatelessWidget {
     required this.backgroundColor,
   });
 
-  final Trip trip;
+  final Departure trip;
   final bool isSelected;
   final VoidCallback onPressed;
   final Color backgroundColor;

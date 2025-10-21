@@ -2,8 +2,8 @@ import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
 import 'package:station_reach/features/map/domain/models/reachable_station.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
 
-class Trip {
-  factory Trip.fromJson(Map json, Station originStation) {
+class Departure {
+  factory Departure.fromJson(Map json, Station originStation) {
     final DateTime departureTime = DateTime.parse(
       json['place']['scheduledDeparture'],
     );
@@ -45,7 +45,7 @@ class Trip {
     }
 
     final TransitMode mode = TransitMode.fromString(json['mode']);
-    return Trip(
+    return Departure(
       id: json['tripId'],
       name:
           json['displayName'] ??
@@ -57,7 +57,7 @@ class Trip {
       stops: computedStops,
     );
   }
-  Trip({
+  Departure({
     required this.id,
     required this.name,
     required this.mode,

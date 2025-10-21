@@ -1,34 +1,42 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
-import 'package:station_reach/features/map/domain/models/trip.dart';
 import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-class GetStationReachability {
-  GetStationReachability({required this.mapRepository});
+class GetStationDepartures {
+  GetStationDepartures({required this.mapRepository});
 
   final MapRepository mapRepository;
 
-  Future<Either<Failure, List<Trip>>> call({required Station station}) async {
-    return _getStationsReachability(station: station);
-  }
-
-  Future<Either<Failure, List<Trip>>> _getStationsReachability({
+  Future<Either<Failure, List<Departure>>> call({
     required Station station,
   }) async {
-    final Either<Failure, List<Trip>> tripsEither = await mapRepository
-        .getStationReachability(station: station);
+    return _getStationDepartures(station: station);
+  }
 
-    return tripsEither.fold(
+  Future<Either<Failure, List<Departure>>> _getStationDepartures({
+    required Station station,
+  }) async {
+    final Either<Failure, List<Map<String, dynamic>>> departuresEither =
+        await mapRepository.getStationDepartures(station: station);
+
+    return departuresEither.fold(
       (failure) => Left(failure),
-      (trips) => _sortTrips(trips: trips),
+      (departures) => _convertToDepartureModels(departures: departures),
     );
   }
 
-  Future<Either<Failure, List<Trip>>> _sortTrips({
-    required List<Trip> trips,
+  Future<Either<Failure, List<Departure>>> _convertToDepartureModels({
+    required List<Map<String, dynamic>> departures,
   }) async {
-    trips.sort((a, b) {
+    return _sortDepartures(departures: []);
+  }
+
+  Future<Either<Failure, List<Departure>>> _sortDepartures({
+    required List<Departure> departures,
+  }) async {
+    departures.sort((a, b) {
       if (a.name == b.name) {
         return a.stops.last.duration.compareTo(b.stops.last.duration);
       }
@@ -36,6 +44,6 @@ class GetStationReachability {
       return a.name.compareTo(b.name);
     });
 
-    return Right(trips);
+    return Right(departures);
   }
 }

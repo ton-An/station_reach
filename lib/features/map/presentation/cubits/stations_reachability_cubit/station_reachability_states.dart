@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
-import 'package:station_reach/features/map/domain/models/trip.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 abstract class StationReachabilityState extends Equatable {
@@ -20,7 +20,7 @@ class StationReachabilityStateSuccess extends StationReachabilityState {
     required this.station,
   });
 
-  final List<Trip> trips;
+  final List<Departure> trips;
   final Station station;
 
   @override

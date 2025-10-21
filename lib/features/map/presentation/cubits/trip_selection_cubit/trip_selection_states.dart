@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:station_reach/features/map/domain/models/trip.dart';
+import 'package:station_reach/features/map/domain/models/departure.dart';
 
 abstract class TripSelectionState extends Equatable {
   @override
@@ -11,7 +11,7 @@ class TripSelectionStateUnselected extends TripSelectionState {}
 class TripSelectionStateSelected extends TripSelectionState {
   TripSelectionStateSelected({required this.trip});
 
-  final Trip trip;
+  final Departure trip;
 
   @override
   List<Object?> get props => [trip];

@@ -140,7 +140,7 @@ class _MapState extends State<_Map> {
     );
   }
 
-  void _generateStationMarkers(List<Trip> trips) {
+  void _generateStationMarkers(List<Departure> trips) {
     _reachableStationsLayers.clear();
 
     final Map<String, dynamic> reachableStations = {};
@@ -184,7 +184,7 @@ class _MapState extends State<_Map> {
     setState(() {});
   }
 
-  void _generateTripsPolylines(List<Trip> trips) {
+  void _generateTripsPolylines(List<Departure> trips) {
     _tripsPolylines.clear();
 
     for (final trip in trips) {

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/reachable_station.dart';
-import 'package:station_reach/features/map/domain/models/trip.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
 
 class StationSelectionCubit extends Cubit<StationSelectionState> {
@@ -8,11 +8,11 @@ class StationSelectionCubit extends Cubit<StationSelectionState> {
 
   void selectStation({
     required ReachableStation station,
-    required List<Trip> trips,
+    required List<Departure> trips,
   }) {
-    final List<Trip> highlightedTrips = [];
+    final List<Departure> highlightedTrips = [];
 
-    for (final Trip trip in trips) {
+    for (final Departure trip in trips) {
       for (final stop in trip.stops) {
         if (stop.id == station.id) {
           highlightedTrips.add(trip);
