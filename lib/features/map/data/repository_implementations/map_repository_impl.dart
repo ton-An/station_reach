@@ -14,16 +14,15 @@ class MapRepositoryImpl extends MapRepository {
 
   final MapRemoteDataSource mapRemoteDataSource;
   final FailureHandler failureHandler;
+
   @override
-  Future<Either<Failure, List<Station>>> searchStations({
-    required String query,
-  }) async {
+  Future<Either<Failure, List>> searchStations({required String query}) async {
     try {
-      final List<Station> stations = await mapRemoteDataSource.searchStations(
+      final List stationMaps = await mapRemoteDataSource.searchStations(
         query: query,
       );
 
-      return Right(stations);
+      return Right(stationMaps);
     } on DioException catch (dioException) {
       final Failure failure = failureHandler.dioExceptionMapper(
         dioException: dioException,
@@ -34,12 +33,13 @@ class MapRepositoryImpl extends MapRepository {
   }
 
   @override
-  Future<Either<Failure, List<Map<String, dynamic>>>> getStationDepartures({
+  Future<Either<Failure, List>> getStationDepartures({
     required Station station,
   }) async {
     try {
-      final List<Map<String, dynamic>> departureMaps = await mapRemoteDataSource
-          .getStationDepartures(station: station);
+      final List departureMaps = await mapRemoteDataSource.getStationDepartures(
+        station: station,
+      );
 
       return Right(departureMaps);
     } on DioException catch (dioException) {

@@ -1,29 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 class Station extends Equatable {
-  factory Station.fromJson(Map json) {
-    String? area;
-
-    adminLevelLoop:
-    for (double adminLevel = 7; adminLevel >= 0; adminLevel--) {
-      for (final Map stationArea in json['areas']) {
-        if (stationArea['adminLevel'] == adminLevel) {
-          area = stationArea['name'];
-          break adminLevelLoop;
-        }
-      }
-    }
-
-    return Station(
-      id: json['id'],
-      name: json['name'],
-      latitude: json['lat'],
-      longitude: json['lon'],
-      countryCode: json['country'],
-      area: area,
-    );
-  }
-
   const Station({
     required this.id,
     required this.name,

@@ -25,8 +25,8 @@ class GetStationDepartures {
   Future<Either<Failure, List<Departure>>> _getStationDepartures({
     required Station station,
   }) async {
-    final Either<Failure, List<Map<String, dynamic>>> departureMapsEither =
-        await mapRepository.getStationDepartures(station: station);
+    final Either<Failure, List> departureMapsEither = await mapRepository
+        .getStationDepartures(station: station);
 
     return departureMapsEither.fold(
       (failure) => Left(failure),
@@ -39,13 +39,13 @@ class GetStationDepartures {
 
   Future<Either<Failure, List<Departure>>> _convertToDepartureModels({
     required Station station,
-    required List<Map<String, dynamic>> departureMaps,
+    required List departureMaps,
   }) async {
     final List<Departure> departureModels = [];
 
     List<List<Stop>> alreadyAddedStops = [];
 
-    for (final Map<String, dynamic> departureMap in departureMaps) {
+    for (final Map departureMap in departureMaps) {
       final Departure departureModel = _convertToDepartureModel(
         station: station,
         departureMap: departureMap,
@@ -71,7 +71,7 @@ class GetStationDepartures {
 
   Departure _convertToDepartureModel({
     required Station station,
-    required Map<String, dynamic> departureMap,
+    required Map departureMap,
   }) {
     final String id = departureMap['tripId'];
     late final String name;
