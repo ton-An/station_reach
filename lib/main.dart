@@ -12,6 +12,11 @@ import 'package:station_reach/features/map/presentation/cubits/stations_departur
 import 'package:station_reach/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/*
+  To-Do:
+    - [ ] Add docs
+*/
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
