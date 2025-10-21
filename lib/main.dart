@@ -15,6 +15,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 /*
   To-Do:
     - [ ] Add docs
+    - [ ] Replace launch image
 */
 
 void main() {
