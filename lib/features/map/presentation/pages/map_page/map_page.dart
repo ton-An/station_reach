@@ -17,8 +17,8 @@ import 'package:station_reach/features/map/presentation/cubits/station_search_cu
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
-import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
-import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_states.dart';
+import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_states.dart';
 import 'package:station_reach/features/map/presentation/widgets/highlighted_departures_modal/highlighted_departures_modal.dart';
 import 'package:station_reach/features/map/presentation/widgets/multi_polyline_layer/multi_polyline_layer.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -47,9 +47,9 @@ class MapPage extends StatelessWidget {
           );
         }
       },
-      child: BlocListener<StationReachabilityCubit, StationReachabilityState>(
+      child: BlocListener<StationDeparturesCubit, StationDeparturesState>(
         listener: (context, reachabilityState) {
-          if (reachabilityState is StationReachabilityStateFailure) {
+          if (reachabilityState is StationDeparturesFailure) {
             context.read<InAppNotificationCubit>().sendFailureNotification(
               reachabilityState.failure,
             );

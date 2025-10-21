@@ -5,29 +5,25 @@ import 'package:fpdart/fpdart.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:station_reach/features/map/domain/usecases/get_station_reachability.dart';
-import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_states.dart';
+import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_states.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-class StationReachabilityCubit extends Cubit<StationReachabilityState> {
-  StationReachabilityCubit({required this.getStationDepartures})
-    : super(StationReachabilityStateInitial());
+class StationDeparturesCubit extends Cubit<StationDeparturesState> {
+  StationDeparturesCubit({required this.getStationDepartures})
+    : super(StationDeparturesInitial());
 
   final GetStationDepartures getStationDepartures;
 
   Future<void> getReachability(Station station) async {
-    emit(StationReachabilityStateLoading());
+    emit(StationDeparturesLoading());
 
     final Either<Failure, List<Departure>> reachabilityEither =
         await getStationDepartures(station: station);
 
     reachabilityEither.fold(
-      (Failure failure) =>
-          emit(StationReachabilityStateFailure(failure: failure)),
+      (Failure failure) => emit(StationDeparturesFailure(failure: failure)),
       (List<Departure> departures) => emit(
-        StationReachabilityStateSuccess(
-          departures: departures,
-          station: station,
-        ),
+        StationDeparturesLoaded(departures: departures, station: station),
       ),
     );
   }

@@ -22,8 +22,8 @@ class _MapState extends State<_Map> {
         final LayerHitResult<Stop>? result = hitNotifier.value;
 
         if (result != null &&
-            context.read<StationReachabilityCubit>().state
-                is StationReachabilityStateSuccess) {
+            context.read<StationDeparturesCubit>().state
+                is StationDeparturesLoaded) {
           _hitStation = result.hitValues.first;
         }
       });
@@ -37,11 +37,11 @@ class _MapState extends State<_Map> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<StationReachabilityCubit, StationReachabilityState>(
+    return BlocListener<StationDeparturesCubit, StationDeparturesState>(
       listener: (context, state) {
         context.read<StationSelectionCubit>().unselectStation();
 
-        if (state is StationReachabilityStateSuccess) {
+        if (state is StationDeparturesLoaded) {
           mapController.move(
             LatLng(state.station.latitude - 1, state.station.longitude),
             6,
@@ -96,8 +96,8 @@ class _MapState extends State<_Map> {
     context.read<StationSelectionCubit>().selectStation(
       selectedStop: _hitStation!,
       departures:
-          (context.read<StationReachabilityCubit>().state
-                  as StationReachabilityStateSuccess)
+          (context.read<StationDeparturesCubit>().state
+                  as StationDeparturesLoaded)
               .departures,
     );
   }

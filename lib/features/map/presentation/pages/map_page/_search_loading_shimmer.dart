@@ -9,14 +9,13 @@ class _LoadingShimmer extends StatelessWidget {
 
     return BlocBuilder<StationSearchCubit, StationSearchState>(
       builder: (context, stationSearchState) {
-        return BlocBuilder<StationReachabilityCubit, StationReachabilityState>(
+        return BlocBuilder<StationDeparturesCubit, StationDeparturesState>(
           builder: (context, stationReachabilityState) {
             return AnimatedSize(
               duration: theme.durations.xTiny,
               child:
                   stationSearchState is StationSearchStateLoading ||
-                      stationReachabilityState
-                          is StationReachabilityStateLoading
+                      stationReachabilityState is StationDeparturesLoading
                   ? Shimmer(
                       colorOpacity: .5,
                       duration: theme.durations.xHuge,

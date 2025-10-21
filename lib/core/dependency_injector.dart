@@ -10,7 +10,7 @@ import 'package:station_reach/features/map/domain/usecases/search_stations.dart'
 import 'package:station_reach/features/map/presentation/cubits/departure_selection_cubit/departure_selection_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_search_cubit/station_search_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';
-import 'package:station_reach/features/map/presentation/cubits/stations_reachability_cubit/station_reachability_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_cubit.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -25,7 +25,7 @@ void initGetIt() {
     () => StationSearchCubit(searchStationsUsecase: getIt()),
   );
   getIt.registerFactory(
-    () => StationReachabilityCubit(getStationDepartures: getIt()),
+    () => StationDeparturesCubit(getStationDepartures: getIt()),
   );
   getIt.registerFactory(() => StationSelectionCubit());
   getIt.registerFactory(() => DepartureSelectionCubit());

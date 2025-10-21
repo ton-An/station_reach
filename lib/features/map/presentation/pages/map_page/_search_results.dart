@@ -42,7 +42,7 @@ class _SearchResults extends StatelessWidget {
 
                 return FadeGestureDetector(
                   onTap: () {
-                    context.read<StationReachabilityCubit>().getReachability(
+                    context.read<StationDeparturesCubit>().getReachability(
                       stationSearchState.stations[index],
                     );
                     context.read<StationSearchCubit>().collapseSearch();

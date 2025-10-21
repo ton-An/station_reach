@@ -3,19 +3,19 @@ import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-abstract class StationReachabilityState extends Equatable {
-  const StationReachabilityState();
+abstract class StationDeparturesState extends Equatable {
+  const StationDeparturesState();
 
   @override
   List<Object?> get props => [];
 }
 
-class StationReachabilityStateInitial extends StationReachabilityState {}
+class StationDeparturesInitial extends StationDeparturesState {}
 
-class StationReachabilityStateLoading extends StationReachabilityState {}
+class StationDeparturesLoading extends StationDeparturesState {}
 
-class StationReachabilityStateSuccess extends StationReachabilityState {
-  const StationReachabilityStateSuccess({
+class StationDeparturesLoaded extends StationDeparturesState {
+  const StationDeparturesLoaded({
     required this.departures,
     required this.station,
   });
@@ -27,8 +27,8 @@ class StationReachabilityStateSuccess extends StationReachabilityState {
   List<Object?> get props => [departures, station];
 }
 
-class StationReachabilityStateFailure extends StationReachabilityState {
-  const StationReachabilityStateFailure({required this.failure});
+class StationDeparturesFailure extends StationDeparturesState {
+  const StationDeparturesFailure({required this.failure});
 
   final Failure failure;
 

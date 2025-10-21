@@ -14,9 +14,9 @@ class _MapStationMarkerLayerState extends State<_MapStationMarkerLayer> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<StationReachabilityCubit, StationReachabilityState>(
+    return BlocListener<StationDeparturesCubit, StationDeparturesState>(
       listener: (context, state) {
-        if (state is StationReachabilityStateSuccess) {
+        if (state is StationDeparturesLoaded) {
           _generateStationMarkers(state.departures);
         }
       },
