@@ -39,7 +39,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     final String urlString =
         'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200';
 
-    final List<Map<String, dynamic>> departures = [];
+    final List<Map<String, dynamic>> departureMaps = [];
 
     String? nextPageCursor;
 
@@ -55,10 +55,10 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
 
       final Response response = await dio.get(computedUrlString);
 
-      departures.addAll(response.data['stopTimes']);
+      departureMaps.addAll(response.data['stopTimes']);
       nextPageCursor = response.data['nextPageCursor'];
     }
 
-    return departures;
+    return departureMaps;
   }
 }

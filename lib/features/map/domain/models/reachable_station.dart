@@ -7,7 +7,6 @@ class ReachableStation extends Station {
     required super.latitude,
     required super.longitude,
     super.countryCode,
-    required super.childrenIds,
     required this.duration,
   });
 
@@ -20,7 +19,6 @@ class ReachableStation extends Station {
     latitude,
     longitude,
     countryCode,
-    childrenIds,
     duration,
   ];
 }

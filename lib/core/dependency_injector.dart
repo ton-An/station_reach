@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:station_reach/core/data/repository/failure_handler.dart';
@@ -31,7 +32,12 @@ void initGetIt() {
 
   // -- Domain -- //
   getIt.registerFactory(() => SearchStations(mapRepository: getIt()));
-  getIt.registerFactory(() => GetStationDepartures(mapRepository: getIt()));
+  getIt.registerFactory(
+    () => GetStationDepartures(
+      mapRepository: getIt(),
+      deepCollectionEquality: getIt(),
+    ),
+  );
 
   // -- Data -- //
   getIt.registerFactory<MapRepository>(
@@ -46,4 +52,7 @@ void initGetIt() {
 
   // -- Third Party -- //
   getIt.registerSingleton<Dio>(Dio());
+  getIt.registerSingleton<DeepCollectionEquality>(
+    const DeepCollectionEquality(),
+  );
 }

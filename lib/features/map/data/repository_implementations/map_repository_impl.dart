@@ -38,10 +38,10 @@ class MapRepositoryImpl extends MapRepository {
     required Station station,
   }) async {
     try {
-      final List<Map<String, dynamic>> departures = await mapRemoteDataSource
+      final List<Map<String, dynamic>> departureMaps = await mapRemoteDataSource
           .getStationDepartures(station: station);
 
-      return Right(departures);
+      return Right(departureMaps);
     } on DioException catch (dioException) {
       final Failure failure = failureHandler.dioExceptionMapper(
         dioException: dioException,
@@ -51,25 +51,3 @@ class MapRepositoryImpl extends MapRepository {
     }
   }
 }
-
- // final List<Trip> trips = [];
-  // final listEquality = const DeepCollectionEquality().equals;
-
-  // List<List<ReachableStation>> stopTimes = [];
-
-  // for (final Map tripMap in stoptimes) {
-  //   final Trip trip = Trip.fromJson(tripMap, station);
-
-  //   bool isDuplicate = false;
-  //   for (final List<ReachableStation> stopTime in stopTimes) {
-  //     if (listEquality(stopTime, trip.stops)) {
-  //       isDuplicate = true;
-  //       break;
-  //     }
-  //   }
-
-  //   if (!isDuplicate) {
-  //     stopTimes.add(trip.stops);
-  //     trips.add(trip);
-  //   }
-  // }

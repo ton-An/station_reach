@@ -21,7 +21,6 @@ class Station extends Equatable {
       longitude: json['lon'],
       countryCode: json['country'],
       area: area,
-      childrenIds: [],
     );
   }
   Station({
@@ -31,7 +30,6 @@ class Station extends Equatable {
     required this.longitude,
     this.countryCode,
     this.area,
-    required this.childrenIds,
   });
 
   final String id;
@@ -40,16 +38,7 @@ class Station extends Equatable {
   final double longitude;
   final String? countryCode;
   final String? area;
-  final List<String> childrenIds;
 
   @override
-  List<Object?> get props => [
-    id,
-    name,
-    latitude,
-    longitude,
-    countryCode,
-    area,
-    childrenIds,
-  ];
+  List<Object?> get props => [id, name, latitude, longitude, countryCode, area];
 }
