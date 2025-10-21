@@ -21,9 +21,13 @@ class StationReachabilityCubit extends Cubit<StationReachabilityState> {
         await getStationDepartures(station: station);
 
     reachabilityEither.fold(
-      (failure) => emit(StationReachabilityStateFailure(failure: failure)),
-      (trips) => emit(
-        StationReachabilityStateSuccess(departures: trips, station: station),
+      (Failure failure) =>
+          emit(StationReachabilityStateFailure(failure: failure)),
+      (List<Departure> departures) => emit(
+        StationReachabilityStateSuccess(
+          departures: departures,
+          station: station,
+        ),
       ),
     );
   }

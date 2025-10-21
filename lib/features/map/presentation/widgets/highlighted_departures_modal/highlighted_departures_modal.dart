@@ -42,7 +42,7 @@ class _HighlightedDeparturesModalState
 
     pageController.addListener(() {
       if (pageController.page == 0) {
-        context.read<DepartureSelectionCubit>().unselectTrip();
+        context.read<DepartureSelectionCubit>().deselectDeparture();
       }
     });
   }
@@ -66,7 +66,7 @@ class _HighlightedDeparturesModalState
                 ),
                 displayBackButton: departureSelectionState is DepartureSelected,
                 onBackPressed: () {
-                  context.read<DepartureSelectionCubit>().unselectTrip();
+                  context.read<DepartureSelectionCubit>().deselectDeparture();
                 },
                 secondaryButtons: const [],
 

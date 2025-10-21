@@ -9,7 +9,7 @@ class DepartureSelectionCubit extends Cubit<DepartureSelectionState> {
     emit(DepartureSelected(departure: departure));
   }
 
-  void unselectTrip() {
+  void deselectDeparture() {
     emit(NoDepartureSelected());
   }
 }

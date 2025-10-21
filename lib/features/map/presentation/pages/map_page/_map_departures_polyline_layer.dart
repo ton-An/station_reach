@@ -26,20 +26,20 @@ class _MapDeparturesPolylineLayerState
     );
   }
 
-  void _generateDeparturePolylines(List<Departure> trips) {
+  void _generateDeparturePolylines(List<Departure> departures) {
     _departurePolylines.clear();
 
-    for (final trip in trips) {
+    for (final departure in departures) {
       final Color color = ColorHelper.interpolateColors(
         WebfabrikTheme.of(context).colors.secondaryGradient,
-        trips.indexOf(trip) / max(trips.length - 1, 1),
+        departures.indexOf(departure) / max(departures.length - 1, 1),
       ).withValues(alpha: .7);
 
       _departurePolylines.insert(
         0,
         Polyline(
           points: [
-            for (final stop in trip.stops)
+            for (final stop in departure.stops)
               LatLng(stop.latitude, stop.longitude),
           ],
           strokeWidth: 5,

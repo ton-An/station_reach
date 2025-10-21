@@ -29,13 +29,13 @@ class _MapStationMarkerLayerState extends State<_MapStationMarkerLayer> {
     );
   }
 
-  void _generateStationMarkers(List<Departure> trips) {
+  void _generateStationMarkers(List<Departure> departures) {
     _reachableStationsLayers.clear();
 
     final Map<String, dynamic> reachableStations = {};
 
-    for (final trip in trips) {
-      for (final station in trip.stops) {
+    for (final departure in departures) {
+      for (final station in departure.stops) {
         final duration = station.duration.inMinutes;
 
         int durationIn30Minutes = (duration ~/ 30).clamp(0, 28);
