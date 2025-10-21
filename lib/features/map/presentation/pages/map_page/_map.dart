@@ -43,7 +43,7 @@ class _MapState extends State<_Map> {
 
         if (state is StationReachabilityStateSuccess) {
           mapController.move(
-            LatLng(state.station.latitude, state.station.longitude),
+            LatLng(state.station.latitude - 1, state.station.longitude),
             6,
           );
         }
@@ -54,7 +54,6 @@ class _MapState extends State<_Map> {
           initialCenter: const LatLng(42.68, 10.127),
           initialZoom: 4,
           minZoom: 1.5,
-
           onMapEvent: (event) {
             if (event is MapEventMove) {
               _hitStation = null;
