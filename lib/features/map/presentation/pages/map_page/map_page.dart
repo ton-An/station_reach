@@ -25,6 +25,9 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_map.dart';
 part '_search.dart';
+part '_search_field.dart';
+part '_search_loading_shimmer.dart';
+part '_search_results.dart';
 
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
