@@ -94,6 +94,12 @@ class _HighlightedTripsModalState extends State<HighlightedTripsModal> {
                   children: [
                     const _TimeGradientLegend(),
                     AttributionLegend(
+                      additionalWidgets: [
+                        OSSInfo(
+                          repositoryUrl:
+                              'https://github.com/ton-An/station_reach',
+                        ),
+                      ],
                       attributions: [
                         Attribution(
                           name: AppLocalizations.of(
