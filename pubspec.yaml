@@ -1,5 +1,5 @@
 name: station_reach
-description: "A new Flutter project."
+description: "See where transit takes you!"
 publish_to: "none"
 version: 0.1.0
 
@@ -18,7 +18,6 @@ dependencies:
   fpdart: ^1.1.1
   get_it: ^8.2.0
   go_router: ^16.2.0
-
   webfabrik_theme:
     git: https://github.com/ton-An/webfabrik_theme
   intl: ^0.20.2
