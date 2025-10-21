@@ -14,14 +14,23 @@ class _MapDeparturesPolylineLayerState
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<StationSelectionCubit, StationSelectionState>(
+    return BlocListener<StationDeparturesCubit, StationDeparturesState>(
       listener: (context, state) {
-        if (state is StationSelectedState) {
-          _generateDeparturePolylines(state.departures);
+        if (state is StationDeparturesLoaded) {
+          setState(() {
+            _departurePolylines.clear();
+          });
         }
       },
-      child: TranslucentPointer(
-        child: MultiPolylineLayer(polylines: _departurePolylines),
+      child: BlocListener<StationSelectionCubit, StationSelectionState>(
+        listener: (context, state) {
+          if (state is StationSelectedState) {
+            _generateDeparturePolylines(state.departures);
+          }
+        },
+        child: TranslucentPointer(
+          child: MultiPolylineLayer(polylines: _departurePolylines),
+        ),
       ),
     );
   }
