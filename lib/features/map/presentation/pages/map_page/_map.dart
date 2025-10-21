@@ -67,7 +67,7 @@ class _MapState extends State<_Map> {
             userAgentPackageName: 'eu.antons-webfabrik.station-reach',
           ),
 
-          _MapStationMarkerLayer(hitNotifier: hitNotifier),
+          _MapStationMarkersLayer(hitNotifier: hitNotifier),
 
           RawGestureDetector(
             behavior: HitTestBehavior.translucent,

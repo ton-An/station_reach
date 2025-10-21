@@ -1,15 +1,16 @@
 part of 'map_page.dart';
 
-class _MapStationMarkerLayer extends StatefulWidget {
-  const _MapStationMarkerLayer({required this.hitNotifier});
+class _MapStationMarkersLayer extends StatefulWidget {
+  const _MapStationMarkersLayer({required this.hitNotifier});
 
   final LayerHitNotifier<Stop> hitNotifier;
 
   @override
-  State<_MapStationMarkerLayer> createState() => _MapStationMarkerLayerState();
+  State<_MapStationMarkersLayer> createState() =>
+      _MapStationMarkersLayerState();
 }
 
-class _MapStationMarkerLayerState extends State<_MapStationMarkerLayer> {
+class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
   final List<CircleMarker<Stop>> _reachableStationsLayers = [];
 
   @override

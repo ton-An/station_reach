@@ -25,7 +25,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_map.dart';
 part '_map_departures_polyline_layer.dart';
-part '_map_station_marker_layer.dart';
+part '_map_station_markers_layer.dart';
 part '_search.dart';
 part '_search_field.dart';
 part '_search_loading_shimmer.dart';
