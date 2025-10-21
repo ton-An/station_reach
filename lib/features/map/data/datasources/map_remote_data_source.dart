@@ -35,18 +35,35 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
 
   @override
   Future<List<Trip>> getStationReachability({required Station station}) async {
-    final Uri url = Uri.parse(
-      'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=1000&fetchStops=true',
-    );
+    final String urlString =
+        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200';
 
-    final Response response = await dio.getUri(url);
+    final List stoptimes = [];
+
+    String? nextPageCursor;
+
+    for (int i = 0; i < 10; i++) {
+      String computedUrlString = urlString;
+
+      if (nextPageCursor != null && nextPageCursor.isNotEmpty) {
+        computedUrlString += '&pageCursor=$nextPageCursor';
+      } else if (i > 0 &&
+          (nextPageCursor == null || nextPageCursor.isEmpty == true)) {
+        break;
+      }
+
+      final Response response = await dio.get(computedUrlString);
+
+      stoptimes.addAll(response.data['stopTimes']);
+      nextPageCursor = response.data['nextPageCursor'];
+    }
 
     final List<Trip> trips = [];
     final listEquality = const DeepCollectionEquality().equals;
 
     List<List<ReachableStation>> stopTimes = [];
 
-    for (final Map tripMap in response.data['stopTimes']) {
+    for (final Map tripMap in stoptimes) {
       final Trip trip = Trip.fromJson(tripMap, station);
 
       bool isDuplicate = false;
