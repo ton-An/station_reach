@@ -1,24 +1,17 @@
 import 'package:station_reach/features/map/domain/models/station.dart';
 
-class ReachableStation extends Station {
-  ReachableStation({
+class Stop extends Station {
+  Stop({
     required super.id,
     required super.name,
     required super.latitude,
     required super.longitude,
-    super.countryCode,
     required this.duration,
+    super.countryCode,
   });
 
   final Duration duration;
 
   @override
-  List<Object?> get props => [
-    id,
-    name,
-    latitude,
-    longitude,
-    countryCode,
-    duration,
-  ];
+  List<Object?> get props => [...super.props, duration];
 }

@@ -23,7 +23,8 @@ class Station extends Equatable {
       area: area,
     );
   }
-  Station({
+
+  const Station({
     required this.id,
     required this.name,
     required this.latitude,
