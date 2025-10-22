@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" width="150" />
+  <img src="readme_assets/logo.png" width="150" />
 </p>
 
 <h1 align="center">Station Reach</h1>
@@ -26,17 +26,26 @@
 
 ## Screenshots
 
-*Screenshots will be added here*
+<div>
+<img src="readme_assets/station_departures_loaded_screenshot.png" width="200" class="screenshot" />
+<img src="readme_assets/departures_screenshot.png" width="200" class="screenshot" />
+<img src="readme_assets/itinerary_screenshot.png" width="200" class="screenshot" />
+</div>
+
+<style>
+  .screenshot {
+    margin: 10px;
+    border-radius: 20px;
+  }
+</style>
 
 ## Getting Started (Development)
 
-> 🚧 Only the web version is supported at the moment
+> 🚧 Only iOS and Android are supported at the moment
 
 ### Prerequisites
 
 - Flutter & Dart SDK (https://docs.flutter.dev/get-started/install)
-- MapTiler API key (https://www.maptiler.com/)
-- OpenTripPlanner Endpoint (production server: https://api.station-reach.eu - third party usage permitted for development only)
 
 ### Installation
 
@@ -53,14 +62,19 @@
 
 3. Run the app:
    ```bash
-   flutter run -d chrome --dart-define=MAPTILER_KEY=your_maptiler_api_key_here --dart-define=OTP_URL=your_otp_endpoint_here
+   flutter run
    ```
 
 ### Building for Production
 
-#### Web
+#### iOS
 ```bash
-flutter build web --wasm --release
+flutter build ipa
+```
+
+#### Android
+```bash
+flutter build apk
 ```
 
 ## Contributing
@@ -77,9 +91,6 @@ flutter build web --wasm --release
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
-
-- [MapLibre](https://github.com/josxha/flutter-maplibre) for the mapping engine
-- [MapTiler](https://www.maptiler.com/) for map tiles
-- [Transitous](https://transitous.org/) for transit data processing
-- [Transit Data Sources](https://transitous.org/sources/)
-- [OpenStreetMap](https://www.openstreetmap.org/) contributors for map data
+- [Transitous](https://transitous.org/) for providing the API
+- [Transitous Data Sources](https://transitous.org/sources/)
+- [OpenStreetMap contributors](https://www.openstreetmap.org/)  for map data
