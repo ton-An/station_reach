@@ -32,13 +32,6 @@
 <img src="readme_assets/itinerary_screenshot.png" width="200" class="screenshot" />
 </div>
 
-<style>
-  .screenshot {
-    margin: 10px;
-    border-radius: 20px;
-  }
-</style>
-
 ## Getting Started (Development)
 
 > 🚧 Only iOS and Android are supported at the moment
