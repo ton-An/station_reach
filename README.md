@@ -33,6 +33,14 @@
 <img src="readme_assets/itinerary_screenshot.png" width="200" class="screenshot" />
 </div>
 
+## Download
+
+### iOS
+Join the TestFlight beta here: https://testflight.apple.com/join/2cSdXKCM
+
+### Android
+Will be available soon!
+
 ## Getting Started (Development)
 
 > 🚧 Only iOS and Android are supported at the moment
