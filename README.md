@@ -18,7 +18,7 @@
 </p>
 
 <div align="center">
-  <a href="https://station-reach.eu">Homepage</a> • 
+  <s>Homepage</s> • 
   <s>Planning</s> • 
   <s>Documentation</s>
 </div>
