@@ -12,6 +12,8 @@ import 'package:station_reach/features/map/presentation/cubits/departure_selecti
 import 'package:station_reach/features/map/presentation/cubits/departure_selection_cubit/departure_selection_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
+import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_cubit.dart';
+import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_states.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_attribution_legend.dart';
