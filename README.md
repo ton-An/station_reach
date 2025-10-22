@@ -28,6 +28,7 @@
 
 <div>
 <img src="readme_assets/station_departures_loaded_screenshot.png" width="200" class="screenshot" />
+<img src="readme_assets/stop_selected_screenshot.png" width="200" class="screenshot" />
 <img src="readme_assets/departures_screenshot.png" width="200" class="screenshot" />
 <img src="readme_assets/itinerary_screenshot.png" width="200" class="screenshot" />
 </div>
