@@ -56,12 +56,14 @@ class _MainAppState extends State<MainApp> {
           accent: Color.fromARGB(255, 7, 114, 255),
           // translucentBackground: const Color(0xFFFFFFFF).withValues(alpha: .95),
           timelineGradient: [
-            Color.fromARGB(255, 0, 150, 136),
-            Color.fromARGB(255, 76, 175, 80),
+            Color.fromARGB(255, 0, 150, 107),
+            Color.fromARGB(255, 103, 223, 42),
+            Color.fromARGB(255, 255, 245, 67),
             Color.fromARGB(255, 255, 245, 59),
-            Color.fromARGB(255, 255, 229, 59),
+            Color.fromARGB(255, 254, 209, 29),
             Color.fromARGB(255, 255, 152, 0),
             Color.fromARGB(255, 244, 67, 54),
+            Color.fromARGB(255, 178, 12, 0),
           ],
         ),
         text: WebfabrikTextThemeData(
