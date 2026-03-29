@@ -81,7 +81,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
         TransitMode.longDistance,
         TransitMode.nightRail,
       ],
-      pageCount: 10,
+      pageCount: 14,
     );
 
     List<Departure> localDepartures = await _getDeparturesByMode(
