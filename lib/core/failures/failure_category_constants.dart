@@ -4,4 +4,5 @@ class FailureCategoryConstants {
   static const String networking = 'networking';
   static const String storage = 'storage';
   static const String permission = 'permission';
+  static const String transit = 'transit';
 }
