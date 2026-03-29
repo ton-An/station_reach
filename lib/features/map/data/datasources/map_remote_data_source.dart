@@ -15,68 +15,6 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
 
   final Dio dio;
 
-  Map<TransitMode, int> _transitModeMap = {
-    TransitMode.walk: 0,
-    TransitMode.bike: 0,
-    TransitMode.rental: 0,
-    TransitMode.car: 0,
-    TransitMode.carParking: 0,
-    TransitMode.carDropoff: 0,
-    TransitMode.odm: 0,
-    TransitMode.flex: 0,
-    TransitMode.transit: 0,
-    TransitMode.tram: 0,
-    TransitMode.subway: 0,
-    TransitMode.ferry: 0,
-    TransitMode.airplane: 0,
-    TransitMode.suburban: 0,
-    TransitMode.bus: 0,
-    TransitMode.coach: 0,
-    TransitMode.rail: 0,
-    TransitMode.highspeedRail: 0,
-    TransitMode.longDistance: 0,
-    TransitMode.nightRail: 0,
-    TransitMode.regionalFastRail: 0,
-    TransitMode.regionalRail: 0,
-    TransitMode.cableCar: 0,
-    TransitMode.funicular: 0,
-    TransitMode.aerialLift: 0,
-    TransitMode.arealLift: 0,
-    TransitMode.metro: 0,
-    TransitMode.other: 0,
-  };
-
-  Map<TransitMode, int> _transitModeResetMap = {
-    TransitMode.walk: 0,
-    TransitMode.bike: 0,
-    TransitMode.rental: 0,
-    TransitMode.car: 0,
-    TransitMode.carParking: 0,
-    TransitMode.carDropoff: 0,
-    TransitMode.odm: 0,
-    TransitMode.flex: 0,
-    TransitMode.transit: 0,
-    TransitMode.tram: 0,
-    TransitMode.subway: 0,
-    TransitMode.ferry: 0,
-    TransitMode.airplane: 0,
-    TransitMode.suburban: 0,
-    TransitMode.bus: 0,
-    TransitMode.coach: 0,
-    TransitMode.rail: 0,
-    TransitMode.highspeedRail: 0,
-    TransitMode.longDistance: 0,
-    TransitMode.nightRail: 0,
-    TransitMode.regionalFastRail: 0,
-    TransitMode.regionalRail: 0,
-    TransitMode.cableCar: 0,
-    TransitMode.funicular: 0,
-    TransitMode.aerialLift: 0,
-    TransitMode.arealLift: 0,
-    TransitMode.metro: 0,
-    TransitMode.other: 0,
-  };
-
   @override
   Future<List<Station>> searchStations({required String query}) async {
     final Uri url = Uri.parse(
@@ -174,29 +112,65 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
   }) async {
     final String modeString = modes.map((mode) => mode.toString()).join(',');
 
+    final DateTime now = DateTime.now();
+    final String nowIsoString = now.toIso8601String();
+
     final String urlString =
-        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200&mode=${modes.join(',')}';
+        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200&mode=${modeString}&withScheduledSkippedStops=true';
 
     final List departureMaps = [];
 
-    _transitModeMap = _transitModeResetMap;
-
     String? nextPageCursor;
+    DateTime? lastStopTime;
+    int lastStopErrorCount = 0;
+    bool hadLastStopErrorLastIteration = false;
 
-    for (int i = 0; i < pageCount; i++) {
-      String computedUrlString = urlString;
+    for (int i = 0; i < pageCount + lastStopErrorCount; i++) {
+      try {
+        String computedUrlString = urlString;
 
-      if (nextPageCursor != null && nextPageCursor.isNotEmpty) {
-        computedUrlString += '&pageCursor=$nextPageCursor';
-      } else if (i > 0 &&
-          (nextPageCursor == null || nextPageCursor.isEmpty == true)) {
-        break;
+        if (nextPageCursor != null && nextPageCursor.isNotEmpty) {
+          computedUrlString += '&pageCursor=$nextPageCursor';
+        } else if (i > 0 &&
+            !hadLastStopErrorLastIteration &&
+            (nextPageCursor == null || nextPageCursor.isEmpty == true)) {
+          break;
+        }
+
+        if (hadLastStopErrorLastIteration) {
+          computedUrlString += '&time=${lastStopTime!.toIso8601String()}';
+        } else {
+          computedUrlString += '&time=$nowIsoString';
+        }
+
+        final Response response = await dio.get(computedUrlString);
+
+        departureMaps.addAll(response.data['stopTimes']);
+        nextPageCursor = response.data['nextPageCursor'];
+        lastStopTime = DateTime.parse(
+          response.data['stopTimes'].last['place']['scheduledDeparture'],
+        );
+        hadLastStopErrorLastIteration = false;
+      } on DioException catch (e) {
+        if (e.response?.data['error'] == 'Departure is last stop in trip') {
+          if (lastStopTime == null) {
+            lastStopTime ??= now.add(const Duration(hours: 1));
+          } else if (hadLastStopErrorLastIteration) {
+            lastStopTime = lastStopTime.add(const Duration(hours: 1));
+          }
+
+          if (lastStopErrorCount < 10) {
+            lastStopErrorCount++;
+          }
+
+          nextPageCursor = null;
+          hadLastStopErrorLastIteration = true;
+
+          continue;
+        }
+
+        rethrow;
       }
-
-      final Response response = await dio.get(computedUrlString);
-
-      departureMaps.addAll(response.data['stopTimes']);
-      nextPageCursor = response.data['nextPageCursor'];
     }
 
     final List<Departure> departures = [];
@@ -228,8 +202,6 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     }
 
     final TransitMode mode = TransitMode.fromString(departureMap['mode']);
-
-    _transitModeMap[mode] = _transitModeMap[mode]! + 1;
 
     final List<Stop> stops = [];
 
