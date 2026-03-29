@@ -113,7 +113,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
   }) async {
     final String modeString = modes.map((mode) => mode.toString()).join(',');
 
-    final DateTime now = DateTime.now();
+    final DateTime now = DateTime.now().toUtc();
     final String nowIsoString = now.toIso8601String();
 
     final String urlString =
@@ -139,7 +139,8 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
         }
 
         if (hadLastStopErrorLastIteration) {
-          computedUrlString += '&time=${lastStopTime!.toIso8601String()}';
+          computedUrlString +=
+              '&time=${lastStopTime!.toUtc().toIso8601String()}';
         } else {
           computedUrlString += '&time=$nowIsoString';
         }
@@ -155,7 +156,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
         departureMaps.addAll(response.data['stopTimes']);
         lastStopTime = DateTime.parse(
           response.data['stopTimes'].last['place']['scheduledDeparture'],
-        );
+        ).toUtc();
         hadLastStopErrorLastIteration = false;
       } on DioException catch (e) {
         if (e.response?.data['error'] == 'Departure is last stop in trip') {
