@@ -11,22 +11,11 @@ class _MapState extends State<_Map> {
   late MapController mapController;
   late LayerHitNotifier<Stop> hitNotifier;
 
-  Stop? _hitStation;
-
   @override
   void initState() {
     super.initState();
     mapController = MapController();
-    hitNotifier = ValueNotifier(null)
-      ..addListener(() {
-        final LayerHitResult<Stop>? result = hitNotifier.value;
-
-        if (result != null &&
-            context.read<StationDeparturesCubit>().state
-                is StationDeparturesLoaded) {
-          _hitStation = result.hitValues.first;
-        }
-      });
+    hitNotifier = ValueNotifier(null);
   }
 
   @override
@@ -54,11 +43,7 @@ class _MapState extends State<_Map> {
           initialCenter: const LatLng(42.68, 10.127),
           initialZoom: 4,
           minZoom: 1.5,
-          onMapEvent: (event) {
-            if (event is MapEventMove) {
-              _hitStation = null;
-            }
-          },
+          onTap: _handleMapTap,
         ),
         children: [
           TileLayer(
@@ -73,32 +58,25 @@ class _MapState extends State<_Map> {
             mapController: mapController,
           ),
 
-          RawGestureDetector(
-            behavior: HitTestBehavior.translucent,
-            gestures: <Type, GestureRecognizerFactory>{
-              TapGestureRecognizer:
-                  GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-                    () => TapGestureRecognizer(),
-                    (r) {
-                      r.onTap = () {
-                        if (_hitStation != null) {
-                          _onMarkerHit();
-                        }
-                      };
-                    },
-                  ),
-            },
-          ),
-
           const _MapDeparturesPolylineLayer(),
         ],
       ),
     );
   }
 
-  void _onMarkerHit() {
+  void _handleMapTap(TapPosition tapPosition, LatLng point) {
+    final LayerHitResult<Stop>? result = hitNotifier.value;
+    if (result == null || result.hitValues.isEmpty) return;
+    if (context.read<StationDeparturesCubit>().state
+        is! StationDeparturesLoaded) {
+      return;
+    }
+    _onMarkerHit(result.hitValues.first);
+  }
+
+  void _onMarkerHit(Stop station) {
     context.read<StationSelectionCubit>().selectStation(
-      selectedStop: _hitStation!,
+      selectedStop: station,
       departures:
           (context.read<StationDeparturesCubit>().state
                   as StationDeparturesLoaded)
