@@ -21,6 +21,7 @@ import 'package:station_reach/features/map/presentation/cubits/stations_departur
 import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_states.dart';
 import 'package:station_reach/features/map/presentation/widgets/highlighted_departures_modal/highlighted_departures_modal.dart';
 import 'package:station_reach/features/map/presentation/widgets/multi_polyline_layer/multi_polyline_layer.dart';
+import 'package:supercluster/supercluster.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_map.dart';

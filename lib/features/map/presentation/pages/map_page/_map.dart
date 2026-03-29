@@ -62,12 +62,16 @@ class _MapState extends State<_Map> {
         ),
         children: [
           TileLayer(
-            urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            urlTemplate:
+                'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
             subdomains: const ['a', 'b', 'c'],
             userAgentPackageName: 'eu.antons-webfabrik.station-reach',
           ),
 
-          _MapStationMarkersLayer(hitNotifier: hitNotifier),
+          _MapStationMarkersLayer(
+            hitNotifier: hitNotifier,
+            mapController: mapController,
+          ),
 
           RawGestureDetector(
             behavior: HitTestBehavior.translucent,

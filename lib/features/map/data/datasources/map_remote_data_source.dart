@@ -73,7 +73,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     required Station station,
   }) async {
     final String urlString =
-        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200&withScheduledSkippedStops=true';
+        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200';
 
     final List departureMaps = [];
 
@@ -149,9 +149,13 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
       final double stopLatitude = stopMap['lat'];
       final double stopLongitude = stopMap['lon'];
 
-      final DateTime scheduledArrival = DateTime.parse(
-        stopMap['scheduledArrival'],
-      );
+      final String? scheduledArrivalString =
+          stopMap['scheduledArrival'] ?? stopMap['scheduledDeparture'];
+      if (scheduledArrivalString == null) {
+        continue;
+      }
+
+      final DateTime scheduledArrival = DateTime.parse(scheduledArrivalString);
 
       final Duration duration = scheduledArrival.difference(departureTime);
 
