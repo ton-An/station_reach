@@ -22,6 +22,14 @@ class _AttributionLegend extends StatelessWidget {
           name: AppLocalizations.of(context)!.transitousAttribution,
           url: 'https://transitous.org/',
         ),
+        Attribution(
+          name: AppLocalizations.of(context)!.privacyPolicy,
+          url: 'https://station-reach.eu/datenschutz.html',
+        ),
+        Attribution(
+          name: AppLocalizations.of(context)!.impressum,
+          url: 'https://station-reach.eu/impressum.html',
+        ),
       ],
     );
   }

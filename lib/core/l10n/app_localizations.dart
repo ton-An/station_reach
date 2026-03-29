@@ -165,6 +165,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Departures'**
   String get departures;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @impressum.
+  ///
+  /// In en, this message translates to:
+  /// **'Impressum'**
+  String get impressum;
 }
 
 class _AppLocalizationsDelegate

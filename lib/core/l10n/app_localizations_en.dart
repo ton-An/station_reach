@@ -43,4 +43,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get departures => 'Departures';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get impressum => 'Impressum';
 }
