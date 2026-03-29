@@ -188,23 +188,28 @@ class _MainAppState extends State<MainApp> {
               routes: [
                 GoRoute(
                   path: MapPage.pageName,
-                  builder: (context, state) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider(create: (context) => inAppNotificationCubit),
-                      BlocProvider(
-                        create: (context) => getIt<StationSearchCubit>(),
-                      ),
-                      BlocProvider(
-                        create: (context) => getIt<StationDeparturesCubit>(),
-                      ),
-                      BlocProvider(
-                        create: (context) => getIt<StationSelectionCubit>(),
-                      ),
-                      BlocProvider(
-                        create: (context) => getIt<DepartureSelectionCubit>(),
-                      ),
-                    ],
-                    child: const MapPage(),
+                  builder: (context, state) => PopScope(
+                    /// Keep `/map` on top of the base route so interactive pop (iOS swipe-back)
+                    /// cannot reveal the shell used for in-app notification blur.
+                    canPop: false,
+                    child: MultiBlocProvider(
+                      providers: [
+                        BlocProvider(create: (context) => inAppNotificationCubit),
+                        BlocProvider(
+                          create: (context) => getIt<StationSearchCubit>(),
+                        ),
+                        BlocProvider(
+                          create: (context) => getIt<StationDeparturesCubit>(),
+                        ),
+                        BlocProvider(
+                          create: (context) => getIt<StationSelectionCubit>(),
+                        ),
+                        BlocProvider(
+                          create: (context) => getIt<DepartureSelectionCubit>(),
+                        ),
+                      ],
+                      child: const MapPage(),
+                    ),
                   ),
                 ),
               ],
