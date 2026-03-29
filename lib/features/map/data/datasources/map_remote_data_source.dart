@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:station_reach/core/failures/transit/no_departures_found_failure.dart';
 import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
@@ -145,8 +146,13 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
 
         final Response response = await dio.get(computedUrlString);
 
-        departureMaps.addAll(response.data['stopTimes']);
         nextPageCursor = response.data['nextPageCursor'];
+
+        if (nextPageCursor == null || nextPageCursor.isEmpty) {
+          throw const NoDeparturesFoundFailure();
+        }
+
+        departureMaps.addAll(response.data['stopTimes']);
         lastStopTime = DateTime.parse(
           response.data['stopTimes'].last['place']['scheduledDeparture'],
         );

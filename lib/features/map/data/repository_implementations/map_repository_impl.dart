@@ -44,6 +44,8 @@ class MapRepositoryImpl extends MapRepository {
           .getStationDepartures(station: station);
 
       return Right(departures);
+    } on Failure catch (failure) {
+      return Left(failure);
     } on DioException catch (dioException) {
       final Failure failure = failureHandler.dioExceptionMapper(
         dioException: dioException,
