@@ -194,7 +194,9 @@ class _MainAppState extends State<MainApp> {
                     canPop: false,
                     child: MultiBlocProvider(
                       providers: [
-                        BlocProvider(create: (context) => inAppNotificationCubit),
+                        BlocProvider(
+                          create: (context) => inAppNotificationCubit,
+                        ),
                         BlocProvider(
                           create: (context) => getIt<StationSearchCubit>(),
                         ),
