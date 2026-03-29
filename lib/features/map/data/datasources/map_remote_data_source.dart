@@ -73,7 +73,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     required Station station,
   }) async {
     final String urlString =
-        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200';
+        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200&withScheduledSkippedStops=true';
 
     final List departureMaps = [];
 
