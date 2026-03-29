@@ -93,4 +93,65 @@ enum TransitMode {
         return TransitMode.other;
     }
   }
+
+  String toString() {
+    switch (this) {
+      case TransitMode.walk:
+        return 'WALK';
+      case TransitMode.bike:
+        return 'BIKE';
+      case TransitMode.rental:
+        return 'RENTAL';
+      case TransitMode.car:
+        return 'CAR';
+      case TransitMode.carParking:
+        return 'CAR_PARKING';
+      case TransitMode.carDropoff:
+        return 'CAR_DROPOFF';
+      case TransitMode.odm:
+        return 'ODM';
+      case TransitMode.flex:
+        return 'FLEX';
+      case TransitMode.transit:
+        return 'TRANSIT';
+      case TransitMode.tram:
+        return 'TRAM';
+      case TransitMode.subway:
+        return 'SUBWAY';
+      case TransitMode.ferry:
+        return 'FERRY';
+      case TransitMode.airplane:
+        return 'AIRPLANE';
+      case TransitMode.suburban:
+        return 'SUBURBAN';
+      case TransitMode.bus:
+        return 'BUS';
+      case TransitMode.coach:
+        return 'COACH';
+      case TransitMode.rail:
+        return 'RAIL';
+      case TransitMode.highspeedRail:
+        return 'HIGHSPEED_RAIL';
+      case TransitMode.longDistance:
+        return 'LONG_DISTANCE';
+      case TransitMode.nightRail:
+        return 'NIGHT_RAIL';
+      case TransitMode.regionalFastRail:
+        return 'REGIONAL_FAST_RAIL';
+      case TransitMode.regionalRail:
+        return 'REGIONAL_RAIL';
+      case TransitMode.cableCar:
+        return 'CABLE_CAR';
+      case TransitMode.funicular:
+        return 'FUNICULAR';
+      case TransitMode.aerialLift:
+        return 'AERIAL_LIFT';
+      case TransitMode.arealLift:
+        return 'AREAL_LIFT';
+      case TransitMode.metro:
+        return 'METRO';
+      default:
+        return 'OTHER';
+    }
+  }
 }
