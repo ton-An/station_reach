@@ -15,6 +15,68 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
 
   final Dio dio;
 
+  Map<TransitMode, int> _transitModeMap = {
+    TransitMode.walk: 0,
+    TransitMode.bike: 0,
+    TransitMode.rental: 0,
+    TransitMode.car: 0,
+    TransitMode.carParking: 0,
+    TransitMode.carDropoff: 0,
+    TransitMode.odm: 0,
+    TransitMode.flex: 0,
+    TransitMode.transit: 0,
+    TransitMode.tram: 0,
+    TransitMode.subway: 0,
+    TransitMode.ferry: 0,
+    TransitMode.airplane: 0,
+    TransitMode.suburban: 0,
+    TransitMode.bus: 0,
+    TransitMode.coach: 0,
+    TransitMode.rail: 0,
+    TransitMode.highspeedRail: 0,
+    TransitMode.longDistance: 0,
+    TransitMode.nightRail: 0,
+    TransitMode.regionalFastRail: 0,
+    TransitMode.regionalRail: 0,
+    TransitMode.cableCar: 0,
+    TransitMode.funicular: 0,
+    TransitMode.aerialLift: 0,
+    TransitMode.arealLift: 0,
+    TransitMode.metro: 0,
+    TransitMode.other: 0,
+  };
+
+  Map<TransitMode, int> _transitModeResetMap = {
+    TransitMode.walk: 0,
+    TransitMode.bike: 0,
+    TransitMode.rental: 0,
+    TransitMode.car: 0,
+    TransitMode.carParking: 0,
+    TransitMode.carDropoff: 0,
+    TransitMode.odm: 0,
+    TransitMode.flex: 0,
+    TransitMode.transit: 0,
+    TransitMode.tram: 0,
+    TransitMode.subway: 0,
+    TransitMode.ferry: 0,
+    TransitMode.airplane: 0,
+    TransitMode.suburban: 0,
+    TransitMode.bus: 0,
+    TransitMode.coach: 0,
+    TransitMode.rail: 0,
+    TransitMode.highspeedRail: 0,
+    TransitMode.longDistance: 0,
+    TransitMode.nightRail: 0,
+    TransitMode.regionalFastRail: 0,
+    TransitMode.regionalRail: 0,
+    TransitMode.cableCar: 0,
+    TransitMode.funicular: 0,
+    TransitMode.aerialLift: 0,
+    TransitMode.arealLift: 0,
+    TransitMode.metro: 0,
+    TransitMode.other: 0,
+  };
+
   @override
   Future<List<Station>> searchStations({required String query}) async {
     final Uri url = Uri.parse(
@@ -72,14 +134,56 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
   Future<List<Departure>> getStationDepartures({
     required Station station,
   }) async {
+    List<Departure> remoteDepartures = await _getDeparturesByMode(
+      station: station,
+      modes: [
+        TransitMode.coach,
+        TransitMode.highspeedRail,
+        TransitMode.longDistance,
+        TransitMode.nightRail,
+      ],
+      pageCount: 10,
+    );
+
+    List<Departure> localDepartures = await _getDeparturesByMode(
+      station: station,
+      modes: [
+        TransitMode.tram,
+        TransitMode.subway,
+        TransitMode.suburban,
+        TransitMode.bus,
+        TransitMode.regionalFastRail,
+        TransitMode.regionalRail,
+        TransitMode.cableCar,
+        TransitMode.funicular,
+        TransitMode.aerialLift,
+        TransitMode.arealLift,
+        TransitMode.metro,
+      ],
+      pageCount: 6,
+    );
+
+    return [...remoteDepartures, ...localDepartures];
+  }
+
+  @override
+  Future<List<Departure>> _getDeparturesByMode({
+    required Station station,
+    required List<TransitMode> modes,
+    required int pageCount,
+  }) async {
+    final String modeString = modes.map((mode) => mode.toString()).join(',');
+
     final String urlString =
-        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200';
+        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200&mode=${modes.join(',')}';
 
     final List departureMaps = [];
 
+    _transitModeMap = _transitModeResetMap;
+
     String? nextPageCursor;
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < pageCount; i++) {
       String computedUrlString = urlString;
 
       if (nextPageCursor != null && nextPageCursor.isNotEmpty) {
@@ -124,6 +228,8 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     }
 
     final TransitMode mode = TransitMode.fromString(departureMap['mode']);
+
+    _transitModeMap[mode] = _transitModeMap[mode]! + 1;
 
     final List<Stop> stops = [];
 
