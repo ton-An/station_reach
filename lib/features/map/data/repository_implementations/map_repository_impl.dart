@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:station_reach/core/data/repository/failure_handler.dart';
 import 'package:station_reach/features/map/data/datasources/map_remote_data_source.dart';
+import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
@@ -36,12 +37,18 @@ class MapRepositoryImpl extends MapRepository {
   }
 
   @override
-  Future<Either<Failure, List<Departure>>> getStationDepartures({
+  Future<Either<Failure, List<Departure>>> getStationDeparturesByMode({
     required Station station,
+    required List<TransitMode> modes,
+    required int requestCount,
   }) async {
     try {
       final List<Departure> departures = await mapRemoteDataSource
-          .getStationDepartures(station: station);
+          .getStationDeparturesByMode(
+            station: station,
+            modes: modes,
+            requestCount: requestCount,
+          );
 
       return Right(departures);
     } on Failure catch (failure) {

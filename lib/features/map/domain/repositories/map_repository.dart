@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -8,7 +9,9 @@ abstract class MapRepository {
     required String query,
   });
 
-  Future<Either<Failure, List<Departure>>> getStationDepartures({
+  Future<Either<Failure, List<Departure>>> getStationDeparturesByMode({
     required Station station,
+    required List<TransitMode> modes,
+    required int requestCount,
   });
 }

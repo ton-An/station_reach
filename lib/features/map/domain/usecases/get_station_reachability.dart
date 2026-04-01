@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:station_reach/core/failures/transit/no_departures_found_failure.dart';
+import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
 import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:station_reach/features/map/domain/models/stop.dart';
@@ -24,13 +26,62 @@ class GetStationDepartures {
   Future<Either<Failure, List<Departure>>> _getStationDepartures({
     required Station station,
   }) async {
-    final Either<Failure, List<Departure>> departuresEither =
-        await mapRepository.getStationDepartures(station: station);
+    Either<Failure, List<Departure>> longDistanceDeparturesEither =
+        await mapRepository.getStationDeparturesByMode(
+          station: station,
+          modes: [
+            TransitMode.coach,
+            TransitMode.highspeedRail,
+            TransitMode.longDistance,
+            TransitMode.nightRail,
+          ],
+          requestCount: 14,
+        );
 
-    return departuresEither.fold(
-      (Failure failure) => Left(failure),
-      (List<Departure> departures) =>
-          _filterDuplicateDepartures(station: station, departures: departures),
+    Either<Failure, List<Departure>> regionalDeparturesEither =
+        await mapRepository.getStationDeparturesByMode(
+          station: station,
+          modes: [
+            TransitMode.tram,
+            TransitMode.subway,
+            TransitMode.suburban,
+            TransitMode.bus,
+            TransitMode.regionalFastRail,
+            TransitMode.regionalRail,
+            TransitMode.cableCar,
+            TransitMode.funicular,
+            TransitMode.aerialLift,
+            TransitMode.arealLift,
+            TransitMode.metro,
+          ],
+          requestCount: 6,
+        );
+
+    return longDistanceDeparturesEither.fold(
+      (Failure failure) {
+        if (failure is NoDeparturesFoundFailure) {
+          return regionalDeparturesEither.fold(
+            Left.new,
+            (List<Departure> regionalDepartures) => _filterDuplicateDepartures(
+              station: station,
+              departures: regionalDepartures,
+            ),
+          );
+        }
+        return Left(failure);
+      },
+      (List<Departure> longDistanceDepartures) {
+        return regionalDeparturesEither.fold(
+          (Failure failure) => _filterDuplicateDepartures(
+            station: station,
+            departures: longDistanceDepartures,
+          ),
+          (List<Departure> regionalDepartures) => _filterDuplicateDepartures(
+            station: station,
+            departures: [...longDistanceDepartures, ...regionalDepartures],
+          ),
+        );
+      },
     );
   }
 

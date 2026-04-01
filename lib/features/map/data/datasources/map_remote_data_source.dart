@@ -8,7 +8,11 @@ import 'package:station_reach/features/map/domain/models/stop.dart';
 abstract class MapRemoteDataSource {
   Future<List<Station>> searchStations({required String query});
 
-  Future<List<Departure>> getStationDepartures({required Station station});
+  Future<List<Departure>> getStationDeparturesByMode({
+    required Station station,
+    required List<TransitMode> modes,
+    required int requestCount,
+  });
 }
 
 class MapRemoteDataSourceImpl extends MapRemoteDataSource {
@@ -70,46 +74,10 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
   }
 
   @override
-  Future<List<Departure>> getStationDepartures({
-    required Station station,
-  }) async {
-    List<Departure> remoteDepartures = await _getDeparturesByMode(
-      station: station,
-      modes: [
-        TransitMode.coach,
-        TransitMode.highspeedRail,
-        TransitMode.longDistance,
-        TransitMode.nightRail,
-      ],
-      pageCount: 14,
-    );
-
-    List<Departure> localDepartures = await _getDeparturesByMode(
-      station: station,
-      modes: [
-        TransitMode.tram,
-        TransitMode.subway,
-        TransitMode.suburban,
-        TransitMode.bus,
-        TransitMode.regionalFastRail,
-        TransitMode.regionalRail,
-        TransitMode.cableCar,
-        TransitMode.funicular,
-        TransitMode.aerialLift,
-        TransitMode.arealLift,
-        TransitMode.metro,
-      ],
-      pageCount: 6,
-    );
-
-    return [...remoteDepartures, ...localDepartures];
-  }
-
-  @override
-  Future<List<Departure>> _getDeparturesByMode({
+  Future<List<Departure>> getStationDeparturesByMode({
     required Station station,
     required List<TransitMode> modes,
-    required int pageCount,
+    required int requestCount,
   }) async {
     final String modeString = modes.map((mode) => mode.toString()).join(',');
 
@@ -126,7 +94,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     int lastStopErrorCount = 0;
     bool hadLastStopErrorLastIteration = false;
 
-    for (int i = 0; i < pageCount + lastStopErrorCount; i++) {
+    for (int i = 0; i < requestCount + lastStopErrorCount; i++) {
       try {
         String computedUrlString = urlString;
 
