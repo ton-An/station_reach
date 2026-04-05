@@ -150,7 +150,7 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
               style: WebfabrikTheme.of(context).text.caption1.copyWith(
                 color: Colors.black,
                 fontVariations: [FontVariation('wght', 500)],
-                shadows: [
+                shadows: const [
                   Shadow(
                     // bottomLeft
                     offset: Offset(-.5, -.5),
