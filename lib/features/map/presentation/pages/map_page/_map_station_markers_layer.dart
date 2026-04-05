@@ -79,12 +79,12 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
       child: TranslucentPointer(
         child: Stack(
           children: [
-            MarkerLayer(markers: _visibleStationTextMarkers),
-
             CircleLayer(
               circles: _reachableStationsMarkers,
               hitNotifier: widget.hitNotifier,
             ),
+
+            MarkerLayer(markers: _visibleStationTextMarkers),
           ],
         ),
       ),
@@ -120,7 +120,7 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
             reachableStations[stationId]['station'].latitude,
             reachableStations[stationId]['station'].longitude,
           ),
-          radius: 6,
+          radius: 6.3,
           color: ColorHelper.interpolateColors(
             WebfabrikTheme.of(context).colors.timelineGradient,
             reachableStations[stationId]['duration'] / 28,
