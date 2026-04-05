@@ -7,15 +7,17 @@ class _SearchResults extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
+    final animationDuration = theme.durations.tiny * .9;
+
     return BlocBuilder<StationSearchCubit, StationSearchState>(
       builder: (context, stationSearchState) {
         return AnimatedContainer(
-          duration: theme.durations.tiny,
+          duration: animationDuration,
           constraints: BoxConstraints(
             maxHeight: stationSearchState is StationSearchDataState ? 250 : 0,
           ),
           child: AnimatedSize(
-            duration: theme.durations.xTiny,
+            duration: animationDuration,
             curve: Curves.easeOut,
             child: ListView.builder(
               itemCount: stationSearchState is StationSearchDataState
