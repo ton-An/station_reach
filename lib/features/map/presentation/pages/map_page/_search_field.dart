@@ -27,8 +27,8 @@ class _SearchField extends StatelessWidget {
         prefixMode: OverlayVisibilityMode.always,
         prefix: Padding(
           padding: EdgeInsets.only(
-            top: theme.spacing.tiny * 1.5,
-            left: theme.spacing.medium,
+            top: theme.spacing.small,
+            left: theme.spacing.medium + theme.spacing.small,
             right: theme.spacing.xSmall,
           ),
           child: Icon(
