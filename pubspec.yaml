@@ -1,7 +1,7 @@
 name: station_reach
 description: "See where transit takes you!"
 publish_to: "none"
-version: 0.1.0
+version: 0.1.1
 
 environment:
   sdk: ^3.9.0-333.2.beta
