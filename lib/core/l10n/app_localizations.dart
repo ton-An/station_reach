@@ -106,6 +106,12 @@ abstract class AppLocalizations {
   /// **'© OpenStreetMap'**
   String get openStreetMapAttribution;
 
+  /// No description provided for @cartoDBAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'© CartoDB'**
+  String get cartoDBAttribution;
+
   /// No description provided for @results.
   ///
   /// In en, this message translates to:

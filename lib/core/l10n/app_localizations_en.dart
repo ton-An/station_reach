@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openStreetMapAttribution => '© OpenStreetMap';
 
   @override
+  String get cartoDBAttribution => '© CartoDB';
+
+  @override
   String get results => 'Results';
 
   @override

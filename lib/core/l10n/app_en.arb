@@ -1,6 +1,7 @@
 {
     "appName": "Station Reach",
     "openStreetMapAttribution": "© OpenStreetMap",
+    "cartoDBAttribution": "© CartoDB",
     "results": "Results",
     "searchStations": "Search Stations",
     "mapTilerAttribution": "© MapTiler",

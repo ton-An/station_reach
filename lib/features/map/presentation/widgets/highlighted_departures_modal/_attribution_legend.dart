@@ -15,6 +15,10 @@ class _AttributionLegend extends StatelessWidget {
           url: 'https://www.openstreetmap.org/copyright',
         ),
         Attribution(
+          name: AppLocalizations.of(context)!.cartoDBAttribution,
+          url: 'https://carto.com/attribution',
+        ),
+        Attribution(
           name: AppLocalizations.of(context)!.dataSourcesAttribution,
           url: 'https://transitous.org/sources/',
         ),
