@@ -11,6 +11,7 @@ class _Search extends StatelessWidget {
       alignment: Alignment.topCenter,
       child: PointerInterceptor(
         child: SafeArea(
+          bottom: false,
           child: Container(
             margin: EdgeInsets.only(
               top: theme.spacing.medium,
