@@ -53,7 +53,8 @@ class _SearchResults extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.only(
                       top: theme.spacing.xSmall,
-                      left: theme.spacing.xSmall,
+                      left: theme.spacing.medium,
+                      right: theme.spacing.medium,
                       bottom: theme.spacing.xSmall,
                     ),
                     child: Row(
