@@ -14,7 +14,11 @@ class _SearchResults extends StatelessWidget {
         return AnimatedContainer(
           duration: animationDuration,
           constraints: BoxConstraints(
-            maxHeight: stationSearchState is StationSearchDataState ? 250 : 0,
+            maxHeight:
+                stationSearchState is StationSearchDataState &&
+                    stationSearchState.stations.isNotEmpty
+                ? 250
+                : 0,
           ),
           child: AnimatedSize(
             duration: animationDuration,
