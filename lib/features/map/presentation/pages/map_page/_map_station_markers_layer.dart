@@ -149,7 +149,7 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
               reachableStations[stationId]['station'].name,
               style: WebfabrikTheme.of(context).text.caption1.copyWith(
                 color: Colors.black,
-                fontVariations: [FontVariation('wght', 500)],
+                fontVariations: const [FontVariation('wght', 500)],
                 shadows: const [
                   Shadow(
                     // bottomLeft
