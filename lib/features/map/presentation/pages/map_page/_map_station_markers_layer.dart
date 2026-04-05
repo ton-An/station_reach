@@ -84,7 +84,9 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
               hitNotifier: widget.hitNotifier,
             ),
 
-            MarkerLayer(markers: _visibleStationTextMarkers),
+            TranslucentPointer(
+              child: MarkerLayer(markers: _visibleStationTextMarkers),
+            ),
           ],
         ),
       ),
