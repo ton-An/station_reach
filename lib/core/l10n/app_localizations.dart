@@ -154,6 +154,12 @@ abstract class AppLocalizations {
   /// **'30min'**
   String get thirtyMin;
 
+  /// No description provided for @sevenHours.
+  ///
+  /// In en, this message translates to:
+  /// **'7h'**
+  String get sevenHours;
+
   /// No description provided for @fourteenHoursPlus.
   ///
   /// In en, this message translates to:

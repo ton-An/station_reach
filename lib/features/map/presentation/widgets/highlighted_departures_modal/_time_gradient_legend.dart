@@ -51,6 +51,22 @@ class _TimeGradientLegend extends StatelessWidget {
                     color: theme.colors.background,
                   ),
                 ),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: theme.spacing.xSmall,
+                    vertical: theme.spacing.xTiny,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colors.translucentBackgroundContrast,
+                    borderRadius: BorderRadius.circular(theme.radii.small),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.sevenHours,
+                    style: theme.text.subhead.copyWith(
+                      color: theme.colors.background,
+                    ),
+                  ),
+                ),
                 Text(
                   AppLocalizations.of(context)!.fourteenHoursPlus,
                   style: theme.text.subhead.copyWith(

@@ -39,6 +39,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thirtyMin => '30min';
 
   @override
+  String get sevenHours => '7h';
+
+  @override
   String get fourteenHoursPlus => '14h+';
 
   @override
