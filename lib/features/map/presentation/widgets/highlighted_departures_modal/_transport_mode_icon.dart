@@ -23,10 +23,21 @@ class _TransitModeIcon extends StatelessWidget {
     switch (mode) {
       case TransitMode.rail ||
           TransitMode.highspeedRail ||
+          TransitMode.longDistance ||
           TransitMode.nightRail ||
           TransitMode.regionalFastRail ||
+          TransitMode.suburban ||
           TransitMode.regionalRail:
         return Icons.train;
+      case TransitMode.tram:
+        return Icons.tram;
+      case TransitMode.subway || TransitMode.metro:
+        return Icons.subway;
+      case TransitMode.bus || TransitMode.coach:
+        return Icons.directions_bus;
+      case TransitMode.ferry:
+        return Icons.directions_boat;
+      case TransitMode.funicular:
       default:
         return Icons.question_mark_rounded;
     }
