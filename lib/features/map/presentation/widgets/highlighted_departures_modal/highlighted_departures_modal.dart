@@ -51,50 +51,58 @@ class _HighlightedDeparturesModalState
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DepartureSelectionCubit, DepartureSelectionState>(
-      listener: (context, departureSelectionState) =>
-          _handleDepartureSelection(departureSelectionState),
-      builder: (context, departureSelectionState) {
-        return BlocBuilder<StationSelectionCubit, StationSelectionState>(
-          builder: (context, stationSelectionState) {
-            return Padding(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              child: WebfabrikModal(
-                title: _getModalTitle(
-                  departureSelectionState,
-                  stationSelectionState,
-                ),
-                displayBackButton: departureSelectionState is DepartureSelected,
-                onBackPressed: () {
-                  context.read<DepartureSelectionCubit>().deselectDeparture();
-                },
-                secondaryButtons: const [],
-
-                legend: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [_TimeGradientLegend(), _AttributionLegend()],
-                ),
-                builder: (context, scrollController) => PageView(
-                  controller: pageController,
-                  physics: departureSelectionState is DepartureSelected
-                      ? null
-                      : const NeverScrollableScrollPhysics(),
-                  children: [
-                    _DeparturesList(scrollController: scrollController),
-
-                    _DeparturesItinerary(
-                      departure: _selectedDeparture,
-                      scrollController: scrollController,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
+    return BlocListener<StationSelectionCubit, StationSelectionState>(
+      listener: (context, state) {
+        if (state is StationSelectedState) {
+          context.read<DepartureSelectionCubit>().deselectDeparture();
+        }
       },
+      child: BlocConsumer<DepartureSelectionCubit, DepartureSelectionState>(
+        listener: (context, departureSelectionState) =>
+            _handleDepartureSelection(departureSelectionState),
+        builder: (context, departureSelectionState) {
+          return BlocBuilder<StationSelectionCubit, StationSelectionState>(
+            builder: (context, stationSelectionState) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                child: WebfabrikModal(
+                  title: _getModalTitle(
+                    departureSelectionState,
+                    stationSelectionState,
+                  ),
+                  displayBackButton:
+                      departureSelectionState is DepartureSelected,
+                  onBackPressed: () {
+                    context.read<DepartureSelectionCubit>().deselectDeparture();
+                  },
+                  secondaryButtons: const [],
+
+                  legend: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [_TimeGradientLegend(), _AttributionLegend()],
+                  ),
+                  builder: (context, scrollController) => PageView(
+                    controller: pageController,
+                    physics: departureSelectionState is DepartureSelected
+                        ? null
+                        : const NeverScrollableScrollPhysics(),
+                    children: [
+                      _DeparturesList(scrollController: scrollController),
+
+                      _DeparturesItinerary(
+                        departure: _selectedDeparture,
+                        scrollController: scrollController,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
