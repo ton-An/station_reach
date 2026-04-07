@@ -15,7 +15,12 @@ class _DeparturesList extends StatelessWidget {
           return ListView.builder(
             controller: scrollController,
             itemCount: state.departures.length,
-            padding: EdgeInsets.all(theme.spacing.medium),
+            padding: EdgeInsets.only(
+              left: theme.spacing.medium,
+              top: theme.spacing.medium,
+              right: theme.spacing.medium,
+              bottom: theme.spacing.large,
+            ),
             itemBuilder: (context, index) => _DepartureListItem(
               departure: state.departures[index],
               duration: state.departures[index].stops

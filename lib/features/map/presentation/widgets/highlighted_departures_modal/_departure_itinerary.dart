@@ -22,7 +22,12 @@ class _DeparturesItinerary extends StatelessWidget {
       child: ListView.builder(
         controller: scrollController,
         itemCount: _selectedDeparture!.stops.length,
-        padding: EdgeInsets.all(theme.spacing.medium),
+        padding: EdgeInsets.only(
+          left: theme.spacing.medium,
+          top: theme.spacing.medium,
+          right: theme.spacing.medium,
+          bottom: theme.spacing.large,
+        ),
         itemBuilder: (context, index) {
           return Column(
             children: [
