@@ -65,7 +65,7 @@ class MapPage extends StatelessWidget {
           resizeToAvoidBottomInset: false,
           body: Stack(
             children: [
-              _Map(),
+              const _Map(),
               if (screenWidth >= 900)
                 Align(
                   alignment: Alignment.bottomLeft,
@@ -84,7 +84,7 @@ class MapPage extends StatelessWidget {
                     ),
                   ),
                 ),
-              Positioned.fill(
+              const Positioned.fill(
                 child: Column(
                   children: [
                     _Search(),
