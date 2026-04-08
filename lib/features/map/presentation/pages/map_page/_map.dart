@@ -70,18 +70,6 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
               mapController.camera.center,
               mapController.camera.zoom + (pointerSignal.scale - 1) * 2,
             );
-          } else if (pointerSignal is PointerScrollEvent) {
-            if (pointerSignal.scrollDelta.dy < 0) {
-              mapController.move(
-                mapController.camera.center,
-                mapController.camera.zoom + 1,
-              );
-            } else {
-              mapController.move(
-                mapController.camera.center,
-                mapController.camera.zoom - 1,
-              );
-            }
           }
         },
         child: FlutterMap(
