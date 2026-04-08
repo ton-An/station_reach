@@ -63,32 +63,54 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
           );
         }
       },
-      child: FlutterMap(
-        mapController: mapController,
-        options: MapOptions(
-          initialCenter: const LatLng(42.68, 10.127),
-          initialZoom: 4,
-          minZoom: 1.5,
-          interactionOptions: const InteractionOptions(
-            flags: InteractiveFlag.all & ~InteractiveFlag.doubleTapZoom,
+      child: Listener(
+        onPointerSignal: (pointerSignal) {
+          if (pointerSignal is PointerScaleEvent) {
+            mapController.move(
+              mapController.camera.center,
+              mapController.camera.zoom + (pointerSignal.scale - 1) * 2,
+            );
+          } else if (pointerSignal is PointerScrollEvent) {
+            if (pointerSignal.scrollDelta.dy < 0) {
+              mapController.move(
+                mapController.camera.center,
+                mapController.camera.zoom + 1,
+              );
+            } else {
+              mapController.move(
+                mapController.camera.center,
+                mapController.camera.zoom - 1,
+              );
+            }
+          }
+        },
+        child: FlutterMap(
+          mapController: mapController,
+          options: MapOptions(
+            initialCenter: const LatLng(42.68, 10.127),
+            initialZoom: 4,
+            minZoom: 1.5,
+            interactionOptions: const InteractionOptions(
+              flags: InteractiveFlag.all & ~InteractiveFlag.doubleTapZoom,
+            ),
+            onTap: _handleMapTap,
           ),
-          onTap: _handleMapTap,
+          children: [
+            TileLayer(
+              urlTemplate:
+                  'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
+              subdomains: const ['a', 'b', 'c'],
+              userAgentPackageName: 'eu.antons-webfabrik.station-reach',
+            ),
+
+            _MapStationMarkersLayer(
+              hitNotifier: hitNotifier,
+              mapController: mapController,
+            ),
+
+            const _MapDeparturesPolylineLayer(),
+          ],
         ),
-        children: [
-          TileLayer(
-            urlTemplate:
-                'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
-            subdomains: const ['a', 'b', 'c'],
-            userAgentPackageName: 'eu.antons-webfabrik.station-reach',
-          ),
-
-          _MapStationMarkersLayer(
-            hitNotifier: hitNotifier,
-            mapController: mapController,
-          ),
-
-          const _MapDeparturesPolylineLayer(),
-        ],
       ),
     );
   }
@@ -135,13 +157,14 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
     final LatLng newCenter = camera.focusedZoomCenter(relative, newZoom);
 
     final CurveTween curve = CurveTween(curve: _doubleTapZoomCurve);
-    _doubleTapZoomAnimation = Tween<double>(begin: camera.zoom, end: newZoom)
-        .chain(curve)
-        .animate(_doubleTapZoomController);
-    _doubleTapCenterAnimation =
-        LatLngTween(begin: camera.center, end: newCenter).chain(curve).animate(
-              _doubleTapZoomController,
-            );
+    _doubleTapZoomAnimation = Tween<double>(
+      begin: camera.zoom,
+      end: newZoom,
+    ).chain(curve).animate(_doubleTapZoomController);
+    _doubleTapCenterAnimation = LatLngTween(
+      begin: camera.center,
+      end: newCenter,
+    ).chain(curve).animate(_doubleTapZoomController);
 
     _doubleTapZoomController.forward(from: 0);
   }
