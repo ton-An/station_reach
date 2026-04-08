@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -35,6 +36,14 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  static final ScrollBehavior _appScrollBehavior =
+      const MaterialScrollBehavior().copyWith(
+        dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
+        },
+      );
+
   late final GoRouter router;
   late final InAppNotificationCubit inAppNotificationCubit;
   @override
@@ -150,6 +159,7 @@ class _MainAppState extends State<MainApp> {
         providers: [BlocProvider(create: (context) => inAppNotificationCubit)],
 
         child: CupertinoApp.router(
+          scrollBehavior: _appScrollBehavior,
           onGenerateTitle: (BuildContext context) =>
               AppLocalizations.of(context)!.appName,
           routerConfig: router,
