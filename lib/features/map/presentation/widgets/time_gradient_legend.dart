@@ -3,10 +3,14 @@
     - [ ] Maybe add interactivity to the legend? (e.g. highlight stops with certain durations)
 */
 
-part of 'highlighted_departures_modal.dart';
+import 'dart:ui';
 
-class _TimeGradientLegend extends StatelessWidget {
-  const _TimeGradientLegend();
+import 'package:flutter/material.dart';
+import 'package:station_reach/core/l10n/app_localizations.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
+
+class TimeGradientLegend extends StatelessWidget {
+  const TimeGradientLegend();
 
   @override
   Widget build(BuildContext context) {

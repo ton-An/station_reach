@@ -18,8 +18,10 @@ import 'package:station_reach/features/map/presentation/cubits/station_selection
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_states.dart';
+import 'package:station_reach/features/map/presentation/widgets/attribution_legend.dart';
 import 'package:station_reach/features/map/presentation/widgets/highlighted_departures_modal/highlighted_departures_modal.dart';
 import 'package:station_reach/features/map/presentation/widgets/multi_polyline_layer/multi_polyline_layer.dart';
+import 'package:station_reach/features/map/presentation/widgets/time_gradient_legend.dart';
 import 'package:supercluster/supercluster.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -39,6 +41,10 @@ class MapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     return BlocListener<StationSearchCubit, StationSearchState>(
       listener: (context, searchState) {
         if (searchState is StationSearchStateFailure) {
@@ -55,15 +61,34 @@ class MapPage extends StatelessWidget {
             );
           }
         },
-        child: const Scaffold(
+        child: Scaffold(
           resizeToAvoidBottomInset: false,
           body: Stack(
             children: [
               _Map(),
+              if (screenWidth >= 900)
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      left: theme.spacing.medium,
+                      bottom: theme.spacing.medium,
+                    ),
+                    width: 320,
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        TimeGradientLegend(),
+                        StationReachAttributionLegend(),
+                      ],
+                    ),
+                  ),
+                ),
               Positioned.fill(
                 child: Column(
                   children: [
                     _Search(),
+
                     Expanded(child: HighlightedDeparturesModal()),
                   ],
                 ),

@@ -1,7 +1,9 @@
-part of 'highlighted_departures_modal.dart';
+import 'package:flutter/material.dart';
+import 'package:station_reach/core/l10n/app_localizations.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-class _AttributionLegend extends StatelessWidget {
-  const _AttributionLegend();
+class StationReachAttributionLegend extends StatelessWidget {
+  const StationReachAttributionLegend({super.key});
 
   @override
   Widget build(BuildContext context) {

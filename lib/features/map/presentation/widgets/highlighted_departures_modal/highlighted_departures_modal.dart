@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +13,13 @@ import 'package:station_reach/features/map/presentation/cubits/station_selection
 import 'package:station_reach/features/map/presentation/cubits/station_selection_cubit/station_selection_states.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_cubit.dart';
 import 'package:station_reach/features/map/presentation/cubits/stations_departures_cubit/station_departures_states.dart';
+import 'package:station_reach/features/map/presentation/widgets/attribution_legend.dart';
+import 'package:station_reach/features/map/presentation/widgets/time_gradient_legend.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-part '_attribution_legend.dart';
 part '_departure_itinerary.dart';
 part '_departure_list_item.dart';
 part '_departures_list.dart';
-part '_time_gradient_legend.dart';
 part '_transport_mode_icon.dart';
 
 class HighlightedDeparturesModal extends StatefulWidget {
@@ -51,6 +50,10 @@ class _HighlightedDeparturesModalState
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     return BlocListener<StationSelectionCubit, StationSelectionState>(
       listener: (context, state) {
         if (state is StationSelectedState) {
@@ -63,39 +66,55 @@ class _HighlightedDeparturesModalState
         builder: (context, departureSelectionState) {
           return BlocBuilder<StationSelectionCubit, StationSelectionState>(
             builder: (context, stationSelectionState) {
-              return Padding(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                ),
-                child: WebfabrikModal(
-                  title: _getModalTitle(
-                    departureSelectionState,
-                    stationSelectionState,
-                  ),
-                  displayBackButton:
-                      departureSelectionState is DepartureSelected,
-                  onBackPressed: () {
-                    context.read<DepartureSelectionCubit>().deselectDeparture();
-                  },
-                  secondaryButtons: const [],
+              return Align(
+                alignment: screenWidth < 900
+                    ? Alignment.bottomCenter
+                    : Alignment.bottomRight,
+                child: Container(
+                  constraints: const BoxConstraints(maxWidth: 400),
 
-                  legend: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [_TimeGradientLegend(), _AttributionLegend()],
-                  ),
-                  builder: (context, scrollController) => PageView(
-                    controller: pageController,
-                    physics: departureSelectionState is DepartureSelected
-                        ? null
-                        : const NeverScrollableScrollPhysics(),
-                    children: [
-                      _DeparturesList(scrollController: scrollController),
+                  padding: EdgeInsets.only(
+                    right: screenWidth < 900 ? 0 : theme.spacing.medium,
 
-                      _DeparturesItinerary(
-                        departure: _selectedDeparture,
-                        scrollController: scrollController,
-                      ),
-                    ],
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ),
+                  child: WebfabrikModal(
+                    title: _getModalTitle(
+                      departureSelectionState,
+                      stationSelectionState,
+                    ),
+                    displayBackButton:
+                        departureSelectionState is DepartureSelected,
+                    onBackPressed: () {
+                      context
+                          .read<DepartureSelectionCubit>()
+                          .deselectDeparture();
+                    },
+                    secondaryButtons: const [],
+
+                    legend: screenWidth < 900
+                        ? const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TimeGradientLegend(),
+                              StationReachAttributionLegend(),
+                            ],
+                          )
+                        : const SizedBox.shrink(),
+                    builder: (context, scrollController) => PageView(
+                      controller: pageController,
+                      physics: departureSelectionState is DepartureSelected
+                          ? null
+                          : const NeverScrollableScrollPhysics(),
+                      children: [
+                        _DeparturesList(scrollController: scrollController),
+
+                        _DeparturesItinerary(
+                          departure: _selectedDeparture,
+                          scrollController: scrollController,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

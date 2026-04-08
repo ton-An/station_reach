@@ -18,6 +18,7 @@ class _Search extends StatelessWidget {
               left: theme.spacing.medium,
               right: theme.spacing.medium,
             ),
+            constraints: const BoxConstraints(maxWidth: 400),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(theme.radii.button),
               child: BackdropFilter(
