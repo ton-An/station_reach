@@ -20,6 +20,10 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
     - [ ] Add licenses of dependencies
 */
 
+/// The entry point of the application.
+///
+/// It initializes the Flutter bindings, sets up dependency injection,
+/// and starts the [MainApp].
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -28,6 +32,9 @@ void main() {
   runApp(const MainApp());
 }
 
+/// The root widget of the Station Reach application.
+///
+/// It configures the global theme, localization, and routing for the app.
 class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
@@ -36,16 +43,18 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  /// Custom scroll behavior that allows dragging with both touch and mouse devices.
   static final ScrollBehavior _appScrollBehavior =
       const MaterialScrollBehavior().copyWith(
-        dragDevices: {
-          PointerDeviceKind.touch,
-          PointerDeviceKind.mouse,
-        },
+        dragDevices: {PointerDeviceKind.touch, PointerDeviceKind.mouse},
       );
 
+  /// The global router configuration for the application.
   late final GoRouter router;
+
+  /// The cubit responsible for managing in-app notifications.
   late final InAppNotificationCubit inAppNotificationCubit;
+
   @override
   void initState() {
     super.initState();
@@ -178,6 +187,10 @@ class _MainAppState extends State<MainApp> {
     );
   }
 
+  /// Initializes the [GoRouter] with the application's route configuration.
+  ///
+  /// The router includes a [ShellRoute] for [InAppNotificationListener] and
+  /// defines the main [MapPage] route.
   void _initRouter() {
     router = GoRouter(
       debugLogDiagnostics: true,
