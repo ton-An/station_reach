@@ -1,6 +1,19 @@
 import 'package:flutter/rendering.dart';
 
+/// {@template color_helper}
+/// A helper class color related operations
+/// {@endtemplate}
 class ColorHelper {
+  const ColorHelper();
+
+  /// Interpolates a list of colors at a given [t] value.
+  ///
+  /// Parameters:
+  /// - colors: The list of [Color]s to interpolate
+  /// - t: The double value to interpolate at
+  ///
+  /// Returns:
+  /// - The interpolated [Color]
   static Color interpolateColors(List<Color> colors, double t) {
     if (colors.length == 1 || t <= 0) return colors.first;
     if (t >= 1) return colors.last;

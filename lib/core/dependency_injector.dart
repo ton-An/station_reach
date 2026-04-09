@@ -15,9 +15,10 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 final GetIt getIt = GetIt.instance;
 
+/// Initializes the App's dependency injector
 void initGetIt() {
   // -- Core -- //
-  getIt.registerSingleton<FailureHandler>(FailureHandlerImpl());
+  getIt.registerSingleton<FailureHandler>(const FailureHandlerImpl());
 
   // -- Presentation -- //
   getIt.registerFactory(() => InAppNotificationCubit());
