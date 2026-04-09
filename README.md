@@ -28,22 +28,29 @@
 
 <div>
 <img src="readme_assets/station_departures_loaded_screenshot.png" width="200" class="screenshot" />
-<img src="readme_assets/stop_selected_screenshot.png" width="200" class="screenshot" />
 <img src="readme_assets/departures_screenshot.png" width="200" class="screenshot" />
 <img src="readme_assets/itinerary_screenshot.png" width="200" class="screenshot" />
 </div>
 
-## Download
+<style>
+  .screenshot {
+    margin: 6px;
+    border-radius: 10px;
+  }
+</style>
+
+## Website & Download
+
+### Website
+https://stationreach.com
 
 ### iOS
-Join the TestFlight beta here: https://testflight.apple.com/join/2cSdXKCM
+https://apps.apple.com/de/app/station-reach/id6752408029?l=en-GB
 
 ### Android
 Will be available soon!
 
 ## Getting Started (Development)
-
-> 🚧 Only iOS and Android are supported at the moment
 
 ### Prerequisites
 
@@ -79,6 +86,11 @@ flutter build ipa
 flutter build apk
 ```
 
+#### Website
+```bash
+flutter build web --wasm
+```
+
 ## Contributing
 
 1. Fork the repository
@@ -95,4 +107,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 - [Transitous](https://transitous.org/) for providing the API
 - [Transitous Data Sources](https://transitous.org/sources/)
-- [OpenStreetMap contributors](https://www.openstreetmap.org/)  for map data
+- [OpenStreetMap contributors](https://www.openstreetmap.org/) for map data
