@@ -8,7 +8,21 @@ import 'package:station_reach/features/map/domain/models/stop.dart';
 import 'package:station_reach/features/map/domain/repositories/map_repository.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template get_station_departures}
+/// Gets the departures for a station by mode.
+///
+/// Parameters:
+/// - station: [Station] to get the departures for
+///
+/// Returns:
+/// - [List] of [Departure]s found
+///
+/// Failures:
+/// - [NoDeparturesFoundFailure]
+/// {@macro converted_dio_exceptions}
+/// {@endtemplate}
 class GetStationDepartures {
+  /// {@macro get_station_departures}
   GetStationDepartures({
     required this.mapRepository,
     required this.deepCollectionEquality,
@@ -17,43 +31,50 @@ class GetStationDepartures {
   final MapRepository mapRepository;
   final DeepCollectionEquality deepCollectionEquality;
 
+  static const List<TransitMode> _longDistanceModes = [
+    TransitMode.coach,
+    TransitMode.highspeedRail,
+    TransitMode.longDistance,
+    TransitMode.nightRail,
+  ];
+
+  static const List<TransitMode> _regionalModes = [
+    TransitMode.tram,
+    TransitMode.subway,
+    TransitMode.suburban,
+    TransitMode.bus,
+    TransitMode.regionalFastRail,
+    TransitMode.regionalRail,
+    TransitMode.cableCar,
+    TransitMode.funicular,
+    TransitMode.aerialLift,
+    TransitMode.arealLift,
+    TransitMode.metro,
+  ];
+
+  /// {@macro get_station_departures}
   Future<Either<Failure, List<Departure>>> call({
     required Station station,
   }) async {
     return _getStationDepartures(station: station);
   }
 
+  /// Handles the case where only departures for long distance
+  /// or regional modes are found.
   Future<Either<Failure, List<Departure>>> _getStationDepartures({
     required Station station,
   }) async {
     Either<Failure, List<Departure>> longDistanceDeparturesEither =
         await mapRepository.getStationDeparturesByMode(
           station: station,
-          modes: [
-            TransitMode.coach,
-            TransitMode.highspeedRail,
-            TransitMode.longDistance,
-            TransitMode.nightRail,
-          ],
+          modes: _longDistanceModes,
           requestCount: 14,
         );
 
     Either<Failure, List<Departure>> regionalDeparturesEither =
         await mapRepository.getStationDeparturesByMode(
           station: station,
-          modes: [
-            TransitMode.tram,
-            TransitMode.subway,
-            TransitMode.suburban,
-            TransitMode.bus,
-            TransitMode.regionalFastRail,
-            TransitMode.regionalRail,
-            TransitMode.cableCar,
-            TransitMode.funicular,
-            TransitMode.aerialLift,
-            TransitMode.arealLift,
-            TransitMode.metro,
-          ],
+          modes: _regionalModes,
           requestCount: 6,
         );
 

@@ -6,8 +6,34 @@ import 'package:station_reach/features/map/domain/models/station.dart';
 import 'package:station_reach/features/map/domain/models/stop.dart';
 
 abstract class MapRemoteDataSource {
+  /// Queries the Transitous API to search for stations by name.
+  ///
+  /// Parameters:
+  /// - query: Query [String] to search for
+  ///
+  /// Returns:
+  /// - [List] of [Station]s found
+  ///
+  /// Throws:
+  /// - [DioException]
   Future<List<Station>> searchStations({required String query});
 
+  /// Queries the Transitous API to get the departures for a station by mode.
+  ///
+  /// ! Note: This method contains a complicated workaround to handle the case where
+  /// the api returns 'Departure is last stop in trip' error which is a bug in MOTIS.
+  ///
+  /// Parameters:
+  /// - station: [Station] to get the departures for
+  /// - modes: [List] of [TransitMode]s to get the departures for
+  /// - requestCount: [int] number of requests to make
+  ///
+  /// Returns:
+  /// - [List] of [Departure]s found
+  ///
+  /// Throws:
+  /// - [NoDeparturesFoundFailure]
+  /// - [DioException]
   Future<List<Departure>> getStationDeparturesByMode({
     required Station station,
     required List<TransitMode> modes,
@@ -41,36 +67,6 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     }
 
     return stations;
-  }
-
-  Future<Station> _convertToStationModel({required Map stationMap}) async {
-    final String id = stationMap['id'];
-    final String name = stationMap['name'];
-    final double latitude = stationMap['lat'];
-    final double longitude = stationMap['lon'];
-    final String? countryCode = stationMap['country'];
-    String? area;
-
-    adminLevelLoop:
-    for (double adminLevel = 7; adminLevel >= 0; adminLevel--) {
-      for (final Map stationArea in stationMap['areas']) {
-        if (stationArea['adminLevel'] == adminLevel) {
-          area = stationArea['name'];
-          break adminLevelLoop;
-        }
-      }
-    }
-
-    final Station station = Station(
-      id: id,
-      name: name,
-      latitude: latitude,
-      longitude: longitude,
-      area: area,
-      countryCode: countryCode,
-    );
-
-    return station;
   }
 
   @override
@@ -157,6 +153,36 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     }
 
     return departures;
+  }
+
+  Future<Station> _convertToStationModel({required Map stationMap}) async {
+    final String id = stationMap['id'];
+    final String name = stationMap['name'];
+    final double latitude = stationMap['lat'];
+    final double longitude = stationMap['lon'];
+    final String? countryCode = stationMap['country'];
+    String? area;
+
+    adminLevelLoop:
+    for (double adminLevel = 7; adminLevel >= 0; adminLevel--) {
+      for (final Map stationArea in stationMap['areas']) {
+        if (stationArea['adminLevel'] == adminLevel) {
+          area = stationArea['name'];
+          break adminLevelLoop;
+        }
+      }
+    }
+
+    final Station station = Station(
+      id: id,
+      name: name,
+      latitude: latitude,
+      longitude: longitude,
+      area: area,
+      countryCode: countryCode,
+    );
+
+    return station;
   }
 
   Departure _convertToDepartureModel({

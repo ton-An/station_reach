@@ -3,6 +3,7 @@
     - [ ] Remove transit modes that don't apply to the app
 */
 
+/// The different modes of transit
 enum TransitMode {
   walk,
   bike,
