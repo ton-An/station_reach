@@ -1,5 +1,8 @@
 part of 'highlighted_departures_modal.dart';
 
+/// An icon representing the transit mode of a departure.
+///
+/// It maps [TransitMode] to a specific icon and applies a background color.
 class _TransitModeIcon extends StatelessWidget {
   const _TransitModeIcon({required this.mode, required this.backgroundColor});
 

@@ -1,5 +1,11 @@
 part of 'map_page.dart';
 
+/// A layer that displays markers for reachable stations on the map.
+///
+/// It uses [SuperclusterImmutable] for clustering of station name labels
+/// based on the current zoom level and visible bounds.
+///
+/// Markers are color-coded based on the travel duration using [ColorHelper.interpolateColors].
 class _MapStationMarkersLayer extends StatefulWidget {
   const _MapStationMarkersLayer({
     required this.hitNotifier,
@@ -40,6 +46,7 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
     });
   }
 
+  /// Updates the visible station name clusters based on the current map view.
   void _updateClusters() {
     _visibleStationTextMarkers.clear();
     final supercluster = SuperclusterImmutable<Marker>(
@@ -93,6 +100,10 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
     );
   }
 
+  /// Generates map markers for all reachable stations from the given [departures].
+  ///
+  /// For each station, it creates a [CircleMarker] color-coded by travel duration
+  /// and a [Marker] for the station name label.
   void _generateStationMarkers(List<Departure> departures) {
     _reachableStationsMarkers.clear();
     _reachableStationsTextMarkers.clear();

@@ -125,6 +125,7 @@ class _HighlightedDeparturesModalState
     );
   }
 
+  /// Handles the animation and state changes when a departure is selected or deselected.
   void _handleDepartureSelection(
     DepartureSelectionState departureSelectionState,
   ) {
@@ -149,6 +150,7 @@ class _HighlightedDeparturesModalState
     }
   }
 
+  /// Returns the appropriate title for the modal based on the current selection state.
   String _getModalTitle(
     DepartureSelectionState departureSelectionState,
     StationSelectionState stationSelectionState,

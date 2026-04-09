@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// A widget that displays attributions for the map data sources and the application.
+///
+/// It includes links to OpenStreetMap, CartoDB, Transitous, and the app's
+/// privacy policy and impressum.
 class StationReachAttributionLegend extends StatelessWidget {
   const StationReachAttributionLegend({super.key});
 

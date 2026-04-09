@@ -1,5 +1,8 @@
 part of 'multi_polyline_layer.dart';
 
+/// A helper class for converting [LatLng] coordinates to screen [Offset]s.
+///
+/// It accounts for the map's current camera position, zoom level, and CRS.
 class OffsetHelper {
   OffsetHelper({required this.camera})
     : _replicatesWorldLongitude = camera.crs.replicatesWorldLongitude,

@@ -1,5 +1,9 @@
 part of 'highlighted_departures_modal.dart';
 
+/// A list of departures shown in the [HighlightedDeparturesModal].
+///
+/// It displays a list of [Departure]s for the selected station, allowing the
+/// user to select one to view its itinerary.
 class _DeparturesList extends StatelessWidget {
   const _DeparturesList({required this.scrollController});
 

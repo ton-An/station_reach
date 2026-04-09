@@ -1,5 +1,8 @@
 part of 'map_page.dart';
 
+/// The input field for searching stations.
+///
+/// It triggers station searches via [StationSearchCubit] as the user types.
 class _SearchField extends StatelessWidget {
   const _SearchField();
 

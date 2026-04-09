@@ -1,5 +1,9 @@
 part of 'map_page.dart';
 
+/// A list of search results for stations.
+///
+/// It displays a list of stations matching the current search query.
+/// Tapping a station initiates a reachability search via [StationDeparturesCubit].
 class _SearchResults extends StatelessWidget {
   const _SearchResults();
 

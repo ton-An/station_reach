@@ -1,5 +1,9 @@
 part of 'map_page.dart';
 
+/// The search overlay component for the [MapPage].
+///
+/// It provides a floating search bar with a blurred background, containing
+/// the [_SearchField], [_SearchResults], and [_LoadingShimmer].
 class _Search extends StatelessWidget {
   const _Search();
 

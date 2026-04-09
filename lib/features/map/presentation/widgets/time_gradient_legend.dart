@@ -9,6 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:station_reach/core/l10n/app_localizations.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// A legend showing the color gradient used for travel durations on the map.
+///
+/// It provides a visual scale from 30 minutes to 14+ hours, helping users
+/// interpret the colors of station markers.
 class TimeGradientLegend extends StatelessWidget {
   const TimeGradientLegend();
 

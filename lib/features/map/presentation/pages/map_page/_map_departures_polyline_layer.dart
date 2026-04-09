@@ -1,5 +1,9 @@
 part of 'map_page.dart';
 
+/// A layer that displays polylines representing departure routes on the map.
+///
+/// It listens to [StationSelectionCubit] to draw polylines when a station is selected.
+/// Polylines are color-coded using a gradient to distinguish between different departures.
 class _MapDeparturesPolylineLayer extends StatefulWidget {
   const _MapDeparturesPolylineLayer();
 
@@ -35,6 +39,9 @@ class _MapDeparturesPolylineLayerState
     );
   }
 
+  /// Generates polylines for the provided [departures].
+  ///
+  /// Each polyline is color-coded using a gradient based on its index in the list.
   void _generateDeparturePolylines(List<Departure> departures) {
     _departurePolylines.clear();
 

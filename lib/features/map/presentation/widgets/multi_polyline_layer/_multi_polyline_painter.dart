@@ -26,6 +26,14 @@ class _PolylinePainter<R extends Object> extends CustomPainter
 
   late final OffsetHelper _helper;
 
+  /// Performs a hit test on a single [projectedPolyline].
+  ///
+  /// It checks if the given [point] (in screen coordinates) is within a certain
+  /// distance of any segment of the polyline. The hittable distance is the
+  /// maximum of the polyline's stroke width (including border) and [minimumHitbox].
+  ///
+  /// This method uses [workAcrossWorlds] to handle hit testing across multiple
+  /// instances of the map in a wrap-around scenario.
   @override
   bool elementHitTest(
     _ProjectedPolyline<R> projectedPolyline, {
@@ -88,6 +96,18 @@ class _PolylinePainter<R extends Object> extends CustomPainter
   @override
   Iterable<_ProjectedPolyline<R>> get elements => polylines;
 
+  /// The main painting method that draws all [polylines] on the [canvas].
+  ///
+  /// It iterates through each [projectedPolyline] and:
+  /// 1. Calculates an `indexShift` to slightly offset overlapping polylines
+  ///    for better visibility, especially at higher zoom levels.
+  /// 2. Configures the [Paint] object based on the polyline's properties
+  ///    (color, gradient, stroke width, cap, join, and pattern).
+  /// 3. Handles drawing borders by drawing a thicker path underneath.
+  /// 4. Uses specialized "hiker" classes ([SolidPixelHiker], [DottedPixelHiker],
+  ///    [DashedPixelHiker]) to efficiently draw different line patterns
+  ///    while considering the current viewport bounds.
+  /// 5. Supports drawing across multiple "worlds" for seamless map wrapping.
   @override
   void paint(Canvas canvas, Size size) {
     super.paint(canvas, size);
@@ -102,6 +122,10 @@ class _PolylinePainter<R extends Object> extends CustomPainter
     Paint? filterPaint;
     int? lastHash;
 
+    /// Draws the current paths to the canvas and resets them.
+    ///
+    /// This is called when the polyline's rendering properties change (e.g., a
+    /// different color or gradient) or when a layer needs to be restored.
     void drawPaths() {
       final hasBorder = borderPaint != null && filterPaint != null;
       if (hasBorder) {
@@ -289,6 +313,7 @@ class _PolylinePainter<R extends Object> extends CustomPainter
     drawPaths();
   }
 
+  /// Creates a linear gradient shader for the polyline.
   ui.Gradient _paintGradient(Polyline polyline, List<Offset> offsets) =>
       ui.Gradient.linear(
         offsets.first,
@@ -297,12 +322,14 @@ class _PolylinePainter<R extends Object> extends CustomPainter
         _getColorsStop(polyline),
       );
 
+  /// Returns the color stops for the gradient, calculating them if not provided.
   List<double>? _getColorsStop(Polyline polyline) =>
       (polyline.colorsStop != null &&
           polyline.colorsStop!.length == polyline.gradientColors!.length)
       ? polyline.colorsStop
       : _calculateColorsStop(polyline);
 
+  /// Calculates evenly spaced color stops for the gradient.
   List<double> _calculateColorsStop(Polyline polyline) {
     final colorsStopInterval = 1.0 / polyline.gradientColors!.length;
     return polyline.gradientColors!

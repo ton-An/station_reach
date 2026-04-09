@@ -1,5 +1,12 @@
 part of 'map_page.dart';
 
+/// The core map component of the [MapPage].
+///
+/// It handles map interactions, tile rendering, and manages the layers for
+/// station markers and departure polylines.
+///
+/// It uses [MapController] for programmatic map movement and [LayerHitNotifier]
+/// for handling marker taps.
 class _Map extends StatefulWidget {
   const _Map();
 
@@ -41,13 +48,6 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
       ..dispose();
     hitNotifier.dispose();
     super.dispose();
-  }
-
-  void _tickDoubleTapZoomAnimation() {
-    final Animation<LatLng>? center = _doubleTapCenterAnimation;
-    final Animation<double>? zoom = _doubleTapZoomAnimation;
-    if (center == null || zoom == null) return;
-    mapController.move(center.value, zoom.value);
   }
 
   @override
@@ -103,6 +103,16 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
     );
   }
 
+  /// Updates the map camera during a double-tap zoom animation.
+  void _tickDoubleTapZoomAnimation() {
+    final Animation<LatLng>? center = _doubleTapCenterAnimation;
+    final Animation<double>? zoom = _doubleTapZoomAnimation;
+    if (center == null || zoom == null) return;
+    mapController.move(center.value, zoom.value);
+  }
+
+  /// Handles tap events on the map, detecting double-taps for zooming
+  /// and single-taps for marker selection.
   void _handleMapTap(TapPosition tapPosition, LatLng point) {
     final DateTime now = DateTime.now();
     final Offset global = tapPosition.global;
@@ -133,6 +143,7 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
     _onMarkerHit(result.hitValues.first);
   }
 
+  /// Initiates a smooth zoom animation to the tapped location.
   void _handleDoubleTapZoom(TapPosition tapPosition) {
     final Offset? relative = tapPosition.relative;
     if (relative == null) return;
@@ -157,6 +168,7 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
     _doubleTapZoomController.forward(from: 0);
   }
 
+  /// Selects a station and its departures when a marker is hit.
   void _onMarkerHit(Stop station) {
     context.read<StationSelectionCubit>().selectStation(
       selectedStop: station,

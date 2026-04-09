@@ -34,6 +34,17 @@ part '_search_field.dart';
 part '_search_loading_shimmer.dart';
 part '_search_results.dart';
 
+/// The main map page of the application.
+///
+/// This page displays an interactive map with station markers and departure polylines.
+/// It also includes a search interface for finding stations and a modal for
+/// displaying highlighted departures.
+///
+/// The page uses several internal components:
+/// - [_Map]: The core map widget using `flutter_map`.
+/// - [_Search]: The search overlay for finding stations.
+/// - [HighlightedDeparturesModal]: A modal displaying details of selected departures.
+/// - [TimeGradientLegend] & [StationReachAttributionLegend]: Informational legends.
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
 

@@ -1,5 +1,8 @@
 part of 'highlighted_departures_modal.dart';
 
+/// A list item representing a single [Departure] in the [_DeparturesList].
+///
+/// It shows the transit mode icon, departure name, and travel duration.
 class _DepartureListItem extends StatelessWidget {
   const _DepartureListItem({
     required this.departure,

@@ -1,5 +1,9 @@
 part of 'highlighted_departures_modal.dart';
 
+/// A view displaying the full itinerary of a selected [Departure].
+///
+/// It lists all stops along the route, showing the name of each stop and the
+/// travel duration from the origin.
 class _DeparturesItinerary extends StatelessWidget {
   const _DeparturesItinerary({
     required Departure? departure,

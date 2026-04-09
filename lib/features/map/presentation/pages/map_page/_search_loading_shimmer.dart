@@ -1,5 +1,8 @@
 part of 'map_page.dart';
 
+/// A loading indicator shown during station search or reachability data fetching.
+///
+/// It uses a shimmer effect to provide visual feedback to the user.
 class _LoadingShimmer extends StatelessWidget {
   const _LoadingShimmer();
 

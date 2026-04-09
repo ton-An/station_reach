@@ -137,6 +137,10 @@ class _PolylineLayerState<R extends Object> extends State<MultiPolylineLayer<R>>
     );
   }
 
+  /// Efficiently removes polyline segments that are outside the current viewport.
+  ///
+  /// This helps improve rendering performance by reducing the number of points
+  /// that need to be drawn.
   Iterable<_ProjectedPolyline<R>> _aggressivelyCullPolylines({
     required Projection projection,
     required Iterable<_ProjectedPolyline<R>> polylines,
