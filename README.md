@@ -32,13 +32,6 @@
 <img src="readme_assets/itinerary_screenshot.png" width="200" class="screenshot" />
 </div>
 
-<style>
-  .screenshot {
-    margin: 6px;
-    border-radius: 10px;
-  }
-</style>
-
 ## Website & Download
 
 ### Website
