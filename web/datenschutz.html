@@ -58,6 +58,11 @@
         font-weight: 600;
         margin: 1.75rem 0 0.65rem;
       }
+      h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 1.25rem 0 0.5rem;
+      }
       p {
         margin: 0 0 0.85rem;
       }
@@ -124,7 +129,9 @@
         bereitzustellen.
       </p>
 
-      <h2>3. Weitergabe an Dritte (API-Nutzung)</h2>
+      <h2>3. Weitergabe an Dritte</h2>
+
+      <h3>a) Fahrplandaten (Transitious API)</h3>
       <p>Um Fahrplandaten anzuzeigen, nutzt diese App die Transitious API.</p>
       <ul>
         <li>
@@ -137,6 +144,37 @@
           Informationen zum Datenschutz bei Transitious findest du hier:
           <a href="https://transitious.org/privacy/" rel="noopener noreferrer"
             >https://transitious.org/privacy/</a
+          >
+        </li>
+      </ul>
+
+      <h3>b) Kartendarstellung (CartoDB / Fastly CDN)</h3>
+      <p>
+        Für die Darstellung der Kartenansicht werden Kartenkacheln von CartoDB
+        über das Fastly&nbsp;CDN geladen.
+      </p>
+      <ul>
+        <li>
+          Beim Laden der Kacheln wird deine <strong>IP-Adresse</strong>
+          automatisch an die Server von Fastly übertragen. Dies ist technisch
+          notwendig, um die Kartendaten an dein Gerät auszuliefern.
+        </li>
+        <li>
+          Fastly betreibt Server weltweit, einschließlich in den USA. Die
+          Datenübermittlung erfolgt auf Grundlage von Art.&nbsp;6 Abs.&nbsp;1
+          lit.&nbsp;f DSGVO (berechtigtes Interesse an der Bereitstellung der
+          Kartendarstellung).
+        </li>
+        <li>
+          Informationen zum Datenschutz bei CARTO findest du hier:
+          <a href="https://carto.com/privacy/" rel="noopener noreferrer"
+            >https://carto.com/privacy/</a
+          >
+        </li>
+        <li>
+          Informationen zum Datenschutz bei Fastly findest du hier:
+          <a href="https://www.fastly.com/privacy/" rel="noopener noreferrer"
+            >https://www.fastly.com/privacy/</a
           >
         </li>
       </ul>
