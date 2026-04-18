@@ -39,7 +39,10 @@ https://station-reach.eu
 https://apps.apple.com/de/app/station-reach/id6752408029?l=en-GB
 
 ### Android
-Will be available soon!
+Station Reach is currently in **closed testing** on Google Play. To participate, you must join the Google Group:
+[station-reach-testers@googlegroups.com](https://groups.google.com/g/station-reach-testers)
+
+Google Play requires at least 12 testers to move forward, so your help is greatly appreciated!
 
 ## Getting Started (Development)
 
