@@ -1,18 +1,20 @@
 # flutter pub run flutter_launcher_icons
 flutter_launcher_icons:
-  image_path: "assets/images/logo.png"
+  image_path: "assets/images/logo.jpg"
 
-  android: false
+  android: true
 
-  ios: true
-  remove_alpha_ios: true
-  background_color_ios: #ffffff
+  ios: false
 
   web:
     generate: true
+    image_path: "assets/images/logo_without_background.png" 
 
   windows:
     generate: false
 
   macos:
     generate: false
+
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/logo_without_background.png" 
