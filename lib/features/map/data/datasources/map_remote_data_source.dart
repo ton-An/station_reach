@@ -26,7 +26,7 @@ abstract class MapRemoteDataSource {
   /// Parameters:
   /// - station: [Station] to get the departures for
   /// - modes: [List] of [TransitMode]s to get the departures for
-  /// - requestCount: [int] number of requests to make
+  /// - amount: [int] number of departures to get
   ///
   /// Returns:
   /// - [List] of [Departure]s found
@@ -37,7 +37,7 @@ abstract class MapRemoteDataSource {
   Future<List<Departure>> getStationDeparturesByMode({
     required Station station,
     required List<TransitMode> modes,
-    required int requestCount,
+    required int amount,
   });
 }
 
@@ -73,7 +73,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
   Future<List<Departure>> getStationDeparturesByMode({
     required Station station,
     required List<TransitMode> modes,
-    required int requestCount,
+    required int amount,
   }) async {
     final String modeString = modes.map((mode) => mode.toString()).join(',');
 
@@ -81,7 +81,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     final String nowIsoString = now.toIso8601String();
 
     final String urlString =
-        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=100&fetchStops=true&radius=200&mode=${modeString}&withScheduledSkippedStops=true';
+        'https://api.transitous.org/api/v5/stoptimes?stopId=${station.id}&n=${amount}&fetchStops=true&radius=200&mode=${modeString}&withScheduledSkippedStops=true';
 
     final List departureMaps = [];
 
@@ -90,7 +90,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     int lastStopErrorCount = 0;
     bool hadLastStopErrorLastIteration = false;
 
-    for (int i = 0; i < requestCount + lastStopErrorCount; i++) {
+    for (int i = 0; i < 1 + lastStopErrorCount; i++) {
       try {
         String computedUrlString = urlString;
 

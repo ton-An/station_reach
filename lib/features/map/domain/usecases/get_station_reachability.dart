@@ -68,14 +68,14 @@ class GetStationDepartures {
         await mapRepository.getStationDeparturesByMode(
           station: station,
           modes: _longDistanceModes,
-          requestCount: 14,
+          amount: 1000,
         );
 
     Either<Failure, List<Departure>> regionalDeparturesEither =
         await mapRepository.getStationDeparturesByMode(
           station: station,
           modes: _regionalModes,
-          requestCount: 6,
+          amount: 400,
         );
 
     return longDistanceDeparturesEither.fold(

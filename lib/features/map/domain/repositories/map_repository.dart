@@ -24,7 +24,7 @@ abstract class MapRepository {
   /// Parameters:
   /// - station: [Station] to get the departures for
   /// - modes: [List] of [TransitMode]s to get the departures for
-  /// - requestCount: [int] number of requests to make
+  /// - amount: [int] number of departures to get
   ///
   /// Returns:
   /// - [List] of [Departure]s found
@@ -35,6 +35,6 @@ abstract class MapRepository {
   Future<Either<Failure, List<Departure>>> getStationDeparturesByMode({
     required Station station,
     required List<TransitMode> modes,
-    required int requestCount,
+    required int amount,
   });
 }

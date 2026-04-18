@@ -40,14 +40,14 @@ class MapRepositoryImpl extends MapRepository {
   Future<Either<Failure, List<Departure>>> getStationDeparturesByMode({
     required Station station,
     required List<TransitMode> modes,
-    required int requestCount,
+    required int amount,
   }) async {
     try {
       final List<Departure> departures = await mapRemoteDataSource
           .getStationDeparturesByMode(
             station: station,
             modes: modes,
-            requestCount: requestCount,
+            amount: amount,
           );
 
       return Right(departures);
