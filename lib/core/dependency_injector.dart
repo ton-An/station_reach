@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:station_reach/core/data/repository/failure_handler.dart';
 import 'package:station_reach/features/map/data/datasources/map_remote_data_source.dart';
 import 'package:station_reach/features/map/data/repository_implementations/map_repository_impl.dart';
@@ -16,7 +17,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 final GetIt getIt = GetIt.instance;
 
 /// Initializes the App's dependency injector
-void initGetIt() {
+Future<void> initGetIt() async {
   // -- Core -- //
   getIt.registerSingleton<FailureHandler>(const FailureHandlerImpl());
 
@@ -48,7 +49,7 @@ void initGetIt() {
     ),
   );
   getIt.registerFactory<MapRemoteDataSource>(
-    () => MapRemoteDataSourceImpl(dio: getIt()),
+    () => MapRemoteDataSourceImpl(dio: getIt(), packageInfo: getIt()),
   );
 
   // -- Third Party -- //
@@ -56,4 +57,9 @@ void initGetIt() {
   getIt.registerSingleton<DeepCollectionEquality>(
     const DeepCollectionEquality(),
   );
+  getIt.registerSingletonAsync<PackageInfo>(
+    () async => await PackageInfo.fromPlatform(),
+  );
+
+  await getIt.allReady();
 }

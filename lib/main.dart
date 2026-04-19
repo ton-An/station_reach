@@ -24,10 +24,10 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 ///
 /// It initializes the Flutter bindings, sets up dependency injection,
 /// and starts the [MainApp].
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  initGetIt();
+  await initGetIt();
 
   runApp(const MainApp());
 }

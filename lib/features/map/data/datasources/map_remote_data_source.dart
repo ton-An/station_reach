@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:station_reach/core/failures/transit/no_departures_found_failure.dart';
 import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
 import 'package:station_reach/features/map/domain/models/departure.dart';
@@ -42,9 +43,10 @@ abstract class MapRemoteDataSource {
 }
 
 class MapRemoteDataSourceImpl extends MapRemoteDataSource {
-  MapRemoteDataSourceImpl({required this.dio});
+  MapRemoteDataSourceImpl({required this.dio, required this.packageInfo});
 
   final Dio dio;
+  final PackageInfo packageInfo;
 
   @override
   Future<List<Station>> searchStations({required String query}) async {
@@ -52,7 +54,10 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
       'https://api.transitous.org/api/v1/geocode?text=$query&type=STOP',
     );
 
-    final Response response = await dio.getUri(url);
+    final Response response = await dio.getUri(
+      url,
+      options: Options(headers: _getQueryHeaders()),
+    );
 
     final List stationMaps = response.data;
 
@@ -109,7 +114,10 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
           computedUrlString += '&time=$nowIsoString';
         }
 
-        final Response response = await dio.get(computedUrlString);
+        final Response response = await dio.get(
+          computedUrlString,
+          options: Options(headers: _getQueryHeaders()),
+        );
 
         nextPageCursor = response.data['nextPageCursor'];
 
@@ -257,5 +265,15 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     );
 
     return departure;
+  }
+
+  Map<String, String> _getQueryHeaders() {
+    const String packageName = 'station_reach';
+    final String packageVersion = packageInfo.version;
+    const String contactEmail = 'anton@antons-webfabrik.eu';
+
+    return {
+      'User-Agent': '$packageName/$packageVersion (mailto:$contactEmail)',
+    };
   }
 }
