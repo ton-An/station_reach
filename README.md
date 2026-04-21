@@ -12,7 +12,7 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" />
   </a>
-  <a href="https://github.com/ton-An/fernwaerts/stargazers">
+  <a href="https://github.com/ton-An/station_reach/stargazers">
     <img src="https://img.shields.io/github/stars/ton-An/station_reach?style=social" />
   </a>
 </p>
