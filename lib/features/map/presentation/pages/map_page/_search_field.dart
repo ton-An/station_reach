@@ -15,7 +15,7 @@ class _SearchField extends StatelessWidget {
       child: CupertinoTextField(
         style: theme.text.body.copyWith(height: 1.27, color: theme.colors.text),
         placeholderStyle: theme.text.body.copyWith(
-          color: theme.colors.text.withValues(alpha: .64),
+          color: theme.colors.text.withValues(alpha: .7),
         ),
         placeholder: AppLocalizations.of(context)!.searchStations,
         cursorHeight: 20,
@@ -37,7 +37,7 @@ class _SearchField extends StatelessWidget {
           child: Icon(
             Icons.search_rounded,
             size: 28,
-            color: theme.colors.hint.withValues(alpha: .45),
+            color: theme.colors.hint.withValues(alpha: 1),
           ),
         ),
         onChanged: (String locationQuery) =>

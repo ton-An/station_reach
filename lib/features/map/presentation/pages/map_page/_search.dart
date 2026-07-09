@@ -30,11 +30,11 @@ class _Search extends StatelessWidget {
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(theme.radii.button),
-                    color: theme.colors.background.withValues(alpha: .65),
+                    color: theme.colors.background.withValues(alpha: .35),
                     border: Border.all(
                       color: theme.colors.hint.withValues(alpha: .35),
                       strokeAlign: BorderSide.strokeAlignInside,
-                      width: 2,
+                      width: 1.8,
                     ),
                   ),
                   child: const Column(
