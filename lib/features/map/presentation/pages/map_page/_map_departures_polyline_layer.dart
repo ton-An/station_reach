@@ -3,7 +3,7 @@ part of 'map_page.dart';
 /// A layer that displays polylines representing departure routes on the map.
 ///
 /// It listens to [StationSelectionCubit] to draw polylines when a station is selected.
-/// Polylines are color-coded using a gradient to distinguish between different departures.
+/// Polylines are color-coded by travel duration between stops.
 class _MapDeparturesPolylineLayer extends StatefulWidget {
   const _MapDeparturesPolylineLayer();
 
@@ -41,29 +41,39 @@ class _MapDeparturesPolylineLayerState
 
   /// Generates polylines for the provided [departures].
   ///
-  /// Each polyline is color-coded using a gradient based on its index in the list.
+  /// Each segment is color-coded using the same travel-duration gradient as
+  /// station markers.
   void _generateDeparturePolylines(List<Departure> departures) {
     _departurePolylines.clear();
 
     for (final departure in departures) {
-      final Color color = ColorHelper.interpolateColors(
-        WebfabrikTheme.of(context).colors.secondaryGradient,
-        departures.indexOf(departure) / max(departures.length - 1, 1),
-      ).withValues(alpha: .7);
+      for (int i = 0; i < departure.stops.length - 1; i++) {
+        final currentStop = departure.stops[i];
+        final nextStop = departure.stops[i + 1];
+        final durationToNextStation = nextStop.duration - currentStop.duration;
+        final durationIn30Minutes = (durationToNextStation.inMinutes ~/ 30)
+            .clamp(0, 28);
 
-      _departurePolylines.insert(
-        0,
-        Polyline(
-          points: [
-            for (final stop in departure.stops)
-              LatLng(stop.latitude, stop.longitude),
-          ],
-          strokeWidth: 5,
-          strokeCap: StrokeCap.round,
-          strokeJoin: StrokeJoin.round,
-          color: color,
-        ),
-      );
+        final Color color = ColorHelper.interpolateColors(
+          WebfabrikTheme.of(context).colors.timelineGradient,
+          durationIn30Minutes / 28,
+        ).withValues(alpha: .7);
+
+        _departurePolylines.insert(
+          0,
+          Polyline(
+            points: [
+              LatLng(currentStop.latitude, currentStop.longitude),
+              LatLng(nextStop.latitude, nextStop.longitude),
+            ],
+            strokeWidth: 5,
+            strokeCap: StrokeCap.round,
+            strokeJoin: StrokeJoin.round,
+            color: color,
+            hitValue: departure.id,
+          ),
+        );
+      }
     }
     setState(() {});
   }

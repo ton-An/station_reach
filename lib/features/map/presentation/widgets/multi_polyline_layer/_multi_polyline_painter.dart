@@ -151,15 +151,24 @@ class _PolylinePainter<R extends Object> extends CustomPainter
       paint = Paint();
     }
 
-    final double polylinesListMiddle = polylines.length / 2;
+    final polylineOffsetKeys = <Object?>[];
+    for (final projectedPolyline in polylines) {
+      final offsetKey =
+          projectedPolyline.polyline.hitValue ?? projectedPolyline;
+      if (!polylineOffsetKeys.contains(offsetKey)) {
+        polylineOffsetKeys.add(offsetKey);
+      }
+    }
+
+    final double polylinesListMiddle = polylineOffsetKeys.length / 2;
 
     for (final projectedPolyline in polylines) {
-      int index = polylines.indexOf(projectedPolyline);
-
       final polyline = projectedPolyline.polyline;
       if (polyline.points.isEmpty) {
         continue;
       }
+      final offsetKey = polyline.hitValue ?? projectedPolyline;
+      final index = polylineOffsetKeys.indexOf(offsetKey);
 
       final double differenceToMiddle = clampDouble(
         polylinesListMiddle - index,
