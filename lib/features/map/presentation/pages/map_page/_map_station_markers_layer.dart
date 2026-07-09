@@ -24,6 +24,8 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
   final List<CircleMarker<Stop>> _reachableStationsMarkers = [];
   final List<Marker> _reachableStationsTextMarkers = [];
   final List<Marker> _visibleStationTextMarkers = [];
+  (Stop station, Offset offset)? _hoveredStationInfo;
+
   int _lastZoom = 0;
 
   @override
@@ -77,6 +79,7 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
 
   @override
   Widget build(BuildContext context) {
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return BlocListener<StationDeparturesCubit, StationDeparturesState>(
       listener: (context, state) {
         if (state is StationDeparturesLoaded) {
@@ -86,14 +89,78 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
       child: TranslucentPointer(
         child: Stack(
           children: [
-            CircleLayer(
-              circles: _reachableStationsMarkers,
-              hitNotifier: widget.hitNotifier,
+            MouseRegion(
+              onHover: (event) {
+                final hit = widget.hitNotifier.value;
+                if (hit != null) {
+                  final Offset position = event.position;
+
+                  setState(() {
+                    _hoveredStationInfo = (hit.hitValues.first, position);
+                  });
+                } else {
+                  setState(() {
+                    _hoveredStationInfo = null;
+                  });
+                }
+              },
+              child: CircleLayer(
+                circles: _reachableStationsMarkers,
+                hitNotifier: widget.hitNotifier,
+              ),
             ),
 
             TranslucentPointer(
               child: MarkerLayer(markers: _visibleStationTextMarkers),
             ),
+
+            if (_hoveredStationInfo != null)
+              Positioned(
+                left: _hoveredStationInfo!.$2.dx,
+                top: _hoveredStationInfo!.$2.dy,
+                child: TranslucentPointer(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(theme.radii.small),
+                    child: BackdropFilter(
+                      filter: theme.misc.blurFilter,
+                      child: Container(
+                        padding: EdgeInsets.all(theme.spacing.medium),
+                        decoration: BoxDecoration(
+                          color: theme.colors.translucentBackground,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _hoveredStationInfo!.$1.name,
+                              style: theme.text.callout.copyWith(
+                                fontVariations: [FontVariation('wght', 500)],
+                              ),
+                            ),
+                            Text(
+                              TimeDateFormatter.formatDuration(
+                                _hoveredStationInfo!.$1.duration,
+                              ),
+                              style: theme.text.callout.copyWith(
+                                fontVariations: [FontVariation('wght', 500)],
+                                color: ColorHelper.interpolateColors(
+                                  WebfabrikTheme.of(
+                                    context,
+                                  ).colors.timelineGradient,
+                                  (_hoveredStationInfo!.$1.duration.inMinutes ~/
+                                              30)
+                                          .clamp(0, 28) /
+                                      28,
+                                ).withValues(alpha: .75),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),
