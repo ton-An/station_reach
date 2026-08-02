@@ -61,13 +61,31 @@ export function Dialog({
 
   const [progress] = useState(() => new Animated.Value(0));
 
+  /*
+    Replays from the start on every open.
+
+    The sheet is unmounted by `Modal` the instant it closes, so there is no
+    exit to animate — and animating back down to 0 on close only worked if
+    that animation actually got to finish. Anything that interrupted it left
+    the value stranded, and every later open rendered at its final frame with
+    no motion at all. Setting the value explicitly makes each open independent
+    of whatever the last one left behind.
+  */
   useEffect(() => {
-    Animated.timing(progress, {
-      toValue: isOpen ? 1 : 0,
+    if (!isOpen) return;
+
+    progress.setValue(0);
+
+    const entry = Animated.timing(progress, {
+      toValue: 1,
       duration: theme.durations.short,
-      easing: isOpen ? Easing.out(Easing.cubic) : Easing.in(Easing.cubic),
+      easing: Easing.out(Easing.cubic),
       useNativeDriver: USE_NATIVE_DRIVER,
-    }).start();
+    });
+
+    entry.start();
+
+    return () => entry.stop();
   }, [isOpen, progress, theme.durations.short]);
 
   return (
