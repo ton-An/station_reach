@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Station Reach",
+    "slug": "station-reach",
+    "description": "See where transit takes you!",
+    "version": "0.1.6",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "stationreach",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "eu.antons-webfabrik.station-reach",
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "eu.antons_webfabrik.station_reach",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [
+        "android.permission.INTERNET"
+      ],
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "@maplibre/maplibre-react-native",
+      "expo-localization",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 160
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/inter_variable.ttf"
+          ]
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
