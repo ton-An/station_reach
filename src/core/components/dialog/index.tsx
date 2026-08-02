@@ -13,10 +13,13 @@ import {
 import { withAlpha } from '@/core/helpers/color-helper';
 import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
-import { FadePressable } from './fade-pressable';
-import { Gap } from './gap';
-import { LinkText } from './link-text';
-import { TranslucentSurface } from './translucent-surface';
+import { Gap } from '../gap';
+import { LinkText } from '../link-text';
+import { TranslucentSurface } from '../translucent-surface';
+import { DialogButton } from './_dialog-button';
+import type { DialogAction } from './dialog-action';
+
+export type { DialogAction };
 
 /** The card's fixed width, matching the Flutter dialog. */
 const DIALOG_WIDTH = 320;
@@ -26,13 +29,6 @@ const MAX_BODY_FRACTION = 0.55;
 
 /** The dimming behind the card — light, because the card is itself blurred. */
 const SCRIM_OPACITY = 0.18;
-
-export interface DialogAction {
-  readonly label: string;
-  readonly onPress: () => void;
-  /** Renders the label in the error colour, for destructive choices. */
-  readonly highlight?: boolean;
-}
 
 interface DialogProps {
   readonly isOpen: boolean;
@@ -182,38 +178,5 @@ export function Dialog({
         </View>
       </View>
     </Modal>
-  );
-}
-
-/** A filled pill, not a bare text button. */
-function DialogButton({ action }: { readonly action: DialogAction }) {
-  const theme = useTheme();
-
-  return (
-    <FadePressable onPress={action.onPress} accessibilityLabel={action.label}>
-      <View
-        style={{
-          paddingVertical: theme.spacing.medium,
-          borderRadius: theme.radii.small,
-          backgroundColor: theme.colors.translucentBackgroundContrast,
-          alignItems: 'center',
-        }}
-      >
-        <Text
-          style={[
-            theme.text.body,
-            {
-              fontWeight: '600',
-              color:
-                action.highlight === true
-                  ? theme.colors.error
-                  : theme.colors.text,
-            },
-          ]}
-        >
-          {action.label}
-        </Text>
-      </View>
-    </FadePressable>
   );
 }

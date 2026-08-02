@@ -2,7 +2,8 @@ import { ScrollView, Text, View } from 'react-native';
 
 import { DottedTimeline } from '@/core/components/dotted-timeline';
 import { Gap } from '@/core/components/gap';
-import { ListIcon, ListItem } from '@/core/components/list-item';
+import { ListIcon } from '@/core/components/list-icon';
+import { ListItem } from '@/core/components/list-item';
 import { colorForDuration } from '@/core/helpers/color-helper';
 import { formatDuration } from '@/core/helpers/duration-helper';
 import { useTheme } from '@/core/theme/use-theme';

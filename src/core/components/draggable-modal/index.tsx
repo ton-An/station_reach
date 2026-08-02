@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { Animated, PanResponder, Text, View } from 'react-native';
+import { Animated, PanResponder, View } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
-import { Gap } from './gap';
-import { SmallIconButton } from './small-icon-button';
-import { TranslucentSurface } from './translucent-surface';
+import { Gap } from '../gap';
+import { TranslucentSurface } from '../translucent-surface';
+import { Header } from './_header';
+import { ModalHandle } from './_modal-handle';
 
 /** Collapsed. */
 export const SMALL_HEIGHT = 0.3;
@@ -156,16 +157,7 @@ export function DraggableModal({
           >
             <Gap size="medium" axis="vertical" />
 
-            <View style={{ alignItems: 'center' }}>
-              <View
-                style={{
-                  height: 5,
-                  width: 36,
-                  borderRadius: 5,
-                  backgroundColor: theme.colors.translucentBackgroundContrast,
-                }}
-              />
-            </View>
+            <ModalHandle />
 
             <Gap size="medium" axis="vertical" />
 
@@ -179,54 +171,6 @@ export function DraggableModal({
           <View style={{ flex: 1 }}>{children}</View>
         </TranslucentSurface>
       </Animated.View>
-    </View>
-  );
-}
-
-interface HeaderProps {
-  readonly title: string;
-  readonly showBackButton: boolean;
-  readonly onBackPressed?: () => void;
-}
-
-/** The title bar, a filled pill rather than bare text. */
-function Header({ title, showBackButton, onBackPressed }: HeaderProps) {
-  const theme = useTheme();
-
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: theme.spacing.medium,
-        paddingVertical: theme.spacing.medium + theme.spacing.small,
-        borderRadius: theme.radii.medium,
-        backgroundColor: theme.colors.translucentBackgroundContrast,
-      }}
-    >
-      {showBackButton && (
-        <>
-          <SmallIconButton
-            icon="arrow-back-ios"
-            onPress={onBackPressed ?? (() => {})}
-            nudge={[3, 0]}
-            accessibilityLabel="Back"
-          />
-          <Gap size="medium" />
-        </>
-      )}
-
-      <View style={{ flex: 1, paddingVertical: theme.spacing.small }}>
-        <Text
-          numberOfLines={2}
-          style={[
-            theme.text.title1,
-            { color: theme.colors.text, fontWeight: '600' },
-          ]}
-        >
-          {title}
-        </Text>
-      </View>
     </View>
   );
 }

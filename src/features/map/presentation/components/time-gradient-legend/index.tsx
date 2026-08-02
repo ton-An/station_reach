@@ -5,12 +5,13 @@
 */
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { withAlpha } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
+import { GradientLabel } from './_gradient-label';
 
 const BAR_WIDTH = 250;
 const BAR_HEIGHT = 36;
@@ -54,7 +55,7 @@ export function TimeGradientLegend() {
             },
           ]}
         >
-          <Label text={t('thirtyMin')} />
+          <GradientLabel text={t('thirtyMin')} />
 
           <View
             style={{
@@ -64,22 +65,12 @@ export function TimeGradientLegend() {
               backgroundColor: theme.colors.translucentBackgroundContrast,
             }}
           >
-            <Label text={t('sevenHours')} />
+            <GradientLabel text={t('sevenHours')} />
           </View>
 
-          <Label text={t('fourteenHoursPlus')} />
+          <GradientLabel text={t('fourteenHoursPlus')} />
         </View>
       </View>
     </TranslucentSurface>
-  );
-}
-
-function Label({ text }: { readonly text: string }) {
-  const theme = useTheme();
-
-  return (
-    <Text style={[theme.text.subhead, { color: theme.colors.background }]}>
-      {text}
-    </Text>
   );
 }
