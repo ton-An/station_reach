@@ -1,11 +1,11 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { View } from 'react-native';
 
 import { withAlpha } from '@/core/helpers/color-helper';
 import { useTheme } from '@/core/theme/use-theme';
+import { Icon, type IconName } from './icon';
 
 interface ListIconProps {
-  readonly icon: React.ComponentProps<typeof MaterialIcons>['name'];
+  readonly icon: IconName;
   /** Fills the circle behind the glyph. */
   readonly color: string;
 }
@@ -22,7 +22,7 @@ export function ListIcon({ icon, color }: ListIconProps) {
         backgroundColor: color,
       }}
     >
-      <MaterialIcons
+      <Icon
         name={icon}
         size={24}
         color={withAlpha(theme.colors.backgroundContrast, 0.6)}

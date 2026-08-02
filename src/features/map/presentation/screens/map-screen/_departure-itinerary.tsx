@@ -42,7 +42,7 @@ export function DepartureItinerary({ departure }: DepartureItineraryProps) {
               subtitle={formatDuration(stop.durationMinutes)}
               icon={
                 <ListIcon
-                  icon="location-on"
+                  icon="locationOn"
                   color={colorForDuration(
                     theme.colors.timelineGradient,
                     stop.durationMinutes,

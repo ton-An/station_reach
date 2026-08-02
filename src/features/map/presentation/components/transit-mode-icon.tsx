@@ -1,8 +1,39 @@
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { View } from 'react-native';
 
-import CoachIcon from '@/assets/icons/coach.svg';
-import NightTrainIcon from '@/assets/icons/night_train.svg';
+import { Icon, type IconName } from '@/core/components/icon';
 import { TransitMode } from '../../domain/models/transit-mode';
+
+/**
+ * The glyph for each mode, and how far it needs lifting.
+ *
+ * Some of these icons are not optically centred in their own box — the tram
+ * and subway sit low, the night train lower still — so they carry the same
+ * bottom padding the Flutter `IconHelper` applied, expressed as a fraction of
+ * the icon size so it scales with them.
+ */
+const MODE_ICONS: Partial<
+  Record<
+    TransitMode,
+    { readonly name: IconName; readonly liftFraction?: number }
+  >
+> = {
+  [TransitMode.Rail]: { name: 'train' },
+  [TransitMode.RegionalFastRail]: { name: 'train' },
+  [TransitMode.RegionalRail]: { name: 'train' },
+  [TransitMode.Suburban]: { name: 'train' },
+  [TransitMode.HighspeedRail]: { name: 'train' },
+  [TransitMode.LongDistance]: { name: 'train' },
+
+  [TransitMode.Tram]: { name: 'tram', liftFraction: 0.15 },
+  [TransitMode.Subway]: { name: 'subway', liftFraction: 0.15 },
+  [TransitMode.Metro]: { name: 'subway', liftFraction: 0.15 },
+  [TransitMode.NightRail]: { name: 'nightTrain', liftFraction: 0.2 },
+
+  [TransitMode.Bus]: { name: 'directionsBus' },
+  [TransitMode.Coach]: { name: 'coach' },
+  [TransitMode.Ferry]: { name: 'directionsBoat' },
+  [TransitMode.Funicular]: { name: 'funicular' },
+};
 
 interface TransitModeIconProps {
   readonly mode: TransitMode;
@@ -10,50 +41,22 @@ interface TransitModeIconProps {
   readonly color: string;
 }
 
-/** Vector icon names for the modes the icon font already covers well. */
-const ICON_NAMES: Partial<
-  Record<
-    TransitMode,
-    React.ComponentProps<typeof MaterialCommunityIcons>['name']
-  >
-> = {
-  [TransitMode.Rail]: 'train',
-  [TransitMode.RegionalRail]: 'train',
-  [TransitMode.RegionalFastRail]: 'train',
-  [TransitMode.Suburban]: 'train',
-  [TransitMode.HighspeedRail]: 'train-variant',
-  [TransitMode.LongDistance]: 'train-variant',
-  [TransitMode.Tram]: 'tram',
-  [TransitMode.Subway]: 'subway-variant',
-  [TransitMode.Metro]: 'subway-variant',
-  [TransitMode.Bus]: 'bus',
-  [TransitMode.Ferry]: 'ferry',
-  [TransitMode.Funicular]: 'gondola',
-  [TransitMode.CableCar]: 'gondola',
-  [TransitMode.AerialLift]: 'gondola',
-  [TransitMode.ArealLift]: 'gondola',
-};
-
 /**
  * The icon for a mode of transit.
  *
- * Most modes come from the icon font; coach and night rail use bundled SVGs
- * because no icon set carries a recognisable version of either.
+ * Modes with no icon of their own fall back to a question mark rather than
+ * borrowing a neighbouring mode's glyph — showing a tram for a cable car would
+ * be worse than admitting we don't have one.
  */
 export function TransitModeIcon({ mode, size, color }: TransitModeIconProps) {
-  if (mode === TransitMode.Coach) {
-    return <CoachIcon width={size} height={size} fill={color} />;
-  }
+  const icon = MODE_ICONS[mode] ?? { name: 'questionMark' as const };
+  const lift = (icon.liftFraction ?? 0) * size;
 
-  if (mode === TransitMode.NightRail) {
-    return <NightTrainIcon width={size} height={size} fill={color} />;
-  }
+  if (lift === 0) return <Icon name={icon.name} size={size} color={color} />;
 
   return (
-    <MaterialCommunityIcons
-      name={ICON_NAMES[mode] ?? 'help'}
-      size={size}
-      color={color}
-    />
+    <View style={{ paddingBottom: lift }}>
+      <Icon name={icon.name} size={size} color={color} />
+    </View>
   );
 }

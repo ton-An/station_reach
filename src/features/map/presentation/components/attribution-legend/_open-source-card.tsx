@@ -1,11 +1,10 @@
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as WebBrowser from 'expo-web-browser';
 import { Text, View } from 'react-native';
 
 import { FadePressable } from '@/core/components/fade-pressable';
 import { Gap } from '@/core/components/gap';
 import { GradientBorder } from '@/core/components/gradient-border';
+import { Icon } from '@/core/components/icon';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 import { REPOSITORY_URL } from './attributions';
@@ -31,11 +30,7 @@ export function OpenSourceCard() {
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <MaterialCommunityIcons
-              name="github"
-              size={24}
-              color={theme.colors.text}
-            />
+            <Icon name="github" size={24} color={theme.colors.text} />
 
             <Gap size="xxSmall" />
 
@@ -48,11 +43,7 @@ export function OpenSourceCard() {
               {t('proudlyOpenSource')}
             </Text>
 
-            <MaterialIcons
-              name="arrow-forward-ios"
-              size={20}
-              color={theme.colors.hint}
-            />
+            <Icon name="arrowForward" size={20} color={theme.colors.hint} />
           </View>
 
           <Gap size="xxSmall" axis="vertical" />

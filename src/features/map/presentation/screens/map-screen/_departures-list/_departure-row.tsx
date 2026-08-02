@@ -83,9 +83,9 @@ export function DepartureRow({
 
           {/* The whole row is the tap target; this is just the affordance. */}
           <SmallIconButton
-            icon="arrow-forward-ios"
+            icon="arrowForward"
             onPress={onPress}
-            nudge={[1, 0]}
+            alignmentOffset={[1, 0]}
             backgroundColor={theme.colors.transparent}
             decorative
           />

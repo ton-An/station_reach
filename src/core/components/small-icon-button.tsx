@@ -1,20 +1,26 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState } from 'react';
 import { Animated, Easing, Pressable, View } from 'react-native';
 
 import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
+import { Icon, type IconName } from './icon';
+
+/** How the press fade behaves, matching the Flutter `SmallIconButton`. */
+const FADE_OUT_MS = 215;
+const FADE_IN_MS = 250;
+const PRESSED_OPACITY = 0.4;
 
 interface SmallIconButtonProps {
-  readonly icon: React.ComponentProps<typeof MaterialIcons>['name'];
+  readonly icon: IconName;
   readonly onPress: () => void;
   /**
-   * Nudges the glyph inside its circle.
+   * Nudges the glyph inside its circle, in pixels.
    *
    * Chevrons are not optically centred in their own box, so the button that
-   * holds one needs a pixel of correction to look centred.
+   * holds one needs a pixel of correction to look centred. Same values the
+   * Flutter `alignmentOffset` used: `[-1, 0]` for back, `[1, 0]` for forward.
    */
-  readonly nudge?: readonly [number, number];
+  readonly alignmentOffset?: readonly [number, number];
   readonly backgroundColor?: string;
   readonly accessibilityLabel?: string;
   /**
@@ -31,7 +37,7 @@ interface SmallIconButtonProps {
 export function SmallIconButton({
   icon,
   onPress,
-  nudge = [0, 0],
+  alignmentOffset = [0, 0],
   backgroundColor,
   accessibilityLabel,
   decorative = false,
@@ -59,10 +65,13 @@ export function SmallIconButton({
     >
       <View
         style={{
-          transform: [{ translateX: nudge[0] }, { translateY: nudge[1] }],
+          transform: [
+            { translateX: alignmentOffset[0] },
+            { translateY: alignmentOffset[1] },
+          ],
         }}
       >
-        <MaterialIcons name={icon} size={24} color={theme.colors.text} />
+        <Icon name={icon} size={24} color={theme.colors.text} />
       </View>
     </Animated.View>
   );
@@ -72,8 +81,8 @@ export function SmallIconButton({
   return (
     <Pressable
       onPress={onPress}
-      onPressIn={() => fadeTo(0.4, 215)}
-      onPressOut={() => fadeTo(1, 250)}
+      onPressIn={() => fadeTo(PRESSED_OPACITY, FADE_OUT_MS)}
+      onPressOut={() => fadeTo(1, FADE_IN_MS)}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
     >

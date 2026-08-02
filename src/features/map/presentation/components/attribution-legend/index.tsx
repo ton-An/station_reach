@@ -1,9 +1,9 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useState } from 'react';
 import { View } from 'react-native';
 
 import { Dialog } from '@/core/components/dialog';
 import { FadePressable } from '@/core/components/fade-pressable';
+import { Icon } from '@/core/components/icon';
 import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
@@ -28,11 +28,7 @@ export function AttributionLegend() {
           accessibilityLabel={t('attributions')}
         >
           <View style={{ padding: theme.spacing.xxSmall }}>
-            <MaterialIcons
-              name="info"
-              size={24}
-              color={theme.colors.description}
-            />
+            <Icon name="info" size={24} color={theme.colors.description} />
           </View>
         </FadePressable>
       </TranslucentSurface>

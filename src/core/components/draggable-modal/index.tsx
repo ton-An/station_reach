@@ -118,10 +118,16 @@ export function DraggableModal({
     outputRange: [0, availableHeight],
   });
 
-  // The legend belongs to the map, so it gets out of the way once the sheet
-  // is drawn up over it.
+  /*
+    The legend belongs to the map, so it gets out of the way once the sheet is
+    drawn up over it.
+
+    The range starts exactly at the resting height so that at rest the opacity
+    is exactly 1. Anything less creates a backdrop root above the legends and
+    silently kills their blur.
+  */
   const legendOpacity = fraction.interpolate({
-    inputRange: [MEDIUM_HEIGHT - 0.01, MEDIUM_HEIGHT + 0.08],
+    inputRange: [MEDIUM_HEIGHT, MEDIUM_HEIGHT + 0.08],
     outputRange: [1, 0],
     extrapolate: 'clamp',
   });

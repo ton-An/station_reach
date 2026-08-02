@@ -110,10 +110,18 @@ export function Dialog({
             pointerEvents: 'none',
           }}
         >
+          {/*
+            Scale only — deliberately no opacity fade on the card.
+
+            `backdrop-filter` samples the nearest backdrop root, and an
+            ancestor with opacity < 1 creates one. Fading the card in would
+            leave its blur with nothing to sample until the animation landed
+            on exactly 1, so the blur visibly arrived a beat late. The scrim
+            behind it carries the fade instead.
+          */}
           <Animated.View
             style={{
               pointerEvents: 'auto',
-              opacity: progress,
               transform: [
                 {
                   // Settles down from slightly oversized rather than growing in.

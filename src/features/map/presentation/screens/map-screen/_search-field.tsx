@@ -1,7 +1,7 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useEffect, useRef, useState } from 'react';
 import { Keyboard, TextInput, View } from 'react-native';
 
+import { Icon } from '@/core/components/icon';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 import { withAlpha } from '@/core/helpers/color-helper';
@@ -48,7 +48,7 @@ export function SearchField() {
           paddingRight: theme.spacing.xSmall,
         }}
       >
-        <MaterialIcons name="search" size={28} color={theme.colors.hint} />
+        <Icon name="search" size={28} color={theme.colors.hint} />
       </View>
 
       <TextInput

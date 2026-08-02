@@ -13,7 +13,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@expo/vector-icons": "~15.0.2",
     "@maplibre/maplibre-react-native": "^10.2.0",
     "expo": "~57.0.9",
     "expo-blur": "~57.0.1",
