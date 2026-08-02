@@ -18,6 +18,8 @@ interface TranslucentSurfaceProps {
    * over a busy map the card needs a visible edge, not just a tint.
    */
   readonly bordered?: boolean;
+  /** Overrides the fill laid over the blur, for surfaces with their own tint. */
+  readonly tint?: string;
   readonly style?: StyleProp<ViewStyle>;
 }
 
@@ -33,6 +35,7 @@ export function TranslucentSurface({
   topRadius,
   light = false,
   bordered = false,
+  tint,
   style,
 }: TranslucentSurfaceProps) {
   const theme = useTheme();
@@ -57,9 +60,11 @@ export function TranslucentSurface({
           corners,
           {
             flex: 1,
-            backgroundColor: bordered
-              ? withAlpha(theme.colors.background, 0.35)
-              : theme.colors.translucentBackground,
+            backgroundColor:
+              tint ??
+              (bordered
+                ? withAlpha(theme.colors.background, 0.35)
+                : theme.colors.translucentBackground),
           },
           bordered
             ? {
