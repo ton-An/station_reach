@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:station_reach/features/map/domain/enums/transit_mode.dart';
 
 /// {@template station}
 /// A transit station
@@ -10,6 +11,7 @@ class Station extends Equatable {
     required this.name,
     required this.latitude,
     required this.longitude,
+    required this.modes,
     this.countryCode,
     this.area,
   });
@@ -18,11 +20,20 @@ class Station extends Equatable {
   final String name;
   final double latitude;
   final double longitude;
+  final List<TransitMode> modes;
   final String? countryCode;
 
   /// The name of the area of the station
   final String? area;
 
   @override
-  List<Object?> get props => [id, name, latitude, longitude, countryCode, area];
+  List<Object?> get props => [
+    id,
+    name,
+    latitude,
+    longitude,
+    modes,
+    countryCode,
+    area,
+  ];
 }

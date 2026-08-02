@@ -10,6 +10,7 @@ class Stop extends Station {
     required super.name,
     required super.latitude,
     required super.longitude,
+    required super.modes,
     required this.duration,
     super.countryCode,
   });

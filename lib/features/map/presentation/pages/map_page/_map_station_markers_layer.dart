@@ -137,6 +137,8 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
                                 fontVariations: [FontVariation('wght', 500)],
                               ),
                             ),
+                            const SmallGap(),
+
                             Text(
                               TimeDateFormatter.formatDuration(
                                 _hoveredStationInfo!.$1.duration,
@@ -153,6 +155,23 @@ class _MapStationMarkersLayerState extends State<_MapStationMarkersLayer> {
                                       28,
                                 ).withValues(alpha: .75),
                               ),
+                            ),
+                            const XSmallGap(),
+                            Row(
+                              children: [
+                                for (final mode
+                                    in _hoveredStationInfo!.$1.modes)
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: theme.spacing.tiny,
+                                    ),
+                                    child: IconHelper.getTransitModeIcon(
+                                      mode: mode,
+                                      size: 24,
+                                      color: theme.colors.hint,
+                                    ),
+                                  ),
+                              ],
                             ),
                           ],
                         ),

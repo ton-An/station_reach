@@ -13,36 +13,16 @@ class _TransitModeIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    final IconData icon = _getIcon(mode);
+    final Widget icon = IconHelper.getTransitModeIcon(
+      mode: mode,
+      size: 20,
+      color: theme.colors.background,
+    );
 
     return Container(
       padding: EdgeInsets.all(theme.spacing.xxSmall),
       decoration: BoxDecoration(color: backgroundColor, shape: BoxShape.circle),
-      child: Icon(icon, color: theme.colors.background),
+      child: icon,
     );
-  }
-
-  IconData _getIcon(TransitMode mode) {
-    switch (mode) {
-      case TransitMode.rail ||
-          TransitMode.highspeedRail ||
-          TransitMode.longDistance ||
-          TransitMode.nightRail ||
-          TransitMode.regionalFastRail ||
-          TransitMode.suburban ||
-          TransitMode.regionalRail:
-        return Icons.train;
-      case TransitMode.tram:
-        return Icons.tram;
-      case TransitMode.subway || TransitMode.metro:
-        return Icons.subway;
-      case TransitMode.bus || TransitMode.coach:
-        return Icons.directions_bus;
-      case TransitMode.ferry:
-        return Icons.directions_boat;
-      case TransitMode.funicular:
-      default:
-        return Icons.question_mark_rounded;
-    }
   }
 }

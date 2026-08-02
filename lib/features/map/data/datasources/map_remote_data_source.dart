@@ -169,6 +169,9 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
     final double latitude = stationMap['lat'];
     final double longitude = stationMap['lon'];
     final String? countryCode = stationMap['country'];
+    final List<TransitMode> modes = (stationMap['modes'] as List<dynamic>)
+        .map((mode) => TransitMode.fromString(mode as String))
+        .toList();
     String? area;
 
     adminLevelLoop:
@@ -186,6 +189,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
       name: name,
       latitude: latitude,
       longitude: longitude,
+      modes: modes,
       area: area,
       countryCode: countryCode,
     );
@@ -220,6 +224,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
         name: station.name,
         latitude: station.latitude,
         longitude: station.longitude,
+        modes: station.modes,
         duration: Duration.zero,
       ),
     );
@@ -235,15 +240,18 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
       final String stopName = stopMap['name'];
       final double stopLatitude = stopMap['lat'];
       final double stopLongitude = stopMap['lon'];
+      final List<TransitMode> modes = (stopMap['modes'] as List<dynamic>)
+          .map((mode) => TransitMode.fromString(mode as String))
+          .toList();
 
       final String? scheduledArrivalString =
           stopMap['scheduledArrival'] ?? stopMap['scheduledDeparture'];
+
       if (scheduledArrivalString == null) {
         continue;
       }
 
       final DateTime scheduledArrival = DateTime.parse(scheduledArrivalString);
-
       final Duration duration = scheduledArrival.difference(departureTime);
 
       stops.add(
@@ -252,6 +260,7 @@ class MapRemoteDataSourceImpl extends MapRemoteDataSource {
           name: stopName,
           latitude: stopLatitude,
           longitude: stopLongitude,
+          modes: modes,
           duration: duration,
         ),
       );
