@@ -1,8 +1,9 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { ScrollView, Text, View } from 'react-native';
 
+import { Dot } from '@/core/components/dot';
 import { FadePressable } from '@/core/components/fade-pressable';
 import { Gap } from '@/core/components/gap';
+import { SmallIconButton } from '@/core/components/small-icon-button';
 import {
   colorForDuration,
   interpolateColors,
@@ -29,7 +30,7 @@ export function DeparturesList() {
 
   if (state.status === 'unselected') {
     return (
-      <View style={{ padding: theme.spacing.xMedium }}>
+      <ScrollView contentContainerStyle={{ paddingTop: theme.spacing.xMedium }}>
         <Text
           style={[
             theme.text.body,
@@ -38,7 +39,7 @@ export function DeparturesList() {
         >
           {t('noStopSelected')}
         </Text>
-      </View>
+      </ScrollView>
     );
   }
 
@@ -88,59 +89,65 @@ function DepartureRow({
 
   return (
     <FadePressable onPress={onPress}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          paddingVertical: theme.spacing.xxSmall,
-        }}
-      >
+      <View style={{ paddingVertical: theme.spacing.xSmall }}>
         <View
           style={{
-            padding: theme.spacing.small,
-            borderRadius: 999,
-            backgroundColor: withAlpha(accentColor, 0.4),
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: theme.spacing.xSmall,
           }}
         >
-          <TransitModeIcon
-            mode={departure.mode}
-            size={20}
-            color={theme.colors.background}
+          <View
+            style={{
+              padding: theme.spacing.xxSmall,
+              borderRadius: 999,
+              backgroundColor: withAlpha(accentColor, 0.4),
+            }}
+          >
+            <TransitModeIcon
+              mode={departure.mode}
+              size={20}
+              color={theme.colors.background}
+            />
+          </View>
+
+          <Gap size="xxSmall" />
+
+          <Text
+            numberOfLines={1}
+            style={[theme.text.body, { color: theme.colors.text }]}
+          >
+            {departure.name}
+          </Text>
+
+          <Gap size="xSmall" />
+          <Dot />
+          <Gap size="xSmall" />
+
+          <Text
+            style={[
+              theme.text.body,
+              {
+                flex: 1,
+                color: colorForDuration(
+                  theme.colors.timelineGradient,
+                  durationMinutes
+                ),
+              },
+            ]}
+          >
+            {formatDuration(durationMinutes)}
+          </Text>
+
+          {/* The whole row is the tap target; this is just the affordance. */}
+          <SmallIconButton
+            icon="arrow-forward-ios"
+            onPress={onPress}
+            nudge={[1, 0]}
+            backgroundColor={theme.colors.transparent}
+            decorative
           />
         </View>
-
-        <Gap size="xSmall" />
-
-        <Text
-          numberOfLines={1}
-          style={[theme.text.body, { color: theme.colors.text, flexShrink: 1 }]}
-        >
-          {departure.name}
-        </Text>
-
-        <Gap size="xSmall" />
-
-        <Text
-          style={[
-            theme.text.body,
-            {
-              color: colorForDuration(
-                theme.colors.timelineGradient,
-                durationMinutes
-              ),
-            },
-          ]}
-        >
-          {formatDuration(durationMinutes)}
-        </Text>
-
-        <View style={{ flex: 1 }} />
-
-        <MaterialIcons
-          name="chevron-right"
-          size={22}
-          color={theme.colors.hint}
-        />
       </View>
 
       {showDivider && (

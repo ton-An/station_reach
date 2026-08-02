@@ -14,7 +14,11 @@ export const en = {
   transitousAttribution: 'Data processed by Transitous',
   privacyPolicy: 'Privacy Policy',
   impressum: 'Impressum',
-  sourceCode: 'Source Code',
+  attributions: 'Attributions',
+  ok: 'OK',
+  proudlyOpenSource: 'Proudly Open Source',
+  openSourceExplanation:
+    'This app is open source. Take a look at the code, report an issue, or contribute.',
 } as const;
 
 export type TranslationKey = keyof typeof en;

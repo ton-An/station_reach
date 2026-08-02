@@ -5,12 +5,15 @@
 */
 
 import { LinearGradient } from 'expo-linear-gradient';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { withAlpha } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
+
+const BAR_WIDTH = 250;
+const BAR_HEIGHT = 36;
 
 /**
  * The key to the travel-time colours.
@@ -26,50 +29,57 @@ export function TimeGradientLegend() {
   );
 
   return (
-    <TranslucentSurface radius={theme.radii.small}>
+    <TranslucentSurface radius={theme.radii.small} light>
       <View style={{ padding: theme.spacing.small + 1 }}>
         <LinearGradient
           colors={gradient as [string, string, ...string[]]}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={{
-            width: 220,
-            height: 32,
+            width: BAR_WIDTH,
+            height: BAR_HEIGHT,
             borderRadius: theme.radii.small * 0.7,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: theme.spacing.xSmall,
           }}
+        />
+
+        {/* Labels ride on top of the gradient rather than beside it. */}
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingHorizontal: theme.spacing.xSmall + theme.spacing.xTiny,
+            },
+          ]}
         >
-          <Text
-            style={[theme.text.footnote, { color: theme.colors.background }]}
-          >
-            {t('thirtyMin')}
-          </Text>
+          <Label text={t('thirtyMin')} />
 
           <View
             style={{
-              paddingHorizontal: theme.spacing.small,
+              paddingHorizontal: theme.spacing.xSmall,
               paddingVertical: theme.spacing.xTiny,
               borderRadius: theme.radii.small,
               backgroundColor: theme.colors.translucentBackgroundContrast,
             }}
           >
-            <Text
-              style={[theme.text.footnote, { color: theme.colors.background }]}
-            >
-              {t('sevenHours')}
-            </Text>
+            <Label text={t('sevenHours')} />
           </View>
 
-          <Text
-            style={[theme.text.footnote, { color: theme.colors.background }]}
-          >
-            {t('fourteenHoursPlus')}
-          </Text>
-        </LinearGradient>
+          <Label text={t('fourteenHoursPlus')} />
+        </View>
       </View>
     </TranslucentSurface>
+  );
+}
+
+function Label({ text }: { readonly text: string }) {
+  const theme = useTheme();
+
+  return (
+    <Text style={[theme.text.subhead, { color: theme.colors.background }]}>
+      {text}
+    </Text>
   );
 }

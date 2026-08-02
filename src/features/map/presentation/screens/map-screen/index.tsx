@@ -6,8 +6,6 @@ import { WIDE_LAYOUT_BREAKPOINT } from '@/core/theme/theme';
 import { useTheme } from '@/core/theme/use-theme';
 import type { Departure } from '../../../domain/models/departure';
 import type { Stop } from '../../../domain/models/station';
-import { AttributionLegend } from '../../components/attribution-legend';
-import { TimeGradientLegend } from '../../components/time-gradient-legend';
 import { FOCUS_LATITUDE_OFFSET, FOCUSED_ZOOM } from '../../map/map-config';
 import {
   buildRouteFeatures,
@@ -18,10 +16,14 @@ import { MapView } from '../../map/map-view';
 import type { MapFocus } from '../../map/map-view.types';
 import { useDepartureSelectionStore } from '../../stores/departure-selection-store';
 import { useStationDeparturesStore } from '../../stores/station-departures-store';
-import { useStationSelectionStore } from '../../stores/station-selection-store';
 import { useStationSearchStore } from '../../stores/station-search-store';
-import { DeparturesModal, MODAL_HEIGHT_FRACTION } from './_departures-modal';
+import { useStationSelectionStore } from '../../stores/station-selection-store';
+import { DeparturesModal } from './_departures-modal';
+import { MapLegends } from './_map-legends';
 import { Search } from './_search';
+
+/** How wide the bottom-left legend cluster is on a large screen. */
+const LEGEND_CLUSTER_WIDTH = 320;
 
 /**
  * The app's only screen.
@@ -31,7 +33,7 @@ import { Search } from './_search';
  */
 export function MapScreen() {
   const theme = useTheme();
-  const { width, height } = useWindowDimensions();
+  const { width } = useWindowDimensions();
 
   const departuresState = useStationDeparturesStore((store) => store.state);
   const searchState = useStationSearchStore((store) => store.state);
@@ -107,8 +109,6 @@ export function MapScreen() {
   }, [failure, sendFailure]);
 
   const isWide = width >= WIDE_LAYOUT_BREAKPOINT;
-  const modalTopOffset =
-    height * MODAL_HEIGHT_FRACTION + theme.spacing.medium * 2;
 
   return (
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
@@ -132,42 +132,24 @@ export function MapScreen() {
       <View style={{ flex: 1, pointerEvents: 'none' }}>
         <Search />
 
-        {isWide && (
-          <View
-            style={{
-              position: 'absolute',
-              left: theme.spacing.medium,
-              bottom: theme.spacing.medium,
-              gap: theme.spacing.xSmall,
-              pointerEvents: 'auto',
-            }}
-          >
-            <TimeGradientLegend />
-            <AttributionLegend />
-          </View>
-        )}
-
-        {/* Narrow screens have no room beside the map, so the legends ride
-            above the modal instead of beside it. */}
-        {!isWide && (
-          <View
-            style={{
-              position: 'absolute',
-              left: theme.spacing.medium,
-              right: theme.spacing.medium,
-              bottom: modalTopOffset,
-              gap: theme.spacing.xSmall,
-              alignItems: 'flex-start',
-              pointerEvents: 'auto',
-            }}
-          >
-            <TimeGradientLegend />
-            <AttributionLegend />
-          </View>
-        )}
-
         <DeparturesModal />
       </View>
+
+      {/* Wide screens have room for the legends beside the map; narrow ones
+          carry them above the sheet, inside the modal. */}
+      {isWide && (
+        <View
+          style={{
+            position: 'absolute',
+            left: theme.spacing.medium,
+            bottom: theme.spacing.medium,
+            width: LEGEND_CLUSTER_WIDTH,
+            pointerEvents: 'none',
+          }}
+        >
+          <MapLegends />
+        </View>
+      )}
     </View>
   );
 }

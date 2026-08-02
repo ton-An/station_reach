@@ -1,6 +1,8 @@
 import { Keyboard, ScrollView, Text, View } from 'react-native';
 
+import { Dot } from '@/core/components/dot';
 import { FadePressable } from '@/core/components/fade-pressable';
+import { Gap } from '@/core/components/gap';
 import { useTheme } from '@/core/theme/use-theme';
 import type { Station } from '../../../domain/models/station';
 import { useStationDeparturesStore } from '../../stores/station-departures-store';
@@ -34,9 +36,12 @@ export function SearchResults() {
       style={{ maxHeight: MAX_HEIGHT }}
       keyboardShouldPersistTaps="handled"
     >
-      {stations.map((station) => (
+      {stations.map((station, index) => (
         <FadePressable
           key={station.id}
+          // Alternating press depth gives the list a subtle zebra rhythm as
+          // you run down it — straight from the Flutter original.
+          minOpacity={index % 2 === 0 ? 0.1 : 0.6}
           onPress={() => {
             void loadReachability(station);
             collapse();
@@ -57,21 +62,15 @@ export function SearchResults() {
 
             {describeArea(station) !== undefined && (
               <>
-                <View
-                  style={{
-                    width: 3,
-                    height: 3,
-                    borderRadius: 1.5,
-                    marginHorizontal: theme.spacing.xSmall,
-                    backgroundColor: theme.colors.hint,
-                  }}
-                />
+                <Gap size="xSmall" />
+                <Dot />
+                <Gap size="xSmall" />
 
                 <Text
                   numberOfLines={1}
                   style={[
                     theme.text.body,
-                    { color: theme.colors.hint, flexShrink: 1 },
+                    { color: theme.colors.hint, flex: 1 },
                   ]}
                 >
                   {describeArea(station)}

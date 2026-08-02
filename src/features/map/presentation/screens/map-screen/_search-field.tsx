@@ -1,13 +1,17 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useEffect, useRef, useState } from 'react';
 import { Keyboard, TextInput, View } from 'react-native';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-import { useTheme } from '@/core/theme/use-theme';
 import { t } from '@/core/i18n/translate';
+import { useTheme } from '@/core/theme/use-theme';
+import { withAlpha } from '@/core/helpers/color-helper';
 import {
   SEARCH_DEBOUNCE_MS,
   useStationSearchStore,
 } from '../../stores/station-search-store';
+
+/** The field's fixed height, matching the Flutter `CupertinoTextField`. */
+const FIELD_HEIGHT = 54;
 
 /**
  * The station search input.
@@ -33,20 +37,26 @@ export function SearchField() {
   return (
     <View
       style={{
-        height: 54,
+        height: FIELD_HEIGHT,
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: theme.spacing.medium,
       }}
     >
-      <MaterialIcons name="search" size={28} color={theme.colors.hint} />
+      <View
+        style={{
+          paddingLeft: theme.spacing.medium + theme.spacing.small,
+          paddingRight: theme.spacing.xSmall,
+        }}
+      >
+        <MaterialIcons name="search" size={28} color={theme.colors.hint} />
+      </View>
 
       <TextInput
         value={query}
         onChangeText={setQuery}
         onSubmitEditing={() => Keyboard.dismiss()}
         placeholder={t('searchStations')}
-        placeholderTextColor={theme.colors.hint}
+        placeholderTextColor={withAlpha(theme.colors.text, 0.7)}
         autoCorrect={false}
         autoCapitalize="none"
         returnKeyType="search"
@@ -55,7 +65,7 @@ export function SearchField() {
           theme.text.body,
           {
             flex: 1,
-            marginLeft: theme.spacing.xSmall,
+            paddingRight: theme.spacing.medium,
             color: theme.colors.text,
             // React Native Web draws a focus ring that fights the blurred card.
             outlineWidth: 0,

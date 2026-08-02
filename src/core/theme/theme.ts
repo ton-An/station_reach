@@ -111,7 +111,8 @@ export const colors = {
   secondaryGradient,
 } as const;
 
-const FONT_FAMILY = 'inter_variable';
+/** Loaded once in the root layout; nothing renders before it is available. */
+export const FONT_FAMILY = 'inter_variable';
 
 /**
  * The iOS type scale, matched to the Flutter app's `WebfabrikTextThemeData`.
@@ -193,6 +194,8 @@ export const misc = {
   largeIconSize: 44,
   /** Matches the Flutter `ImageFilter.blur(sigmaX: 15, sigmaY: 15)` surfaces. */
   blurIntensity: 30,
+  /** The lighter blur the map legends use (`sigma: 6`). */
+  legendBlurIntensity: 12,
 } as const;
 
 /** Below this width the layout collapses to a single bottom-anchored column. */

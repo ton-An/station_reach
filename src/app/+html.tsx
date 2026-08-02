@@ -48,4 +48,14 @@ body {
   overflow: hidden;
   overscroll-behavior: none;
 }
+
+/*
+  The search field sits on a blurred card over the map, where the browser's
+  default focus ring reads as a stray orange box. React Native's outlineWidth
+  style does not suppress it, so it is cleared here.
+*/
+input:focus,
+input:focus-visible {
+  outline: none;
+}
 `;

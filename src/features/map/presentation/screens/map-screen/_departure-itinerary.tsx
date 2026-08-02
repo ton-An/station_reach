@@ -1,7 +1,8 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { ScrollView, Text, View } from 'react-native';
 
+import { DottedTimeline } from '@/core/components/dotted-timeline';
 import { Gap } from '@/core/components/gap';
+import { ListIcon, ListItem } from '@/core/components/list-item';
 import { colorForDuration } from '@/core/helpers/color-helper';
 import { formatDuration } from '@/core/helpers/duration-helper';
 import { useTheme } from '@/core/theme/use-theme';
@@ -35,58 +36,35 @@ export function DepartureItinerary({ departure }: DepartureItineraryProps) {
 
         return (
           <View key={`${stop.id}-${index}`}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <MaterialIcons
-                name="location-on"
-                size={22}
-                color={colorForDuration(
-                  theme.colors.timelineGradient,
-                  stop.durationMinutes,
-                  0.55
-                )}
-              />
-
-              <Gap size="xSmall" />
-
-              <View style={{ flexShrink: 1 }}>
-                <Text
-                  numberOfLines={1}
-                  style={[theme.text.body, { color: theme.colors.text }]}
-                >
-                  {stop.name}
-                </Text>
-
-                <Text
-                  style={[theme.text.footnote, { color: theme.colors.hint }]}
-                >
-                  {formatDuration(stop.durationMinutes)}
-                </Text>
-              </View>
-            </View>
+            <ListItem
+              title={stop.name}
+              subtitle={formatDuration(stop.durationMinutes)}
+              icon={
+                <ListIcon
+                  icon="location-on"
+                  color={colorForDuration(
+                    theme.colors.timelineGradient,
+                    stop.durationMinutes,
+                    0.55
+                  )}
+                />
+              }
+            />
 
             {next !== undefined && (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingLeft: theme.spacing.xSmall,
-                  paddingVertical: theme.spacing.small,
-                }}
-              >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                {/* Aligns the dashes with the centre of the icon above. */}
                 <View
                   style={{
-                    width: 2,
-                    height: 18,
-                    borderRadius: 1,
-                    backgroundColor: theme.colors.translucentBackgroundContrast,
+                    width: theme.spacing.xMedium - theme.spacing.tiny,
                   }}
                 />
 
-                <Gap size="xxSmall" />
+                <DottedTimeline />
 
-                <Text
-                  style={[theme.text.footnote, { color: theme.colors.hint }]}
-                >
+                <Gap size="medium" />
+
+                <Text style={[theme.text.body, { color: theme.colors.hint }]}>
                   {`+ ${formatDuration(
                     next.durationMinutes - stop.durationMinutes
                   )}`}

@@ -119,14 +119,16 @@ Failures surface to the user through one global in-app notification store, subsc
 
 ## Theme
 
-There is no `webfabrik_theme` on this side of the port — its tokens are reimplemented in `src/core/theme`. Never hardcode a spacing, radius, colour, or duration; always read a token.
+There is no `webfabrik_theme` on this side of the port — its tokens are reimplemented in `src/core/theme`, and the widgets it supplied (modal sheet, list item, dotted timeline, dot, small icon button, gaps) are reimplemented in `src/core/components`. Never hardcode a spacing, radius, colour, or duration; always read a token.
 
 ```
 spacing   tiny 1 · xTiny 2 · small 4 · xSmall 8 · xxSmall 12 · medium 14
           xMedium 24 · xxMedium 32 · large 44 · xLarge 55 · xxLarge 128
-radii     small 8 · field 10 · medium 12 · button 14 · xMedium 18 · large 20
+radii     small 8 · field 10 · medium 12 · button 14 · xMedium 18 · large 20 · xLarge 30
 durations tiny 50 · xTiny 100 · xxTiny 150 · short 200 · xShort 250 …  (ms)
 ```
+
+Inter ships as a single variable TTF and is loaded in the root layout; **nothing renders until it resolves**, because the fallback is a serif face and swapping it in after first paint reflows every label on the map.
 
 Brand colours: primary `rgb(83,196,108)`, accent `rgb(7,114,255)`. `timelineGradient` is the 8-stop travel-time ramp (green → yellow → orange → red) and is the app's single most important visual; `secondaryGradient` (purple → cyan) tints departure list icons by index.
 
@@ -209,13 +211,20 @@ Before saying a change works: `npx tsc --noEmit` clean, and the affected screen 
 
 ## Do not change
 
-- **Attribution is a licensing obligation.** OpenStreetMap, CartoDB, Transitous, and the Transitous data sources must stay visible and linked, alongside the privacy policy and Impressum. The legend that carries them is not optional UI.
+- **Attribution is a licensing obligation.** OpenStreetMap, CARTO, Transitous, and the Transitous data sources must stay reachable and linked, alongside the privacy policy and Impressum. The info button and the dialog behind it are not optional UI.
 - The bundle/application identifiers and App Store id above.
-- The MIT licence and the OSS repository link in the attribution legend.
+- The MIT licence and the OSS repository link in the attribution dialog.
 
-## Carry-overs worth fixing during the port
+## Web gotchas
 
-- Search fires on every keystroke — debounce it (~300ms) and cancel the in-flight request.
-- The two departure requests run serially; they should be concurrent.
-- `assets/icons/test.svg` is the night-train icon under a placeholder name. Rename it.
+Both of these cost real debugging time; neither fails loudly.
+
+- **`pointerEvents: 'box-none'` does not survive `style` on React Native Web** — it computes to `auto`, so a full-screen chrome overlay silently swallows every map click. Use `'none'` on containers and `'auto'` on the panels that need input.
+- **`translateX`/`translateY` must be numbers**, not percentage strings. The native animation driver ignores percentages, so a pager animates on web and sits still on device. Measure with `onLayout` instead.
+- `useNativeDriver` is unavailable on web; read it from `USE_NATIVE_DRIVER` rather than hardcoding `true`.
+- The root document needs explicit `height: 100%` (see `src/app/+html.tsx`). Without it the whole tree collapses to zero height and the map renders as a 400×300 stub.
+
+## Still open
+
 - `TransitMode` enumerates modes the app can't show (car, airplane, flex, …). Trim to what Transitous actually returns for stops.
+- Never run on a real iOS or Android device — only web and the simulator toolchain. `expo prebuild` plus a native build is the next step, and MapLibre native is the likeliest thing to need attention.

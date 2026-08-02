@@ -16,6 +16,7 @@ interface FadePressableProps {
   /** How far to fade while held. */
   readonly minOpacity?: number;
   readonly style?: StyleProp<ViewStyle>;
+  readonly accessibilityLabel?: string;
 }
 
 /**
@@ -30,6 +31,7 @@ export function FadePressable({
   onLongPress,
   minOpacity = 0.6,
   style,
+  accessibilityLabel,
 }: FadePressableProps) {
   const theme = useTheme();
   const [opacity] = useState(() => new Animated.Value(1));
@@ -50,6 +52,8 @@ export function FadePressable({
       // Reveal the same affordance to a mouse as to a finger.
       onHoverIn={() => fadeTo((1 + minOpacity) / 2)}
       onHoverOut={() => fadeTo(1)}
+      accessibilityRole={onPress === undefined ? undefined : 'button'}
+      accessibilityLabel={accessibilityLabel}
       style={style}
     >
       <Animated.View style={{ opacity }}>{children}</Animated.View>
