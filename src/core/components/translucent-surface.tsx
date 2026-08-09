@@ -1,8 +1,31 @@
-import { BlurView } from 'expo-blur';
-import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { BlurView, type BlurTint } from 'expo-blur';
+import {
+  Platform,
+  useWindowDimensions,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 
 import { withAlpha } from '@/core/helpers/color-helper';
 import { useTheme } from '@/core/theme/use-theme';
+
+/**
+ * The blur material every surface is cut from.
+ *
+ * iOS 26 draws nothing at all for the legacy `light` effect, and nothing for
+ * `systemUltraThinMaterialLight` either — the surface keeps its tint and the
+ * map stays pin-sharp underneath. `systemThinMaterialLight` is the thinnest
+ * one that still blurs there.
+ *
+ * Everywhere else `light` stays: `tint` picks the fill laid under the blur as
+ * well as the blur itself, and the system materials are grey where `light` is
+ * white, which would dull the chrome on the web.
+ */
+const BLUR_TINT: BlurTint = Platform.select({
+  ios: 'systemThinMaterialLight',
+  default: 'light',
+});
 
 interface TranslucentSurfaceProps {
   readonly children: React.ReactNode;
@@ -39,6 +62,7 @@ export function TranslucentSurface({
   style,
 }: TranslucentSurfaceProps) {
   const theme = useTheme();
+  const window = useWindowDimensions();
 
   const corners: ViewStyle =
     topRadius === undefined
@@ -47,19 +71,37 @@ export function TranslucentSurface({
 
   return (
     <View style={[corners, { overflow: 'hidden' }, style]}>
+      {/*
+        Sized from the window rather than stretched to fill.
+
+        A `UIVisualEffectView` that is *resized* after it is created renders
+        nothing at all — no blur, just its tint — and the sheet's animated
+        height resizes it on every frame of a drag. Nothing is ever taller
+        than the window and the wrapper above clips, so an oversized layer of
+        a fixed height paints the same picture without ever resizing.
+      */}
       <BlurView
         intensity={
           light ? theme.misc.legendBlurIntensity : theme.misc.blurIntensity
         }
-        tint="light"
-        style={StyleSheet.absoluteFill}
+        tint={BLUR_TINT}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: window.height,
+        }}
       />
 
       <View
         style={[
           corners,
           {
-            flex: 1,
+            // `flexGrow`, not `flex`: the latter zeroes the flex basis, so in a
+            // surface left to size itself — the search card — the fill would
+            // measure as nothing and collapse the card to its border.
+            flexGrow: 1,
             backgroundColor:
               tint ??
               (bordered

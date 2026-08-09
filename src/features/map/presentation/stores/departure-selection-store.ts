@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { createStore } from 'zustand/vanilla';
 
 import type { Departure } from '../../domain/models/departure';
 
@@ -6,7 +6,7 @@ export type DepartureSelectionState =
   | { readonly status: 'none' }
   | { readonly status: 'selected'; readonly departure: Departure };
 
-interface DepartureSelectionStore {
+export interface DepartureSelectionStore {
   readonly state: DepartureSelectionState;
   /** Opens a departure's full itinerary. */
   readonly select: (departure: Departure) => void;
@@ -14,12 +14,13 @@ interface DepartureSelectionStore {
   readonly deselect: () => void;
 }
 
-export const useDepartureSelectionStore = create<DepartureSelectionStore>()(
-  (set) => ({
+/** Builds the departure selection store. It has no dependencies of its own. */
+export function createDepartureSelectionStore() {
+  return createStore<DepartureSelectionStore>()((set) => ({
     state: { status: 'none' },
 
     select: (departure) => set({ state: { status: 'selected', departure } }),
 
     deselect: () => set({ state: { status: 'none' } }),
-  })
-);
+  }));
+}

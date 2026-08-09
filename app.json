@@ -14,7 +14,8 @@
       "supportsTablet": true,
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+      "appleTeamId": "WSZTBHFZH7"
     },
     "android": {
       "package": "eu.antons_webfabrik.station_reach",
@@ -48,7 +49,7 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/fonts/inter_variable.ttf"
+            "./assets/fonts/Inter.ttf"
           ]
         }
       ]

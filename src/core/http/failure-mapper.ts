@@ -1,4 +1,3 @@
-import type { Failure } from '@/core/failures/failure';
 import {
   badResponseFailure,
   connectionFailure,
@@ -6,11 +5,12 @@ import {
   requestCancelledFailure,
   statusCodeNotOkFailure,
   unknownRequestFailure,
-} from '@/core/failures/networking-failures';
+  type NetworkingFailure,
+} from '@/core/failures';
 import { HttpError } from './http-client';
 
 /**
- * Maps a transport-level error onto a {@link Failure}.
+ * Maps a transport-level error onto a {@link NetworkingFailure}.
  *
  * This is the single crossing point between "things that throw" and "things
  * that are returned" — repositories call it and nothing below them does.
@@ -19,9 +19,9 @@ import { HttpError } from './http-client';
  * - error: anything caught around an HTTP call
  *
  * Returns:
- * - the matching networking {@link Failure}
+ * - the matching networking failure
  */
-export function mapHttpError(error: unknown): Failure {
+export function mapHttpError(error: unknown): NetworkingFailure {
   if (!(error instanceof HttpError)) return unknownRequestFailure;
 
   switch (error.kind) {

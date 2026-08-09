@@ -5,8 +5,10 @@ import { FadePressable } from '@/core/components/fade-pressable';
 import { Gap } from '@/core/components/gap';
 import { useTheme } from '@/core/theme/use-theme';
 import type { Station } from '../../../domain/models/station';
-import { useStationDeparturesStore } from '../../stores/station-departures-store';
-import { useStationSearchStore } from '../../stores/station-search-store';
+import {
+  useStationDeparturesStore,
+  useStationSearchStore,
+} from '../../stores/use-map-stores';
 
 /** Tallest the results list grows before it scrolls. */
 const MAX_HEIGHT = 250;

@@ -15,6 +15,7 @@ import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
 import { Gap } from '../gap';
 import { LinkText } from '../link-text';
+import { pointerEvents } from '../pointer-events';
 import { TranslucentSurface } from '../translucent-surface';
 import { DialogButton } from './_dialog-button';
 import type { DialogAction } from './dialog-action';
@@ -121,12 +122,14 @@ export function Dialog({
 
         {/* The gap around the card must fall through to the scrim behind it. */}
         <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            pointerEvents: 'none',
-          }}
+          style={[
+            pointerEvents.passThrough,
+            {
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}
         >
           {/*
             Scale only — deliberately no opacity fade on the card.

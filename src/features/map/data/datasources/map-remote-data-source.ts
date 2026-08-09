@@ -1,5 +1,4 @@
-import { FailureError } from '@/core/failures/failure-error';
-import { noDeparturesFoundFailure } from '@/core/failures/transit-failures';
+import { FailureError, noDeparturesFoundFailure } from '@/core/failures';
 import { getJson, HttpError } from '@/core/http/http-client';
 import type { Departure } from '../../domain/models/departure';
 import type { Station, Stop } from '../../domain/models/station';
@@ -109,13 +108,14 @@ async function getStationDeparturesByMode(
   const nowIso = now.toISOString();
 
   const baseUrl =
-    `${BASE_URL}/api/v5/stoptimes` +
+    `${BASE_URL}/api/v6/stoptimes` +
     `?stopId=${encodeURIComponent(station.id)}` +
     `&n=${amount}` +
     `&fetchStops=true` +
+    `&realtimeMode=OFF` +
     `&radius=200` +
     `&mode=${encodeURIComponent(modeParam)}` +
-    `&withScheduledSkippedStops=true`;
+    `&withScheduledSkippedStops=false`;
 
   const stopTimes: StopTime[] = [];
 
@@ -188,6 +188,8 @@ function isLastStopError(error: unknown): boolean {
 
 /** Converts a geocode result into a {@link Station}. */
 function toStation(raw: GeocodeStation): Station {
+  const area = pickAreaName(raw);
+
   return {
     id: raw.id,
     name: raw.name,
@@ -195,7 +197,7 @@ function toStation(raw: GeocodeStation): Station {
     longitude: raw.lon,
     modes: (raw.modes ?? []).map(transitModeFromWire),
     ...(raw.country === undefined ? {} : { countryCode: raw.country }),
-    ...(pickAreaName(raw) === undefined ? {} : { area: pickAreaName(raw) }),
+    ...(area === undefined ? {} : { area }),
   };
 }
 

@@ -65,22 +65,17 @@ export const durations = {
  */
 export const timelineGradient = [
   'rgb(0, 150, 107)',
-  'rgb(103, 223, 42)',
-  'rgb(255, 245, 67)',
+  'rgb(99, 225, 36)',
   'rgb(255, 245, 59)',
   'rgb(254, 209, 29)',
   'rgb(255, 152, 0)',
   'rgb(244, 67, 54)',
+  'rgb(255, 17, 0)',
   'rgb(178, 12, 0)',
-] as const;
-
-/** Purple → cyan ramp, used to tint departure list icons by their index. */
-export const secondaryGradient = [
+  'rgb(174, 38, 135)',
   'rgb(156, 39, 176)',
-  'rgb(103, 58, 183)',
-  'rgb(63, 81, 181)',
-  'rgb(33, 150, 243)',
-  'rgb(0, 188, 212)',
+  'rgb(139, 58, 183)',
+  'rgb(103, 58, 183)'
 ] as const;
 
 export const colors = {
@@ -108,11 +103,20 @@ export const colors = {
   transparent: 'transparent',
 
   timelineGradient,
-  secondaryGradient,
 } as const;
 
-/** Loaded once in the root layout; nothing renders before it is available. */
-export const FONT_FAMILY = 'inter_variable';
+/**
+ * Loaded once in the root layout; nothing renders before it is available.
+ *
+ * This has to be the family name *inside* the TTF, and the file has to be
+ * named after it too. On iOS the `expo-font` plugin embeds the file through
+ * `UIAppFonts` and CoreText registers it under its own family name — an alias
+ * passed to `useFonts` is ignored there, so a made-up name silently falls back
+ * to the system serif. Android resolves the family from the asset's *file*
+ * name, and the web from whatever `@font-face` `useFonts` injects. Naming the
+ * file `Inter.ttf` is what makes all three agree.
+ */
+export const FONT_FAMILY = 'Inter';
 
 /**
  * The iOS type scale, matched to the Flutter app's `WebfabrikTextThemeData`.
@@ -191,7 +195,6 @@ export const text = {
 
 /** Odds and ends that don't belong to a scale. */
 export const misc = {
-  largeIconSize: 44,
   /** Matches the Flutter `ImageFilter.blur(sigmaX: 15, sigmaY: 15)` surfaces. */
   blurIntensity: 30,
   /** The lighter blur the map legends use (`sigma: 6`). */

@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import { Animated, useWindowDimensions, View } from 'react-native';
 
 import { DraggableModal } from '@/core/components/draggable-modal';
+import { pointerEvents } from '@/core/components/pointer-events';
 import { t } from '@/core/i18n/translate';
 import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { WIDE_LAYOUT_BREAKPOINT } from '@/core/theme/theme';
 import { useTheme } from '@/core/theme/use-theme';
-import { useDepartureSelectionStore } from '../../stores/departure-selection-store';
-import { useStationSelectionStore } from '../../stores/station-selection-store';
+import type { DepartureSelectionState } from '../../stores/departure-selection-store';
+import type { StationSelectionState } from '../../stores/station-selection-store';
+import {
+  useDepartureSelectionStore,
+  useStationSelectionStore,
+} from '../../stores/use-map-stores';
 import { DepartureItinerary } from './_departure-itinerary';
 import { DeparturesList } from './_departures-list';
 import { MapLegends } from './_map-legends';
@@ -48,21 +53,25 @@ export function DeparturesModal() {
 
   return (
     <View
-      style={{
-        flex: 1,
-        alignItems: isWide ? 'flex-end' : 'center',
-        paddingRight: isWide ? theme.spacing.medium : 0,
-        // Only the sheet takes input; the gutter beside it belongs to the map.
-        pointerEvents: 'none',
-      }}
+      // Only the sheet takes input; the gutter beside it belongs to the map.
+      style={[
+        pointerEvents.passThrough,
+        {
+          flex: 1,
+          alignItems: isWide ? 'flex-end' : 'center',
+          paddingRight: isWide ? theme.spacing.medium : 0,
+        },
+      ]}
     >
       <View
-        style={{
-          flex: 1,
-          width: '100%',
-          maxWidth: OVERLAY_MAX_WIDTH,
-          pointerEvents: 'none',
-        }}
+        style={[
+          pointerEvents.passThrough,
+          {
+            flex: 1,
+            width: '100%',
+            maxWidth: OVERLAY_MAX_WIDTH,
+          },
+        ]}
       >
         <DraggableModal
           title={modalTitle(stationSelection, departureSelection)}
@@ -118,12 +127,8 @@ export function DeparturesModal() {
  * new stop on the map is what most recently changed under the user.
  */
 function modalTitle(
-  stationSelection: ReturnType<
-    typeof useStationSelectionStore.getState
-  >['state'],
-  departureSelection: ReturnType<
-    typeof useDepartureSelectionStore.getState
-  >['state']
+  stationSelection: StationSelectionState,
+  departureSelection: DepartureSelectionState
 ): string {
   if (stationSelection.status === 'selected') {
     return stationSelection.selectedStop.name;

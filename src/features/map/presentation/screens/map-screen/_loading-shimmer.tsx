@@ -3,8 +3,10 @@ import { Animated, Easing, View } from 'react-native';
 
 import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
-import { useStationDeparturesStore } from '../../stores/station-departures-store';
-import { useStationSearchStore } from '../../stores/station-search-store';
+import {
+  useStationDeparturesStore,
+  useStationSearchStore,
+} from '../../stores/use-map-stores';
 
 /** How much of the bar the moving highlight covers. */
 const HIGHLIGHT_FRACTION = 0.4;

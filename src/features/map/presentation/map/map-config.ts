@@ -49,10 +49,12 @@ export const LAYER_IDS = {
  * The visible dot is small, but the touch target is not.
  *
  * The Flutter markers carried a transparent 26px border purely to widen the hit
- * area; here the circle layer keeps a matching invisible stroke.
+ * area. Here it is a radius around the tap instead — both platforms query the
+ * square that circumscribes it and then take the nearest dot inside, so a
+ * generous target never costs you the station you actually aimed at.
  */
 export const STATION_CIRCLE_RADIUS = 6.3;
-export const STATION_HIT_RADIUS = 22;
+export const STATION_HIT_RADIUS = 24;
 
 export const ROUTE_LINE_WIDTH = 5;
 

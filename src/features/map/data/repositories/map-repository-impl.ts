@@ -1,7 +1,6 @@
 import { ResultAsync } from 'neverthrow';
 
-import type { Failure } from '@/core/failures/failure';
-import { FailureError } from '@/core/failures/failure-error';
+import { FailureError, type Failure } from '@/core/failures';
 import { mapHttpError } from '@/core/http/failure-mapper';
 import type { MapRepository } from '../../domain/repositories/map-repository';
 import type { MapRemoteDataSource } from '../datasources/map-remote-data-source';

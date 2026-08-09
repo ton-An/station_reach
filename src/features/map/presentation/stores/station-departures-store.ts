@@ -1,9 +1,9 @@
-import { create } from 'zustand';
+import { createStore } from 'zustand/vanilla';
 
-import { container } from '@/core/container';
-import type { Failure } from '@/core/failures/failure';
+import type { Failure } from '@/core/failures';
 import type { Departure } from '../../domain/models/departure';
 import type { Station } from '../../domain/models/station';
+import type { GetStationDepartures } from '../../domain/usecases/get-station-departures';
 
 export type StationDeparturesState =
   | { readonly status: 'initial' }
@@ -15,7 +15,7 @@ export type StationDeparturesState =
     }
   | { readonly status: 'failure'; readonly failure: Failure };
 
-interface StationDeparturesStore {
+export interface StationDeparturesStore {
   readonly state: StationDeparturesState;
   /**
    * Loads everywhere the given station can take you.
@@ -26,10 +26,19 @@ interface StationDeparturesStore {
   readonly loadReachability: (station: Station) => Promise<void>;
 }
 
-let latestRequestId = 0;
+/**
+ * Builds the station departures store.
+ *
+ * Parameters:
+ * - getStationDepartures: the use case this store drives
+ */
+export function createStationDeparturesStore(
+  getStationDepartures: GetStationDepartures
+) {
+  // Instance state, so a superseded load can never overwrite a newer one.
+  let latestRequestId = 0;
 
-export const useStationDeparturesStore = create<StationDeparturesStore>()(
-  (set) => ({
+  return createStore<StationDeparturesStore>()((set) => ({
     state: { status: 'initial' },
 
     loadReachability: async (station) => {
@@ -37,7 +46,7 @@ export const useStationDeparturesStore = create<StationDeparturesStore>()(
 
       set({ state: { status: 'loading' } });
 
-      const result = await container.getStationDepartures(station);
+      const result = await getStationDepartures(station);
 
       // The user picked another station while this was loading.
       if (requestId !== latestRequestId) return;
@@ -49,5 +58,5 @@ export const useStationDeparturesStore = create<StationDeparturesStore>()(
         ),
       });
     },
-  })
-);
+  }));
+}

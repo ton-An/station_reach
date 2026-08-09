@@ -15,6 +15,7 @@ import Search from '@/assets/icons/search.svg';
 import Subway from '@/assets/icons/subway.svg';
 import Train from '@/assets/icons/train.svg';
 import Tram from '@/assets/icons/tram.svg';
+import Warning from '@/assets/icons/warning.svg';
 
 /*
   Every glyph is a vendored SVG rather than an icon font.
@@ -26,7 +27,7 @@ import Tram from '@/assets/icons/tram.svg';
   prop tints them the way Flutter's `ColorFilter.srcIn` did.
 */
 
-export const Icons = {
+const Icons = {
   arrowBack: ArrowBack,
   arrowForward: ArrowForward,
   coach: Coach,
@@ -42,6 +43,7 @@ export const Icons = {
   subway: Subway,
   train: Train,
   tram: Tram,
+  warning: Warning,
 } as const;
 
 export type IconName = keyof typeof Icons;

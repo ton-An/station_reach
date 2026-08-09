@@ -1,8 +1,8 @@
-import { create } from 'zustand';
+import { createStore } from 'zustand/vanilla';
 
-import { container } from '@/core/container';
-import type { Failure } from '@/core/failures/failure';
+import type { Failure } from '@/core/failures';
 import type { Station } from '../../domain/models/station';
+import type { SearchStations } from '../../domain/usecases/search-stations';
 
 /** How long to wait after the last keystroke before searching. */
 export const SEARCH_DEBOUNCE_MS = 300;
@@ -14,7 +14,7 @@ export type StationSearchState =
   | { readonly status: 'loaded'; readonly stations: readonly Station[] }
   | { readonly status: 'failure'; readonly failure: Failure };
 
-interface StationSearchStore {
+export interface StationSearchStore {
   readonly state: StationSearchState;
   /**
    * Searches for stations.
@@ -35,11 +35,23 @@ function previousStations(state: StationSearchState): readonly Station[] {
     : [];
 }
 
-let inFlight: AbortController | undefined;
-let latestRequestId = 0;
+/**
+ * Builds the station search store.
+ *
+ * Parameters:
+ * - searchStations: the use case this store drives
+ */
+export function createStationSearchStore(searchStations: SearchStations) {
+  /*
+    Cancellation bookkeeping belongs to the store instance, not to the module.
+    It lives in this closure rather than in the state because nothing renders
+    from it — putting it in state would notify every subscriber for a change
+    the UI cannot see.
+  */
+  let inFlight: AbortController | undefined;
+  let latestRequestId = 0;
 
-export const useStationSearchStore = create<StationSearchStore>()(
-  (set, get) => ({
+  return createStore<StationSearchStore>()((set, get) => ({
     state: { status: 'initial' },
 
     search: async (query) => {
@@ -60,7 +72,7 @@ export const useStationSearchStore = create<StationSearchStore>()(
         state: { status: 'loading', stations: previousStations(get().state) },
       });
 
-      const result = await container.searchStations(query, controller.signal);
+      const result = await searchStations(query, controller.signal);
 
       // A newer search started while this one was in flight.
       if (requestId !== latestRequestId) return;
@@ -81,5 +93,5 @@ export const useStationSearchStore = create<StationSearchStore>()(
       latestRequestId++;
       set({ state: { status: 'initial' } });
     },
-  })
-);
+  }));
+}

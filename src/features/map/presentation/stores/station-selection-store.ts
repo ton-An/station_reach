@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { createStore } from 'zustand/vanilla';
 
 import type { Departure } from '../../domain/models/departure';
 import type { Stop } from '../../domain/models/station';
@@ -12,14 +12,21 @@ export type StationSelectionState =
       readonly departures: readonly Departure[];
     };
 
-interface StationSelectionStore {
+export interface StationSelectionStore {
   readonly state: StationSelectionState;
   /**
-   * Selects a stop on the map and narrows the departure list to it.
+   * Selects a stop on the map.
+   *
+   * The caller passes the trips already narrowed to this stop — they come out
+   * of the map's stop index, which resolved them when the reachability set
+   * loaded, so a tap never rescans every departure.
+   *
+   * Re-selecting what is already selected does nothing, which is what lets the
+   * map answer one tap through two paths without redrawing twice.
    *
    * Parameters:
    * - selectedStop: the stop the user tapped
-   * - departures: every departure currently loaded
+   * - departures: the departures calling at that stop
    */
   readonly select: (
     selectedStop: Stop,
@@ -28,20 +35,26 @@ interface StationSelectionStore {
   readonly unselect: () => void;
 }
 
-export const useStationSelectionStore = create<StationSelectionStore>()(
-  (set) => ({
+/** Builds the station selection store. It has no dependencies of its own. */
+export function createStationSelectionStore() {
+  return createStore<StationSelectionStore>()((set, get) => ({
     state: { status: 'unselected' },
 
     select: (selectedStop, departures) => {
-      // `some`, not a nested loop: a circular route calls at the same stop
-      // twice and must still appear once.
-      const calling = departures.filter((departure) =>
-        departure.stops.some((stop) => stop.id === selectedStop.id)
-      );
+      const { state } = get();
+      if (
+        state.status === 'selected' &&
+        state.selectedStop.id === selectedStop.id
+      ) {
+        return;
+      }
 
-      set({ state: { status: 'selected', selectedStop, departures: calling } });
+      set({ state: { status: 'selected', selectedStop, departures } });
     },
 
-    unselect: () => set({ state: { status: 'unselected' } }),
-  })
-);
+    unselect: () => {
+      if (get().state.status === 'unselected') return;
+      set({ state: { status: 'unselected' } });
+    },
+  }));
+}

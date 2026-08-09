@@ -1,10 +1,4 @@
-import type {
-  FeatureCollection,
-  LineFeature,
-  PointFeature,
-  RouteFeatureProperties,
-  StationFeatureProperties,
-} from './map-data';
+import type { RouteFeatures, StationFeatures } from './map-data';
 
 /** Where the camera should sit. A new object identity re-issues the move. */
 export interface MapFocus {
@@ -20,8 +14,8 @@ export interface MapFocus {
  * branches on platform.
  */
 export interface MapViewProps {
-  readonly stations: FeatureCollection<PointFeature<StationFeatureProperties>>;
-  readonly routes: FeatureCollection<LineFeature<RouteFeatureProperties>>;
+  readonly stations: StationFeatures;
+  readonly routes: RouteFeatures;
   readonly focus: MapFocus | undefined;
   /** A reachable station was tapped. */
   readonly onStationPress: (stopId: string) => void;

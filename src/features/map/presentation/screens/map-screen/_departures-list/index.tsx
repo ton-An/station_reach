@@ -1,11 +1,14 @@
-import { ScrollView, Text } from 'react-native';
+import { Text } from 'react-native';
 
+import { ModalScrollView } from '@/core/components/draggable-modal';
 import { interpolateColors } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 import type { Departure } from '../../../../domain/models/departure';
-import { useDepartureSelectionStore } from '../../../stores/departure-selection-store';
-import { useStationSelectionStore } from '../../../stores/station-selection-store';
+import {
+  useDepartureSelectionStore,
+  useStationSelectionStore,
+} from '../../../stores/use-map-stores';
 import { DepartureRow } from './_departure-row';
 
 /**
@@ -21,7 +24,9 @@ export function DeparturesList() {
 
   if (state.status === 'unselected') {
     return (
-      <ScrollView contentContainerStyle={{ paddingTop: theme.spacing.xMedium }}>
+      <ModalScrollView
+        contentContainerStyle={{ paddingTop: theme.spacing.xMedium }}
+      >
         <Text
           style={[
             theme.text.body,
@@ -30,14 +35,14 @@ export function DeparturesList() {
         >
           {t('noStopSelected')}
         </Text>
-      </ScrollView>
+      </ModalScrollView>
     );
   }
 
   const { departures, selectedStop } = state;
 
   return (
-    <ScrollView
+    <ModalScrollView
       contentContainerStyle={{
         paddingHorizontal: theme.spacing.medium,
         paddingTop: theme.spacing.medium,
@@ -50,14 +55,14 @@ export function DeparturesList() {
           departure={departure}
           durationMinutes={durationToStop(departure, selectedStop.id)}
           accentColor={interpolateColors(
-            theme.colors.secondaryGradient,
+            theme.colors.timelineGradient,
             index / Math.max(departures.length - 1, 1)
           )}
           showDivider={index !== departures.length - 1}
           onPress={() => selectDeparture(departure)}
         />
       ))}
-    </ScrollView>
+    </ModalScrollView>
   );
 }
 

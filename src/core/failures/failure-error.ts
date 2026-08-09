@@ -1,4 +1,4 @@
-import type { Failure } from './failure';
+import type { Failure } from './index';
 
 /**
  * Carries a {@link Failure} across a `throw`.

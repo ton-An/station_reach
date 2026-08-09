@@ -1,6 +1,6 @@
 import type { ResultAsync } from 'neverthrow';
 
-import type { Failure } from '@/core/failures/failure';
+import type { Failure } from '@/core/failures';
 import type { Departure } from '../models/departure';
 import type { Station } from '../models/station';
 import type { TransitMode } from '../models/transit-mode';

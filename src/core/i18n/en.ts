@@ -1,13 +1,14 @@
 /** English copy. Ported from the Flutter `app_en.arb`. */
 export const en = {
-  appName: 'Station Reach',
+  // -- Map -- //
   searchStations: 'Search Stations',
-  results: 'Results',
   departures: 'Departures',
   noStopSelected: 'No stop selected',
   thirtyMin: '30min',
   sevenHours: '7h',
   fourteenHoursPlus: '14h+',
+
+  // -- Attributions -- //
   openStreetMapAttribution: '© OpenStreetMap',
   cartoDBAttribution: '© CartoDB',
   dataSourcesAttribution: 'Data Sources',
@@ -19,6 +20,26 @@ export const en = {
   proudlyOpenSource: 'Proudly Open Source',
   openSourceExplanation:
     'This app is open source. Take a look at the code, report an issue, or contribute.',
+
+  // -- Failures -- //
+  // Every failure constant names two of these; nothing else may hold user copy.
+  receiveTimeoutFailureName: 'Receive Timeout',
+  receiveTimeoutFailureMessage:
+    'Receiving the response from the server timed out.',
+  requestCancelledFailureName: 'Request Cancelled',
+  requestCancelledFailureMessage: 'The request was cancelled.',
+  connectionFailureName: 'No Connection',
+  connectionFailureMessage:
+    'Could not reach the server. Check your internet connection.',
+  statusCodeNotOkFailureName: 'Request Failed',
+  statusCodeNotOkFailureMessage: 'The server rejected the request.',
+  badResponseFailureName: 'Invalid Response',
+  badResponseFailureMessage: 'The server returned an invalid response.',
+  unknownRequestFailureName: 'Unknown Error',
+  unknownRequestFailureMessage:
+    'Something went wrong while talking to the server.',
+  noDeparturesFoundFailureName: 'No Departures Found',
+  noDeparturesFoundFailureMessage: 'No departures found for the given station.',
 } as const;
 
 export type TranslationKey = keyof typeof en;

@@ -1,7 +1,6 @@
 import { err, ok, ResultAsync, type Result } from 'neverthrow';
 
-import type { Failure } from '@/core/failures/failure';
-import { noDeparturesFoundFailure } from '@/core/failures/transit-failures';
+import { noDeparturesFoundFailure, type Failure } from '@/core/failures';
 import type { Departure } from '../models/departure';
 import type { Station, Stop } from '../models/station';
 import { TransitMode } from '../models/transit-mode';
@@ -142,7 +141,13 @@ function dedupeDepartures(departures: readonly Departure[]): Departure[] {
   return unique;
 }
 
-/** A stable identity for a stop list, used to detect duplicate trips. */
+/**
+ * A stable identity for a stop list, used to detect duplicate trips.
+ *
+ * Position, name and timing only — `countryCode` and `area` are never set on a
+ * stop, and two trips that agree on everything here are the same line drawn
+ * twice whatever else they might carry.
+ */
 function stopsKey(stops: readonly Stop[]): string {
   return stops
     .map((stop) =>
@@ -152,8 +157,6 @@ function stopsKey(stops: readonly Stop[]): string {
         stop.latitude,
         stop.longitude,
         stop.modes.join(','),
-        stop.countryCode ?? '',
-        stop.area ?? '',
         stop.durationMinutes,
       ].join('|')
     )

@@ -1,5 +1,6 @@
 import { View } from 'react-native';
 
+import { pointerEvents } from '@/core/components/pointer-events';
 import { AttributionLegend } from '../../components/attribution-legend';
 import { TimeGradientLegend } from '../../components/time-gradient-legend';
 
@@ -9,27 +10,24 @@ import { TimeGradientLegend } from '../../components/time-gradient-legend';
  * They travel together: bottom-left of the map on a wide screen, tucked above
  * the sheet on a narrow one.
  *
- * The row spans the full width, so it stays transparent to input and each
- * legend opts back in — `box-none` is not usable, React Native Web drops it
- * when set through `style`.
+ * The row spans the full width, so the space between the two must fall
+ * through to the map.
  */
 export function MapLegends() {
   return (
     <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        pointerEvents: 'none',
-      }}
+      style={[
+        pointerEvents.passThrough,
+        {
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          justifyContent: 'space-between',
+        },
+      ]}
     >
-      <View style={{ pointerEvents: 'auto' }}>
-        <TimeGradientLegend />
-      </View>
+      <TimeGradientLegend />
 
-      <View style={{ pointerEvents: 'auto' }}>
-        <AttributionLegend />
-      </View>
+      <AttributionLegend />
     </View>
   );
 }

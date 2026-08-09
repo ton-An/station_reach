@@ -85,7 +85,7 @@ export function withAlpha(color: string, alpha: number): string {
  * 28 buckets × 30 minutes = 14 hours, which is what the legend's `14h+` label
  * means: anything longer saturates at the far end of the gradient.
  */
-export const GRADIENT_BUCKETS = 28;
+const GRADIENT_BUCKETS = 36;
 
 /**
  * Maps a travel time onto its position along the travel-time ramp.
@@ -99,7 +99,7 @@ export const GRADIENT_BUCKETS = 28;
  * Returns:
  * - a position in 0..1, saturating at 14 hours
  */
-export function durationToGradientPosition(durationMinutes: number): number {
+function durationToGradientPosition(durationMinutes: number): number {
   const bucket = Math.min(
     Math.max(Math.floor(durationMinutes / 30), 0),
     GRADIENT_BUCKETS

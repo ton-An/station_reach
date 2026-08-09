@@ -1,17 +1,24 @@
-import { create } from 'zustand';
+import { createStore } from 'zustand/vanilla';
 
-import type { Failure } from '../failures/failure';
+import type { Failure } from '@/core/failures';
+import type { TranslationKey } from '@/core/i18n/en';
 
 /** How long a notification stays on screen before dismissing itself. */
-export const NOTIFICATION_DURATION_MS = 5000;
+const NOTIFICATION_DURATION_MS = 5000;
 
+/**
+ * A message shown over the map.
+ *
+ * Carries translation keys, not copy — the component that renders it is what
+ * resolves them, so nothing below the UI holds a user-facing sentence.
+ */
 export interface InAppNotification {
   readonly id: number;
-  readonly title: string;
-  readonly message: string;
+  readonly titleKey: TranslationKey;
+  readonly messageKey: TranslationKey;
 }
 
-interface InAppNotificationStore {
+export interface InAppNotificationStore {
   readonly notification: InAppNotification | undefined;
   /**
    * Surfaces a failure to the user.
@@ -23,25 +30,36 @@ interface InAppNotificationStore {
   readonly dismiss: () => void;
 }
 
-let nextId = 0;
+/** Builds the notification store. It has no dependencies of its own. */
+export function createInAppNotificationStore() {
+  let nextId = 0;
+  let timeout: ReturnType<typeof setTimeout> | undefined;
 
-export const useInAppNotificationStore = create<InAppNotificationStore>()(
-  (set, get) => ({
+  return createStore<InAppNotificationStore>()((set) => ({
     notification: undefined,
 
     sendFailure: (failure) => {
-      const id = ++nextId;
+      // A newer failure replaces the current one outright, so the timer that
+      // belonged to it has to go with it.
+      if (timeout !== undefined) clearTimeout(timeout);
 
       set({
-        notification: { id, title: failure.name, message: failure.message },
+        notification: {
+          id: ++nextId,
+          titleKey: failure.nameKey,
+          messageKey: failure.messageKey,
+        },
       });
 
-      setTimeout(() => {
-        // Only dismiss if a newer notification hasn't replaced this one.
-        if (get().notification?.id === id) set({ notification: undefined });
-      }, NOTIFICATION_DURATION_MS);
+      timeout = setTimeout(
+        () => set({ notification: undefined }),
+        NOTIFICATION_DURATION_MS
+      );
     },
 
-    dismiss: () => set({ notification: undefined }),
-  })
-);
+    dismiss: () => {
+      if (timeout !== undefined) clearTimeout(timeout);
+      set({ notification: undefined });
+    },
+  }));
+}

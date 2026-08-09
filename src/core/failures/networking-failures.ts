@@ -1,71 +1,78 @@
-import { FailureCategory, type Failure } from './failure';
+import type { TranslationKey } from '@/core/i18n/en';
+import { FailureCategory, type FailureBase } from './failure';
 
-/** A {@link Failure} originating from the network layer. */
-export interface NetworkFailure extends Failure {
-  readonly categoryCode: typeof FailureCategory.Networking;
+/**
+ * Declares a networking failure.
+ *
+ * Generic in `code` so each constant keeps its literal type and stays usable as
+ * a discriminant.
+ */
+function networkingFailure<Code extends string>(
+  code: Code,
+  nameKey: TranslationKey,
+  messageKey: TranslationKey
+) {
+  return {
+    code,
+    categoryCode: FailureCategory.Networking,
+    nameKey,
+    messageKey,
+  } as const satisfies FailureBase;
 }
 
-const networkFailure = (
-  name: string,
-  message: string,
-  code: string
-): NetworkFailure => ({
-  name,
-  message,
-  categoryCode: FailureCategory.Networking,
-  code,
-});
-
-export const connectionTimeoutFailure = networkFailure(
-  'Connection Timeout',
-  'The connection to the server timed out.',
-  'connection_timeout'
+/** The server took too long to answer. */
+export const receiveTimeoutFailure = networkingFailure(
+  'receive_timeout',
+  'receiveTimeoutFailureName',
+  'receiveTimeoutFailureMessage'
 );
 
-export const sendTimeoutFailure = networkFailure(
-  'Send Timeout',
-  'Sending the request to the server timed out.',
-  'send_timeout'
+/** The caller abandoned the request — normally a superseded search. */
+export const requestCancelledFailure = networkingFailure(
+  'request_cancelled',
+  'requestCancelledFailureName',
+  'requestCancelledFailureMessage'
 );
 
-export const receiveTimeoutFailure = networkFailure(
-  'Receive Timeout',
-  'Receiving the response from the server timed out.',
-  'receive_timeout'
+/** The server could not be reached at all: offline, DNS, or TLS. */
+export const connectionFailure = networkingFailure(
+  'connection_failure',
+  'connectionFailureName',
+  'connectionFailureMessage'
 );
 
-export const badCertificateFailure = networkFailure(
-  'Bad Certificate',
-  'The server presented an invalid certificate.',
-  'bad_certificate'
+/** The server answered, with a status outside 2xx. */
+export const statusCodeNotOkFailure = networkingFailure(
+  'status_code_not_ok',
+  'statusCodeNotOkFailureName',
+  'statusCodeNotOkFailureMessage'
 );
 
-export const badResponseFailure = networkFailure(
-  'Invalid Response',
-  'The server returned an invalid response.',
-  'bad_response'
+/** The server answered 2xx with something that isn't the JSON we expect. */
+export const badResponseFailure = networkingFailure(
+  'bad_response',
+  'badResponseFailureName',
+  'badResponseFailureMessage'
 );
 
-export const statusCodeNotOkFailure = networkFailure(
-  'Request Failed',
-  'The server rejected the request.',
-  'status_code_not_ok'
+/** Everything else. */
+export const unknownRequestFailure = networkingFailure(
+  'unknown_request',
+  'unknownRequestFailureName',
+  'unknownRequestFailureMessage'
 );
 
-export const requestCancelledFailure = networkFailure(
-  'Request Cancelled',
-  'The request was cancelled.',
-  'request_cancelled'
-);
-
-export const connectionFailure = networkFailure(
-  'No Connection',
-  'Could not reach the server. Check your internet connection.',
-  'connection_failure'
-);
-
-export const unknownRequestFailure = networkFailure(
-  'Unknown Error',
-  'Something went wrong while talking to the server.',
-  'unknown_request'
-);
+/**
+ * Any failure originating from the network layer.
+ *
+ * The equivalent of Dart's `NetworkFailure` parent class: accept this where a
+ * function handles transport problems generally, and a `Failure` narrows to it
+ * on a `categoryCode === FailureCategory.Networking` check.
+ */
+export type NetworkingFailure =
+  | typeof receiveTimeoutFailure
+  | typeof requestCancelledFailure
+  | typeof connectionFailure
+  | typeof statusCodeNotOkFailure
+  | typeof badResponseFailure
+  | typeof unknownRequestFailure;

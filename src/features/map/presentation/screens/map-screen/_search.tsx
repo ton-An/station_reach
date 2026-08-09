@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { pointerEvents } from '@/core/components/pointer-events';
 import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { useTheme } from '@/core/theme/use-theme';
 import { LoadingShimmer } from './_loading-shimmer';
@@ -17,20 +18,21 @@ export function Search() {
 
   return (
     <View
-      style={{
-        alignItems: 'center',
-        paddingTop: insets.top + theme.spacing.medium,
-        paddingHorizontal: theme.spacing.medium,
-        // The strip around the card must not intercept map taps.
-        pointerEvents: 'none',
-      }}
+      // The strip around the card must not intercept map taps.
+      style={[
+        pointerEvents.passThrough,
+        {
+          alignItems: 'center',
+          paddingTop: insets.top + theme.spacing.medium,
+          paddingHorizontal: theme.spacing.medium,
+        },
+      ]}
     >
       <TranslucentSurface
         bordered
         style={{
           width: '100%',
           maxWidth: OVERLAY_MAX_WIDTH,
-          pointerEvents: 'auto',
         }}
       >
         <SearchField />

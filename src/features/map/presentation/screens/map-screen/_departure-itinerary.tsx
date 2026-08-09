@@ -1,5 +1,6 @@
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
+import { ModalScrollView } from '@/core/components/draggable-modal';
 import { DottedTimeline } from '@/core/components/dotted-timeline';
 import { Gap } from '@/core/components/gap';
 import { ListIcon } from '@/core/components/list-icon';
@@ -25,7 +26,7 @@ export function DepartureItinerary({ departure }: DepartureItineraryProps) {
   if (departure === undefined) return null;
 
   return (
-    <ScrollView
+    <ModalScrollView
       contentContainerStyle={{
         paddingHorizontal: theme.spacing.medium,
         paddingTop: theme.spacing.medium,
@@ -75,6 +76,6 @@ export function DepartureItinerary({ departure }: DepartureItineraryProps) {
           </View>
         );
       })}
-    </ScrollView>
+    </ModalScrollView>
   );
 }
