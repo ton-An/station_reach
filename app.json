@@ -56,6 +56,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e1726f3b-7f87-4f41-a488-2aa4cb31cb45"
+      }
+    },
+    "owner": "ton-ans-team"
   }
 }
