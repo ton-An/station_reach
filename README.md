@@ -23,6 +23,8 @@
 
 > [!IMPORTANT]
 > Station Reach is currently being rewritten in React Native with Expo. New features will be added after the rewrite is complete.
+>
+> If you want to try out the rewrite: https://rewrite-react-native.station-reach.pages.dev/ (it is fairly buggy!)
 
 ## Screenshots
 
