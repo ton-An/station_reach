@@ -30,8 +30,9 @@ const BAR_OPACITY = 0.85;
 /**
  * The key to the travel-time colours.
  *
- * Labelled at 30 minutes, 7 hours and 14h+ — the ends of the ramp and its
- * midpoint. Anything beyond 14 hours saturates, which is what the `+` means.
+ * Labelled at 30 minutes, 9 hours and 18h+ — the ends of the ramp and its
+ * midpoint. Anything beyond 18 hours saturates, which is what the `+` means.
+ * The three come straight off `GRADIENT_BUCKETS`; retune them together.
  */
 export function TimeGradientLegend() {
   const theme = useTheme();
@@ -80,10 +81,10 @@ export function TimeGradientLegend() {
               backgroundColor: theme.colors.translucentBackgroundContrast,
             }}
           >
-            <GradientLabel text={t('sevenHours')} />
+            <GradientLabel text={t('nineHours')} />
           </View>
 
-          <GradientLabel text={t('fourteenHoursPlus')} />
+          <GradientLabel text={t('eighteenHoursPlus')} />
         </View>
       </View>
     </TranslucentSurface>

@@ -125,8 +125,11 @@ export function flattenOnto({
 /**
  * The number of 30-minute buckets the travel-time ramp spans.
  *
- * 28 buckets × 30 minutes = 14 hours, which is what the legend's `14h+` label
+ * 36 buckets × 30 minutes = 18 hours, which is what the legend's `18h+` label
  * means: anything longer saturates at the far end of the gradient.
+ *
+ * Changing this changes what the legend is claiming, so retune
+ * `TimeGradientLegend`'s three labels — end, midpoint, end — with it.
  */
 const GRADIENT_BUCKETS = 36;
 
@@ -140,7 +143,7 @@ const GRADIENT_BUCKETS = 36;
  * - durationMinutes: travel time in minutes
  *
  * Returns:
- * - a position in 0..1, saturating at 14 hours
+ * - a position in 0..1, saturating at 18 hours
  */
 function durationToGradientPosition(durationMinutes: number): number {
   const bucket = Math.min(

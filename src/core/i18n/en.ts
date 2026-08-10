@@ -4,9 +4,11 @@ export const en = {
   searchStations: 'Search Stations',
   departures: 'Departures',
   noStopSelected: 'No stop selected',
+  // The travel-time legend's labels: both ends of the ramp and its midpoint.
+  // They spell out `GRADIENT_BUCKETS` — keep them in step with it.
   thirtyMin: '30min',
-  sevenHours: '7h',
-  fourteenHoursPlus: '14h+',
+  nineHours: '9h',
+  eighteenHoursPlus: '18h+',
 
   // -- Attributions -- //
   openStreetMapAttribution: '© OpenStreetMap',
