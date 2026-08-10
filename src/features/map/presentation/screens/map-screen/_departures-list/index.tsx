@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
 
-import { ModalScrollView } from '@/core/components/draggable-modal';
+import { ModalList, ModalScrollView } from '@/core/components/draggable-modal';
 import { interpolateColors } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
@@ -42,16 +42,16 @@ export function DeparturesList() {
   const { departures, selectedStop } = state;
 
   return (
-    <ModalScrollView
+    <ModalList
+      data={departures}
+      keyExtractor={(departure, index) => `${departure.id}-${index}`}
       contentContainerStyle={{
         paddingHorizontal: theme.spacing.medium,
         paddingTop: theme.spacing.medium,
         paddingBottom: theme.spacing.large,
       }}
-    >
-      {departures.map((departure, index) => (
+      renderItem={({ item: departure, index }) => (
         <DepartureRow
-          key={`${departure.id}-${index}`}
           departure={departure}
           durationMinutes={durationToStop(departure, selectedStop.id)}
           accentColor={interpolateColors(
@@ -61,8 +61,8 @@ export function DeparturesList() {
           showDivider={index !== departures.length - 1}
           onPress={() => selectDeparture(departure)}
         />
-      ))}
-    </ModalScrollView>
+      )}
+    />
   );
 }
 

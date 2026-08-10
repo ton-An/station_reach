@@ -23,6 +23,7 @@ import {
   type SheetDrag,
 } from './_sheet-drag';
 
+export { ModalList } from './_modal-list';
 export { ModalScrollView } from './_modal-scroll-view';
 
 /** How far past the resting height the legend takes to fade out. */
