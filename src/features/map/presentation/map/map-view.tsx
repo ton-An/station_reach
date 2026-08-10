@@ -1,29 +1,23 @@
 import {
   Camera,
-  CircleLayer,
-  LineLayer,
   MapView as MapLibreMapView,
-  ShapeSource,
-  SymbolLayer,
   type CameraRef,
   type MapViewRef,
+  type OnPressEvent,
 } from '@maplibre/maplibre-react-native';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { PixelRatio, Platform, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 import { useTheme } from '@/core/theme/use-theme';
+import { RoutesSource } from './_routes-source';
+import { StationsSource } from './_stations-source';
 import {
   BASEMAP_STYLE_URL,
   INITIAL_CENTER,
   INITIAL_ZOOM,
-  LABEL_FONTS,
   LAYER_IDS,
-  LINE_OFFSET_EXPRESSION,
   MIN_ZOOM,
-  ROUTE_LINE_WIDTH,
-  SOURCE_IDS,
-  STATION_CIRCLE_RADIUS,
   STATION_HIT_RADIUS,
 } from './map-config';
 import {
@@ -134,6 +128,18 @@ export const MapView = memo(function MapView({
     []
   );
 
+  // Stable, so the memoised stations source never re-renders — and so never
+  // re-serialises every station — when a selection changes the routes.
+  const handleSourcePress = useCallback(
+    (event: OnPressEvent) => {
+      handleHit(event.features, [
+        event.coordinates.longitude,
+        event.coordinates.latitude,
+      ]);
+    },
+    [handleHit]
+  );
+
   const handleTap = useCallback(
     async (x: number, y: number) => {
       const instance = map.current;
@@ -203,61 +209,9 @@ export const MapView = memo(function MapView({
           />
 
           {/* Routes sit beneath stations so markers stay tappable. */}
-          <ShapeSource id={SOURCE_IDS.routes} shape={routes}>
-            <LineLayer
-              id={LAYER_IDS.routeLines}
-              style={{
-                lineColor: ['get', 'color'],
-                lineWidth: ROUTE_LINE_WIDTH,
-                lineCap: 'round',
-                lineJoin: 'round',
-                // One cast: the two MapLibre bindings declare structurally
-                // identical expression types under different names.
-                lineOffset: LINE_OFFSET_EXPRESSION as unknown as number,
-              }}
-            />
-          </ShapeSource>
+          <RoutesSource routes={routes} />
 
-          <ShapeSource
-            id={SOURCE_IDS.stations}
-            shape={stations}
-            hitbox={{
-              width: STATION_HIT_RADIUS * 2,
-              height: STATION_HIT_RADIUS * 2,
-            }}
-            onPress={(event) => {
-              handleHit(event.features, [
-                event.coordinates.longitude,
-                event.coordinates.latitude,
-              ]);
-            }}
-          >
-            <CircleLayer
-              id={LAYER_IDS.stationCircles}
-              style={{
-                circleRadius: STATION_CIRCLE_RADIUS,
-                circleColor: ['get', 'color'],
-                circlePitchAlignment: 'map',
-              }}
-            />
-
-            {/* MapLibre hides colliding labels itself — no clustering pass. */}
-            <SymbolLayer
-              id={LAYER_IDS.stationLabels}
-              style={{
-                textField: ['get', 'name'],
-                textFont: LABEL_FONTS,
-                textSize: theme.text.caption1.fontSize,
-                textAnchor: 'top',
-                textOffset: [0, 0.6],
-                textColor: theme.colors.text,
-                textHaloColor: theme.colors.background,
-                textHaloWidth: 1.5,
-                textAllowOverlap: false,
-                textOptional: true,
-              }}
-            />
-          </ShapeSource>
+          <StationsSource stations={stations} onPress={handleSourcePress} />
         </MapLibreMapView>
       </View>
     </GestureDetector>
