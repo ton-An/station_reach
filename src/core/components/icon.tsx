@@ -44,6 +44,15 @@ import TriangleAlert from '@/assets/icons/triangle_alert.svg';
   keeps the stroke at the set's 2 without a compensating width to hold in sync,
   and keeps the one glyph that needs a transform from being the one glyph whose
   rendering differs from the rest.
+
+  That glyph's train is also a `<path>` rather than the `<rect>` every other
+  boxy vehicle uses, because its top-right corner is cut away for the moon to
+  sit in. Two glyphs side by side on one 24 grid can only be small ones — the
+  train came out a quarter shorter than the `train` it sits next to in the
+  list, and the moon too small to read as a crescent. Letting the moon take
+  the corner buys back most of that: the train is 0.88 of full size, the moon
+  0.4, and both clear each other by ~1.3. Don't close the corner back up
+  without shrinking both again.
 */
 
 const Icons = {
