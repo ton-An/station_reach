@@ -39,6 +39,9 @@ import type { MapViewProps } from './map-view.types';
 const IS_ANDROID = Platform.OS === 'android';
 const QUERY_SCALE = IS_ANDROID ? PixelRatio.get() : 1;
 
+/** How far a finger may slide and still have meant to tap, in points. */
+const TAP_SLOP = 12;
+
 /** The square around a tap that counts as hitting a station. */
 function hitRect(x: number, y: number): [number, number, number, number] {
   const left = (x - STATION_HIT_RADIUS) * QUERY_SCALE;
@@ -160,27 +163,64 @@ export const MapView = memo(function MapView({
     [handleHit]
   );
 
-  /*
-    Two paths lead here, and both are safe to run for the same tap because
-    selecting a stop is idempotent.
+  // Where the tracked touch went down, or undefined once it has been ruled out
+  // as a tap: a second finger, a drag, or a cancel.
+  const touchOrigin = useRef<{ x: number; y: number } | undefined>(undefined);
 
-    The gesture is the fast one: the binding wires its own tap recogniser to
-    fail-wait on the map's double-tap and two-finger-tap recognisers, which is a
-    third of a second of nothing happening before a station can even be looked
-    up. Ours fires on touch-up. Leaving the map's recognisers their touches
-    (`cancelsTouchesInView`) is what keeps double-tap-to-zoom working; the cost
-    is that the first tap of one also registers.
+  /*
+    A passive reader of the touch stream, not a tap gesture — because a tap
+    gesture has to *win* recognition, and over this map it cannot win quickly.
+    The binding wires its own tap to fail-wait on the map's double-tap and
+    two-finger-tap recognisers, and UIKit lets only one recogniser tracking a
+    touch come out on top, so a competing tap either loses outright or is a
+    third of a second late. `onTouches*` sidesteps the arbitration entirely:
+    the callbacks run off the raw touches, so this resolves on touch-up while
+    the map's own tap is still waiting to see whether a second one arrives.
+    Recognising nothing is also what leaves panning, pinching and
+    double-tap-to-zoom untouched — this gesture never activates.
+
+    Which means the slop and multi-touch checks below are ours to make: without
+    them, lifting a finger at the end of a pan would read as a tap.
 
     The source's own `onPress` below stays wired as the slow path, so a tap
-    still lands if the gesture never recognises.
+    still lands if these never arrive. Both are safe to run for one tap because
+    selecting a stop is idempotent.
   */
   const tap = useMemo(
     () =>
-      Gesture.Tap()
+      Gesture.Manual()
         .runOnJS(true)
-        .cancelsTouchesInView(false)
-        .onEnd((event, success) => {
-          if (success) void handleTap(event.x, event.y);
+        .onTouchesDown((event) => {
+          const touch = event.changedTouches[0];
+
+          touchOrigin.current =
+            event.numberOfTouches > 1 || touch === undefined
+              ? undefined
+              : { x: touch.x, y: touch.y };
+        })
+        .onTouchesMove((event) => {
+          const origin = touchOrigin.current;
+          const touch = event.changedTouches[0];
+          if (origin === undefined || touch === undefined) return;
+
+          if (
+            Math.abs(touch.x - origin.x) > TAP_SLOP ||
+            Math.abs(touch.y - origin.y) > TAP_SLOP
+          ) {
+            touchOrigin.current = undefined;
+          }
+        })
+        .onTouchesUp((event) => {
+          const origin = touchOrigin.current;
+          touchOrigin.current = undefined;
+
+          const touch = event.changedTouches[0];
+          if (origin === undefined || touch === undefined) return;
+
+          void handleTap(touch.x, touch.y);
+        })
+        .onTouchesCancelled(() => {
+          touchOrigin.current = undefined;
         }),
     [handleTap]
   );
