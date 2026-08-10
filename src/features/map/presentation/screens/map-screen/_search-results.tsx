@@ -54,6 +54,10 @@ export function SearchResults() {
             style={{
               flexDirection: 'row',
               alignItems: 'center',
+              // One line of body text plus its padding is 39pt, under the 44pt
+              // a fingertip needs — a mouse never noticed the difference, a
+              // thumb aiming at the gap between two rows did.
+              minHeight: theme.spacing.large,
               paddingHorizontal: theme.spacing.medium,
               paddingVertical: theme.spacing.xSmall,
             }}
