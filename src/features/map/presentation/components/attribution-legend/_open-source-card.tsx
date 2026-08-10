@@ -43,7 +43,7 @@ export function OpenSourceCard() {
               {t('proudlyOpenSource')}
             </Text>
 
-            <Icon name="arrowForward" size={20} color={theme.colors.hint} />
+            <Icon name="chevronRight" size={20} color={theme.colors.hint} />
           </View>
 
           <Gap size="xxSmall" axis="vertical" />

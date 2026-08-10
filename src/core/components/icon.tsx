@@ -1,49 +1,70 @@
 import type { SvgProps } from 'react-native-svg';
 
-import ArrowBack from '@/assets/icons/arrow_back_ios_new.svg';
-import ArrowForward from '@/assets/icons/arrow_forward_ios.svg';
+import Bus from '@/assets/icons/bus.svg';
+import CableCar from '@/assets/icons/cable_car.svg';
+import ChevronLeft from '@/assets/icons/chevron_left.svg';
+import ChevronRight from '@/assets/icons/chevron_right.svg';
+import CircleQuestionMark from '@/assets/icons/circle_question_mark.svg';
 import Coach from '@/assets/icons/coach.svg';
-import DirectionsBoat from '@/assets/icons/directions_boat.svg';
-import DirectionsBus from '@/assets/icons/directions_bus.svg';
 import Funicular from '@/assets/icons/funicular.svg';
 import Github from '@/assets/icons/github.svg';
+import HighspeedRail from '@/assets/icons/highspeed_rail.svg';
 import Info from '@/assets/icons/info.svg';
-import LocationOn from '@/assets/icons/location_on.svg';
+import MapPin from '@/assets/icons/map_pin.svg';
 import NightTrain from '@/assets/icons/night_train.svg';
-import QuestionMark from '@/assets/icons/question_mark.svg';
 import Search from '@/assets/icons/search.svg';
+import Ship from '@/assets/icons/ship.svg';
 import Subway from '@/assets/icons/subway.svg';
 import Train from '@/assets/icons/train.svg';
 import Tram from '@/assets/icons/tram.svg';
-import Warning from '@/assets/icons/warning.svg';
+import TriangleAlert from '@/assets/icons/triangle_alert.svg';
 
 /*
   Every glyph is a vendored SVG rather than an icon font.
 
-  The Flutter app drew from Material Symbols (mostly the Rounded optical
-  variant), which no React Native icon package ships — `@expo/vector-icons`
-  only carries the older Material Icons, whose shapes visibly differ. These are
-  the exact same source glyphs, normalised to `currentColor` so the `color`
-  prop tints them the way Flutter's `ColorFilter.srcIn` did.
+  The set is Lucide: 24×24, `stroke-width` 2, round caps and joins, drawn as
+  strokes rather than filled shapes. That is the load-bearing part — a filled
+  glyph dropped in beside these reads as bold, not as a different icon — so
+  anything added later has to be built on that grid at that weight, and the
+  attributes stay on the root so a file cannot drift.
+
+  `stroke` is `currentColor` and there is no `fill`, so the `color` prop is the
+  only source of tint. No `<style>` and no `class`: react-native-svg applies
+  neither, and a glyph that colours itself through CSS renders black on device
+  while looking correct on the web.
+
+  Lucide has no coach, night train or funicular, and its `train-front-tunnel`
+  puts a domed high-speed nose inside the tunnel, which is the wrong mode next
+  to `highspeed_rail`. Those four are assembled from Lucide's own parts, or in
+  the funicular's case drawn on its grid — see the licence files.
+
+  Every file is a flat list of shapes: no `<g>`, no `transform`, no per-element
+  `stroke-width`. `night_train` composes a scaled-down train and moon and so
+  wants all three; its coordinates are baked at their final size instead, which
+  keeps the stroke at the set's 2 without a compensating width to hold in sync,
+  and keeps the one glyph that needs a transform from being the one glyph whose
+  rendering differs from the rest.
 */
 
 const Icons = {
-  arrowBack: ArrowBack,
-  arrowForward: ArrowForward,
+  bus: Bus,
+  cableCar: CableCar,
+  chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
+  circleQuestionMark: CircleQuestionMark,
   coach: Coach,
-  directionsBoat: DirectionsBoat,
-  directionsBus: DirectionsBus,
   funicular: Funicular,
   github: Github,
+  highspeedRail: HighspeedRail,
   info: Info,
-  locationOn: LocationOn,
+  mapPin: MapPin,
   nightTrain: NightTrain,
-  questionMark: QuestionMark,
   search: Search,
+  ship: Ship,
   subway: Subway,
   train: Train,
   tram: Tram,
-  warning: Warning,
+  triangleAlert: TriangleAlert,
 } as const;
 
 export type IconName = keyof typeof Icons;

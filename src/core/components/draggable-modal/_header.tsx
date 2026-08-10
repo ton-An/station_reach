@@ -28,7 +28,7 @@ export function Header({ title, showBackButton, onBackPressed }: HeaderProps) {
       {showBackButton && (
         <>
           <SmallIconButton
-            icon="arrowBack"
+            icon="chevronLeft"
             onPress={onBackPressed ?? (() => {})}
             alignmentOffset={[-1, 0]}
             accessibilityLabel="Back"

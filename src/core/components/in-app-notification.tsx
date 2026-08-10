@@ -156,7 +156,7 @@ function NotificationCard({ notification, onDismiss }: NotificationCardProps) {
               }}
             >
               <Icon
-                name="warning"
+                name="triangleAlert"
                 size={ICON_SIZE}
                 color={theme.colors.error}
               />
