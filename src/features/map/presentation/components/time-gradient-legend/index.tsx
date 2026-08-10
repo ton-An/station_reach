@@ -8,13 +8,24 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { TranslucentSurface } from '@/core/components/translucent-surface';
-import { withAlpha } from '@/core/helpers/color-helper';
+import { flattenOnto } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 import { GradientLabel } from './_gradient-label';
 
 const BAR_WIDTH = 250;
 const BAR_HEIGHT = 36;
+
+/**
+ * How much of the ramp survives against the surface behind it.
+ *
+ * Baked into the stops rather than applied as alpha, and the bar must stay
+ * fully opaque — see {@link flattenOnto} for why a translucent ramp grows a
+ * hairline at every stop in Firefox. The bar therefore no longer shows the map
+ * through it, which is the honest way round anyway: the key to the colours
+ * should not shift with whatever happens to be under it.
+ */
+const BAR_OPACITY = 0.85;
 
 /**
  * The key to the travel-time colours.
@@ -26,7 +37,11 @@ export function TimeGradientLegend() {
   const theme = useTheme();
 
   const gradient = theme.colors.timelineGradient.map((color) =>
-    withAlpha(color, 0.85)
+    flattenOnto({
+      color,
+      backdrop: theme.colors.background,
+      alpha: BAR_OPACITY,
+    })
   );
 
   return (

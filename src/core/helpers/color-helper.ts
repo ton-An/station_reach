@@ -80,6 +80,49 @@ export function withAlpha(color: string, alpha: number): string {
 }
 
 /**
+ * Flattens a translucent colour onto an opaque backdrop.
+ *
+ * The result is what `color` at `alpha` looks like over `backdrop`, carrying no
+ * alpha of its own. Gradient stops need this: Firefox draws a ramp as one span
+ * per pair of stops, and the two spans meeting at a stop both cover that pixel
+ * column in full — so a translucent stop is composited twice there and the ramp
+ * grows a hairline of the pure stop colour at every stop. An opaque stop
+ * painted twice is the same colour, which is the only way to be rid of it;
+ * moving the alpha onto the element does not work, because Gecko folds the
+ * opacity of an element whose only content is a background straight back into
+ * that background.
+ *
+ * Parameters:
+ * - color: the colour to flatten; its own alpha is ignored
+ * - backdrop: the opaque colour behind it
+ * - alpha: how much of `color` survives, 0..1
+ *
+ * Returns:
+ * - the flattened, fully opaque colour
+ */
+export function flattenOnto({
+  color,
+  backdrop,
+  alpha,
+}: {
+  color: string;
+  backdrop: string;
+  alpha: number;
+}): string {
+  const top = parseRgba(color);
+  const bottom = parseRgba(backdrop);
+  const mix = (over: number, under: number) =>
+    over * alpha + under * (1 - alpha);
+
+  return formatRgba({
+    r: mix(top.r, bottom.r),
+    g: mix(top.g, bottom.g),
+    b: mix(top.b, bottom.b),
+    a: 1,
+  });
+}
+
+/**
  * The number of 30-minute buckets the travel-time ramp spans.
  *
  * 28 buckets × 30 minutes = 14 hours, which is what the legend's `14h+` label
