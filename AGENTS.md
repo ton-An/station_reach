@@ -182,12 +182,8 @@ npm run lint
 
 ## Do not change
 
-- **Attribution is a licensing obligation.** OpenStreetMap, CARTO, Transitous and its data
-  sources must stay reachable and linked, alongside the privacy policy and Impressum. The info
-  button and the dialog behind it are not optional UI.
-- The identifiers the live listings depend on: iOS `eu.antons-webfabrik.station-reach`
-  (App Store id `6752408029`), Android `eu.antons_webfabrik.station_reach`.
-- The MIT licence and the repository link in the attribution dialog.
+- Attributions and other legal documents and requirements stay visible and reachable.
+- The bundle identifiers and the App Store id. The live listings depend on them.
 
 ## Agent orchestration
 
