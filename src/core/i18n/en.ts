@@ -1,5 +1,9 @@
 /** English copy. Ported from the Flutter `app_en.arb`. */
 export const en = {
+  // -- General -- //
+  // Read aloud rather than drawn: the button itself is a bare chevron.
+  back: 'Back',
+
   // -- Map -- //
   searchStations: 'Search Stations',
   departures: 'Departures',

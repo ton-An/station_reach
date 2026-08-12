@@ -2,16 +2,17 @@ import { Text, View } from 'react-native';
 
 import { Gap } from '@/core/components/gap';
 import { SmallIconButton } from '@/core/components/small-icon-button';
+import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 
 interface HeaderProps {
   readonly title: string;
-  readonly showBackButton: boolean;
-  readonly onBackPressed?: () => void;
+  /** Shows a back button when given. Absent means this is the root pane. */
+  readonly onBack?: () => void;
 }
 
 /** The sheet's title bar, a filled pill rather than bare text. */
-export function Header({ title, showBackButton, onBackPressed }: HeaderProps) {
+export function Header({ title, onBack }: HeaderProps) {
   const theme = useTheme();
 
   return (
@@ -25,13 +26,13 @@ export function Header({ title, showBackButton, onBackPressed }: HeaderProps) {
         backgroundColor: theme.colors.translucentBackgroundContrast,
       }}
     >
-      {showBackButton && (
+      {onBack !== undefined && (
         <>
           <SmallIconButton
             icon="chevronLeft"
-            onPress={onBackPressed ?? (() => {})}
+            onPress={onBack}
             alignmentOffset={[-1, 0]}
-            accessibilityLabel="Back"
+            accessibilityLabel={t('back')}
           />
           <Gap size="medium" />
         </>

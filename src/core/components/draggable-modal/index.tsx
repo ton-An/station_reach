@@ -31,8 +31,13 @@ const LEGEND_FADE_TRAVEL = 0.08;
 
 interface DraggableModalProps {
   readonly title: string;
-  readonly showBackButton: boolean;
-  readonly onBackPressed?: () => void;
+  /**
+   * Shows a back button in the header when given.
+   *
+   * One prop rather than a flag plus a handler, so a button that leads nowhere
+   * cannot be expressed.
+   */
+  readonly onBack?: () => void;
   /** Sits above the sheet, and fades away once it is drawn up past medium. */
   readonly legend?: React.ReactNode;
   readonly children: React.ReactNode;
@@ -51,8 +56,7 @@ interface DraggableModalProps {
  */
 export function DraggableModal({
   title,
-  showBackButton,
-  onBackPressed,
+  onBack,
   legend,
   children,
 }: DraggableModalProps) {
@@ -139,11 +143,7 @@ export function DraggableModal({
 
               <Gap size="medium" axis="vertical" />
 
-              <Header
-                title={title}
-                showBackButton={showBackButton}
-                onBackPressed={onBackPressed}
-              />
+              <Header title={title} onBack={onBack} />
             </View>
           </GestureDetector>
 
