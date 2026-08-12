@@ -28,8 +28,23 @@ function parseRgba(color: string): Rgba {
 }
 
 function formatRgba({ r, g, b, a }: Rgba): string {
-  const round = (value: number) => Math.round(value);
-  return `rgba(${round(r)}, ${round(g)}, ${round(b)}, ${a})`;
+  return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${a})`;
+}
+
+/**
+ * Reads a gradient stop.
+ *
+ * Throws rather than returning undefined: every caller has already established
+ * the index is in range, and an out-of-range one is a bug in the arithmetic
+ * above rather than something to degrade around.
+ */
+function stopAt(colors: readonly string[], index: number): string {
+  const color = colors[index];
+  if (color === undefined) {
+    throw new Error(`Gradient has no stop at index ${index}`);
+  }
+
+  return color;
 }
 
 /**
@@ -48,21 +63,20 @@ export function interpolateColors(
   colors: readonly string[],
   position: number
 ): string {
-  const first = colors[0];
-  if (first === undefined)
+  if (colors.length === 0) {
     throw new Error('Cannot interpolate an empty gradient');
+  }
 
-  const last = colors[colors.length - 1] as string;
-  if (colors.length === 1 || position <= 0) return first;
-  if (position >= 1) return last;
+  if (colors.length === 1 || position <= 0) return stopAt(colors, 0);
+  if (position >= 1) return stopAt(colors, colors.length - 1);
 
   const segmentLength = 1 / (colors.length - 1);
   const segmentIndex = Math.floor(position / segmentLength);
   const localPosition =
     (position - segmentIndex * segmentLength) / segmentLength;
 
-  const start = parseRgba(colors[segmentIndex] as string);
-  const end = parseRgba(colors[segmentIndex + 1] as string);
+  const start = parseRgba(stopAt(colors, segmentIndex));
+  const end = parseRgba(stopAt(colors, segmentIndex + 1));
 
   const lerp = (from: number, to: number) => from + (to - from) * localPosition;
 
