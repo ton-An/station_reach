@@ -6,10 +6,16 @@ import { useTheme } from '@/core/theme/use-theme';
 import {
   useStationDeparturesStore,
   useStationSearchStore,
-} from '../../stores/use-map-stores';
+} from '../../../stores/use-map-stores';
 
 /** How much of the bar the moving highlight covers. */
 const HIGHLIGHT_FRACTION = 0.4;
+
+/** How thick the bar under the search field is. */
+const BAR_HEIGHT = 8;
+
+/** How far the highlight fades against the track behind it. */
+const HIGHLIGHT_OPACITY = 0.5;
 
 /**
  * A shimmering bar under the search field while anything is loading.
@@ -62,7 +68,7 @@ export function LoadingShimmer() {
     <View
       onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
       style={{
-        height: 8,
+        height: BAR_HEIGHT,
         overflow: 'hidden',
         backgroundColor: theme.colors.primaryTranslucent,
       }}
@@ -72,7 +78,7 @@ export function LoadingShimmer() {
           width: highlightWidth,
           height: '100%',
           backgroundColor: theme.colors.primary,
-          opacity: 0.5,
+          opacity: HIGHLIGHT_OPACITY,
           transform: [
             {
               translateX: sweep.interpolate({

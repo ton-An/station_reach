@@ -2,35 +2,38 @@ import { useEffect, useRef, useState } from 'react';
 import { Keyboard, Pressable, TextInput, View } from 'react-native';
 
 import { Icon } from '@/core/components/icon';
+import { withAlpha } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
-import { withAlpha } from '@/core/helpers/color-helper';
-import { SEARCH_DEBOUNCE_MS } from '../../stores/station-search-store';
-import { useStationSearchStore } from '../../stores/use-map-stores';
+import { useStationSearchStore } from '../../../stores/use-map-stores';
 
 /** The field's fixed height, matching the Flutter `CupertinoTextField`. */
 const FIELD_HEIGHT = 54;
 
+/** The search glyph beside the input. */
+const ICON_SIZE = 28;
+
 /**
- * The station search input.
+ * How long to wait after the last keystroke before searching.
  *
- * Debounces before searching — the Flutter version fired a request on every
- * keystroke, which hammered a free community API for results nobody read.
+ * A UI concern rather than the store's: the store supersedes whatever is in
+ * flight either way, and this is only about not asking a free community API for
+ * results nobody will read. The Flutter version fired on every keystroke.
  */
+const SEARCH_DEBOUNCE_MS = 300;
+
+/** The station search input. */
 export function SearchField() {
   const theme = useTheme();
   const search = useStationSearchStore((store) => store.search);
 
   const input = useRef<TextInput>(null);
   const [query, setQuery] = useState('');
-  const timer = useRef<ReturnType<typeof setTimeout>>(null);
 
   useEffect(() => {
-    timer.current = setTimeout(() => void search(query), SEARCH_DEBOUNCE_MS);
+    const timer = setTimeout(() => void search(query), SEARCH_DEBOUNCE_MS);
 
-    return () => {
-      if (timer.current !== null) clearTimeout(timer.current);
-    };
+    return () => clearTimeout(timer);
   }, [query, search]);
 
   return (
@@ -61,7 +64,7 @@ export function SearchField() {
           pointerEvents: 'none',
         }}
       >
-        <Icon name="search" size={28} color={theme.colors.hint} />
+        <Icon name="search" size={ICON_SIZE} color={theme.colors.hint} />
       </View>
 
       <TextInput

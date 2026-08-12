@@ -8,9 +8,6 @@ import { LoadingShimmer } from './_loading-shimmer';
 import { SearchField } from './_search-field';
 import { SearchResults } from './_search-results';
 
-/** Widest the floating chrome grows on a large screen. */
-export const OVERLAY_MAX_WIDTH = 400;
-
 /** The floating search card at the top of the map. */
 export function Search() {
   const theme = useTheme();
@@ -30,10 +27,7 @@ export function Search() {
     >
       <TranslucentSurface
         bordered
-        style={{
-          width: '100%',
-          maxWidth: OVERLAY_MAX_WIDTH,
-        }}
+        style={{ width: '100%', maxWidth: theme.layout.overlayMaxWidth }}
       >
         <SearchField />
         <SearchResults />

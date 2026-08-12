@@ -1,17 +1,22 @@
-import { Keyboard, ScrollView, Text, View } from 'react-native';
+import { Keyboard, ScrollView } from 'react-native';
 
-import { Dot } from '@/core/components/dot';
-import { FadePressable } from '@/core/components/fade-pressable';
-import { Gap } from '@/core/components/gap';
-import { useTheme } from '@/core/theme/use-theme';
-import type { Station } from '../../../domain/models/station';
+import type { Station } from '../../../../domain/models/station';
+import type { StationSearchState } from '../../../stores/station-search-store';
 import {
   useStationDeparturesStore,
   useStationSearchStore,
-} from '../../stores/use-map-stores';
+} from '../../../stores/use-map-stores';
+import { StationResult } from './_station-result';
 
 /** Tallest the results list grows before it scrolls. */
 const MAX_HEIGHT = 250;
+
+/**
+ * Alternating press depths, which give the list a subtle zebra rhythm as you
+ * run down it — straight from the Flutter original.
+ */
+const EVEN_ROW_MIN_OPACITY = 0.1;
+const ODD_ROW_MIN_OPACITY = 0.6;
 
 /**
  * The station hits for the current query.
@@ -19,19 +24,20 @@ const MAX_HEIGHT = 250;
  * Picking one loads its reachability and collapses the list.
  */
 export function SearchResults() {
-  const theme = useTheme();
   const state = useStationSearchStore((store) => store.state);
   const collapse = useStationSearchStore((store) => store.collapse);
   const loadReachability = useStationDeparturesStore(
     (store) => store.loadReachability
   );
 
-  const stations =
-    state.status === 'loading' || state.status === 'loaded'
-      ? state.stations
-      : [];
-
+  const stations = visibleStations(state);
   if (stations.length === 0) return null;
+
+  const pick = (station: Station) => {
+    void loadReachability(station);
+    collapse();
+    Keyboard.dismiss();
+  };
 
   return (
     <ScrollView
@@ -39,64 +45,22 @@ export function SearchResults() {
       keyboardShouldPersistTaps="handled"
     >
       {stations.map((station, index) => (
-        <FadePressable
+        <StationResult
           key={station.id}
-          // Alternating press depth gives the list a subtle zebra rhythm as
-          // you run down it — straight from the Flutter original.
-          minOpacity={index % 2 === 0 ? 0.1 : 0.6}
-          onPress={() => {
-            void loadReachability(station);
-            collapse();
-            Keyboard.dismiss();
-          }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              // One line of body text plus its padding is 39pt, under the 44pt
-              // a fingertip needs — a mouse never noticed the difference, a
-              // thumb aiming at the gap between two rows did.
-              minHeight: theme.spacing.large,
-              paddingHorizontal: theme.spacing.medium,
-              paddingVertical: theme.spacing.xSmall,
-            }}
-          >
-            <Text style={[theme.text.body, { color: theme.colors.text }]}>
-              {station.name}
-            </Text>
-
-            {describeArea(station) !== undefined && (
-              <>
-                <Gap size="xSmall" />
-                <Dot />
-                <Gap size="xSmall" />
-
-                <Text
-                  numberOfLines={1}
-                  style={[
-                    theme.text.body,
-                    { color: theme.colors.hint, flex: 1 },
-                  ]}
-                >
-                  {describeArea(station)}
-                </Text>
-              </>
-            )}
-          </View>
-        </FadePressable>
+          station={station}
+          minOpacity={
+            index % 2 === 0 ? EVEN_ROW_MIN_OPACITY : ODD_ROW_MIN_OPACITY
+          }
+          onPress={() => pick(station)}
+        />
       ))}
     </ScrollView>
   );
 }
 
-/** Renders the country and area a station sits in, whichever are known. */
-function describeArea(station: Station): string | undefined {
-  const { countryCode, area } = station;
-
-  if (countryCode !== undefined && area !== undefined) {
-    return `${countryCode}, ${area}`;
-  }
-
-  return area ?? countryCode;
+/** The hits worth showing — the loading state keeps the previous ones up. */
+function visibleStations(state: StationSearchState): readonly Station[] {
+  return state.status === 'loading' || state.status === 'loaded'
+    ? state.stations
+    : [];
 }
