@@ -1,11 +1,8 @@
-import { createStore } from 'zustand/vanilla';
+import { createStore, type StoreApi } from 'zustand/vanilla';
 
 import type { Failure } from '@/core/failures';
 import type { Station } from '../../domain/models/station';
 import type { SearchStations } from '../../domain/usecases/search-stations';
-
-/** How long to wait after the last keystroke before searching. */
-export const SEARCH_DEBOUNCE_MS = 300;
 
 export type StationSearchState =
   | { readonly status: 'initial' }
@@ -41,7 +38,9 @@ function previousStations(state: StationSearchState): readonly Station[] {
  * Parameters:
  * - searchStations: the use case this store drives
  */
-export function createStationSearchStore(searchStations: SearchStations) {
+export function createStationSearchStore(
+  searchStations: SearchStations
+): StoreApi<StationSearchStore> {
   /*
     Cancellation bookkeeping belongs to the store instance, not to the module.
     It lives in this closure rather than in the state because nothing renders

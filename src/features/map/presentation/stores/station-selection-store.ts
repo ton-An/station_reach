@@ -1,4 +1,4 @@
-import { createStore } from 'zustand/vanilla';
+import { createStore, type StoreApi } from 'zustand/vanilla';
 
 import type { Departure } from '../../domain/models/departure';
 import type { Stop } from '../../domain/models/station';
@@ -36,7 +36,7 @@ export interface StationSelectionStore {
 }
 
 /** Builds the station selection store. It has no dependencies of its own. */
-export function createStationSelectionStore() {
+export function createStationSelectionStore(): StoreApi<StationSelectionStore> {
   return createStore<StationSelectionStore>()((set, get) => ({
     state: { status: 'unselected' },
 

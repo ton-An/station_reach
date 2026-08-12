@@ -1,4 +1,4 @@
-import { createStore } from 'zustand/vanilla';
+import { createStore, type StoreApi } from 'zustand/vanilla';
 
 import type { Failure } from '@/core/failures';
 import type { TranslationKey } from '@/core/i18n/en';
@@ -31,7 +31,7 @@ export interface InAppNotificationStore {
 }
 
 /** Builds the notification store. It has no dependencies of its own. */
-export function createInAppNotificationStore() {
+export function createInAppNotificationStore(): StoreApi<InAppNotificationStore> {
   let nextId = 0;
   let timeout: ReturnType<typeof setTimeout> | undefined;
 

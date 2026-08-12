@@ -1,4 +1,4 @@
-import { createStore } from 'zustand/vanilla';
+import { createStore, type StoreApi } from 'zustand/vanilla';
 
 import type { Failure } from '@/core/failures';
 import type { Departure } from '../../domain/models/departure';
@@ -34,7 +34,7 @@ export interface StationDeparturesStore {
  */
 export function createStationDeparturesStore(
   getStationDepartures: GetStationDepartures
-) {
+): StoreApi<StationDeparturesStore> {
   // Instance state, so a superseded load can never overwrite a newer one.
   let latestRequestId = 0;
 
