@@ -1,27 +1,18 @@
 import { useEffect, useState } from 'react';
-import {
-  Animated,
-  Easing,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native';
+import { Animated, Easing, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { t } from '@/core/i18n/translate';
 import type { InAppNotification } from '@/core/notifications/in-app-notification-store';
-import { useInAppNotificationStore } from '@/core/notifications/use-in-app-notification-store';
 import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
-import { spacing, WIDE_LAYOUT_BREAKPOINT } from '@/core/theme/theme';
+import { spacing } from '@/core/theme/theme';
+import { useIsWideLayout } from '@/core/theme/use-is-wide-layout';
 import { useTheme } from '@/core/theme/use-theme';
-import { FadePressable } from './fade-pressable';
-import { Gap } from './gap';
-import { Icon } from './icon';
-import { pointerEvents } from './pointer-events';
-import { TranslucentSurface } from './translucent-surface';
-
-/** Widest the card grows, matching the rest of the floating chrome. */
-const MAX_WIDTH = 400;
+import { FadePressable } from '../fade-pressable';
+import { Gap } from '../gap';
+import { Icon } from '../icon';
+import { pointerEvents } from '../pointer-events';
+import { TranslucentSurface } from '../translucent-surface';
 
 /** The warning glyph beside the message. */
 const ICON_SIZE = 26;
@@ -34,32 +25,6 @@ const ICON_SIZE = 26;
  * holding it down.
  */
 const ENTRY_TRAVEL = spacing.xxSmall;
-
-/**
- * Renders the current in-app notification, if any.
- *
- * Mounted once above the whole app — this is the only place failures become
- * visible, so screens never grow their own error banners.
- */
-export function InAppNotificationListener() {
-  const notification = useInAppNotificationStore((store) => store.notification);
-  const dismiss = useInAppNotificationStore((store) => store.dismiss);
-
-  if (notification === undefined) return null;
-
-  /*
-    Keyed by id, so each notification gets a fresh card rather than new text in
-    the old one. That is what replays the entry animation when a second failure
-    lands while the first is still up — no resetting by hand.
-  */
-  return (
-    <NotificationCard
-      key={notification.id}
-      notification={notification}
-      onDismiss={dismiss}
-    />
-  );
-}
 
 interface NotificationCardProps {
   readonly notification: InAppNotification;
@@ -74,10 +39,13 @@ interface NotificationCardProps {
  * a narrow screen it spans the width instead, since there is no room to sit
  * beside anything.
  */
-function NotificationCard({ notification, onDismiss }: NotificationCardProps) {
+export function NotificationCard({
+  notification,
+  onDismiss,
+}: NotificationCardProps) {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
+  const isWide = useIsWideLayout();
 
   const [entry] = useState(() => new Animated.Value(0));
 
@@ -103,8 +71,6 @@ function NotificationCard({ notification, onDismiss }: NotificationCardProps) {
     });
   }, [entry, theme.durations.xxShort]);
 
-  const isWide = width >= WIDE_LAYOUT_BREAKPOINT;
-
   // The bar spans the screen but only the card is chrome — the rest of it
   // stays transparent to input, or it would swallow map clicks across the full
   // width for as long as the notification shows.
@@ -124,7 +90,7 @@ function NotificationCard({ notification, onDismiss }: NotificationCardProps) {
     >
       <Animated.View
         style={{
-          maxWidth: MAX_WIDTH,
+          maxWidth: theme.layout.overlayMaxWidth,
           width: '100%',
           // See `hasEntered` — leaving these on would cost the card its blur.
           ...(hasEntered
