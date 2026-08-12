@@ -194,9 +194,9 @@ Two calls per station, one per mode bucket, and they are independent — run the
 
 Union the results, drop departures whose stop lists are deeply equal to one already kept, then sort by name and, within a name, by final-stop duration. Dedupe **before** sorting: dedupe keeps the first occurrence and long distance is concatenated first, so a trip published under both names keeps its long-distance one.
 
-**Both buckets are best-effort, and neither failure is silent.** Whatever came back is drawn; a bucket that failed for a real reason travels back beside the results as `StationReachability.partialFailure`, and the screen surfaces it as a notification over the working map. Only when *neither* bucket came back is there a failure to return — and then the more informative of the two wins, so "the request timed out" beats "this bucket had nothing".
+**Both buckets are required: if either fails to fetch, the whole load fails.** There is no partial result. A map drawn from half the data looks exactly as complete as one drawn from all of it, and returning the departures *and* a failure together would make the `Result` mean neither thing — every caller would have to re-decide whether what it holds is trustworthy. One answer: the whole map, or the reason there isn't one.
 
-A bucket that returned `noDeparturesFound` is never reported: a tram stop has no long-distance services, and that is not a problem worth a notification.
+`noDeparturesFound` is the single exception, because it is an answer rather than a failure to fetch — this station has no service of that kind, which is ordinary and says nothing about the other bucket. The other bucket is then used alone. Only when neither has anything does `noDeparturesFound` propagate.
 
 The Flutter original was asymmetric here and it was a bug, not a decision — a long-distance failure took the whole map down even when regional had answered, while a regional failure was swallowed outright. A flaky connection could therefore draw a confident, complete-looking map missing every tram, bus and S-Bahn, with nothing said about it. Don't port that shape back.
 

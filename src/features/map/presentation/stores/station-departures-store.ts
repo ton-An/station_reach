@@ -12,14 +12,6 @@ export type StationDeparturesState =
       readonly status: 'loaded';
       readonly station: Station;
       readonly departures: readonly Departure[];
-      /**
-       * Set when one mode bucket failed and the rest was loaded without it.
-       *
-       * Still `loaded`, because the departures beside it are real and worth
-       * drawing — but the map is missing a whole class of service, so this is
-       * surfaced as a notification over it. See `getStationDepartures`.
-       */
-      readonly partialFailure?: Failure;
     }
   | { readonly status: 'failure'; readonly failure: Failure };
 
@@ -61,12 +53,7 @@ export function createStationDeparturesStore(
 
       set({
         state: result.match<StationDeparturesState>(
-          ({ departures, partialFailure }) => ({
-            status: 'loaded',
-            station,
-            departures,
-            ...(partialFailure === undefined ? {} : { partialFailure }),
-          }),
+          (departures) => ({ status: 'loaded', station, departures }),
           (failure) => ({ status: 'failure', failure })
         ),
       });
