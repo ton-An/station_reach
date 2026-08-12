@@ -8,7 +8,7 @@ import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 import { OpenSourceCard } from './_open-source-card';
-import { ATTRIBUTION_MESSAGE } from './attributions';
+import { attributionMessage } from './attributions';
 
 /**
  * The small info button that opens the attributions.
@@ -37,7 +37,7 @@ export function AttributionLegend() {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title={t('attributions')}
-        message={ATTRIBUTION_MESSAGE}
+        message={attributionMessage()}
         additionalContent={<OpenSourceCard />}
         actions={[{ label: t('ok'), onPress: () => setIsOpen(false) }]}
       />
