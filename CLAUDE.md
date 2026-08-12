@@ -59,11 +59,26 @@ src/
       usecases/                 # orchestration, one class/function per use case
     presentation/
       stores/                   # Zustand stores
+      map/                      # the MapLibre wrapper: two views, one contract
       screens/                  # screen + its private parts
       components/               # feature-scoped UI
 ```
 
-A screen or compound component is a folder: `index.tsx` is the public entry, and `_underscore-prefixed.tsx` siblings are its private parts, imported only by that parent. This replaces Dart's `part` files — keep the discipline, one component per file.
+A screen or compound component is a folder: `index.tsx` is the public entry, and `_underscore-prefixed.tsx` siblings are its private parts, imported only by that parent. This replaces Dart's `part` files — keep the discipline, one component per file. When a private part grows parts of its own it becomes a folder in turn, so that ownership stays readable off the tree alone:
+
+```
+screens/map-screen/
+  index.tsx                     # layout only — every panel subscribes for itself
+  _reachability-map.tsx         # the map and everything derived for it
+  _use-failure-notifier.ts      # store failures → the global notification
+  _map-legends.tsx              # shared: bottom-left when wide, in the sheet when not
+  _search/                      # index.tsx + field, results, row, shimmer
+  _departures-modal.tsx
+  _departure-itinerary.tsx
+  _departures-list/             # index.tsx + row, empty state
+```
+
+A constant two components share is not a private part of either — it is a token. `layout.overlayMaxWidth` lives in the theme rather than being exported from the search card that happened to need it first.
 
 Files are `kebab-case.ts`; React components are `PascalCase` inside them.
 
@@ -138,17 +153,21 @@ There is no `webfabrik_theme` on this side of the port — its tokens are reimpl
 ```
 spacing   tiny 1 · xTiny 2 · small 4 · xSmall 8 · xxSmall 12 · medium 14
           xMedium 24 · xxMedium 32 · large 44 · xLarge 55 · xxLarge 128
-radii     small 8 · field 10 · medium 12 · button 14 · xMedium 18 · large 20 · xLarge 30
+radii     small 8 · field 10 · medium 12 · button 14 · xMedium 18 · large 20
+          xLarge 30 · full 999 (pills and circles)
 durations tiny 50 · xTiny 100 · xxTiny 150 · short 200 · xShort 250 …  (ms)
+layout    overlayMaxWidth 400 · legendClusterWidth 320 · wideBreakpoint 900
 ```
+
+`layout` holds the dimensions of the floating chrome itself. They are tokens because they have to agree across components that never see each other — the search card, the sheet and the notification are all one column, and they only read as one at one width.
 
 Inter ships as a single variable TTF and is loaded in the root layout; **nothing renders until it resolves**, because the fallback is a serif face and swapping it in after first paint reflows every label on the map.
 
-Brand colours: primary `rgb(83,196,108)`, accent `rgb(7,114,255)`. `timelineGradient` is the 8-stop travel-time ramp (green → yellow → orange → red) and is the app's single most important visual; `secondaryGradient` (purple → cyan) tints departure list icons by index.
+Brand colours: primary `rgb(83,196,108)`, accent `rgb(7,114,255)`. `timelineGradient` is the 12-stop travel-time ramp (green → yellow → orange → red → magenta → purple) and is the app's single most important visual. It runs five stops longer than the Flutter original, which stopped at red and so gave every journey past a few hours the same colour. `secondaryGradient` (purple → cyan) tints departure list icons **by index**, not by duration — the row already states its travel time in the ramp's colours, and tinting the icon from the same ramp made an ordinal cue read as a second, contradictory duration.
 
 The look is iOS-flavoured: translucent blurred surfaces over the map, the Inter variable font with explicit weight axes, generous rounding. Prefer a `<Gap size="small" />` component over ad-hoc margins, matching the Flutter `SmallGap()` widgets.
 
-Responsive breakpoint is **900px**. Below it the modal is bottom-centred and the legends live inside it; at or above it the modal is bottom-right and the legends sit bottom-left. Search field and modal are both capped at 400px wide.
+Responsive breakpoint is **900px**. Below it the modal is bottom-centred and the legends live inside it; at or above it the modal is bottom-right and the legends sit bottom-left. Search field and modal are both capped at 400px wide. Read the breakpoint through `useIsWideLayout()` rather than measuring `useWindowDimensions()` by hand — three unrelated panels depend on agreeing about it.
 
 ## Localization
 
@@ -166,16 +185,20 @@ Browsers forbid setting `User-Agent`, so on web this header silently drops. Do n
 
 **Search** — `GET /api/v1/geocode?text=<query>&type=STOP`. The station's display area is the `areas[]` entry with the highest `adminLevel` ≤ 7.
 
-**Departures** — `GET /api/v5/stoptimes?stopId=&n=&fetchStops=true&radius=200&mode=&withScheduledSkippedStops=true&time=<iso>&pageCursor=`
+**Departures** — `GET /api/v6/stoptimes?stopId=&n=&fetchStops=true&realtimeMode=OFF&radius=200&mode=&withScheduledSkippedStops=false&time=<iso>`
 
-Two calls per station, one per mode bucket, and they are independent — run them concurrently:
+Two calls per station, one per mode bucket, and they are independent — run them concurrently (the Flutter version awaited them one after the other):
 
 - long distance (`COACH`, `HIGHSPEED_RAIL`, `LONG_DISTANCE`, `NIGHT_RAIL`) with `n=1000`
 - regional (tram, subway, suburban, bus, regional rail, cable car, funicular, metro, …) with `n=400`
 
-Union the results, drop departures whose stop lists are deeply equal to one already kept, then sort by name and, within a name, by final-stop duration. If both buckets fail, propagate the failure; if only one fails, use the other.
+Union the results, drop departures whose stop lists are deeply equal to one already kept, then sort by name and, within a name, by final-stop duration. Dedupe **before** sorting: dedupe keeps the first occurrence and long distance is concatenated first, so a trip published under both names keeps its long-distance one.
 
-**Known MOTIS bug — keep the workaround.** The API can answer `{"error": "Departure is last stop in trip"}`. Handle it by re-requesting with `time` advanced by one hour, up to 10 times, dropping the page cursor. A missing or empty `nextPageCursor` means there is genuinely nothing to show → `noDeparturesFound`. This logic is subtle and was hard-won; port it from `map_remote_data_source.dart` rather than rederiving it.
+Merging the two buckets is deliberately **asymmetric**, matching the Flutter original. Long distance decides: anything it reports other than `noDeparturesFound` propagates, because a timeout there would silently drop every long-distance service from the map. Regional is then best-effort — its results are merged in and its failures are dropped, since long distance alone still makes a useful map.
+
+One request per bucket, no paging: `n` is large enough to cover a whole departure board in a single page. A missing or empty `nextPageCursor` is how upstream says it has nothing for this station → `noDeparturesFound`.
+
+The Flutter app carried a retry loop around a MOTIS bug — the API could answer a valid request with `{"error": "Departure is last stop in trip"}`, recovered by re-requesting an hour later without a cursor, up to ten times. **That bug is fixed upstream and the workaround is gone.** Don't reintroduce it from `map_remote_data_source.dart`; if something like it resurfaces, it needs diagnosing against the current API rather than reviving the old loop.
 
 Each stop's `duration` is `scheduledArrival - scheduledDeparture` of the origin, so the origin stop is always duration zero.
 
@@ -188,7 +211,7 @@ Each stop's `duration` is `scheduledArrival - scheduledDeparture` of the origin,
   Markers and polyline segments both use *cumulative* duration from the origin: a leg is coloured by the time at the stop it arrives at, so it always matches the marker at its far end and the trip ramps green → red along its length. A leg's own duration is deliberately not what colours it.
 - Reachability is indexed once per loaded station (`buildStopIndex`), keyed by stop id and holding both the fastest arrival and the calling departures. Tapping a marker is a lookup; never walk the departures again.
 - A tap resolves to a station by querying a **box** around the point and then taking the **nearest** dot inside it, never the first one the query returns. Both halves are load-bearing: the box is what makes the target bigger than the 6.3px dot, and nearest-wins is what stops a dense area handing back a neighbour by draw order. Point queries are too tight to hit a dot at all — that is why the binding ships a `hitbox` prop. On web the pointer cursor runs off that same box on `mousemove`, never off `mouseenter`/`mouseleave` on the circle layer: those hit-test the drawn dot, so the cursor flickers on its edge and disagrees with where a click actually lands. Dropping back to `grab` is held for `durations.xxTiny` on top of that, because neighbouring boxes stop a few pixels short of touching and sweeping a line of stations blinked the cursor once per gap.
-- Native runs two tap paths into that same lookup, and both may fire for one tap. `ShapeSource.onPress` is the slow one: the binding makes its tap recogniser fail-wait on the map's double-tap and two-finger-tap recognisers, so a selection cannot even start for a third of a second. The fast one is a `Gesture.Manual` on a wrapper around the map that only *reads* the touch stream — `onTouchesDown/Move/Up` — and resolves on touch-up. It has to be a passive reader rather than a `Gesture.Tap`: UIKit lets only one recogniser tracking a touch come out on top, so a competing tap is either beaten by the map's own recognisers or wins and takes double-tap-to-zoom away with it. Recognising nothing avoids both, at the price of doing the slop and multi-touch checks by hand. Selecting a stop is idempotent (see `station-selection-store`), which is what makes running both safe; don't "clean this up" into one without checking the delay comes back.
+- Native runs two tap paths into that same lookup, and both may fire for one tap. `ShapeSource.onPress` is the slow one: the binding makes its tap recogniser fail-wait on the map's double-tap and two-finger-tap recognisers, so a selection cannot even start for a third of a second. The fast one (`_map-tap-gesture.ts`) is a `Gesture.Manual` on a wrapper around the map that only *reads* the touch stream — `onTouchesDown/Move/Up` — and resolves on touch-up. It has to be a passive reader rather than a `Gesture.Tap`: UIKit lets only one recogniser tracking a touch come out on top, so a competing tap is either beaten by the map's own recognisers or wins and takes double-tap-to-zoom away with it. Recognising nothing avoids both, at the price of doing the slop and multi-touch checks by hand. Selecting a stop is idempotent (see `station-selection-store`), which is what makes running both safe; don't "clean this up" into one without checking the delay comes back.
 - Coordinate spaces differ per binding and per method. `queryRenderedFeaturesInRect` takes `[top, right, bottom, left]`, but iOS needs `top` to be the larger y and Android the smaller, and Android measures in raw pixels where iOS measures in view points. `getCoordinateFromView` converts density itself and takes points on both.
 - A station reachable by several departures is drawn once, at its **shortest** duration.
 - Station name labels collide out through MapLibre's own symbol placement (`textAllowOverlap: false`, `textOptional: true`). The Flutter app ran supercluster by hand on every move/rotate/zoom end; that is gone, and should stay gone.
@@ -238,10 +261,10 @@ Before saying a change works: `npx tsc --noEmit` clean, `npx eslint .` clean, an
 All of these cost real debugging time; none of them fail loudly.
 
 - **`pointerEvents: 'box-none'` survives only a *registered* style on React Native Web.** RNW polyfills the value while compiling a `StyleSheet.create` style — emitting the paired `.container > * { pointer-events: auto }` rule — and drops it from an inline object, since no such CSS value exists. Always take it from `core/components/pointer-events.ts`. Do *not* "fix" it by writing `'none'` on the container and `'auto'` on the panel: that works only on the web, where the value is merely inherited. On a device `'none'` sets `userInteractionEnabled = NO` on the whole subtree and a child cannot opt back in, which silently kills the search field, the sheet drag and the attribution button.
-- **`translateX`/`translateY` must be numbers**, not percentage strings. The native animation driver ignores percentages, so a pager animates on web and sits still on device. Measure with `onLayout` instead.
+- **`translateX`/`translateY` must be numbers**, not percentage strings. The native animation driver ignores percentages, so a pager animates on web and sits still on device. Measure with `onLayout` instead — see `SlidingPanes`, which is that measurement wrapped up so nobody has to rediscover it.
 - `useNativeDriver` is unavailable on web; read it from `USE_NATIVE_DRIVER` rather than hardcoding `true`.
 - The root document needs explicit `height: 100%` (see `src/app/+html.tsx`). Without it the whole tree collapses to zero height and the map renders as a 400×300 stub.
-- **An animated `opacity` or `transform` silently kills the blur beneath it.** Both make their element a backdrop root, and a backdrop root has nothing behind it to blur, so any `TranslucentSurface` inside one renders flat. Fading or sliding a blurred panel therefore has to end with those properties *removed*, not merely set to `1` / `translateY(0)` — see `InAppNotificationListener`, and the legend fade in `DraggableModal` that starts its range exactly at the resting height for the same reason.
+- **An animated `opacity` or `transform` silently kills the blur beneath it.** Both make their element a backdrop root, and a backdrop root has nothing behind it to blur, so any `TranslucentSurface` inside one renders flat. Fading or sliding a blurred panel therefore has to end with those properties *removed*, not merely set to `1` / `translateY(0)` — see `NotificationCard`, the scrim-carries-the-fade split in `Dialog`, and the legend fade in `DraggableModal` that starts its range exactly at the resting height for the same reason.
 - **Animating a layout property (`height`, `maxHeight`) inside the search card does not work on web.** Neither `Animated` nor Reanimated moves it: the inline style is written and the computed height stays `0`. `onLayout` is dead in that subtree too, so the content cannot be measured to animate towards. Anything that needs to grow or shrink there has to be sized by a constant, or the card restructured first — don't assume it will just work because it works on native.
 
 ## Native gotchas

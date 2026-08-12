@@ -85,8 +85,12 @@ export function createGetStationDepartures(
 /**
  * Combines the two mode buckets.
  *
- * A bucket that simply had nothing to offer is not an error; a bucket that
- * failed for any other reason is.
+ * Deliberately asymmetric, matching the Flutter original. Long distance is
+ * fetched first and is the bucket that decides: anything it reports other than
+ * `noDeparturesFound` propagates, because a timeout there means the map would
+ * quietly be missing every long-distance service. Regional is then best-effort —
+ * whatever it returns is merged in, and any failure from it is dropped, since
+ * long distance alone already makes a useful map.
  */
 function mergeDepartures(
   longDistance: Result<Departure[], Failure>,
