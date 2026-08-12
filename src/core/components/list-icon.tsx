@@ -18,7 +18,7 @@ export function ListIcon({ icon, color }: ListIconProps) {
     <View
       style={{
         padding: theme.spacing.medium,
-        borderRadius: 999,
+        borderRadius: theme.radii.full,
         backgroundColor: color,
       }}
     >

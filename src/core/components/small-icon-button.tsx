@@ -58,7 +58,7 @@ export function SmallIconButton({
       style={{
         opacity: decorative ? 1 : opacity,
         padding: theme.spacing.xSmall,
-        borderRadius: 999,
+        borderRadius: theme.radii.full,
         backgroundColor:
           backgroundColor ?? theme.colors.translucentBackgroundContrast,
       }}

@@ -27,6 +27,13 @@ const BLUR_TINT: BlurTint = Platform.select({
   default: 'light',
 });
 
+/** The hairline outline a `bordered` surface carries. */
+const BORDER_WIDTH = 1.8;
+const BORDER_ALPHA = 0.35;
+
+/** How much background a `bordered` surface lays over the blur. */
+const BORDERED_FILL_ALPHA = 0.35;
+
 interface TranslucentSurfaceProps {
   readonly children: React.ReactNode;
   /** A single radius, or per-corner radii for sheets anchored to an edge. */
@@ -105,13 +112,13 @@ export function TranslucentSurface({
             backgroundColor:
               tint ??
               (bordered
-                ? withAlpha(theme.colors.background, 0.35)
+                ? withAlpha(theme.colors.background, BORDERED_FILL_ALPHA)
                 : theme.colors.translucentBackground),
           },
           bordered
             ? {
-                borderWidth: 1.8,
-                borderColor: withAlpha(theme.colors.hint, 0.35),
+                borderWidth: BORDER_WIDTH,
+                borderColor: withAlpha(theme.colors.hint, BORDER_ALPHA),
               }
             : {},
         ]}
