@@ -35,6 +35,8 @@ export const radii = {
   xMedium: 18,
   large: 20,
   xLarge: 30,
+  /** Rounder than anything can be tall: turns a box into a pill or a circle. */
+  full: 999,
 } as const;
 
 /** Animation durations, in milliseconds. */
@@ -57,11 +59,16 @@ export const durations = {
 } as const;
 
 /**
- * The travel-time ramp: green (near) through yellow and orange to red (far).
+ * The travel-time ramp: green (near) through yellow, orange and red, then on
+ * into magenta and purple for the journeys that take most of a day.
  *
  * This is the app's single most important visual. Markers, polylines, list rows
  * and the legend all sample it through {@link interpolateColors} so that one
  * duration always maps to one colour.
+ *
+ * Longer than the Flutter original's seven stops: that ramp ended at red, which
+ * left everything past a few hours the same colour on a map whose whole point is
+ * how far you can get.
  */
 export const timelineGradient = [
   'rgb(0, 150, 107)',
@@ -75,7 +82,24 @@ export const timelineGradient = [
   'rgb(174, 38, 135)',
   'rgb(156, 39, 176)',
   'rgb(139, 58, 183)',
-  'rgb(103, 58, 183)'
+  'rgb(103, 58, 183)',
+] as const;
+
+/**
+ * The secondary ramp: purple through blue to cyan.
+ *
+ * Sampled by *position in a list* rather than by duration — the departures at a
+ * stop are tinted along it by index. Deliberately not the travel-time ramp: in
+ * that list every row already carries a travel time in its own colour, and
+ * tinting the icon from the same gradient made an ordinal cue look like a
+ * second, contradictory reading of the duration.
+ */
+export const secondaryGradient = [
+  'rgb(156, 39, 176)',
+  'rgb(103, 58, 183)',
+  'rgb(63, 81, 181)',
+  'rgb(33, 150, 243)',
+  'rgb(0, 188, 212)',
 ] as const;
 
 export const colors = {
@@ -103,6 +127,7 @@ export const colors = {
   transparent: 'transparent',
 
   timelineGradient,
+  secondaryGradient,
 } as const;
 
 /**
@@ -193,6 +218,32 @@ export const text = {
   },
 } as const satisfies Record<string, TextStyle>;
 
+/**
+ * Fixed sizes the floating chrome is laid out against.
+ *
+ * Not spacing steps — these are the dimensions of the panels themselves, and
+ * several of them have to agree across unrelated components, so they belong to
+ * one place rather than to whichever file happened to need one first.
+ */
+export const layout = {
+  /**
+   * Widest the floating chrome grows on a large screen.
+   *
+   * Shared by the search card, the departures sheet and the notification: the
+   * three read as one column of chrome, which they only do at one width.
+   */
+  overlayMaxWidth: 400,
+  /** The bottom-left legend cluster, once the screen is wide enough for one. */
+  legendClusterWidth: 320,
+  /**
+   * Below this width the layout collapses to a single bottom-anchored column:
+   * the sheet centres, and the legends move inside it.
+   *
+   * Read it through {@link useIsWideLayout} rather than measuring by hand.
+   */
+  wideBreakpoint: 900,
+} as const;
+
 /** Odds and ends that don't belong to a scale. */
 export const misc = {
   /** Matches the Flutter `ImageFilter.blur(sigmaX: 15, sigmaY: 15)` surfaces. */
@@ -201,15 +252,13 @@ export const misc = {
   legendBlurIntensity: 12,
 } as const;
 
-/** Below this width the layout collapses to a single bottom-anchored column. */
-export const WIDE_LAYOUT_BREAKPOINT = 900;
-
 export const theme = {
   spacing,
   radii,
   durations,
   colors,
   text,
+  layout,
   misc,
 } as const;
 
