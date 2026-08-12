@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 
-import { ModalScrollView } from '@/core/components/draggable-modal';
 import { DottedTimeline } from '@/core/components/dotted-timeline';
+import { ModalScrollView } from '@/core/components/draggable-modal';
 import { Gap } from '@/core/components/gap';
 import { ListIcon } from '@/core/components/list-icon';
 import { ListItem } from '@/core/components/list-item';
@@ -9,6 +9,10 @@ import { colorForDuration } from '@/core/helpers/color-helper';
 import { formatDuration } from '@/core/helpers/duration-helper';
 import { useTheme } from '@/core/theme/use-theme';
 import type { Departure } from '../../../domain/models/departure';
+import type { Stop } from '../../../domain/models/station';
+
+/** How much of the ramp survives in the pin behind each stop's icon. */
+const PIN_ALPHA = 0.55;
 
 interface DepartureItineraryProps {
   readonly departure: Departure | undefined;
@@ -33,49 +37,73 @@ export function DepartureItinerary({ departure }: DepartureItineraryProps) {
         paddingBottom: theme.spacing.large,
       }}
     >
-      {departure.stops.map((stop, index) => {
-        const next = departure.stops[index + 1];
+      {departure.stops.map((stop, index) => (
+        // A circular route calls at the same stop twice, so the id alone is
+        // not a key.
+        <View key={`${stop.id}-${index}`}>
+          <ItineraryStop stop={stop} />
 
-        return (
-          <View key={`${stop.id}-${index}`}>
-            <ListItem
-              title={stop.name}
-              subtitle={formatDuration(stop.durationMinutes)}
-              icon={
-                <ListIcon
-                  icon="mapPin"
-                  color={colorForDuration(
-                    theme.colors.timelineGradient,
-                    stop.durationMinutes,
-                    0.55
-                  )}
-                />
-              }
-            />
-
-            {next !== undefined && (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {/* Aligns the dashes with the centre of the icon above. */}
-                <View
-                  style={{
-                    width: theme.spacing.xMedium - theme.spacing.tiny,
-                  }}
-                />
-
-                <DottedTimeline />
-
-                <Gap size="medium" />
-
-                <Text style={[theme.text.body, { color: theme.colors.hint }]}>
-                  {`+ ${formatDuration(
-                    next.durationMinutes - stop.durationMinutes
-                  )}`}
-                </Text>
-              </View>
-            )}
-          </View>
-        );
-      })}
+          <ItineraryLeg from={stop} to={departure.stops[index + 1]} />
+        </View>
+      ))}
     </ModalScrollView>
+  );
+}
+
+interface ItineraryStopProps {
+  readonly stop: Stop;
+}
+
+/** One stop, named and timed from the origin. */
+function ItineraryStop({ stop }: ItineraryStopProps) {
+  const theme = useTheme();
+
+  return (
+    <ListItem
+      title={stop.name}
+      subtitle={formatDuration(stop.durationMinutes)}
+      icon={
+        <ListIcon
+          icon="mapPin"
+          color={colorForDuration(
+            theme.colors.timelineGradient,
+            stop.durationMinutes,
+            PIN_ALPHA
+          )}
+        />
+      }
+    />
+  );
+}
+
+interface ItineraryLegProps {
+  readonly from: Stop;
+  /** Absent at the end of the trip, where there is no leg to draw. */
+  readonly to: Stop | undefined;
+}
+
+/** The dashed run between two stops, labelled with the hop's own duration. */
+function ItineraryLeg({ from, to }: ItineraryLegProps) {
+  const theme = useTheme();
+
+  if (to === undefined) return null;
+
+  return (
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      {/*
+        Aligns the dashes with the centre of the icon above: the pin is a 24pt
+        glyph inside `spacing.medium` of padding, so its centre sits 26pt in,
+        and the rule is 6pt wide.
+      */}
+      <View style={{ width: theme.spacing.xMedium - theme.spacing.tiny }} />
+
+      <DottedTimeline />
+
+      <Gap size="medium" />
+
+      <Text style={[theme.text.body, { color: theme.colors.hint }]}>
+        {`+ ${formatDuration(to.durationMinutes - from.durationMinutes)}`}
+      </Text>
+    </View>
   );
 }
