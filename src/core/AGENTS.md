@@ -11,25 +11,9 @@ Everything shared across features. Extends the root `AGENTS.md`.
 - Failures carry translation keys, never copy.
 - No module-level singletons. Stores are factories; `container.tsx` owns the graph.
 
-## Layout
-
-```
-components/       cross-feature UI
-failures/         failure constants + category unions
-helpers/          pure functions
-http/             client, User-Agent, HttpError → Failure
-i18n/             dictionary + t()
-notifications/    the one global notification store
-theme/            tokens + accessors
-container.tsx     the whole dependency graph + ContainerProvider
-```
-
 ## Theme
 
-Scales are separate named exports in `theme/theme.ts`: `spacing`, `radii`, `durations`,
-`colors`, `text`, `layout`, `misc` (aggregated into `theme`), plus `timelineGradient`,
-`secondaryGradient` and `FONT_FAMILY` beside them. Read the values there — do not restate them
-in a doc.
+Tokens live in `theme/theme.ts`. Read the values there.
 
 - Read tokens through `useTheme()`. Import a scale directly only where there is no hook context
   (`gap.tsx`).
@@ -93,12 +77,7 @@ module scope.
 
 ## Components
 
-Check this roster before writing a new component:
-
-`dot` · `dotted-timeline` · `fade-pressable` · `gap` · `gradient-border` · `icon` · `link-text` ·
-`list-icon` · `list-item` · `sliding-panes` · `small-icon-button` · `translucent-surface` ·
-`pointer-events` · `dialog/` · `draggable-modal/` · `in-app-notification/`
-
+- Read `components/` before writing a new one; most of what a screen needs is already there.
 - Prefer `<Gap size="small" />` over an ad-hoc margin.
 - Take pass-through pointer events from `components/pointer-events.ts`. `'none'` is not a
   substitute for `'box-none'`.

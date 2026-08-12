@@ -9,8 +9,7 @@ the reachable stops on a map coloured by travel time. One Expo codebase, three t
 Android, and the web app at https://station-reach.eu. Data comes from the Transitous (MOTIS)
 public REST API — no key, no backend of our own.
 
-The repo is mid-rewrite: Flutter → React Native, in place. The Flutter source is read-only at
-`../station_reach_flutter_reference`.
+The repo is mid-rewrite: Flutter → React Native, in place.
 
 ## Hard Rules
 
@@ -19,6 +18,7 @@ The repo is mid-rewrite: Flutter → React Native, in place. The Flutter source 
   - `src/features/map/AGENTS.md` — the map feature and the Transitous API.
 - Check `git status` before editing. Do not revert user changes or unrelated local edits.
 - Keep changes scoped to the task.
+- Attributions and other legal documents and requirements stay visible and reachable.
 - Reuse before adding: a theme token, a `core/components` component, a `core/helpers` function.
   Check that one exists before writing another.
 - Never hardcode a spacing, radius, colour, duration or layout width — read a token.
@@ -156,10 +156,8 @@ npm run lint
 
 - Clean type and lint output is the floor, not the proof. Exercise the affected screen on web
   **and** a native target; the platforms fail differently and neither substitutes for the other.
-- Android has never been run. Do not claim an Android result you have not seen.
-- There is no test suite and that is deliberate — one screen over one read-only API. Do not add
-  one without being asked.
-- If you could not run a check, say which one and why.
+- There is no test suite and that is deliberate. Do not add one without being asked.
+- If you could not run a check, say which one and why. Never claim a result you have not seen.
 
 ## Git
 
@@ -173,17 +171,9 @@ npm run lint
 
 ## Security and privacy
 
-- Transitous is unauthenticated: there is no key to leak and no proxy to build.
-- Never commit keystores, `.eas/` credentials or an App Store Connect key. `ios/` and `android/`
-  are prebuild output and stay gitignored.
+- Never commit a keystore, an EAS credential or an App Store Connect key.
 - The app collects nothing. Do not log or transmit a search query or a coordinate.
-- Only OpenStreetMap, CARTO and Transitous hosts are contacted. Adding a network destination is a
-  privacy-policy change, not an implementation detail.
-
-## Do not change
-
-- Attributions and other legal documents and requirements stay visible and reachable.
-- The bundle identifiers and the App Store id. The live listings depend on them.
+- Adding a network destination is a privacy-policy change, not an implementation detail.
 
 ## Agent orchestration
 
@@ -198,6 +188,8 @@ npm run lint
 
 - Read the section you are changing, and any scoped file that extends it, first.
 - Replace stale guidance. Never append a second rule for the same concern.
+- Do not restate what the code or a config already records — no file inventories, no token
+  values, no identifiers, no project trivia. An agent can read `ls` and `app.json`. Rules only.
 - Keep rules short, imperative and checkable in review.
 - Prefer a general rule to one written for a single incident.
 - A rule belongs here only if it survives the next refactor. Reasoning about one workaround

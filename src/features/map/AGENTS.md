@@ -45,33 +45,19 @@ module-level `create()`. Per-instance bookkeeping (abort controllers, request id
 factory closure, not in state. State is a discriminated union on `status`, named `<Name>State`.
 Hooks in `use-map-stores.ts` bridge through `useContainer()`.
 
-| Store | Owns |
-| --- | --- |
-| `stationSearch` | query results — `initial \| loading \| loaded \| failure` |
-| `stationDepartures` | the fetched reachability set for one station |
-| `stationSelection` | the selected stop and its departures |
-| `departureSelection` | the departure whose itinerary is open |
-
 Failures reach the user through the one global in-app notification store, subscribed once at the
 root. Screens do not render their own error banners.
 
 ## Transitous API
 
-Base `https://api.transitous.org`. Every request carries
-`User-Agent: station_reach/<version> (mailto:anton@antons-webfabrik.eu)`.
+Requests are built in `map-remote-data-source.ts`; every one carries a `User-Agent` identifying
+the app.
 
-**Search** — `GET /api/v1/geocode?text=<query>&type=STOP`. The display area is the `areas[]`
-entry with the highest `adminLevel` ≤ 7.
+**Search** — `GET /api/v1/geocode`. A station's display area is the `areas[]` entry with the
+highest `adminLevel` ≤ 7.
 
-**Departures** — `GET /api/v6/stoptimes` with `stopId`, `n`, `fetchStops=true`,
-`realtimeMode=OFF`, `radius=200`, `mode`, `withScheduledSkippedStops=false`, `time`.
-
-Two calls per station, one per mode bucket, run concurrently:
-
-| Bucket | Modes | `n` |
-| --- | --- | --- |
-| Long distance | `COACH`, `HIGHSPEED_RAIL`, `LONG_DISTANCE`, `NIGHT_RAIL` | 1000 |
-| Regional | tram, subway, suburban, bus, regional rail, cable car, funicular, metro | 400 |
+**Departures** — `GET /api/v6/stoptimes`, two calls per station, one per mode bucket, run
+concurrently.
 
 - **Both buckets are required.** If either fails to fetch, the whole load fails. There is no
   partial result.
@@ -96,6 +82,3 @@ never branches on platform.
 - Travel-time colour comes from `colorForDuration` and is identical across markers, polylines,
   list rows and the legend.
 - A station reachable by several departures is drawn once, at its shortest duration.
-- Platform-neutral siblings: `map-config`, `map-features`, `station-candidates`, `stop-index`.
-  Native-only parts are `_stations-source`, `_routes-source`, `_station-hit-test`,
-  `_map-tap-gesture`; web-only are `_web-map-style`, `_web-station-hits`.
