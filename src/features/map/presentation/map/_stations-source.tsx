@@ -14,7 +14,7 @@ import {
   STATION_CIRCLE_RADIUS,
   STATION_HIT_RADIUS,
 } from './map-config';
-import type { StationFeatures } from './map-data';
+import type { StationFeatures } from './map-features';
 
 /** Hoisted, so a fresh object never defeats the memo below. */
 const HITBOX = {

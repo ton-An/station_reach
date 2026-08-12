@@ -1,5 +1,4 @@
 import maplibregl, {
-  type GeoJSONSource,
   type Map as MapLibreMap,
   type MapMouseEvent,
 } from 'maplibre-gl';
@@ -8,26 +7,15 @@ import { memo, useEffect, useRef } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 import { useTheme } from '@/core/theme/use-theme';
+import { addStationLayers, syncSources } from './_web-map-style';
+import { stationsAt, trackStationCursor } from './_web-station-hits';
 import {
   BASEMAP_STYLE_URL,
   INITIAL_CENTER,
   INITIAL_ZOOM,
-  LABEL_FONTS,
-  LAYER_IDS,
-  LINE_OFFSET_EXPRESSION,
   MIN_ZOOM,
-  ROUTE_LINE_WIDTH,
-  SOURCE_IDS,
-  STATION_CIRCLE_RADIUS,
-  STATION_HIT_RADIUS,
 } from './map-config';
-import {
-  EMPTY_ROUTES,
-  EMPTY_STATIONS,
-  nearestStopId,
-  type StationCandidate,
-  type StationFeatureProperties,
-} from './map-data';
+import { nearestStopId } from './station-candidates';
 import type { MapViewProps } from './map-view.types';
 
 /**
@@ -89,7 +77,11 @@ export const MapView = memo(function MapView({
     const registerLayers = () => {
       if (isStyleLoaded.current) return;
 
-      addLayers(instance, theme.text.caption1.fontSize, theme.colors);
+      addStationLayers(instance, {
+        size: theme.text.caption1.fontSize,
+        color: theme.colors.text,
+        haloColor: theme.colors.background,
+      });
       isStyleLoaded.current = true;
       syncSources(instance, stations, routes);
     };
@@ -122,39 +114,7 @@ export const MapView = memo(function MapView({
       handlers.current.onStationPress(stopId);
     });
 
-    /*
-      Cursor feedback runs off the same box as the click, not off `mouseenter` /
-      `mouseleave` on the circle layer. Those hit-test the drawn 6.3px dot, so
-      the pointer flickered on and off as the cursor crossed its edge — and it
-      lied besides, staying default over most of the area a click would hit.
-
-      Dropping back to `grab` is then held for a moment, because the boxes of
-      two neighbouring stations stop just short of touching: at a typical zoom
-      they leave a gap only a few pixels wide, and sweeping along a line of
-      stations blinked the cursor once per gap. Crossing one takes far less than
-      the hold, so the gaps vanish while leaving the stations still reads
-      immediately.
-    */
-    let cursorHold: ReturnType<typeof setTimeout> | undefined;
-
-    instance.on('mousemove', (event: MapMouseEvent) => {
-      const canvas = instance.getCanvas();
-
-      if (stationsAt(instance, event.point).length > 0) {
-        clearTimeout(cursorHold);
-        cursorHold = undefined;
-
-        if (canvas.style.cursor !== 'pointer') canvas.style.cursor = 'pointer';
-        return;
-      }
-
-      if (canvas.style.cursor !== 'pointer' || cursorHold !== undefined) return;
-
-      cursorHold = setTimeout(() => {
-        cursorHold = undefined;
-        canvas.style.cursor = '';
-      }, theme.durations.xxTiny);
-    });
+    const untrackCursor = trackStationCursor(instance, theme.durations.xxTiny);
 
     // The map is constructed before React Native Web has laid the container
     // out, so without this the canvas keeps MapLibre's 400x300 default and
@@ -164,7 +124,7 @@ export const MapView = memo(function MapView({
 
     return () => {
       observer.disconnect();
-      clearTimeout(cursorHold);
+      untrackCursor();
       isStyleLoaded.current = false;
       map.current = null;
       instance.remove();
@@ -190,112 +150,3 @@ export const MapView = memo(function MapView({
 
   return <div ref={container} style={{ position: 'absolute', inset: 0 }} />;
 });
-
-/**
- * The stations within reach of a point on screen.
- *
- * A box rather than the point itself: the drawn dot is far smaller than the
- * area that should answer to a click, and hit-testing the dot is what made both
- * clicking and the cursor feel unreliable.
- */
-function stationsAt(
-  instance: MapLibreMap,
-  point: { x: number; y: number }
-): StationCandidate[] {
-  const { x, y } = point;
-
-  const hit = instance.queryRenderedFeatures(
-    [
-      [x - STATION_HIT_RADIUS, y - STATION_HIT_RADIUS],
-      [x + STATION_HIT_RADIUS, y + STATION_HIT_RADIUS],
-    ],
-    { layers: [LAYER_IDS.stationCircles] }
-  );
-
-  const candidates: StationCandidate[] = [];
-
-  for (const feature of hit) {
-    if (feature.geometry.type !== 'Point') continue;
-
-    const properties = feature.properties as StationFeatureProperties;
-    const [longitude, latitude] = feature.geometry.coordinates;
-
-    if (longitude === undefined || latitude === undefined) continue;
-    candidates.push({ stopId: properties.stopId, longitude, latitude });
-  }
-
-  return candidates;
-}
-
-/** Registers the sources and layers. Runs once, on style load. */
-function addLayers(
-  instance: MapLibreMap,
-  labelSize: number,
-  colors: { text: string; background: string }
-): void {
-  instance.addSource(SOURCE_IDS.routes, {
-    type: 'geojson',
-    data: EMPTY_ROUTES,
-  });
-  instance.addSource(SOURCE_IDS.stations, {
-    type: 'geojson',
-    data: EMPTY_STATIONS,
-  });
-
-  // Routes beneath stations, so markers stay clickable.
-  instance.addLayer({
-    id: LAYER_IDS.routeLines,
-    type: 'line',
-    source: SOURCE_IDS.routes,
-    layout: { 'line-cap': 'round', 'line-join': 'round' },
-    paint: {
-      'line-color': ['get', 'color'],
-      'line-width': ROUTE_LINE_WIDTH,
-      'line-offset': LINE_OFFSET_EXPRESSION,
-    },
-  });
-
-  instance.addLayer({
-    id: LAYER_IDS.stationCircles,
-    type: 'circle',
-    source: SOURCE_IDS.stations,
-    // No invisible stroke widening the click target any more — the click
-    // handler queries a box around the cursor instead, so the drawn circle can
-    // be exactly the circle we mean to draw.
-    paint: {
-      'circle-radius': STATION_CIRCLE_RADIUS,
-      'circle-color': ['get', 'color'],
-    },
-  });
-
-  instance.addLayer({
-    id: LAYER_IDS.stationLabels,
-    type: 'symbol',
-    source: SOURCE_IDS.stations,
-    layout: {
-      'text-field': ['get', 'name'],
-      'text-font': LABEL_FONTS,
-      'text-size': labelSize,
-      'text-anchor': 'top',
-      'text-offset': [0, 0.6],
-      // MapLibre drops colliding labels itself — no clustering pass needed.
-      'text-allow-overlap': false,
-      'text-optional': true,
-    },
-    paint: {
-      'text-color': colors.text,
-      'text-halo-color': colors.background,
-      'text-halo-width': 1.5,
-    },
-  });
-}
-
-/** Pushes the current feature collections into the map's sources. */
-function syncSources(
-  instance: MapLibreMap,
-  stations: MapViewProps['stations'],
-  routes: MapViewProps['routes']
-): void {
-  instance.getSource<GeoJSONSource>(SOURCE_IDS.stations)?.setData(stations);
-  instance.getSource<GeoJSONSource>(SOURCE_IDS.routes)?.setData(routes);
-}

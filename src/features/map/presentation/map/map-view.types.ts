@@ -1,4 +1,4 @@
-import type { RouteFeatures, StationFeatures } from './map-data';
+import type { RouteFeatures, StationFeatures } from './map-features';
 
 /** Where the camera should sit. A new object identity re-issues the move. */
 export interface MapFocus {

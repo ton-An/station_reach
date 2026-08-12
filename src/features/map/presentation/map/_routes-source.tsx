@@ -7,7 +7,7 @@ import {
   ROUTE_LINE_WIDTH,
   SOURCE_IDS,
 } from './map-config';
-import type { RouteFeatures } from './map-data';
+import type { RouteFeatures } from './map-features';
 
 interface RoutesSourceProps {
   readonly routes: RouteFeatures;
