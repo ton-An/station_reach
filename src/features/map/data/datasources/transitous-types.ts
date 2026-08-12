@@ -50,7 +50,3 @@ export interface StopTimesResponse {
   readonly stopTimes?: readonly StopTime[];
   readonly nextPageCursor?: string;
 }
-
-export interface TransitousErrorBody {
-  readonly error?: string;
-}
