@@ -3,6 +3,7 @@ import { err, ok, ResultAsync, type Result } from 'neverthrow';
 import { noDeparturesFoundFailure, type Failure } from '@/core/failures';
 import type { Departure } from '../models/departure';
 import type { Station, Stop } from '../models/station';
+import type { StationReachability } from '../models/station-reachability';
 import { TransitMode } from '../models/transit-mode';
 import type { MapRepository } from '../repositories/map-repository';
 
@@ -40,24 +41,29 @@ const REGIONAL_AMOUNT = 400;
 
 export type GetStationDepartures = (
   station: Station
-) => ResultAsync<Departure[], Failure>;
+) => ResultAsync<StationReachability, Failure>;
 
 /**
  * Gets everywhere a station can take you.
  *
  * Long-distance and regional departures are fetched as two independent requests
- * and merged. If only one bucket comes back empty the other is still used —
- * plenty of stations serve exactly one kind of service.
+ * and merged. Both buckets are treated the same way: whichever came back is
+ * used, and a bucket that failed for a real reason is reported alongside the
+ * results as {@link StationReachability.partialFailure} rather than being
+ * dropped or taking the whole map down with it. Only a bucket with genuinely
+ * nothing to offer passes silently — plenty of stations serve exactly one kind
+ * of service.
  *
  * Parameters:
  * - station: the origin station
  *
  * Returns:
- * - the deduplicated departures, sorted by name and then travel time
+ * - the deduplicated departures, sorted by name and then travel time, plus the
+ *   failure of whichever bucket did not make it
  *
  * Failures:
- * - noDeparturesFoundFailure
- * - any networking failure
+ * - noDeparturesFoundFailure, when neither bucket had anything
+ * - any networking failure, when neither bucket came back
  */
 export function createGetStationDepartures(
   mapRepository: MapRepository
@@ -85,31 +91,74 @@ export function createGetStationDepartures(
 /**
  * Combines the two mode buckets.
  *
- * Deliberately asymmetric, matching the Flutter original. Long distance is
- * fetched first and is the bucket that decides: anything it reports other than
- * `noDeparturesFound` propagates, because a timeout there means the map would
- * quietly be missing every long-distance service. Regional is then best-effort —
- * whatever it returns is merged in, and any failure from it is dropped, since
- * long distance alone already makes a useful map.
+ * The Flutter original was asymmetric here, and the asymmetry was a bug rather
+ * than a decision: a long-distance failure took the whole map down even when
+ * regional had answered, while a regional failure was swallowed outright — so a
+ * flaky connection could draw a confident, complete-looking map that was
+ * quietly missing every tram, bus and S-Bahn, with nothing said about it.
+ *
+ * Both buckets are now best-effort and neither failure is silent. Whatever came
+ * back is drawn; a bucket that failed for a real reason rides along as
+ * `partialFailure` for the presentation layer to surface. Only when *neither*
+ * bucket came back is there nothing to show and a failure to return.
  */
 function mergeDepartures(
   longDistance: Result<Departure[], Failure>,
   regional: Result<Departure[], Failure>
-): Result<Departure[], Failure> {
-  if (longDistance.isErr()) {
-    if (longDistance.error.code !== noDeparturesFoundFailure.code) {
-      return err(longDistance.error);
-    }
-
-    // Long distance had nothing — regional alone still makes a useful map.
-    return regional.map(collapse);
+): Result<StationReachability, Failure> {
+  if (longDistance.isErr() && regional.isErr()) {
+    return err(moreInformative(longDistance.error, regional.error));
   }
 
-  if (regional.isErr()) {
-    return ok(collapse(longDistance.value));
-  }
+  // Long distance first: dedupe keeps the first occurrence, so a trip published
+  // under both a long-distance and a regional name keeps its long-distance one.
+  const departures = collapse([
+    ...(longDistance.isOk() ? longDistance.value : []),
+    ...(regional.isOk() ? regional.value : []),
+  ]);
 
-  return ok(collapse([...longDistance.value, ...regional.value]));
+  const partialFailure = reportableFailure(longDistance, regional);
+
+  return ok({
+    departures,
+    ...(partialFailure === undefined ? {} : { partialFailure }),
+  });
+}
+
+/**
+ * The failure of whichever bucket did not make it, if it is worth mentioning.
+ *
+ * A bucket that simply had nothing to offer is not worth a notification: a
+ * tram stop has no long-distance services and that is not a problem to report.
+ * Anything else is — it means the map in front of the user is incomplete.
+ */
+function reportableFailure(
+  longDistance: Result<Departure[], Failure>,
+  regional: Result<Departure[], Failure>
+): Failure | undefined {
+  const failure = longDistance.isErr()
+    ? longDistance.error
+    : regional.isErr()
+      ? regional.error
+      : undefined;
+
+  if (failure === undefined) return undefined;
+
+  return failure.code === noDeparturesFoundFailure.code ? undefined : failure;
+}
+
+/**
+ * Picks which failure to report when both buckets failed.
+ *
+ * "Nothing here" says less than "the request timed out", so a real failure
+ * wins — otherwise a station that genuinely has no long-distance service would
+ * report that rather than the connection problem that lost the regional half.
+ */
+function moreInformative(longDistance: Failure, regional: Failure): Failure {
+  if (longDistance.code !== noDeparturesFoundFailure.code) return longDistance;
+  if (regional.code !== noDeparturesFoundFailure.code) return regional;
+
+  return longDistance;
 }
 
 /**

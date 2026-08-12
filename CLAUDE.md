@@ -194,7 +194,11 @@ Two calls per station, one per mode bucket, and they are independent — run the
 
 Union the results, drop departures whose stop lists are deeply equal to one already kept, then sort by name and, within a name, by final-stop duration. Dedupe **before** sorting: dedupe keeps the first occurrence and long distance is concatenated first, so a trip published under both names keeps its long-distance one.
 
-Merging the two buckets is deliberately **asymmetric**, matching the Flutter original. Long distance decides: anything it reports other than `noDeparturesFound` propagates, because a timeout there would silently drop every long-distance service from the map. Regional is then best-effort — its results are merged in and its failures are dropped, since long distance alone still makes a useful map.
+**Both buckets are best-effort, and neither failure is silent.** Whatever came back is drawn; a bucket that failed for a real reason travels back beside the results as `StationReachability.partialFailure`, and the screen surfaces it as a notification over the working map. Only when *neither* bucket came back is there a failure to return — and then the more informative of the two wins, so "the request timed out" beats "this bucket had nothing".
+
+A bucket that returned `noDeparturesFound` is never reported: a tram stop has no long-distance services, and that is not a problem worth a notification.
+
+The Flutter original was asymmetric here and it was a bug, not a decision — a long-distance failure took the whole map down even when regional had answered, while a regional failure was swallowed outright. A flaky connection could therefore draw a confident, complete-looking map missing every tram, bus and S-Bahn, with nothing said about it. Don't port that shape back.
 
 One request per bucket, no paging: `n` is large enough to cover a whole departure board in a single page. A missing or empty `nextPageCursor` is how upstream says it has nothing for this station → `noDeparturesFound`.
 
