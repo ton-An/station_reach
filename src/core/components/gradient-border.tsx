@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
@@ -30,6 +30,9 @@ export function GradientBorder({
   const theme = useTheme();
   const [size, setSize] = useState({ width: 0, height: 0 });
 
+  // A colon is invalid in an SVG id, and `useId` has shipped ids carrying one.
+  const gradientId = useId().replace(/:/g, '');
+
   return (
     <View
       onLayout={(event) => setSize(event.nativeEvent.layout)}
@@ -48,7 +51,7 @@ export function GradientBorder({
           pointerEvents="none"
         >
           <Defs>
-            <LinearGradient id="gradientBorder" x1="0" y1="0" x2="1" y2="0">
+            <LinearGradient id={gradientId} x1="0" y1="0" x2="1" y2="0">
               {colors.map((color, index) => (
                 <Stop
                   key={index}
@@ -68,7 +71,7 @@ export function GradientBorder({
             rx={radius}
             ry={radius}
             fill="none"
-            stroke="url(#gradientBorder)"
+            stroke={`url(#${gradientId})`}
             strokeWidth={width}
           />
         </Svg>
