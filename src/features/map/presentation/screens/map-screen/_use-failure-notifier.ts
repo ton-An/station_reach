@@ -22,14 +22,17 @@ export function useFailureNotifier(): void {
   const searchState = useStationSearchStore((store) => store.state);
   const sendFailure = useInAppNotificationStore((store) => store.sendFailure);
 
-  const failure =
+  // The state object, not the failure inside it: failures are module-level
+  // constants, so a repeat of the same one is the same reference and would
+  // never re-fire the effect. Both stores build a new state on every `set`.
+  const failureState =
     departuresState.status === 'failure'
-      ? departuresState.failure
+      ? departuresState
       : searchState.status === 'failure'
-        ? searchState.failure
+        ? searchState
         : undefined;
 
   useEffect(() => {
-    if (failure !== undefined) sendFailure(failure);
-  }, [failure, sendFailure]);
+    if (failureState !== undefined) sendFailure(failureState.failure);
+  }, [failureState, sendFailure]);
 }
