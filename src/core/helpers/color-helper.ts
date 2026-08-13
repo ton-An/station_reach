@@ -52,12 +52,10 @@ function stopAt(colors: readonly string[], index: number): string {
  *
  * Stops are treated as evenly spaced, matching the Flutter `ColorHelper`.
  *
- * Parameters:
- * - colors: the gradient stops, at least one
- * - position: where to sample, clamped to 0..1
- *
- * Returns:
- * - the interpolated colour as an `rgba()` string
+ * @param colors - The gradient stops, at least one.
+ * @param position - Where to sample, clamped to 0..1.
+ * @returns The interpolated colour as an `rgba()` string.
+ * @throws If `colors` is empty.
  */
 export function interpolateColors(
   colors: readonly string[],
@@ -115,13 +113,7 @@ interface FlattenOntoParams {
  * opacity of an element whose only content is a background straight back into
  * that background.
  *
- * Parameters:
- * - color: the colour to flatten; its own alpha is ignored
- * - backdrop: the opaque colour behind it
- * - alpha: how much of `color` survives, 0..1
- *
- * Returns:
- * - the flattened, fully opaque colour
+ * @returns The flattened, fully opaque colour.
  */
 export function flattenOnto({
   color,
@@ -158,11 +150,7 @@ const GRADIENT_BUCKETS = 36;
  * This is the one definition of that mapping. Markers, polylines, list rows and
  * the legend all go through it so a duration always yields the same colour.
  *
- * Parameters:
- * - durationMinutes: travel time in minutes
- *
- * Returns:
- * - a position in 0..1, saturating at 18 hours
+ * @returns A position in 0..1, saturating at 18 hours.
  */
 function durationToGradientPosition(durationMinutes: number): number {
   const bucket = Math.min(

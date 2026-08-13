@@ -5,11 +5,7 @@ import { mapHttpError } from '@/core/http/failure-mapper';
 import type { MapRepository } from '../../domain/repositories/map-repository';
 import type { MapRemoteDataSource } from '../datasources/map-remote-data-source';
 
-/**
- * Wraps the remote data source, turning everything it throws into a value.
- *
- * Nothing above this layer sees an exception.
- */
+/** Wraps the remote data source, turning everything it throws into a value. */
 export function createMapRepository(
   dataSource: MapRemoteDataSource
 ): MapRepository {

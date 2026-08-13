@@ -46,8 +46,8 @@ export interface ModalBodyGestures {
  * The scroll view is held back until that decision is made, so a scroll never
  * starts underneath a drag that is about to take it over.
  *
- * Returns:
- * - the two gestures to nest around the scrollable, and its scroll handler
+ * @returns The two gestures to nest around the scrollable, and its scroll
+ * handler.
  */
 export function useModalBodyGestures(): ModalBodyGestures {
   const drag = useSheetDrag();

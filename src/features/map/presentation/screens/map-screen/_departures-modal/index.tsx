@@ -6,6 +6,7 @@ import { SlidingPanes } from '@/core/components/sliding-panes';
 import { t } from '@/core/i18n/translate';
 import { useIsWideLayout } from '@/core/theme/use-is-wide-layout';
 import { useTheme } from '@/core/theme/use-theme';
+import { MapLegends } from '../../../components/map-legends';
 import type { DepartureSelectionState } from '../../../stores/departure-selection-store';
 import type { StationSelectionState } from '../../../stores/station-selection-store';
 import {
@@ -14,7 +15,6 @@ import {
 } from '../../../stores/use-map-stores';
 import { DepartureItinerary } from './_departure-itinerary';
 import { DeparturesList } from './_departures-list';
-import { MapLegends } from '../../../components/map-legends';
 
 /**
  * The departures sheet, and the itinerary behind it.
@@ -36,7 +36,6 @@ export function DeparturesModal(): React.JSX.Element {
 
   return (
     <View
-      // Only the sheet takes input; the gutter beside it belongs to the map.
       style={[
         pointerEvents.passThrough,
         {

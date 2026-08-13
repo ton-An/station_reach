@@ -25,9 +25,9 @@ interface NotificationCardProps {
  * One notification, animating in on mount.
  *
  * It hangs from the top right, dropping in from just above its resting place,
- * because the bottom of the screen already belongs to the departures sheet. On
- * a narrow screen it spans the width instead, since there is no room to sit
- * beside anything.
+ * because the bottom of the screen already belongs to other chrome. On a narrow
+ * screen it spans the width instead, since there is no room to sit beside
+ * anything.
  */
 export function NotificationCard({
   notification,
@@ -60,9 +60,6 @@ export function NotificationCard({
     });
   }, [entry, theme.durations.xxShort]);
 
-  // The bar spans the screen but only the card is chrome — the rest of it
-  // stays transparent to input, or it would swallow map clicks across the full
-  // width for as long as the notification shows.
   return (
     <View
       style={[
@@ -81,13 +78,16 @@ export function NotificationCard({
         style={{
           maxWidth: theme.layout.overlayMaxWidth,
           width: '100%',
-          // See `hasEntered` — leaving these on would cost the card its blur.
+          // See `hasEntered`.
           ...(hasEntered
             ? {}
             : {
                 opacity: entry,
                 transform: [
                   {
+                    // Kept below the top offset so the card never starts
+                    // clipped by the screen edge; on web the safe-area inset
+                    // is zero.
                     translateY: entry.interpolate({
                       inputRange: [0, 1],
                       outputRange: [-theme.spacing.xxSmall, 0],
@@ -115,8 +115,6 @@ export function NotificationCard({
 
               <Gap size="medium" />
 
-              {/* Takes the remaining width so a long name ellipsises rather
-                  than pushing the icon out of the card. */}
               <View style={{ flex: 1 }}>
                 <Text
                   numberOfLines={1}

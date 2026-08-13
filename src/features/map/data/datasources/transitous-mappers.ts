@@ -3,27 +3,15 @@ import type { Station, Stop } from '../../domain/models/station';
 import { transitModeFromWire } from './transitous-modes';
 import type { GeocodeStation, NextStop, StopTime } from './transitous-types';
 
-/**
- * Turns Transitous wire shapes into domain models.
- *
- * The only place the two vocabularies meet: above the data layer nothing knows
- * that `nextStops` or `scheduledArrival` exist, and below it nothing knows what
- * a {@link Departure} is.
- */
-
 const MINUTE_MS = 60_000;
 
-/** The highest administrative level considered when naming a station's area. */
 const MAX_ADMIN_LEVEL = 7;
 
 /**
  * Converts a geocode result into a {@link Station}.
  *
- * Parameters:
- * - raw: one geocode hit
- *
- * Returns:
- * - the station it describes
+ * @param raw - One geocode hit.
+ * @returns The station it describes.
  */
 export function toStation(raw: GeocodeStation): Station {
   const area = pickAreaName(raw);
@@ -45,12 +33,9 @@ export function toStation(raw: GeocodeStation): Station {
  * The origin station is prepended as the first stop at duration zero, so an
  * itinerary always starts where the user is standing.
  *
- * Parameters:
- * - origin: the station the departure leaves from
- * - raw: the stop time to convert
- *
- * Returns:
- * - the departure, with every stop that carries a time
+ * @param origin - The station the departure leaves from.
+ * @param raw - The stop time to convert.
+ * @returns The departure, with every stop that carries a time.
  */
 export function toDeparture(origin: Station, raw: StopTime): Departure {
   const departureTimeMs = new Date(
@@ -99,10 +84,10 @@ function pickAreaName(raw: GeocodeStation): string | undefined {
 }
 
 /**
- * Converts a downstream stop, or returns undefined when it has no time.
+ * Converts a next stop, or returns undefined when it has no time.
  *
- * Stops without a scheduled arrival *or* departure carry no travel time, so
- * they cannot be placed on the ramp and are dropped.
+ * Stops without a scheduled arrival *or* departure carry no travel time and are
+ * dropped.
  */
 function toStop(raw: NextStop, departureTimeMs: number): Stop | undefined {
   const arrivalString = raw.scheduledArrival ?? raw.scheduledDeparture;

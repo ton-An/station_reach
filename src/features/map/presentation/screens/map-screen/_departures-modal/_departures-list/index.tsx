@@ -12,7 +12,6 @@ import {
 import { DepartureRow } from './_departure-row';
 import { NoStopSelected } from './_no-stop-selected';
 
-/** Hoisted, so the unselected case doesn't hand the list a fresh array. */
 const NO_DEPARTURES: readonly Departure[] = [];
 
 /**
@@ -30,8 +29,6 @@ export function DeparturesList(): React.JSX.Element {
   const departures = isSelected ? state.departures : NO_DEPARTURES;
   const selectedStopId = isSelected ? state.selectedStop.id : '';
 
-  // Stable, so the memoised rows survive a re-render of the sheet around them.
-  // Each one draws two SVG glyphs, and a well-served stop has hundreds.
   const renderDeparture = useCallback<ListRenderItem<Departure>>(
     ({ item: departure, index }) => (
       <DepartureRow

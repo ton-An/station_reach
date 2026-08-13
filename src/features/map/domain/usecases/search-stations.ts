@@ -12,15 +12,7 @@ export type SearchStations = (
 /**
  * Searches for stations by name.
  *
- * Parameters:
- * - query: the free-text search string
- * - signal: optional abort signal, so a superseded search can be cancelled
- *
- * Returns:
- * - the matching stations
- *
- * Failures:
- * - any networking failure
+ * @returns The matching stations, or a {@link NetworkingFailure}.
  */
 export function createSearchStations(
   mapRepository: MapRepository

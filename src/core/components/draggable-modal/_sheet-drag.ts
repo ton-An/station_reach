@@ -37,8 +37,8 @@ export const SheetDragProvider = SheetDragContext.Provider;
 /**
  * The enclosing sheet's drag state.
  *
- * Throws outside a `DraggableModal`, which is a wiring mistake rather than a
- * runtime condition worth a `Failure`.
+ * @throws Outside a {@link DraggableModal}, which is a wiring mistake rather
+ * than a runtime condition worth a `Failure`.
  */
 export function useSheetDrag(): SheetDrag {
   const drag = useContext(SheetDragContext);

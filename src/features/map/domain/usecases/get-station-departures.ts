@@ -9,8 +9,8 @@ import type { MapRepository } from '../repositories/map-repository';
 /**
  * Long-distance services, requested in bulk.
  *
- * These trips have few stops but reach far, so a high `n` is cheap and buys a
- * much larger reachable area.
+ * These trips have few stops but reach far, so a high amount is cheap and buys
+ * a much larger reachable area.
  */
 const LONG_DISTANCE_MODES = [
   TransitMode.Coach,
@@ -55,22 +55,16 @@ export type GetStationDepartures = (
  * A bucket that simply has nothing to offer is not a failure: plenty of stations
  * serve exactly one kind of service, and the other bucket is then used alone.
  *
- * Parameters:
- * - station: the origin station
- *
- * Returns:
- * - the deduplicated departures, sorted by name and then travel time
- *
- * Failures:
- * - noDeparturesFoundFailure, when neither bucket had anything
- * - any networking failure, from whichever bucket failed to fetch
+ * @param station - The origin station.
+ * @returns The deduplicated departures, sorted by name and then travel time,
+ * {@link noDeparturesFoundFailure} when neither bucket had anything, or a
+ * {@link NetworkingFailure} from whichever bucket failed to fetch.
  */
 export function createGetStationDepartures(
   mapRepository: MapRepository
 ): GetStationDepartures {
   return (station) =>
     ResultAsync.fromSafePromise(
-      // Independent requests — run them together rather than back to back.
       Promise.all([
         mapRepository.getStationDeparturesByMode({
           station,
@@ -91,17 +85,10 @@ export function createGetStationDepartures(
 /**
  * Combines the two mode buckets.
  *
- * Either bucket failing to fetch fails the merge. `noDeparturesFound` is the
- * single exception, because it is not a failure to fetch but an answer — this
- * station has no service of that kind — and it says nothing about the other
- * bucket.
- *
- * The Flutter original was asymmetric here, and the asymmetry was a bug rather
- * than a decision: a long-distance failure took the whole map down even when
- * regional had answered, while a regional failure was swallowed outright. A
- * flaky connection could therefore draw a confident, complete-looking map that
- * was quietly missing every tram, bus and S-Bahn. Failing on either is what
- * makes the map trustworthy — it is drawn from everything, or not drawn.
+ * Either bucket failing to fetch fails the merge. The Flutter original failed
+ * the whole load on a long-distance failure but swallowed a regional one, so a
+ * flaky connection could draw a complete-looking map missing every tram, bus
+ * and S-Bahn.
  */
 function mergeDepartures(
   longDistance: Result<Departure[], Failure>,
@@ -110,8 +97,6 @@ function mergeDepartures(
   const fetchFailure = fetchFailureOf(longDistance) ?? fetchFailureOf(regional);
   if (fetchFailure !== undefined) return err(fetchFailure);
 
-  // Past here neither bucket failed to fetch, so each one either has departures
-  // or reported that it has none.
   if (longDistance.isErr() && regional.isErr()) {
     return err(noDeparturesFoundFailure);
   }
@@ -145,10 +130,8 @@ function fetchFailureOf(
 /**
  * Deduplicate, then sort — in that order.
  *
- * Dedupe keeps the first occurrence, and long-distance departures are
- * concatenated first, so a trip published under both a long-distance and a
- * regional name keeps its long-distance name. Sorting first would silently
- * hand that choice to alphabetical order instead.
+ * Sorting first would hand the choice of which duplicate survives to
+ * alphabetical order.
  */
 function collapse(departures: readonly Departure[]): Departure[] {
   return sortDepartures(dedupeDepartures(departures));
@@ -213,7 +196,6 @@ function sortDepartures(departures: readonly Departure[]): Departure[] {
   });
 }
 
-/** The travel time to the last stop, i.e. how far this trip reaches. */
 function finalDuration(departure: Departure): number {
   return departure.stops.at(-1)?.durationMinutes ?? 0;
 }

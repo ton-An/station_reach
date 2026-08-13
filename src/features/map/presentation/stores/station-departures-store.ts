@@ -29,8 +29,8 @@ export interface StationDeparturesStore {
 /**
  * Builds the station departures store.
  *
- * Parameters:
- * - getStationDepartures: the use case this store drives
+ * @param getStationDepartures - The use case this store drives.
+ * @returns The store.
  */
 export function createStationDeparturesStore(
   getStationDepartures: GetStationDepartures

@@ -23,10 +23,10 @@ declare global {
 }
 
 /**
- * The MapLibre GL JS map surface. See `map-view.tsx` for the native twin.
+ * The MapLibre GL JS map surface.
  *
- * Memoised to match it: an unrelated re-render of the screen above pushes both
- * feature collections back into the map for nothing.
+ * Memoised like the native implementation: an unrelated re-render of the screen
+ * above pushes both feature collections back into the map for nothing.
  */
 export const MapView = memo(function MapView({
   stations,

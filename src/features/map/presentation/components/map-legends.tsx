@@ -9,9 +9,6 @@ import { TimeGradientLegend } from './time-gradient-legend';
  *
  * They travel together: bottom-left of the map on a wide screen, tucked above
  * the sheet on a narrow one.
- *
- * The row spans the full width, so the space between the two must fall
- * through to the map.
  */
 export function MapLegends(): React.JSX.Element {
   return (

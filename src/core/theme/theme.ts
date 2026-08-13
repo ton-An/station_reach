@@ -7,11 +7,7 @@
 
 import type { TextStyle } from 'react-native';
 
-/**
- * Spacing scale, in density-independent pixels.
- *
- * Never hardcode a margin or padding — always read a step from here.
- */
+/** Spacing scale, in density-independent pixels. */
 export const spacing = {
   tiny: 1,
   xTiny: 2,
@@ -35,7 +31,6 @@ export const radii = {
   xMedium: 18,
   large: 20,
   xLarge: 30,
-  /** Rounder than anything can be tall: turns a box into a pill or a circle. */
   full: 999,
 } as const satisfies Record<string, number>;
 
@@ -62,13 +57,8 @@ export const durations = {
  * The travel-time ramp: green (near) through yellow, orange and red, then on
  * into magenta and purple for the journeys that take most of a day.
  *
- * This is the app's single most important visual. Markers, polylines, list rows
- * and the legend all sample it through {@link interpolateColors} so that one
- * duration always maps to one colour.
- *
- * Longer than the Flutter original's seven stops: that ramp ended at red, which
- * left everything past a few hours the same colour on a map whose whole point is
- * how far you can get.
+ * Markers, polylines, list rows and the legend all sample it through
+ * `interpolateColors`.
  */
 export const timelineGradient = [
   'rgb(0, 150, 107)',
@@ -89,10 +79,7 @@ export const timelineGradient = [
  * The secondary ramp: purple through blue to cyan.
  *
  * Sampled by *position in a list* rather than by duration — the departures at a
- * stop are tinted along it by index. Deliberately not the travel-time ramp: in
- * that list every row already carries a travel time in its own colour, and
- * tinting the icon from the same gradient made an ordinal cue look like a
- * second, contradictory reading of the duration.
+ * stop are tinted along it by index.
  */
 export const secondaryGradient = [
   'rgb(156, 39, 176)',
@@ -102,6 +89,7 @@ export const secondaryGradient = [
   'rgb(0, 188, 212)',
 ] as const;
 
+/** The app's colour palette, including both gradient ramps. */
 export const colors = {
   primary: 'rgb(83, 196, 108)',
   primaryTranslucent: 'rgba(83, 196, 108, 0.235)',
@@ -131,7 +119,7 @@ export const colors = {
 } as const;
 
 /**
- * Loaded once in the root layout; nothing renders before it is available.
+ * The font family every text style names.
  *
  * This has to be the family name *inside* the TTF, and the file has to be
  * named after it too. On iOS the `expo-font` plugin embeds the file through
@@ -239,7 +227,7 @@ export const layout = {
    * Below this width the layout collapses to a single bottom-anchored column:
    * the sheet centres, and the legends move inside it.
    *
-   * Read it through {@link useIsWideLayout} rather than measuring by hand.
+   * Read it through `useIsWideLayout` rather than measuring by hand.
    */
   wideBreakpoint: 900,
 } as const satisfies Record<string, number>;
@@ -252,6 +240,7 @@ export const misc = {
   legendBlurIntensity: 12,
 } as const satisfies Record<string, number>;
 
+/** Every token scale, as read through `useTheme`. */
 export const theme = {
   spacing,
   radii,

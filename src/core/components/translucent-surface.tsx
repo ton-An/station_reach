@@ -27,11 +27,10 @@ const BLUR_TINT: BlurTint = Platform.select({
   default: 'light',
 });
 
-/** The hairline outline a `bordered` surface carries. */
 const BORDER_WIDTH = 1.8;
 const BORDER_ALPHA = 0.35;
 
-/** How much background a `bordered` surface lays over the blur. */
+/** How much background a bordered surface lays over the blur. */
 const BORDERED_FILL_ALPHA = 0.35;
 
 interface TranslucentSurfaceProps {
@@ -42,10 +41,10 @@ interface TranslucentSurfaceProps {
   /** Softer blur, for the small map legends. */
   readonly light?: boolean;
   /**
-   * The hairline outline the search card carries.
+   * Adds a hairline outline.
    *
    * Deliberately `hint` at 35%, not the darker contrast fill used elsewhere —
-   * over a busy map the card needs a visible edge, not just a tint.
+   * over a busy map a surface needs a visible edge, not just a tint.
    */
   readonly bordered?: boolean;
   /** Overrides the fill laid over the blur, for surfaces with their own tint. */

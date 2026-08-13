@@ -49,7 +49,6 @@ export function FadePressable({
       onLongPress={onLongPress}
       onPressIn={() => fadeTo(minOpacity)}
       onPressOut={() => fadeTo(1)}
-      // Reveal the same affordance to a mouse as to a finger.
       onHoverIn={() => fadeTo((1 + minOpacity) / 2)}
       onHoverOut={() => fadeTo(1)}
       accessibilityRole={onPress === undefined ? undefined : 'button'}

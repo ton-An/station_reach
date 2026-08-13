@@ -40,8 +40,8 @@ export function visibleStations(state: StationSearchState): readonly Station[] {
 /**
  * Builds the station search store.
  *
- * Parameters:
- * - searchStations: the use case this store drives
+ * @param searchStations - The use case this store drives.
+ * @returns The store.
  */
 export function createStationSearchStore(
   searchStations: SearchStations

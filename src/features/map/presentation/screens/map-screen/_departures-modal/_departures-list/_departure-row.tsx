@@ -100,7 +100,6 @@ export const DepartureRow = memo(function DepartureRow({
             {formatDuration(durationMinutes)}
           </Text>
 
-          {/* The whole row is the tap target; this is just the affordance. */}
           <SmallIconButton
             icon="chevronRight"
             onPress={handlePress}

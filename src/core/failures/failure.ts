@@ -1,12 +1,6 @@
 import type { TranslationKey } from '@/core/i18n/en';
 
-/**
- * The categories a failure can belong to.
- *
- * Kept centrally so that categories stay comparable across features. Each
- * category also has a union type of its own — see `NetworkingFailure` and
- * `TransitFailure` — which is what the Dart parent classes were for.
- */
+/** The categories a failure can belong to. */
 export const FailureCategory = {
   Networking: 'networking',
   Transit: 'transit',

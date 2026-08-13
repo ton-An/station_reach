@@ -72,12 +72,9 @@ const ROUTE_ALPHA = 0.7;
  * travel time — the map answers "how fast can I get there", not "how slowly" —
  * which is what the index already resolved.
  *
- * Parameters:
- * - stops: the indexed reachability set
- * - gradient: the travel-time ramp to colour by
- *
- * Returns:
- * - one point feature per reachable station
+ * @param stops - The indexed reachability set.
+ * @param gradient - The travel-time ramp to colour by.
+ * @returns One point feature per reachable station.
  */
 export function buildStationFeatures(
   stops: StopIndex,
@@ -112,12 +109,9 @@ export function buildStationFeatures(
  * red the further the trip gets. A leg's own length is deliberately *not* what
  * colours it — a long hop early on is still a short journey.
  *
- * Parameters:
- * - departures: the departures to draw
- * - gradient: the travel-time ramp to colour by
- *
- * Returns:
- * - one line feature per leg
+ * @param departures - The departures to draw.
+ * @param gradient - The travel-time ramp to colour by.
+ * @returns One line feature per leg.
  */
 export function buildRouteFeatures(
   departures: readonly Departure[],

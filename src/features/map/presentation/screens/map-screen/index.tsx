@@ -27,16 +27,12 @@ export function MapScreen(): React.JSX.Element {
     <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <ReachabilityMap />
 
-      {/* Chrome floats over the map, so the overlay itself must be
-          transparent to input while each panel inside it still takes its. */}
       <View style={[pointerEvents.passThrough, { flex: 1 }]}>
         <Search />
 
         <DeparturesModal />
       </View>
 
-      {/* Wide screens have room for the legends beside the map; narrow ones
-          carry them above the sheet, inside the modal. */}
       {isWide && (
         <View
           style={[

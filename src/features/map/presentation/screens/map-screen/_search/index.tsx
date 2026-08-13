@@ -15,7 +15,6 @@ export function Search(): React.JSX.Element {
 
   return (
     <View
-      // The strip around the card must not intercept map taps.
       style={[
         pointerEvents.passThrough,
         {

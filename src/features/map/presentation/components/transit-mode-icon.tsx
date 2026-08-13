@@ -44,7 +44,11 @@ interface TransitModeIconProps {
  * borrowing a neighbouring mode's glyph — showing a tram for an airplane would
  * be worse than admitting we don't have one.
  */
-export function TransitModeIcon({ mode, size, color }: TransitModeIconProps) {
+export function TransitModeIcon({
+  mode,
+  size,
+  color,
+}: TransitModeIconProps): React.JSX.Element {
   return (
     <Icon
       name={MODE_ICONS[mode] ?? 'circleQuestionMark'}

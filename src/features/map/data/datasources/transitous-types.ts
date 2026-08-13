@@ -1,11 +1,3 @@
-/**
- * The Transitous wire shapes this app depends on.
- *
- * Deliberately partial — only the fields we read are declared, so an upstream
- * addition never breaks the build. These types exist solely inside the data
- * layer; nothing above it should import them.
- */
-
 export interface GeocodeArea {
   readonly name?: string;
   readonly adminLevel?: number;

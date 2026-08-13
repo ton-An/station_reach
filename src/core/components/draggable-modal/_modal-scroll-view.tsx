@@ -13,8 +13,7 @@ interface ModalScrollViewProps {
  * The scrolling body of a {@link DraggableModal}.
  *
  * Mounts everything it is given, so it belongs to bodies of a known, small
- * size. A list whose length comes from the API — the departures at a stop —
- * wants {@link ModalList} instead.
+ * size. A list whose length comes from the API wants {@link ModalList} instead.
  *
  * See {@link useModalBodyGestures} for how a finger is shared between the
  * sheet and the list inside it.

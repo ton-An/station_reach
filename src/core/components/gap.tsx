@@ -16,7 +16,10 @@ interface GapProps {
  * Preferred over ad-hoc margins, the same way the Flutter code used
  * `SmallGap()` — the gap belongs between the elements, not to either of them.
  */
-export function Gap({ size, axis = 'horizontal' }: GapProps) {
+export function Gap({
+  size,
+  axis = 'horizontal',
+}: GapProps): React.JSX.Element {
   const value = spacing[size];
 
   return (

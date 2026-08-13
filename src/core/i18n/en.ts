@@ -1,15 +1,12 @@
 /** English copy. Ported from the Flutter `app_en.arb`. */
 export const en = {
   // -- General -- //
-  // Read aloud rather than drawn: the button itself is a bare chevron.
   back: 'Back',
 
   // -- Map -- //
   searchStations: 'Search Stations',
   departures: 'Departures',
   noStopSelected: 'No stop selected',
-  // The travel-time legend's labels: both ends of the ramp and its midpoint.
-  // They spell out `GRADIENT_BUCKETS` — keep them in step with it.
   thirtyMin: '30min',
   nineHours: '9h',
   eighteenHoursPlus: '18h+',
@@ -31,7 +28,6 @@ export const en = {
   webDescription: 'See where transit takes you!',
 
   // -- Failures -- //
-  // Every failure constant names two of these; nothing else may hold user copy.
   receiveTimeoutFailureName: 'Receive Timeout',
   receiveTimeoutFailureMessage:
     'Receiving the response from the server timed out.',

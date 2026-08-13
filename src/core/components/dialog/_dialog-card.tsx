@@ -57,7 +57,6 @@ export function DialogCard({
         pointerEvents: 'auto',
         transform: [
           {
-            // Settles down from slightly oversized rather than growing in.
             scale: progress.interpolate({
               inputRange: [0, 1],
               outputRange: [1.15, 1],

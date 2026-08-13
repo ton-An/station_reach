@@ -62,7 +62,6 @@ export const StationsSource = memo(function StationsSource({
         }}
       />
 
-      {/* MapLibre hides colliding labels itself — no clustering pass. */}
       <SymbolLayer
         id={LAYER_IDS.stationLabels}
         style={{

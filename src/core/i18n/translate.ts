@@ -1,5 +1,3 @@
-import { en, type TranslationKey } from './en';
-
 /*
   To-Do:
     - [ ] Add locales beyond English. When a second one lands, select the
@@ -7,17 +5,13 @@ import { en, type TranslationKey } from './en';
           at every call site.
 */
 
+import { en, type TranslationKey } from './en';
+
 /**
  * Looks up a user-facing string.
  *
  * Every string the user can read goes through here — no literals in components,
  * even while English is the only locale.
- *
- * Parameters:
- * - key: the translation key
- *
- * Returns:
- * - the translated string
  */
 export function t(key: TranslationKey): string {
   return en[key];

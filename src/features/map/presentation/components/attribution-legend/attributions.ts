@@ -37,8 +37,7 @@ export const REPOSITORY_URL = 'https://github.com/ton-An/station_reach';
  * The dialog finds and links the URLs in it rather than taking structured
  * rows — that is how the copy is authored.
  *
- * Returns:
- * - every credit, one name-and-URL pair per paragraph
+ * @returns Every credit, one name-and-URL pair per paragraph.
  */
 export function attributionMessage(): string {
   return ATTRIBUTIONS.map(({ nameKey, url }) => `${t(nameKey)}:\n${url}`).join(

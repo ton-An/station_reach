@@ -5,7 +5,6 @@ import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
 import { Icon, type IconName } from './icon';
 
-/** How the press fade behaves, matching the Flutter `SmallIconButton`. */
 const FADE_OUT_MS = 215;
 const PRESSED_OPACITY = 0.4;
 

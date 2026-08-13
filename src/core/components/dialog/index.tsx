@@ -72,7 +72,6 @@ export function Dialog({
       <View style={{ flex: 1 }}>
         <DialogScrim progress={progress} onPress={onClose} />
 
-        {/* The gap around the card must fall through to the scrim behind it. */}
         <View
           style={[
             pointerEvents.passThrough,

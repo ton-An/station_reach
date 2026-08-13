@@ -11,7 +11,6 @@ import {
 /** How much of the bar the moving highlight covers. */
 const HIGHLIGHT_FRACTION = 0.4;
 
-/** How thick the bar under the search field is. */
 const BAR_HEIGHT = 8;
 
 /** How far the highlight fades against the track behind it. */

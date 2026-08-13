@@ -29,9 +29,8 @@ interface LabelStyle {
  * Runs once, on style load — MapLibre drops everything added to a style when it
  * is replaced, and this one never is.
  *
- * Parameters:
- * - instance: the live map
- * - label: how station name labels are drawn
+ * @param instance - The live map.
+ * @param label - How station name labels are drawn.
  */
 export function addStationLayers(
   instance: MapLibreMap,
@@ -63,9 +62,6 @@ export function addStationLayers(
     id: LAYER_IDS.stationCircles,
     type: 'circle',
     source: SOURCE_IDS.stations,
-    // No invisible stroke widening the click target any more — the click
-    // handler queries a box around the cursor instead, so the drawn circle can
-    // be exactly the circle we mean to draw.
     paint: {
       'circle-radius': STATION_CIRCLE_RADIUS,
       'circle-color': ['get', 'color'],

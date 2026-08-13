@@ -25,11 +25,9 @@ interface MutableStopEntry {
  * than a scan: the naive version walked every departure's every stop twice on
  * each tap, which is tens of thousands of comparisons before anything paints.
  *
- * Parameters:
- * - departures: every departure loaded for the origin station
- *
- * Returns:
- * - one entry per reachable stop, holding its fastest arrival and its trips
+ * @param departures - Every departure loaded for the origin station.
+ * @returns One entry per reachable stop, holding its fastest arrival and its
+ *   trips.
  */
 export function buildStopIndex(departures: readonly Departure[]): StopIndex {
   const index = new Map<string, MutableStopEntry>();

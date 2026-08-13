@@ -21,15 +21,8 @@ const TAP_SLOP = 12;
  * Which means the slop and multi-touch checks are ours to make: without them,
  * lifting a finger at the end of a pan would read as a tap.
  *
- * A plain factory rather than a hook body, so the tracking below is ordinary
- * closure state — the same shape the stores use — instead of a ref that has to
- * be threaded through render.
- *
- * Parameters:
- * - onTap: called on touch-up with the touch position, in view points
- *
- * Returns:
- * - a gesture to wrap around the map
+ * @param onTap - Called on touch-up with the touch position, in view points.
+ * @returns A gesture to wrap around the map.
  */
 function createMapTapGesture(
   onTap: (x: number, y: number) => void
@@ -76,12 +69,9 @@ function createMapTapGesture(
 /**
  * The map's tap gesture, built once.
  *
- * Parameters:
- * - onTap: called on touch-up with the touch position, in view points. Has to
- *   be referentially stable, or the gesture is rebuilt on every render
- *
- * Returns:
- * - a gesture to wrap around the map — see {@link createMapTapGesture}
+ * @param onTap - Called on touch-up with the touch position, in view points.
+ *   Has to be referentially stable, or the gesture is rebuilt on every render.
+ * @returns A gesture to wrap around the map — see {@link createMapTapGesture}.
  */
 export function useMapTapGesture(
   onTap: (x: number, y: number) => void

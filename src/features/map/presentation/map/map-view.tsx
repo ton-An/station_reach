@@ -27,7 +27,7 @@ import {
 import type { MapViewProps } from './map-view.types';
 
 /**
- * The MapLibre Native map surface. See `map-view.web.tsx` for the web twin.
+ * The MapLibre Native map surface.
  *
  * Memoised, because both shape sources re-serialise their whole feature
  * collection to JSON on every render — an unrelated re-render of the screen

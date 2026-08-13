@@ -20,7 +20,7 @@ interface RoutesSourceProps {
 /**
  * The legs of the departures calling at the selected stop.
  *
- * Memoised for the same reason {@link StationsSource} is: this is the half of
+ * Memoised for the same reason `StationsSource` is: this is the half of
  * the map that actually changes on a tap, and keeping the two apart means only
  * this one pays to serialise itself again.
  */

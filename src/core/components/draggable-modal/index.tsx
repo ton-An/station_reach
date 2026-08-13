@@ -102,7 +102,6 @@ export function DraggableModal({
 
   return (
     <View
-      // Above the sheet is map, not chrome — let taps through.
       style={[
         pointerEvents.passThrough,
         { flex: 1, justifyContent: 'flex-end' },

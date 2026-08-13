@@ -15,11 +15,13 @@ interface DialogScrimProps {
 /**
  * The dimmed backdrop, which also dismisses the dialog.
  *
- * It carries the whole entry fade on its own: the card above it must not be
- * faded, because an ancestor with opacity below 1 becomes a backdrop root and
- * leaves the card's blur with nothing behind it to sample.
+ * It carries the whole entry fade, because {@link DialogCard} cannot be faded
+ * without losing its blur.
  */
-export function DialogScrim({ progress, onPress }: DialogScrimProps) {
+export function DialogScrim({
+  progress,
+  onPress,
+}: DialogScrimProps): React.JSX.Element {
   const theme = useTheme();
 
   return (

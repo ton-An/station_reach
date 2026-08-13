@@ -13,11 +13,6 @@ import { FONT_FAMILY } from '@/core/theme/theme';
  *
  * Nothing renders until Inter is available: the fallback is a serif face, and
  * swapping it in after first paint reflows every label on the map.
- *
- * The container is provided above everything, so every store the app uses is
- * resolved from the tree rather than imported. The notification listener sits
- * above the navigator so a failure raised on any screen surfaces in the same
- * place.
  */
 export default function RootLayout(): React.JSX.Element | null {
   const [fontsLoaded] = useFonts({

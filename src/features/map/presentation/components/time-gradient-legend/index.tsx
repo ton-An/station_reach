@@ -21,9 +21,8 @@ const BAR_HEIGHT = 36;
  *
  * Baked into the stops rather than applied as alpha, and the bar must stay
  * fully opaque — see {@link flattenOnto} for why a translucent ramp grows a
- * hairline at every stop in Firefox. The bar therefore no longer shows the map
- * through it, which is the honest way round anyway: the key to the colours
- * should not shift with whatever happens to be under it.
+ * hairline at every stop in Firefox. The bar is therefore opaque: the key to
+ * the colours should not shift with whatever is under it.
  */
 const BAR_OPACITY = 0.85;
 
@@ -32,7 +31,6 @@ const BAR_OPACITY = 0.85;
  *
  * Labelled at 30 minutes, 9 hours and 18h+ — the ends of the ramp and its
  * midpoint. Anything beyond 18 hours saturates, which is what the `+` means.
- * The three come straight off `GRADIENT_BUCKETS`; retune them together.
  */
 export function TimeGradientLegend(): React.JSX.Element {
   const theme = useTheme();
@@ -64,7 +62,6 @@ export function TimeGradientLegend(): React.JSX.Element {
           }}
         />
 
-        {/* Labels ride on top of the gradient rather than beside it. */}
         <View
           style={[
             StyleSheet.absoluteFill,

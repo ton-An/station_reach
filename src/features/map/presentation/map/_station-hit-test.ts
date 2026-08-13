@@ -38,12 +38,9 @@ function hitRect(x: number, y: number): [number, number, number, number] {
  * area matches several stations at once and the nearest one wins — see
  * {@link nearestStopId}.
  *
- * Parameters:
- * - features: whatever the query returned for the tap
- * - target: where the tap landed, as `[longitude, latitude]`
- *
- * Returns:
- * - the station under the tap, or the background
+ * @param features - Whatever the query returned for the tap.
+ * @param target - Where the tap landed, as `[longitude, latitude]`.
+ * @returns The station under the tap, or the background.
  */
 export function toStationHit(
   features: readonly GeoJSON.Feature[],
@@ -67,15 +64,11 @@ interface StationAtPointParams {
  * Resolves a point on the native map to whatever is under it.
  *
  * Queries a box rather than the point: the box is what makes the target bigger
- * than the 6.3px circle, and a point query is too tight to hit a dot at all.
+ * than the `STATION_CIRCLE_RADIUS` circle, and a point query is too tight to
+ * hit a dot at all.
  *
- * Parameters:
- * - map: the live map instance
- * - x, y: where the touch landed, in view points
- *
- * Returns:
- * - the hit, or undefined if the map could not place the touch — which means
- *   "leave the selection alone", not "the background was tapped"
+ * @returns The hit, or undefined if the map could not place the touch — which
+ *   means "leave the selection alone", not "the background was tapped".
  */
 export async function stationAtPoint({
   map,

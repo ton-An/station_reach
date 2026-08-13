@@ -15,8 +15,6 @@ export function ModalHandle(): React.JSX.Element {
         style={{
           width: HANDLE_WIDTH,
           height: HANDLE_HEIGHT,
-          // Fully rounded: the bar is its own height, so any larger radius
-          // resolves to the same capsule.
           borderRadius: theme.radii.full,
           backgroundColor: theme.colors.translucentBackgroundContrast,
         }}

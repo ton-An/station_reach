@@ -14,8 +14,9 @@ import {
  * them — and it is a screen-level job precisely because no single component
  * should decide how the app reports an error.
  *
- * A departures failure wins over a search failure: it is the slower call, so
- * when both are pending it is the one the user is still waiting on.
+ * A departures failure wins over a search failure, and a failure state persists
+ * until its store starts another call, so a failed reachability load hides
+ * every search failure until the user picks a station again.
  */
 export function useFailureNotifier(): void {
   const departuresState = useStationDeparturesStore((store) => store.state);

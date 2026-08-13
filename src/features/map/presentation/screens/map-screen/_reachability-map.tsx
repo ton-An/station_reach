@@ -42,7 +42,6 @@ export function ReachabilityMap(): React.JSX.Element {
     [departuresState]
   );
 
-  // Resolved once per reachability set, so a tap is a lookup and not a scan.
   const stopIndex = useMemo(() => buildStopIndex(departures), [departures]);
 
   const stations = useMemo(
@@ -50,7 +49,6 @@ export function ReachabilityMap(): React.JSX.Element {
     [stopIndex, theme.colors.timelineGradient]
   );
 
-  // Routes are drawn only for the stop the user picked, not for everything.
   const routes = useMemo(
     () =>
       stationSelection.status === 'selected'
@@ -93,9 +91,6 @@ export function ReachabilityMap(): React.JSX.Element {
     deselectDeparture();
   }, [loadedStationId, unselectStation, deselectDeparture]);
 
-  // Stable, because the map memoises on its props: an unrelated re-render would
-  // otherwise re-serialise every station and route across the bridge before
-  // anything could paint.
   const handleStationPress = useCallback(
     (stopId: string) => {
       const entry = stopIndex.get(stopId);

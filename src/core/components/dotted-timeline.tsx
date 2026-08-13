@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
 
-/** Height of the run of dashes between two itinerary stops. */
+/** Height of the whole run of dashes. */
 const HEIGHT = 60;
 const VERTICAL_INSET = 6;
 

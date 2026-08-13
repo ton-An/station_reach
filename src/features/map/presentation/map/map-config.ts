@@ -11,8 +11,7 @@ import type { ExpressionSpecification } from 'maplibre-gl';
  *
  * CARTO Voyager, same look the Flutter app used — but the vector style rather
  * than the raster tiles, because a raster style carries no glyphs and MapLibre
- * cannot render station name labels without them. Same vendor, same
- * attribution, sharper output.
+ * cannot render station name labels without them.
  */
 export const BASEMAP_STYLE_URL =
   'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json';
@@ -69,6 +68,11 @@ export const ROUTE_LINE_WIDTH = 5;
  * they should sit close to their true geometry. Mirrors the Flutter painter's
  * `clamp((zoom / 7)^2, 0, 4)` shift, but perpendicular to the line rather than
  * diagonal, which separates parallel routes more evenly.
+ *
+ * The zoom interpolation has to be the *outermost* expression — MapLibre
+ * rejects `["zoom"]` nested inside another operator — so the per-feature offset
+ * is multiplied into each stop's output rather than applied around the whole
+ * thing.
  */
 export const LINE_OFFSET_EXPRESSION: ExpressionSpecification = [
   'interpolate',

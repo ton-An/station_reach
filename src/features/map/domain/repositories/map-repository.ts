@@ -17,15 +17,10 @@ export interface MapRepository {
   /**
    * Searches for stations by name.
    *
-   * Parameters:
-   * - query: the free-text search string
-   * - signal: optional abort signal, so a superseded search can be cancelled
-   *
-   * Returns:
-   * - the matching stations
-   *
-   * Failures:
-   * - any networking failure
+   * @param query - The free-text search string.
+   * @param signal - Optional abort signal, so a superseded search can be
+   * cancelled.
+   * @returns The matching stations, or a {@link NetworkingFailure}.
    */
   searchStations(
     query: string,
@@ -35,17 +30,8 @@ export interface MapRepository {
   /**
    * Gets the departures leaving a station, restricted to a set of modes.
    *
-   * Parameters:
-   * - station: the origin station
-   * - modes: the modes to include
-   * - amount: how many departures to request
-   *
-   * Returns:
-   * - the departures found
-   *
-   * Failures:
-   * - noDeparturesFoundFailure
-   * - any networking failure
+   * @returns The departures found, {@link noDeparturesFoundFailure} when the
+   * station has none, or a {@link NetworkingFailure}.
    */
   getStationDeparturesByMode(
     query: DeparturesQuery

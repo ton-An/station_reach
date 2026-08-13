@@ -10,6 +10,15 @@ import type { GeocodeStation, StopTimesResponse } from './transitous-types';
 const BASE_URL = 'https://api.transitous.org';
 
 export interface MapRemoteDataSource {
+  /**
+   * Searches for stations by name.
+   *
+   * @param query - The free-text search string.
+   * @param signal - Optional abort signal, so a superseded search can be
+   * cancelled.
+   * @returns The matching stations.
+   * @throws `HttpError`.
+   */
   searchStations(query: string, signal?: AbortSignal): Promise<Station[]>;
 
   /**
@@ -26,31 +35,11 @@ export interface MapRemoteDataSource {
   getStationDeparturesByMode(query: DeparturesQuery): Promise<Departure[]>;
 }
 
-/**
- * Talks to the Transitous API.
- *
- * This layer throws — `HttpError` for transport problems and
- * {@link FailureError} for data problems. Converting those into values is the
- * repository's job. Turning wire shapes into domain models is
- * `transitous-mappers`'.
- */
+/** Talks to the Transitous API. */
 export function createMapRemoteDataSource(): MapRemoteDataSource {
   return { searchStations, getStationDeparturesByMode };
 }
 
-/**
- * Searches for stations by name.
- *
- * Parameters:
- * - query: the free-text search string
- * - signal: optional abort signal
- *
- * Returns:
- * - the matching stations
- *
- * Throws:
- * - `HttpError`
- */
 async function searchStations(
   query: string,
   signal?: AbortSignal

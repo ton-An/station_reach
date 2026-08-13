@@ -10,14 +10,11 @@ export interface StationCandidate {
  *
  * Both map bindings answer a query with GeoJSON features and both need the same
  * three fields back, so the reduction lives here rather than once per platform.
- * Anything that isn't a point with our properties on it is dropped: the query is
- * layer-scoped, but nothing in the type system says so.
+ * Anything that isn't a point carrying a `stopId` is dropped: the query is
+ * layer-scoped, but a `GeoJSON.Feature` says nothing about what is on it.
  *
- * Parameters:
- * - features: whatever the binding's rendered-feature query returned
- *
- * Returns:
- * - one candidate per usable station feature
+ * @param features - Whatever the binding's rendered-feature query returned.
+ * @returns One candidate per usable station feature.
  */
 export function toStationCandidates(
   features: readonly GeoJSON.Feature[]
@@ -53,12 +50,9 @@ export function toStationCandidates(
  * return first selects by draw order — that is, a neighbour rather than the dot
  * under the finger, which is what made tapping feel unpredictable.
  *
- * Parameters:
- * - candidates: every station the hit test matched
- * - target: where the tap landed, as `[longitude, latitude]`
- *
- * Returns:
- * - the id of the closest station, or undefined if nothing was hit
+ * @param candidates - Every station the hit test matched.
+ * @param target - Where the tap landed, as `[longitude, latitude]`.
+ * @returns The id of the closest station, or undefined if nothing was hit.
  */
 export function nearestStopId(
   candidates: readonly StationCandidate[],

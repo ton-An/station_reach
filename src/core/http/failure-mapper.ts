@@ -12,14 +12,11 @@ import { HttpError } from './http-client';
 /**
  * Maps a transport-level error onto a {@link NetworkingFailure}.
  *
- * This is the single crossing point between "things that throw" and "things
- * that are returned" — repositories call it and nothing below them does.
- *
- * Parameters:
- * - error: anything caught around an HTTP call
- *
- * Returns:
- * - the matching networking failure
+ * @param error - Anything caught around an HTTP call.
+ * @returns {@link receiveTimeoutFailure}, {@link requestCancelledFailure},
+ * {@link connectionFailure}, {@link statusCodeNotOkFailure} or
+ * {@link badResponseFailure}; {@link unknownRequestFailure} for anything that
+ * is not an {@link HttpError}.
  */
 export function mapHttpError(error: unknown): NetworkingFailure {
   if (!(error instanceof HttpError)) return unknownRequestFailure;

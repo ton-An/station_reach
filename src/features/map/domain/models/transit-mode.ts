@@ -37,7 +37,5 @@ export const TransitMode = {
   Other: 'other',
 } as const;
 
-// Deliberate value/type merge: `TransitMode.Rail` and `mode: TransitMode` both
-// read naturally, the way the Dart enum did.
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TransitMode = (typeof TransitMode)[keyof typeof TransitMode];

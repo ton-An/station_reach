@@ -24,9 +24,8 @@ export interface StationSelectionStore {
    * Re-selecting what is already selected does nothing, which is what lets the
    * map answer one tap through two paths without redrawing twice.
    *
-   * Parameters:
-   * - selectedStop: the stop the user tapped
-   * - departures: the departures calling at that stop
+   * @param selectedStop - The stop the user tapped.
+   * @param departures - The departures calling at that stop.
    */
   readonly select: (
     selectedStop: Stop,

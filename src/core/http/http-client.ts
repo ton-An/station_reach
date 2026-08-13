@@ -1,7 +1,7 @@
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-/** Why an HTTP call failed. Mirrors the shape the failure mapper expects. */
+/** Why an HTTP call failed. */
 export type HttpErrorKind =
   | 'timeout'
   | 'cancelled'
@@ -14,9 +14,7 @@ export type HttpErrorKind =
  * A transport-level error.
  *
  * Thrown by {@link getJson} and caught in the repository layer, which converts
- * it into a `Failure`. `body` carries the decoded error payload when the server
- * sent one — the departures data source inspects it to detect the known MOTIS
- * "Departure is last stop in trip" bug.
+ * it into a `Failure`.
  */
 export class HttpError extends Error {
   constructor(
@@ -31,13 +29,8 @@ export class HttpError extends Error {
 const DEFAULT_TIMEOUT_MS = 20_000;
 const CONTACT_EMAIL = 'anton@antons-webfabrik.eu';
 
-/**
- * The User-Agent Transitous asks API consumers to identify themselves with.
- *
- * Browsers forbid setting this header, so on web it is simply omitted — that is
- * expected, not a bug to work around.
- */
 function requestHeaders(): Record<string, string> {
+  // Browsers forbid setting User-Agent, so web sends the request without it.
   if (Platform.OS === 'web') return { Accept: 'application/json' };
 
   const version = Constants.expoConfig?.version ?? '0.0.0';
@@ -51,15 +44,9 @@ function requestHeaders(): Record<string, string> {
 /**
  * Performs a GET request and decodes the JSON body.
  *
- * Parameters:
- * - url: the fully-qualified request URL
- * - signal: optional caller-owned abort signal, for cancelling in-flight work
- *
- * Returns:
- * - the decoded JSON body, typed as the caller asserts
- *
- * Throws:
- * - {@link HttpError}
+ * @param url - The fully-qualified request URL.
+ * @param signal - Optional caller-owned abort signal.
+ * @throws {@link HttpError}
  */
 export async function getJson<T = unknown>(
   url: string,
@@ -71,7 +58,6 @@ export async function getJson<T = unknown>(
     DEFAULT_TIMEOUT_MS
   );
 
-  // Abort when either the caller cancels or the timeout fires.
   const onCallerAbort = () => timeoutController.abort(signal?.reason);
   signal?.addEventListener('abort', onCallerAbort);
 

@@ -30,8 +30,7 @@ import {
  * The application's dependency graph.
  *
  * Only the stores are exposed: everything below them is an implementation
- * detail of the layer above, and nothing outside this file should be able to
- * reach a use case, a repository or a data source directly.
+ * detail of the layer above.
  */
 export interface Container {
   readonly inAppNotificationStore: StoreApi<InAppNotificationStore>;
@@ -47,9 +46,6 @@ export interface Container {
  * One place to read how the app is wired, in the same order the Flutter
  * `initGetIt()` used. Every dependency is handed to its consumer here —
  * nothing reaches for one at the point of use.
- *
- * Returns:
- * - a fully wired {@link Container}
  */
 function createContainer(): Container {
   // -- Data -- //
@@ -77,16 +73,13 @@ const ContainerContext = createContext<Container | undefined>(undefined);
  *
  * Mounted once, at the root. This is what `MultiBlocProvider` did in the
  * Flutter app: components ask the tree for what they need instead of importing
- * a module-level singleton, so the whole app can be rebuilt around a different
- * graph without touching a single component.
+ * a module-level singleton.
  */
 export function ContainerProvider({
   children,
 }: {
   readonly children: React.ReactNode;
-}) {
-  // Built once per provider, not once per module, and never during render of
-  // a child — so a remount gives a genuinely fresh graph.
+}): React.JSX.Element {
   const [container] = useState(createContainer);
 
   return (
@@ -102,8 +95,7 @@ export function ContainerProvider({
  * Intended for the store hooks rather than for components — a component should
  * ask for the state it renders, not for the container.
  *
- * Returns:
- * - the {@link Container} provided above
+ * @throws If no {@link ContainerProvider} is mounted above.
  */
 export function useContainer(): Container {
   const container = useContext(ContainerContext);

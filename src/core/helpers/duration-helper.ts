@@ -3,12 +3,6 @@
  *
  * Under an hour it reads as `45m`; at or above one it reads as `2h 5m`.
  * Ported from the Flutter `TimeDateFormatter.formatDuration`.
- *
- * Parameters:
- * - durationMinutes: travel time in minutes
- *
- * Returns:
- * - the formatted duration
  */
 export function formatDuration(durationMinutes: number): string {
   // Truncate, matching Dart's `Duration.inMinutes`, so a 59.9-minute leg still
