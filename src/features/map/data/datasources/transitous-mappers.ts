@@ -1,6 +1,6 @@
 import type { Departure } from '../../domain/models/departure';
 import type { Station, Stop } from '../../domain/models/station';
-import { transitModeFromWire } from '../../domain/models/transit-mode';
+import { transitModeFromWire } from './transitous-modes';
 import type { GeocodeStation, NextStop, StopTime } from './transitous-types';
 
 /**

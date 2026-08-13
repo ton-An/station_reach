@@ -2,11 +2,9 @@ import { FailureError, noDeparturesFoundFailure } from '@/core/failures';
 import { getJson } from '@/core/http/http-client';
 import type { Departure } from '../../domain/models/departure';
 import type { Station } from '../../domain/models/station';
-import {
-  transitModeToWire,
-  type TransitMode,
-} from '../../domain/models/transit-mode';
+import type { TransitMode } from '../../domain/models/transit-mode';
 import { toDeparture, toStation } from './transitous-mappers';
+import { transitModeToWire } from './transitous-modes';
 import type { GeocodeStation, StopTimesResponse } from './transitous-types';
 
 const BASE_URL = 'https://api.transitous.org';
