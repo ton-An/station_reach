@@ -112,38 +112,38 @@ it grows parts of its own it becomes a folder with its own `index.tsx`.
 
 ## Documentation
 
-- TSDoc every exported symbol: a one-line summary, then only the tags it needs, in this order —
-  `@param`, `@returns`, `@throws`. Use `{@link X}` in prose.
-- A paragraph under the summary only where a caller could get it wrong — the contract, not the
-  design story.
-- Name the concrete failure constants a call can return in its `@returns`.
-- Document a behaviour once, on the declaration that owns it — the interface, not the
-  implementation. Document the implementation only where it differs.
-- Skip the doc where the name and signature already say it — pass-throughs, plain value types,
-  obvious fields.
+- Write docs only when they add information a reader cannot get from the name, type, initializer
+  or surrounding pattern.
+- Exported symbols that define behaviour or an architectural contract get a TSDoc comment
+  (`/** … */`). That usually means stores, use cases, repository and data source interfaces,
+  shared components with interaction or state behaviour, and functions with non-obvious effects.
+- Skip docs for plain value types, union members, pass-throughs, obvious fields and re-exports
+  whose purpose is fully expressed by the code.
+- Do not replace useful detailed docs with shorter summaries. Preserve existing explanations
+  unless they are wrong, and improve them in place when needed.
+- Repository and data source behaviour is documented on the interface. Implementations add docs
+  only for differing or non-obvious behaviour.
+- Document each API at its own abstraction level. Describe caller-visible behaviour, inputs,
+  outputs and guarantees; leave lower-level implementation mechanisms to the layer that owns them
+  unless they are part of the contract.
+- Name the concrete failure constants a call can return in `@returns`, and the error types it
+  throws in `@throws`. Do not write a vague bullet like "any failure returned by …".
+- Module-private code gets docs only for non-obvious behaviour: workarounds, gestures,
+  animations, or platform and upstream API constraints.
+- When touching undocumented existing code, document only the changed API when the change
+  introduces or clarifies a meaningful contract. Do not mass-document nearby code.
+- Avoid comments that restate implementation.
+- Use `{@link X}` to point at another symbol.
 - Open questions are a `To-Do:` block at the top of the file with `- [ ]` items.
 
-## Comments
+Use the TSDoc tag where one exists, in this order: `@param`, `@returns`, `@throws`. Format a
+parameter as `@param name - description`. For a contract no tag covers — the states a store moves
+through, the parts a screen is built from — use a labelled section with one bullet per entry:
+`States:`, `Sub-components:`. Prefer a labelled section over unlabelled prose for those topics.
 
-Closed by default. Two kinds are allowed and nothing else:
-
-1. TSDoc on an exported symbol, as above. A module-private symbol earns one only where its
-   behaviour is non-obvious; one that restates the name and signature goes.
-2. An inline comment where the behaviour is genuinely surprising — a platform trap, a
-   workaround, a gesture, an upstream API constraint.
-
-Both are held to the same shape:
-
-- One sentence. Two only where naming both the cause and the symptom will not fit in one.
-- Write the constraint, not the lesson. Name the API or platform behaviour and what it breaks
-  here; never teach the general concept, and never restate the fix written under it.
-- Stay on the code in front of it. One that needs another file, another component or the rest of
-  the screen to make sense belongs there, not here.
-- Plain technical register. No metaphor, no anthropomorphism.
-
-Do not narrate what the code does, justify a design or layout choice, explain a name or a token,
-or head a module whose contents are self-evident. If the reason for a comment is "so a reader
-knows what this is", delete it.
+Before documentation work, read the canonical examples for that kind of file and the docs already
+in the target file, and match their level of detail. The register to write in is the one in
+`../station_reach_flutter_reference`.
 
 ## Writing
 
