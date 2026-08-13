@@ -125,7 +125,8 @@ it grows parts of its own it becomes a folder with its own `index.tsx`.
 
 Closed by default. Two kinds are allowed and nothing else:
 
-1. TSDoc on an exported symbol, as above.
+1. TSDoc on an exported symbol, as above. A module-private symbol earns one only where its
+   behaviour is non-obvious; one that restates the name and signature goes.
 2. An inline comment where the behaviour is genuinely surprising — a platform trap, a
    workaround, a gesture, an upstream API constraint.
 
