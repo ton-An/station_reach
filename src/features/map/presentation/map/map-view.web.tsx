@@ -40,6 +40,12 @@ export const MapView = memo(function MapView({
   const map = useRef<MapLibreMap>(null);
   const isStyleLoaded = useRef(false);
 
+  // The style can finish loading after a feature collection has arrived, and
+  // the registration below runs out of an effect that closed over the mount
+  // render — so it reads the collections through a ref rather than dropping
+  // whatever landed in between.
+  const data = useRef({ stations, routes });
+
   // Callbacks are read through a ref so re-renders never re-bind map handlers.
   // Updated in an effect rather than during render, so the ref is only ever
   // written after commit.
@@ -84,7 +90,7 @@ export const MapView = memo(function MapView({
         haloColor: theme.colors.background,
       });
       isStyleLoaded.current = true;
-      syncSources({ instance, stations, routes });
+      syncSources({ instance, ...data.current });
     };
 
     if (instance.isStyleLoaded()) {
@@ -135,6 +141,8 @@ export const MapView = memo(function MapView({
   }, []);
 
   useEffect(() => {
+    data.current = { stations, routes };
+
     if (map.current === null || !isStyleLoaded.current) return;
     syncSources({ instance: map.current, stations, routes });
   }, [stations, routes]);
