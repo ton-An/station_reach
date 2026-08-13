@@ -54,6 +54,16 @@ const MAX_FAN_OFFSET = 10;
 const STATION_ALPHA = 0.75;
 const ROUTE_ALPHA = 0.7;
 
+/**
+ * Builds GeoJSON point features for reachable stations from a stop index.
+ *
+ * Each feature includes the stop's location, name, travel time, and a color
+ * derived from the travel time and the given gradient.
+ *
+ * @param stops - Index of reachable stops and their departures.
+ * @param gradient - Array of CSS color strings to interpolate travel time.
+ * @returns A GeoJSON FeatureCollection of station points.
+ */
 export function buildStationFeatures(
   stops: StopIndex,
   gradient: readonly string[]
@@ -78,6 +88,18 @@ export function buildStationFeatures(
   return { type: 'FeatureCollection', features };
 }
 
+/**
+ * Builds GeoJSON line features for departure routes, fanning them to avoid overlap.
+ *
+ * Each route segment gets an offset value that is interpolated by zoom level
+ * in the style. Offsets are calculated so that routes near the middle of the
+ * departure list are pushed to the sides, creating a fan effect that makes
+ * alternative routes visible at higher zoom levels.
+ *
+ * @param departures - The departures to build routes from.
+ * @param gradient - Array of CSS color strings to interpolate travel time.
+ * @returns A GeoJSON FeatureCollection of route line segments.
+ */
 export function buildRouteFeatures(
   departures: readonly Departure[],
   gradient: readonly string[]

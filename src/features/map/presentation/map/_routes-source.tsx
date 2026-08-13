@@ -17,6 +17,9 @@ interface RoutesSourceProps {
   readonly routes: RouteFeatures;
 }
 
+/**
+ * Renders departure route lines on the map.
+ */
 export const RoutesSource = memo(function RoutesSource({
   routes,
 }: RoutesSourceProps) {

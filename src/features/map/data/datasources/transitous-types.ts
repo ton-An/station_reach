@@ -1,8 +1,14 @@
+/**
+ * A geographic region associated with a station.
+ */
 export interface GeocodeArea {
   readonly name?: string;
   readonly adminLevel?: number;
 }
 
+/**
+ * A station from the geocode endpoint.
+ */
 export interface GeocodeStation {
   readonly id: string;
   readonly name: string;
@@ -17,6 +23,9 @@ export interface StopTimePlace {
   readonly scheduledDeparture?: string;
 }
 
+/**
+ * A stop visited on a trip.
+ */
 export interface NextStop {
   readonly stopId: string;
   readonly name: string;
@@ -27,6 +36,9 @@ export interface NextStop {
   readonly scheduledDeparture?: string;
 }
 
+/**
+ * A departure or service from a station.
+ */
 export interface StopTime {
   readonly tripId: string;
   readonly mode: string;
@@ -38,6 +50,9 @@ export interface StopTime {
   readonly routeLongName?: string;
 }
 
+/**
+ * The departures response from the stoptimes endpoint.
+ */
 export interface StopTimesResponse {
   readonly stopTimes?: readonly StopTime[];
   readonly nextPageCursor?: string;

@@ -35,6 +35,19 @@ export type GetStationDepartures = (
   station: Station
 ) => ResultAsync<Departure[], Failure>;
 
+/**
+ * Creates the use case that gets everywhere a station can take you.
+ *
+ * The long-distance and regional buckets are fetched concurrently and merged:
+ * - either bucket fails to fetch, so the load fails
+ * - both buckets return {@link noDeparturesFoundFailure}, so the load fails
+ * - otherwise the two are combined, deduplicated and sorted
+ *
+ * @param station - The origin station.
+ * @returns The departures found, {@link noDeparturesFoundFailure} when
+ * neither bucket had any, or a `NetworkingFailure` from whichever bucket
+ * failed to fetch.
+ */
 export function createGetStationDepartures(
   mapRepository: MapRepository
 ): GetStationDepartures {
@@ -57,6 +70,13 @@ export function createGetStationDepartures(
     );
 }
 
+/**
+ * Merges two bucket results into a single result.
+ *
+ * Network errors take precedence and fail the load. If both buckets fail
+ * with `noDeparturesFound`, that failure propagates. Otherwise, successful
+ * buckets are combined. Results are concatenated with long-distance first.
+ */
 function mergeDepartures(
   longDistance: Result<Departure[], Failure>,
   regional: Result<Departure[], Failure>
@@ -76,6 +96,12 @@ function mergeDepartures(
   );
 }
 
+/**
+ * Extracts a network or API error from a bucket result.
+ *
+ * Returns the error unless it is `noDeparturesFound`, which is treated as
+ * an empty result rather than a failure.
+ */
 function fetchFailureOf(
   bucket: Result<Departure[], Failure>
 ): Failure | undefined {
@@ -90,6 +116,14 @@ function collapse(departures: readonly Departure[]): Departure[] {
   return sortDepartures(dedupeDepartures(departures));
 }
 
+/**
+ * Removes duplicates by stop sequence.
+ *
+ * Keeps the first occurrence of each unique itinerary (all stops, in order,
+ * with same ids, names, coordinates, and durations). Since long-distance
+ * departures are concatenated first, a trip published under both names keeps
+ * its long-distance one.
+ */
 function dedupeDepartures(departures: readonly Departure[]): Departure[] {
   const seen = new Set<string>();
   const unique: Departure[] = [];
@@ -120,6 +154,7 @@ function stopsKey(stops: readonly Stop[]): string {
     .join(';');
 }
 
+/** Sorts departures by trip name, then by final-stop duration. */
 function sortDepartures(departures: readonly Departure[]): Departure[] {
   return [...departures].sort((a, b) => {
     if (a.name === b.name) {

@@ -26,6 +26,10 @@ import {
   type StationSelectionStore,
 } from '@/features/map/presentation/stores/station-selection-store';
 
+/**
+ * The single dependency graph, built once per app and shared through React
+ * context. Holds only Zustand store APIs, reached through {@link useContainer}.
+ */
 export interface Container {
   readonly inAppNotificationStore: StoreApi<InAppNotificationStore>;
   readonly stationSearchStore: StoreApi<StationSearchStore>;
@@ -55,6 +59,13 @@ function createContainer(): Container {
 
 const ContainerContext = createContext<Container | undefined>(undefined);
 
+/**
+ * Provides the {@link Container} to the app. Creates the dependency graph
+ * once and shares it through React context.
+ *
+ * @param children - The child components.
+ * @returns The provider component.
+ */
 export function ContainerProvider({
   children,
 }: {
@@ -69,6 +80,13 @@ export function ContainerProvider({
   );
 }
 
+/**
+ * Gets the dependency container from context. Throws if called outside a
+ * {@link ContainerProvider}.
+ *
+ * @returns The app's dependency container.
+ * @throws Error if not inside a ContainerProvider.
+ */
 export function useContainer(): Container {
   const container = useContext(ContainerContext);
 

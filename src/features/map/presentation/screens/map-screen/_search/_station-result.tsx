@@ -12,6 +12,9 @@ interface StationResultProps {
   readonly onPress: () => void;
 }
 
+/**
+ * A single station search result showing the station name and location area.
+ */
 export function StationResult({
   station,
   minOpacity,

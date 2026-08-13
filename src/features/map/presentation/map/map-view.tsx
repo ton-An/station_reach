@@ -26,6 +26,13 @@ import {
 } from './map-config';
 import type { MapViewProps } from './map-view.types';
 
+/**
+ * Native map implementation using MapLibre Native.
+ *
+ * Renders an interactive map with departure routes and reachable stations,
+ * supporting both ShapeSource onPress taps and a manual gesture detector for
+ * reliable tap handling that works with MapLibre's gesture layer.
+ */
 export const MapView = memo(function MapView({
   stations,
   routes,

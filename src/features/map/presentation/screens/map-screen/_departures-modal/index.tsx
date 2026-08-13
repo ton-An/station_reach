@@ -16,6 +16,15 @@ import {
 import { DepartureItinerary } from './_departure-itinerary';
 import { DeparturesList } from './_departures-list';
 
+/**
+ * Modal showing departures from the selected stop.
+ *
+ * Sub-components:
+ * - DeparturesList: departures calling at the selected stop
+ * - DepartureItinerary: all stops along the selected departure
+ *
+ * Sliding between the two panes is driven by departure selection.
+ */
 export function DeparturesModal(): React.JSX.Element {
   const theme = useTheme();
   const isWide = useIsWideLayout();

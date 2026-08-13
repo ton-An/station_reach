@@ -16,6 +16,13 @@ import {
   useStationSelectionStore,
 } from '../../stores/use-map-stores';
 
+/**
+ * Renders the MapView with station markers coloured by travel time.
+ *
+ * Tapping a marker opens the departures modal for that stop. Tapping the
+ * background closes the modal. When new departures load, the map focuses on
+ * the origin and clears any active selection.
+ */
 export function ReachabilityMap(): React.JSX.Element {
   const theme = useTheme();
 

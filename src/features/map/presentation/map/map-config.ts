@@ -38,6 +38,13 @@ export const STATION_HIT_RADIUS = 24;
 
 export const ROUTE_LINE_WIDTH = 5;
 
+/**
+ * MapLibre style expression that interpolates route line offset by zoom level.
+ *
+ * At zoom 0, offset is multiplied by 0 (no offset). At zoom 7, offset is
+ * applied 1:1. At zoom 14 and above, offset is multiplied by 4. This fans
+ * out overlapping routes at higher zoom levels to show departure alternatives.
+ */
 export const LINE_OFFSET_EXPRESSION: ExpressionSpecification = [
   'interpolate',
   ['linear'],

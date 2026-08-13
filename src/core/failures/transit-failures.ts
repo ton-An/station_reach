@@ -7,4 +7,7 @@ export const noDeparturesFoundFailure = {
   messageKey: 'noDeparturesFoundFailureMessage',
 } as const satisfies FailureBase;
 
+/**
+ * Union of all possible failures that can come from transit data operations.
+ */
 export type TransitFailure = typeof noDeparturesFoundFailure;

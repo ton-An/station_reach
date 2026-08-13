@@ -28,6 +28,9 @@ interface StationsSourceProps {
   readonly onPress: (event: OnPressEvent) => void;
 }
 
+/**
+ * Renders reachable station markers with labels on the map.
+ */
 export const StationsSource = memo(function StationsSource({
   stations,
   onPress,

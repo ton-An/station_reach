@@ -34,10 +34,20 @@ const MODE_TO_WIRE: Readonly<Record<string, string>> = Object.fromEntries(
   Object.entries(WIRE_TO_MODE).map(([wire, mode]) => [mode, wire])
 );
 
+/**
+ * Converts a Transitous wire mode string to a domain {@link TransitMode}.
+ *
+ * Unknown modes default to {@link TransitMode.Other}.
+ */
 export function transitModeFromWire(value: string): TransitMode {
   return WIRE_TO_MODE[value] ?? TransitMode.Other;
 }
 
+/**
+ * Converts a domain {@link TransitMode} to a Transitous wire mode string.
+ *
+ * Unknown modes default to `'OTHER'`.
+ */
 export function transitModeToWire(mode: TransitMode): string {
   return MODE_TO_WIRE[mode] ?? 'OTHER';
 }

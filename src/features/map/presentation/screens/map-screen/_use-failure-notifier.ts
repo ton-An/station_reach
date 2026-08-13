@@ -6,6 +6,10 @@ import {
   useStationSearchStore,
 } from '../../stores/use-map-stores';
 
+/**
+ * Watches for failures in search or departures and sends them to the in-app
+ * notification store to be displayed to the user.
+ */
 export function useFailureNotifier(): void {
   const departuresState = useStationDeparturesStore((store) => store.state);
   const searchState = useStationSearchStore((store) => store.state);

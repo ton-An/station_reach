@@ -1,9 +1,20 @@
+/**
+ * A station rendered on the map that was matched by a hit test.
+ */
 export interface StationCandidate {
   readonly stopId: string;
   readonly longitude: number;
   readonly latitude: number;
 }
 
+/**
+ * Extracts station candidates from GeoJSON features returned by a map query.
+ *
+ * Validates that each feature is a Point and has the required stopId property.
+ *
+ * @param features - GeoJSON features from a map hit test query.
+ * @returns Array of valid station candidates.
+ */
 export function toStationCandidates(
   features: readonly GeoJSON.Feature[]
 ): StationCandidate[] {
@@ -30,6 +41,18 @@ export function toStationCandidates(
   return candidates;
 }
 
+/**
+ * Finds the stop ID of the station nearest to target coordinates.
+ *
+ * Calculates distance using equirectangular approximation, scaling longitude
+ * by the cosine of latitude to account for meridian convergence.
+ *
+ * @param candidates - Stations to search.
+ * @param target - World coordinates [longitude, latitude] to find the nearest
+ * station to.
+ * @returns The stop ID of the nearest candidate, or undefined if the list is
+ * empty.
+ */
 export function nearestStopId(
   candidates: readonly StationCandidate[],
   target: readonly [longitude: number, latitude: number]

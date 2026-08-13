@@ -18,6 +18,10 @@ const BAR_HEIGHT = 36;
 
 const BAR_OPACITY = 0.85;
 
+/**
+ * Legend showing the travel time gradient used to color reachable stops on the
+ * map.
+ */
 export function TimeGradientLegend(): React.JSX.Element {
   const theme = useTheme();
 

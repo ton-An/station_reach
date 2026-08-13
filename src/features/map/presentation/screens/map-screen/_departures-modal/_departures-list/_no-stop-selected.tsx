@@ -4,6 +4,9 @@ import { ModalScrollView } from '@/core/components/draggable-modal';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 
+/**
+ * Placeholder message shown when no station is selected.
+ */
 export function NoStopSelected(): React.JSX.Element {
   const theme = useTheme();
 

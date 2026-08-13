@@ -42,6 +42,9 @@ export const unknownRequestFailure = {
   messageKey: 'unknownRequestFailureMessage',
 } as const satisfies FailureBase;
 
+/**
+ * Union of all possible failures that can come from network operations.
+ */
 export type NetworkingFailure =
   | typeof receiveTimeoutFailure
   | typeof requestCancelledFailure

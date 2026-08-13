@@ -9,6 +9,12 @@ interface ModalScrollViewProps {
   readonly children: React.ReactNode;
 }
 
+/**
+ * The scrolling body of a {@link DraggableModal}.
+ *
+ * It mounts everything it is given, so a body whose length comes from the API
+ * wants {@link ModalList} instead.
+ */
 export function ModalScrollView({
   contentContainerStyle,
   children,

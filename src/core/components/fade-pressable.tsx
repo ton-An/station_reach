@@ -13,11 +13,13 @@ interface FadePressableProps {
   readonly children: React.ReactNode;
   readonly onPress?: () => void;
   readonly onLongPress?: () => void;
+  /** How far to fade while held. A hover fades half that far. */
   readonly minOpacity?: number;
   readonly style?: StyleProp<ViewStyle>;
   readonly accessibilityLabel?: string;
 }
 
+/** A tap target that fades while pressed. */
 export function FadePressable({
   children,
   onPress,

@@ -6,10 +6,17 @@ import { useTheme } from '@/core/theme/use-theme';
 const SCRIM_OPACITY = 0.18;
 
 interface DialogScrimProps {
+  /** The dialog's shared entry progress, from 0 to 1. */
   readonly progress: Animated.Value;
   readonly onPress: () => void;
 }
 
+/**
+ * The dimmed backdrop, which also dismisses the dialog.
+ *
+ * It carries the whole entry fade, because {@link DialogCard} cannot be faded
+ * without losing its blur.
+ */
 export function DialogScrim({
   progress,
   onPress,

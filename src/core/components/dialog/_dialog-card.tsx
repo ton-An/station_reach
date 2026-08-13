@@ -21,6 +21,7 @@ const MAX_BODY_FRACTION = 0.55;
 const CARD_TINT_ALPHA = 0.58;
 
 interface DialogCardProps {
+  /** The dialog's shared entry progress, from 0 to 1. */
   readonly progress: Animated.Value;
   readonly title: string;
   readonly message: string;
@@ -28,6 +29,13 @@ interface DialogCardProps {
   readonly actions: readonly DialogAction[];
 }
 
+/**
+ * The dialog's blurred card.
+ *
+ * The card scales as it appears and never changes opacity. An ancestor below
+ * opacity 1 becomes the backdrop root that `backdrop-filter` samples, which
+ * leaves the blur with nothing behind it.
+ */
 export function DialogCard({
   progress,
   title,

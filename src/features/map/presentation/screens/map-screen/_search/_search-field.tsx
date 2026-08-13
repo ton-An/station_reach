@@ -13,6 +13,11 @@ const ICON_SIZE = 28;
 
 const SEARCH_DEBOUNCE_MS = 300;
 
+/**
+ * Text input for searching stations by name.
+ *
+ * Search is debounced to avoid excessive requests as the user types.
+ */
 export function SearchField(): React.JSX.Element {
   const theme = useTheme();
   const search = useStationSearchStore((store) => store.search);

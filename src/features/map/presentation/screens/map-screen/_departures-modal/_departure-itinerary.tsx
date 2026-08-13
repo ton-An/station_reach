@@ -13,6 +13,12 @@ import { useDepartureSelectionStore } from '../../../stores/use-map-stores';
 
 const PIN_ALPHA = 0.55;
 
+/**
+ * The complete itinerary of a selected departure.
+ *
+ * Shows every stop along the route with its travel time from the origin,
+ * and the duration between consecutive stops.
+ */
 export function DepartureItinerary(): React.JSX.Element | null {
   const theme = useTheme();
   const selection = useDepartureSelectionStore((store) => store.state);

@@ -7,6 +7,7 @@
 
 import { en, type TranslationKey } from './en';
 
+/** Looks up a user-facing string. */
 export function t(key: TranslationKey): string {
   return en[key];
 }

@@ -3,6 +3,7 @@ import type { PropsWithChildren } from 'react';
 
 import { t } from '@/core/i18n/translate';
 
+/** The HTML document wrapping the web build. */
 export default function Root({
   children,
 }: PropsWithChildren): React.JSX.Element {
