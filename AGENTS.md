@@ -140,7 +140,9 @@ Applies to docs, plans, commit messages, PRs and chat answers alike.
 - One claim per sentence. Cut any sentence that only sets up the next one.
 - A table, not prose, for anything that is a mapping.
 - No preamble, no restating the request, no closing summary that repeats the diff.
+- Answer at the length asked for; with none given, the fewest sentences that are complete.
 - No "comprehensive", "robust", "seamless", and no praise for the work.
+- Name a thing what the library, the platform or the team already calls it. Never coin a term.
 - A plan is numbered steps with paths. Reasoning goes in one context section, once.
 
 ## Verification
