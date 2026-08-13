@@ -32,14 +32,14 @@ export function Dialog({
 }: DialogProps): React.JSX.Element {
   const theme = useTheme();
 
-  const [progress] = useState(() => new Animated.Value(0));
+  const [entryAnimationValue] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     if (!isOpen) return;
 
-    progress.setValue(0);
+    entryAnimationValue.setValue(0);
 
-    const entry = Animated.timing(progress, {
+    const entry = Animated.timing(entryAnimationValue, {
       toValue: 1,
       duration: theme.durations.short,
       easing: Easing.out(Easing.cubic),
@@ -49,7 +49,7 @@ export function Dialog({
     entry.start();
 
     return () => entry.stop();
-  }, [isOpen, progress, theme.durations.short]);
+  }, [isOpen, entryAnimationValue, theme.durations.short]);
 
   return (
     <Modal
@@ -59,7 +59,10 @@ export function Dialog({
       onRequestClose={onClose}
     >
       <View style={{ flex: 1 }}>
-        <DialogScrim progress={progress} onPress={onClose} />
+        <DialogScrim
+          entryAnimationValue={entryAnimationValue}
+          onPress={onClose}
+        />
 
         <View
           style={[
@@ -68,7 +71,7 @@ export function Dialog({
           ]}
         >
           <DialogCard
-            progress={progress}
+            entryAnimationValue={entryAnimationValue}
             title={title}
             message={message}
             additionalContent={additionalContent}

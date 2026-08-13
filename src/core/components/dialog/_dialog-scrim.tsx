@@ -6,8 +6,8 @@ import { useTheme } from '@/core/theme/use-theme';
 const SCRIM_OPACITY = 0.18;
 
 interface DialogScrimProps {
-  /** The dialog's shared entry progress, from 0 to 1. */
-  readonly progress: Animated.Value;
+  /** The dialog's shared entry animation, from 0 to 1. */
+  readonly entryAnimationValue: Animated.Value;
   readonly onPress: () => void;
 }
 
@@ -18,7 +18,7 @@ interface DialogScrimProps {
  * without losing its blur.
  */
 export function DialogScrim({
-  progress,
+  entryAnimationValue,
   onPress,
 }: DialogScrimProps): React.JSX.Element {
   const theme = useTheme();
@@ -28,7 +28,7 @@ export function DialogScrim({
       <Animated.View
         style={{
           flex: 1,
-          opacity: progress,
+          opacity: entryAnimationValue,
           backgroundColor: withAlpha(
             theme.colors.backgroundContrast,
             SCRIM_OPACITY

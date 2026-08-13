@@ -29,7 +29,7 @@ export function NotificationCard({
   const insets = useSafeAreaInsets();
   const isWide = useIsWideLayout();
 
-  const [entry] = useState(() => new Animated.Value(0));
+  const [entryAnimationValue] = useState(() => new Animated.Value(0));
 
   // `opacity` and `transform` each make their element a backdrop root, which
   // has nothing behind it to blur, so the surface inside renders flat. Both
@@ -37,7 +37,7 @@ export function NotificationCard({
   const [hasEntered, setHasEntered] = useState(false);
 
   useEffect(() => {
-    Animated.timing(entry, {
+    Animated.timing(entryAnimationValue, {
       toValue: 1,
       duration: theme.durations.xxShort,
       easing: Easing.out(Easing.cubic),
@@ -45,7 +45,7 @@ export function NotificationCard({
     }).start(({ finished }) => {
       if (finished) setHasEntered(true);
     });
-  }, [entry, theme.durations.xxShort]);
+  }, [entryAnimationValue, theme.durations.xxShort]);
 
   return (
     <View
@@ -67,10 +67,10 @@ export function NotificationCard({
           ...(hasEntered
             ? {}
             : {
-                opacity: entry,
+                opacity: entryAnimationValue,
                 transform: [
                   {
-                    translateY: entry.interpolate({
+                    translateY: entryAnimationValue.interpolate({
                       inputRange: [0, 1],
                       outputRange: [-theme.spacing.xxSmall, 0],
                     }),

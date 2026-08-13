@@ -21,8 +21,8 @@ const MAX_BODY_FRACTION = 0.55;
 const CARD_TINT_ALPHA = 0.58;
 
 interface DialogCardProps {
-  /** The dialog's shared entry progress, from 0 to 1. */
-  readonly progress: Animated.Value;
+  /** The dialog's shared entry animation, from 0 to 1. */
+  readonly entryAnimationValue: Animated.Value;
   readonly title: string;
   readonly message: string;
   readonly additionalContent?: React.ReactNode;
@@ -37,7 +37,7 @@ interface DialogCardProps {
  * leaves the blur with nothing behind it.
  */
 export function DialogCard({
-  progress,
+  entryAnimationValue,
   title,
   message,
   additionalContent,
@@ -52,7 +52,7 @@ export function DialogCard({
         pointerEvents: 'auto',
         transform: [
           {
-            scale: progress.interpolate({
+            scale: entryAnimationValue.interpolate({
               inputRange: [0, 1],
               outputRange: [1.15, 1],
             }),
