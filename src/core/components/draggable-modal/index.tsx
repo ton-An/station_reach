@@ -11,8 +11,8 @@ import { useTheme } from '@/core/theme/use-theme';
 import { Gap } from '../gap';
 import { pointerEvents } from '../pointer-events';
 import { TranslucentSurface } from '../translucent-surface';
-import { Header } from './_header';
 import { ModalHandle } from './_modal-handle';
+import { ModalHeader } from './_modal-header';
 import {
   beginSheetDrag,
   DRAG_ACTIVATION_SLOP,
@@ -119,7 +119,7 @@ export function DraggableModal({
 
               <Gap size="medium" axis="vertical" />
 
-              <Header title={title} onBack={onBack} />
+              <ModalHeader title={title} onBack={onBack} />
             </View>
           </GestureDetector>
 

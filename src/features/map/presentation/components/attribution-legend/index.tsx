@@ -7,7 +7,7 @@ import { Icon } from '@/core/components/icon';
 import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
-import { OpenSourceCard } from './_open-source-card';
+import { AttributionOpenSourceCard } from './_attribution-open-source-card';
 import { attributionMessage } from './attributions';
 
 /**
@@ -38,7 +38,7 @@ export function AttributionLegend(): React.JSX.Element {
         onClose={() => setIsOpen(false)}
         title={t('attributions')}
         message={attributionMessage()}
-        additionalContent={<OpenSourceCard />}
+        additionalContent={<AttributionOpenSourceCard />}
         actions={[{ label: t('ok'), onPress: () => setIsOpen(false) }]}
       />
     </>

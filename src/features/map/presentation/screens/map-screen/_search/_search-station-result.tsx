@@ -6,7 +6,7 @@ import { Gap } from '@/core/components/gap';
 import { useTheme } from '@/core/theme/use-theme';
 import type { Station } from '../../../../domain/models/station';
 
-interface StationResultProps {
+interface SearchStationResultProps {
   readonly station: Station;
   readonly minOpacity: number;
   readonly onPress: () => void;
@@ -15,11 +15,11 @@ interface StationResultProps {
 /**
  * A single station search result showing the station name and location area.
  */
-export function StationResult({
+export function SearchStationResult({
   station,
   minOpacity,
   onPress,
-}: StationResultProps): React.JSX.Element {
+}: SearchStationResultProps): React.JSX.Element {
   const theme = useTheme();
 
   const area = describeArea(station);

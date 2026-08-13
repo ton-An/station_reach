@@ -12,7 +12,7 @@ import { REPOSITORY_URL } from './attributions';
 /**
  * Card linking to the Station Reach GitHub repository.
  */
-export function OpenSourceCard(): React.JSX.Element {
+export function AttributionOpenSourceCard(): React.JSX.Element {
   const theme = useTheme();
 
   return (

@@ -19,7 +19,7 @@ const HIGHLIGHT_OPACITY = 0.5;
  *
  * A highlight sweeps across the full width to indicate ongoing activity.
  */
-export function LoadingShimmer(): React.JSX.Element | null {
+export function SearchLoadingShimmer(): React.JSX.Element | null {
   const theme = useTheme();
 
   const isSearching = useStationSearchStore(

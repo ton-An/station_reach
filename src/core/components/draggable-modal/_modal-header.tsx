@@ -5,12 +5,15 @@ import { SmallIconButton } from '@/core/components/small-icon-button';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 
-interface HeaderProps {
+interface ModalHeaderProps {
   readonly title: string;
   readonly onBack?: () => void;
 }
 
-export function Header({ title, onBack }: HeaderProps): React.JSX.Element {
+export function ModalHeader({
+  title,
+  onBack,
+}: ModalHeaderProps): React.JSX.Element {
   const theme = useTheme();
 
   return (

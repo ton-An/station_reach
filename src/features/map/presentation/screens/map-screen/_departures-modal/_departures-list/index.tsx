@@ -10,7 +10,7 @@ import {
   useStationSelectionStore,
 } from '../../../../stores/use-map-stores';
 import { DepartureRow } from './_departure-row';
-import { NoStopSelected } from './_no-stop-selected';
+import { DeparturesNoStopSelected } from './_departures-no-stop-selected';
 
 const NO_DEPARTURES: readonly Departure[] = [];
 
@@ -50,7 +50,7 @@ export function DeparturesList(): React.JSX.Element {
     ]
   );
 
-  if (!isSelected) return <NoStopSelected />;
+  if (!isSelected) return <DeparturesNoStopSelected />;
 
   return (
     <ModalList

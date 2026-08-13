@@ -7,7 +7,7 @@ import { useTheme } from '@/core/theme/use-theme';
 /**
  * Placeholder message shown when no station is selected.
  */
-export function NoStopSelected(): React.JSX.Element {
+export function DeparturesNoStopSelected(): React.JSX.Element {
   const theme = useTheme();
 
   return (

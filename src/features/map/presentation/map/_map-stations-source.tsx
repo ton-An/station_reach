@@ -23,7 +23,7 @@ const HITBOX = {
   height: STATION_HIT_RADIUS * 2,
 };
 
-interface StationsSourceProps {
+interface MapStationsSourceProps {
   readonly stations: StationFeatures;
   readonly onPress: (event: OnPressEvent) => void;
 }
@@ -31,10 +31,10 @@ interface StationsSourceProps {
 /**
  * Renders reachable station markers with labels on the map.
  */
-export const StationsSource = memo(function StationsSource({
+export const MapStationsSource = memo(function MapStationsSource({
   stations,
   onPress,
-}: StationsSourceProps) {
+}: MapStationsSourceProps) {
   const theme = useTheme();
 
   return (

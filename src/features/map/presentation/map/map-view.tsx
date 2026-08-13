@@ -11,13 +11,13 @@ import { GestureDetector } from 'react-native-gesture-handler';
 
 import { useTheme } from '@/core/theme/use-theme';
 import { useMapTapGesture } from './_map-tap-gesture';
-import { RoutesSource } from './_routes-source';
+import { MapRoutesSource } from './_map-routes-source';
 import {
   stationAtPoint,
   toStationHit,
   type StationHit,
 } from './_station-hit-test';
-import { StationsSource } from './_stations-source';
+import { MapStationsSource } from './_map-stations-source';
 import {
   BASEMAP_STYLE_URL,
   INITIAL_CENTER,
@@ -116,9 +116,9 @@ export const MapView = memo(function MapView({
             minZoomLevel={MIN_ZOOM}
           />
 
-          <RoutesSource routes={routes} />
+          <MapRoutesSource routes={routes} />
 
-          <StationsSource stations={stations} onPress={handleSourcePress} />
+          <MapStationsSource stations={stations} onPress={handleSourcePress} />
         </MapLibreMapView>
       </View>
     </GestureDetector>

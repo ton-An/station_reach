@@ -13,16 +13,16 @@ import {
 } from './map-config';
 import type { RouteFeatures } from './map-features';
 
-interface RoutesSourceProps {
+interface MapRoutesSourceProps {
   readonly routes: RouteFeatures;
 }
 
 /**
  * Renders departure route lines on the map.
  */
-export const RoutesSource = memo(function RoutesSource({
+export const MapRoutesSource = memo(function MapRoutesSource({
   routes,
-}: RoutesSourceProps) {
+}: MapRoutesSourceProps) {
   return (
     <ShapeSource id={SOURCE_IDS.routes} shape={routes}>
       <LineLayer

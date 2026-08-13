@@ -6,7 +6,7 @@ import {
   useStationDeparturesStore,
   useStationSearchStore,
 } from '../../../stores/use-map-stores';
-import { StationResult } from './_station-result';
+import { SearchStationResult } from './_search-station-result';
 
 const MAX_HEIGHT = 250;
 
@@ -41,7 +41,7 @@ export function SearchResults(): React.JSX.Element | null {
       keyboardShouldPersistTaps="handled"
     >
       {stations.map((station, index) => (
-        <StationResult
+        <SearchStationResult
           key={station.id}
           station={station}
           minOpacity={
