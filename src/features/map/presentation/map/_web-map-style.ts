@@ -95,17 +95,23 @@ export function addStationLayers(
   });
 }
 
+interface SyncSourcesParams {
+  readonly instance: MapLibreMap;
+  readonly stations: StationFeatures;
+  readonly routes: RouteFeatures;
+}
+
 /**
  * Pushes the current feature collections into the map's sources.
  *
  * `setData` takes the object as it stands, so unlike the native binding this
  * costs nothing per station — there is no serialisation to memoise away.
  */
-export function syncSources(
-  instance: MapLibreMap,
-  stations: StationFeatures,
-  routes: RouteFeatures
-): void {
+export function syncSources({
+  instance,
+  stations,
+  routes,
+}: SyncSourcesParams): void {
   instance.getSource<GeoJSONSource>(SOURCE_IDS.stations)?.setData(stations);
   instance.getSource<GeoJSONSource>(SOURCE_IDS.routes)?.setData(routes);
 }

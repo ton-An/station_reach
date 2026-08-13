@@ -97,7 +97,7 @@ export const MapView = memo(function MapView({
       const instance = map.current;
       if (instance === null) return;
 
-      void stationAtPoint(instance, x, y).then((hit) => {
+      void stationAtPoint({ map: instance, x, y }).then((hit) => {
         if (hit !== undefined) applyHit(hit);
       });
     },

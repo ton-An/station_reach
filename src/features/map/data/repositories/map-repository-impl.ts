@@ -20,9 +20,9 @@ export function createMapRepository(
         toFailure
       ),
 
-    getStationDeparturesByMode: (station, modes, amount) =>
+    getStationDeparturesByMode: (query) =>
       ResultAsync.fromPromise(
-        dataSource.getStationDeparturesByMode(station, modes, amount),
+        dataSource.getStationDeparturesByMode(query),
         toFailure
       ),
   };

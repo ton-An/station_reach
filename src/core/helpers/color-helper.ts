@@ -1,9 +1,9 @@
 /** An `rgb(r, g, b)` / `rgba(r, g, b, a)` colour, split into components. */
 interface Rgba {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
+  readonly r: number;
+  readonly g: number;
+  readonly b: number;
+  readonly a: number;
 }
 
 const RGB_PATTERN =
@@ -93,6 +93,15 @@ export function withAlpha(color: string, alpha: number): string {
   return formatRgba({ ...parseRgba(color), a: alpha });
 }
 
+interface FlattenOntoParams {
+  /** The colour to flatten; its own alpha is ignored. */
+  readonly color: string;
+  /** The opaque colour behind it. */
+  readonly backdrop: string;
+  /** How much of `color` survives, 0..1. */
+  readonly alpha: number;
+}
+
 /**
  * Flattens a translucent colour onto an opaque backdrop.
  *
@@ -118,11 +127,7 @@ export function flattenOnto({
   color,
   backdrop,
   alpha,
-}: {
-  color: string;
-  backdrop: string;
-  alpha: number;
-}): string {
+}: FlattenOntoParams): string {
   const top = parseRgba(color);
   const bottom = parseRgba(backdrop);
   const mix = (over: number, under: number) =>
@@ -168,19 +173,21 @@ function durationToGradientPosition(durationMinutes: number): number {
   return bucket / GRADIENT_BUCKETS;
 }
 
-/**
- * Returns the travel-time colour for a duration.
- *
- * Parameters:
- * - gradient: the ramp to sample, normally `theme.colors.timelineGradient`
- * - durationMinutes: travel time in minutes
- * - alpha: optional opacity to apply
- */
-export function colorForDuration(
-  gradient: readonly string[],
-  durationMinutes: number,
-  alpha?: number
-): string {
+export interface ColorForDurationParams {
+  /** The ramp to sample, normally `theme.colors.timelineGradient`. */
+  readonly gradient: readonly string[];
+  /** Travel time in minutes. */
+  readonly durationMinutes: number;
+  /** Optional opacity to apply. */
+  readonly alpha?: number;
+}
+
+/** Returns the travel-time colour for a duration. */
+export function colorForDuration({
+  gradient,
+  durationMinutes,
+  alpha,
+}: ColorForDurationParams): string {
   const color = interpolateColors(
     gradient,
     durationToGradientPosition(durationMinutes)

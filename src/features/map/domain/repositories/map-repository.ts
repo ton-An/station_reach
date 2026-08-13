@@ -5,6 +5,14 @@ import type { Departure } from '../models/departure';
 import type { Station } from '../models/station';
 import type { TransitMode } from '../models/transit-mode';
 
+/** The arguments of a departures request. */
+export interface DeparturesQuery {
+  readonly station: Station;
+  readonly modes: readonly TransitMode[];
+  /** How many departures to request. */
+  readonly amount: number;
+}
+
 export interface MapRepository {
   /**
    * Searches for stations by name.
@@ -40,8 +48,6 @@ export interface MapRepository {
    * - any networking failure
    */
   getStationDeparturesByMode(
-    station: Station,
-    modes: readonly TransitMode[],
-    amount: number
+    query: DeparturesQuery
   ): ResultAsync<Departure[], Failure>;
 }

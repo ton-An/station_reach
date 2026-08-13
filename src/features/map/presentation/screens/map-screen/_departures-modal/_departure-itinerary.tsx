@@ -65,11 +65,11 @@ function ItineraryStop({ stop }: ItineraryStopProps) {
       icon={
         <ListIcon
           icon="mapPin"
-          color={colorForDuration(
-            theme.colors.timelineGradient,
-            stop.durationMinutes,
-            PIN_ALPHA
-          )}
+          color={colorForDuration({
+            gradient: theme.colors.timelineGradient,
+            durationMinutes: stop.durationMinutes,
+            alpha: PIN_ALPHA,
+          })}
         />
       }
     />
@@ -83,7 +83,10 @@ interface ItineraryLegProps {
 }
 
 /** The dashed run between two stops, labelled with the hop's own duration. */
-function ItineraryLeg({ from, to }: ItineraryLegProps) {
+function ItineraryLeg({
+  from,
+  to,
+}: ItineraryLegProps): React.JSX.Element | null {
   const theme = useTheme();
 
   if (to === undefined) return null;

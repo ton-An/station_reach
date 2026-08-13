@@ -90,10 +90,10 @@ export const DepartureRow = memo(function DepartureRow({
               theme.text.body,
               {
                 flex: 1,
-                color: colorForDuration(
-                  theme.colors.timelineGradient,
-                  durationMinutes
-                ),
+                color: colorForDuration({
+                  gradient: theme.colors.timelineGradient,
+                  durationMinutes,
+                }),
               },
             ]}
           >

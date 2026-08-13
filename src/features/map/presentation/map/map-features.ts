@@ -91,7 +91,11 @@ export function buildStationFeatures(
         stopId: stop.id,
         name: stop.name,
         durationMinutes: stop.durationMinutes,
-        color: colorForDuration(gradient, stop.durationMinutes, STATION_ALPHA),
+        color: colorForDuration({
+          gradient,
+          durationMinutes: stop.durationMinutes,
+          alpha: STATION_ALPHA,
+        }),
       },
     })
   );
@@ -144,7 +148,11 @@ export function buildRouteFeatures(
         },
         properties: {
           departureId: departure.id,
-          color: colorForDuration(gradient, to.durationMinutes, ROUTE_ALPHA),
+          color: colorForDuration({
+            gradient,
+            durationMinutes: to.durationMinutes,
+            alpha: ROUTE_ALPHA,
+          }),
           offset,
         },
       });

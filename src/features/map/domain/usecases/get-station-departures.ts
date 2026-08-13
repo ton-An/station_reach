@@ -72,16 +72,16 @@ export function createGetStationDepartures(
     ResultAsync.fromSafePromise(
       // Independent requests — run them together rather than back to back.
       Promise.all([
-        mapRepository.getStationDeparturesByMode(
+        mapRepository.getStationDeparturesByMode({
           station,
-          LONG_DISTANCE_MODES,
-          LONG_DISTANCE_AMOUNT
-        ),
-        mapRepository.getStationDeparturesByMode(
+          modes: LONG_DISTANCE_MODES,
+          amount: LONG_DISTANCE_AMOUNT,
+        }),
+        mapRepository.getStationDeparturesByMode({
           station,
-          REGIONAL_MODES,
-          REGIONAL_AMOUNT
-        ),
+          modes: REGIONAL_MODES,
+          amount: REGIONAL_AMOUNT,
+        }),
       ])
     ).andThen(([longDistance, regional]) =>
       mergeDepartures(longDistance, regional)
@@ -209,7 +209,7 @@ function sortDepartures(departures: readonly Departure[]): Departure[] {
       return finalDuration(a) - finalDuration(b);
     }
 
-    return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+    return a.name < b.name ? -1 : 1;
   });
 }
 

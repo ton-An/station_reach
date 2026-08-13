@@ -83,7 +83,7 @@ export const MapView = memo(function MapView({
         haloColor: theme.colors.background,
       });
       isStyleLoaded.current = true;
-      syncSources(instance, stations, routes);
+      syncSources({ instance, stations, routes });
     };
 
     if (instance.isStyleLoaded()) {
@@ -135,7 +135,7 @@ export const MapView = memo(function MapView({
 
   useEffect(() => {
     if (map.current === null || !isStyleLoaded.current) return;
-    syncSources(map.current, stations, routes);
+    syncSources({ instance: map.current, stations, routes });
   }, [stations, routes]);
 
   useEffect(() => {

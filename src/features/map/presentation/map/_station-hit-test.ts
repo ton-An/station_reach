@@ -56,6 +56,13 @@ export function toStationHit(
     : { kind: 'station', stopId };
 }
 
+interface StationAtPointParams {
+  readonly map: MapViewRef;
+  /** Where the touch landed, in view points. */
+  readonly x: number;
+  readonly y: number;
+}
+
 /**
  * Resolves a point on the native map to whatever is under it.
  *
@@ -70,11 +77,11 @@ export function toStationHit(
  * - the hit, or undefined if the map could not place the touch — which means
  *   "leave the selection alone", not "the background was tapped"
  */
-export async function stationAtPoint(
-  map: MapViewRef,
-  x: number,
-  y: number
-): Promise<StationHit | undefined> {
+export async function stationAtPoint({
+  map,
+  x,
+  y,
+}: StationAtPointParams): Promise<StationHit | undefined> {
   const [hit, target] = await Promise.all([
     map.queryRenderedFeaturesInRect(hitRect(x, y), undefined, [
       LAYER_IDS.stationCircles,

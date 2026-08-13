@@ -2,7 +2,7 @@ import { FailureError, noDeparturesFoundFailure } from '@/core/failures';
 import { getJson } from '@/core/http/http-client';
 import type { Departure } from '../../domain/models/departure';
 import type { Station } from '../../domain/models/station';
-import type { TransitMode } from '../../domain/models/transit-mode';
+import type { DeparturesQuery } from '../../domain/repositories/map-repository';
 import { toDeparture, toStation } from './transitous-mappers';
 import { transitModeToWire } from './transitous-modes';
 import type { GeocodeStation, StopTimesResponse } from './transitous-types';
@@ -11,11 +11,19 @@ const BASE_URL = 'https://api.transitous.org';
 
 export interface MapRemoteDataSource {
   searchStations(query: string, signal?: AbortSignal): Promise<Station[]>;
-  getStationDeparturesByMode(
-    station: Station,
-    modes: readonly TransitMode[],
-    amount: number
-  ): Promise<Departure[]>;
+
+  /**
+   * Gets the departures leaving a station, restricted to a set of modes.
+   *
+   * One request. `amount` is large enough to cover a station's whole departure
+   * board in a single page, so there is nothing to page through — the cursor is
+   * only read to tell an empty board apart from a full one.
+   *
+   * @returns The departures found.
+   * @throws {@link FailureError} wrapping {@link noDeparturesFoundFailure}, or
+   * `HttpError`.
+   */
+  getStationDeparturesByMode(query: DeparturesQuery): Promise<Departure[]>;
 }
 
 /**
@@ -53,30 +61,11 @@ async function searchStations(
   return stations.map(toStation);
 }
 
-/**
- * Gets the departures leaving a station, restricted to a set of modes.
- *
- * One request. `amount` is large enough to cover a station's whole departure
- * board in a single page, so there is nothing to page through — the cursor is
- * only read to tell an empty board apart from a full one.
- *
- * Parameters:
- * - station: the origin station
- * - modes: the modes to include
- * - amount: how many departures to request
- *
- * Returns:
- * - the departures found
- *
- * Throws:
- * - {@link FailureError} wrapping `noDeparturesFoundFailure`
- * - `HttpError`
- */
-async function getStationDeparturesByMode(
-  station: Station,
-  modes: readonly TransitMode[],
-  amount: number
-): Promise<Departure[]> {
+async function getStationDeparturesByMode({
+  station,
+  modes,
+  amount,
+}: DeparturesQuery): Promise<Departure[]> {
   const modeParam = modes.map(transitModeToWire).join(',');
 
   const url =

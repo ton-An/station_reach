@@ -21,11 +21,9 @@ export type HttpErrorKind =
 export class HttpError extends Error {
   constructor(
     readonly kind: HttpErrorKind,
-    readonly status?: number,
-    readonly body?: unknown,
-    options?: { cause?: unknown }
+    options?: { readonly cause?: unknown }
   ) {
-    super(`HTTP ${kind}${status === undefined ? '' : ` (${status})`}`, options);
+    super(`HTTP ${kind}`, options);
     this.name = 'HttpError';
   }
 }
@@ -85,17 +83,13 @@ export async function getJson<T = unknown>(
     });
 
     if (!response.ok) {
-      throw new HttpError(
-        'badStatus',
-        response.status,
-        await safeJson(response)
-      );
+      throw new HttpError('badStatus');
     }
 
     try {
       return (await response.json()) as T;
     } catch (cause) {
-      throw new HttpError('badResponse', response.status, undefined, { cause });
+      throw new HttpError('badResponse', { cause });
     }
   } catch (error) {
     throw toHttpError(error, signal);
@@ -105,32 +99,22 @@ export async function getJson<T = unknown>(
   }
 }
 
-/** Decodes an error response body, tolerating non-JSON payloads. */
-async function safeJson(response: Response): Promise<unknown> {
-  try {
-    return await response.json();
-  } catch {
-    return undefined;
-  }
-}
-
-/** Normalises anything `fetch` can reject with into an {@link HttpError}. */
 function toHttpError(error: unknown, callerSignal?: AbortSignal): HttpError {
   if (error instanceof HttpError) return error;
 
   if (isAbort(error)) {
     // The caller cancelling and our own timeout both surface as aborts.
     return callerSignal?.aborted
-      ? new HttpError('cancelled', undefined, undefined, { cause: error })
-      : new HttpError('timeout', undefined, undefined, { cause: error });
+      ? new HttpError('cancelled', { cause: error })
+      : new HttpError('timeout', { cause: error });
   }
 
   // `fetch` rejects with a TypeError for DNS, offline and TLS problems alike.
   if (error instanceof TypeError) {
-    return new HttpError('connection', undefined, undefined, { cause: error });
+    return new HttpError('connection', { cause: error });
   }
 
-  return new HttpError('unknown', undefined, undefined, { cause: error });
+  return new HttpError('unknown', { cause: error });
 }
 
 function isAbort(error: unknown): boolean {
