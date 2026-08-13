@@ -8,15 +8,11 @@ import { ListItem } from '@/core/components/list-item';
 import { colorForDuration } from '@/core/helpers/color-helper';
 import { formatDuration } from '@/core/helpers/duration-helper';
 import { useTheme } from '@/core/theme/use-theme';
-import type { Departure } from '../../../../domain/models/departure';
 import type { Stop } from '../../../../domain/models/station';
+import { useDepartureSelectionStore } from '../../../stores/use-map-stores';
 
 /** How much of the ramp survives in the pin behind each stop's icon. */
 const PIN_ALPHA = 0.55;
-
-interface DepartureItineraryProps {
-  readonly departure: Departure | undefined;
-}
 
 /**
  * Every stop along a departure, with the running travel time.
@@ -24,10 +20,13 @@ interface DepartureItineraryProps {
  * Between each pair of stops the leg's own duration is shown as `+ 12m`, so a
  * long gap between two stations is visible rather than implied.
  */
-export function DepartureItinerary({ departure }: DepartureItineraryProps) {
+export function DepartureItinerary(): React.JSX.Element | null {
   const theme = useTheme();
+  const selection = useDepartureSelectionStore((store) => store.state);
 
-  if (departure === undefined) return null;
+  if (selection.status !== 'selected') return null;
+
+  const { departure } = selection;
 
   return (
     <ModalScrollView

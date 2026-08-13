@@ -57,15 +57,7 @@ export function DeparturesModal() {
         <SlidingPanes
           isDetailOpen={isItineraryOpen}
           primary={<DeparturesList />}
-          detail={
-            <DepartureItinerary
-              departure={
-                departureSelection.status === 'selected'
-                  ? departureSelection.departure
-                  : undefined
-              }
-            />
-          }
+          detail={<DepartureItinerary />}
         />
       </DraggableModal>
     </View>
