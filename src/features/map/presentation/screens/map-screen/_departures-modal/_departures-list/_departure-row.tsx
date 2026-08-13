@@ -11,29 +11,18 @@ import { useTheme } from '@/core/theme/use-theme';
 import type { Departure } from '../../../../../domain/models/departure';
 import { TransitModeIcon } from '../../../../components/transit-mode-icon';
 
-/** How much of the row's accent colour survives behind the mode glyph. */
 const ICON_BACKGROUND_ALPHA = 0.4;
 
 const MODE_ICON_SIZE = 20;
 
 interface DepartureRowProps {
   readonly departure: Departure;
-  /** Time to the *selected* stop, not to the end of the trip. */
   readonly durationMinutes: number;
-  /** Fills the circle behind the mode glyph. */
   readonly accentColor: string;
   readonly showDivider: boolean;
-  /** Takes the departure, so the list can hand every row one stable callback. */
   readonly onPress: (departure: Departure) => void;
 }
 
-/**
- * One departure in the list.
- *
- * Memoised: the list is virtualised but its rows still re-render whenever the
- * sheet around them does, and each one draws two SVG glyphs. Every prop is a
- * primitive or a stable reference, so the memo actually holds.
- */
 export const DepartureRow = memo(function DepartureRow({
   departure,
   durationMinutes,

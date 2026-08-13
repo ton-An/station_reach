@@ -1,4 +1,3 @@
-/** English copy. Ported from the Flutter `app_en.arb`. */
 export const en = {
   // -- General -- //
   back: 'Back',

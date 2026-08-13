@@ -9,11 +9,6 @@ export type SearchStations = (
   signal?: AbortSignal
 ) => ResultAsync<Station[], Failure>;
 
-/**
- * Searches for stations by name.
- *
- * @returns The matching stations, or a {@link NetworkingFailure}.
- */
 export function createSearchStations(
   mapRepository: MapRepository
 ): SearchStations {

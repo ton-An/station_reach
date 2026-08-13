@@ -1,7 +1,6 @@
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-/** Why an HTTP call failed. */
 export type HttpErrorKind =
   | 'timeout'
   | 'cancelled'
@@ -10,12 +9,6 @@ export type HttpErrorKind =
   | 'badResponse'
   | 'unknown';
 
-/**
- * A transport-level error.
- *
- * Thrown by {@link getJson} and caught in the repository layer, which converts
- * it into a `Failure`.
- */
 export class HttpError extends Error {
   constructor(
     readonly kind: HttpErrorKind,
@@ -30,7 +23,6 @@ const DEFAULT_TIMEOUT_MS = 20_000;
 const CONTACT_EMAIL = 'anton@antons-webfabrik.eu';
 
 function requestHeaders(): Record<string, string> {
-  // Browsers forbid setting User-Agent, so web sends the request without it.
   if (Platform.OS === 'web') return { Accept: 'application/json' };
 
   const version = Constants.expoConfig?.version ?? '0.0.0';
@@ -41,13 +33,6 @@ function requestHeaders(): Record<string, string> {
   };
 }
 
-/**
- * Performs a GET request and decodes the JSON body.
- *
- * @param url - The fully-qualified request URL.
- * @param signal - Optional caller-owned abort signal.
- * @throws {@link HttpError}
- */
 export async function getJson<T = unknown>(
   url: string,
   signal?: AbortSignal
@@ -89,13 +74,11 @@ function toHttpError(error: unknown, callerSignal?: AbortSignal): HttpError {
   if (error instanceof HttpError) return error;
 
   if (isAbort(error)) {
-    // The caller cancelling and our own timeout both surface as aborts.
     return callerSignal?.aborted
       ? new HttpError('cancelled', { cause: error })
       : new HttpError('timeout', { cause: error });
   }
 
-  // `fetch` rejects with a TypeError for DNS, offline and TLS problems alike.
   if (error instanceof TypeError) {
     return new HttpError('connection', { cause: error });
   }

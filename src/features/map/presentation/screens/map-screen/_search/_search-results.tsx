@@ -8,21 +8,11 @@ import {
 } from '../../../stores/use-map-stores';
 import { StationResult } from './_station-result';
 
-/** Tallest the results list grows before it scrolls. */
 const MAX_HEIGHT = 250;
 
-/**
- * Alternating press depths, which give the list a subtle zebra rhythm as you
- * run down it — straight from the Flutter original.
- */
 const EVEN_ROW_MIN_OPACITY = 0.1;
 const ODD_ROW_MIN_OPACITY = 0.6;
 
-/**
- * The station hits for the current query.
- *
- * Picking one loads its reachability and collapses the list.
- */
 export function SearchResults(): React.JSX.Element | null {
   const state = useStationSearchStore((store) => store.state);
   const collapse = useStationSearchStore((store) => store.collapse);

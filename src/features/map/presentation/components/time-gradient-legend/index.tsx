@@ -16,22 +16,8 @@ import { GradientLabel } from './_gradient-label';
 const BAR_WIDTH = 250;
 const BAR_HEIGHT = 36;
 
-/**
- * How much of the ramp survives against the surface behind it.
- *
- * Baked into the stops rather than applied as alpha, and the bar must stay
- * fully opaque — see {@link flattenOnto} for why a translucent ramp grows a
- * hairline at every stop in Firefox. The bar is therefore opaque: the key to
- * the colours should not shift with whatever is under it.
- */
 const BAR_OPACITY = 0.85;
 
-/**
- * The key to the travel-time colours.
- *
- * Labelled at 30 minutes, 9 hours and 18h+ — the ends of the ramp and its
- * midpoint. Anything beyond 18 hours saturates, which is what the `+` means.
- */
 export function TimeGradientLegend(): React.JSX.Element {
   const theme = useTheme();
 

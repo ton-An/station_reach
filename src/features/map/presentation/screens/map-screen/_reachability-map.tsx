@@ -16,15 +16,6 @@ import {
   useStationSelectionStore,
 } from '../../stores/use-map-stores';
 
-/**
- * The map, and everything drawn on it.
- *
- * Deliberately its own component rather than part of the screen: it subscribes
- * to the two stores the map actually depends on, so the chrome above it — a
- * keystroke in the search field, a notification arriving — never re-renders the
- * map subtree at all. {@link MapView} memoises, but reaching that memo still
- * costs a pass over every derivation below.
- */
 export function ReachabilityMap(): React.JSX.Element {
   const theme = useTheme();
 
@@ -60,8 +51,6 @@ export function ReachabilityMap(): React.JSX.Element {
     [stationSelection, theme.colors.timelineGradient]
   );
 
-  // A fresh object identity re-issues the camera move, so picking the same
-  // station twice still recentres.
   const focus = useMemo<MapFocus | undefined>(
     () =>
       departuresState.status === 'loaded'
@@ -76,9 +65,6 @@ export function ReachabilityMap(): React.JSX.Element {
     [departuresState]
   );
 
-  // A new reachability set invalidates whatever was selected against the old
-  // one: the stop may not exist on this map, and the itinerary certainly does
-  // not belong to it.
   const loadedStationId =
     departuresState.status === 'loaded'
       ? departuresState.station.id

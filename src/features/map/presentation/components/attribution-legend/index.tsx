@@ -10,12 +10,6 @@ import { useTheme } from '@/core/theme/use-theme';
 import { OpenSourceCard } from './_open-source-card';
 import { attributionMessage } from './attributions';
 
-/**
- * The small info button that opens the attributions.
- *
- * ! The icon may stay small, but it must stay present and reachable — the
- * licences behind it require the credits to be available wherever the map is.
- */
 export function AttributionLegend(): React.JSX.Element {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);

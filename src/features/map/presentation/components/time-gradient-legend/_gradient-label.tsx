@@ -6,7 +6,6 @@ interface GradientLabelProps {
   readonly text: string;
 }
 
-/** A tick label sitting on top of the gradient bar. */
 export function GradientLabel({ text }: GradientLabelProps): React.JSX.Element {
   const theme = useTheme();
 

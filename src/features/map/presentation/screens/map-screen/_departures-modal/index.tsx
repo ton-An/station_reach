@@ -16,12 +16,6 @@ import {
 import { DepartureItinerary } from './_departure-itinerary';
 import { DeparturesList } from './_departures-list';
 
-/**
- * The departures sheet, and the itinerary behind it.
- *
- * The two panes slide horizontally: the list is the root, and picking a
- * departure pushes its itinerary in from the right.
- */
 export function DeparturesModal(): React.JSX.Element {
   const theme = useTheme();
   const isWide = useIsWideLayout();
@@ -50,7 +44,6 @@ export function DeparturesModal(): React.JSX.Element {
       <DraggableModal
         title={modalTitle(stationSelection, departureSelection)}
         onBack={isItineraryOpen ? deselectDeparture : undefined}
-        // On a wide screen the legends sit beside the map instead.
         legend={isWide ? undefined : <MapLegends />}
       >
         <SlidingPanes
@@ -63,12 +56,6 @@ export function DeparturesModal(): React.JSX.Element {
   );
 }
 
-/**
- * Names the modal after whatever the user is currently looking at.
- *
- * The stop wins over the itinerary, matching the Flutter original: selecting a
- * new stop on the map is what most recently changed under the user.
- */
 function modalTitle(
   stationSelection: StationSelectionState,
   departureSelection: DepartureSelectionState

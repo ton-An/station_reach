@@ -18,7 +18,6 @@ import {
 } from './map-config';
 import type { StationFeatures } from './map-features';
 
-/** Hoisted, so a fresh object never defeats the memo below. */
 const HITBOX = {
   width: STATION_HIT_RADIUS * 2,
   height: STATION_HIT_RADIUS * 2,
@@ -26,20 +25,9 @@ const HITBOX = {
 
 interface StationsSourceProps {
   readonly stations: StationFeatures;
-  /** Has to be referentially stable, or the memo below buys nothing. */
   readonly onPress: (event: OnPressEvent) => void;
 }
 
-/**
- * The reachable stations: one dot and one label each.
- *
- * Deliberately its own memoised component rather than a source inline in the
- * map. `ShapeSource` re-serialises its entire feature collection to JSON on
- * every render, and it cannot memoise that away itself — its children are
- * fresh elements each time, so its own `memo` never holds. Selecting a stop
- * changes only the routes, and re-stringifying several thousand stations
- * alongside them blocked the JS thread for a string React then diffed away.
- */
 export const StationsSource = memo(function StationsSource({
   stations,
   onPress,

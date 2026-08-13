@@ -17,13 +17,6 @@ interface RoutesSourceProps {
   readonly routes: RouteFeatures;
 }
 
-/**
- * The legs of the departures calling at the selected stop.
- *
- * Memoised for the same reason `StationsSource` is: this is the half of
- * the map that actually changes on a tap, and keeping the two apart means only
- * this one pays to serialise itself again.
- */
 export const RoutesSource = memo(function RoutesSource({
   routes,
 }: RoutesSourceProps) {
@@ -36,8 +29,6 @@ export const RoutesSource = memo(function RoutesSource({
           lineWidth: ROUTE_LINE_WIDTH,
           lineCap: 'round',
           lineJoin: 'round',
-          // maplibre-gl and the native binding name the same expression shape
-          // differently.
           lineOffset: LINE_OFFSET_EXPRESSION as Expression,
         }}
       />

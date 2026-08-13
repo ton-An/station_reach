@@ -9,7 +9,6 @@ import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 import { REPOSITORY_URL } from './attributions';
 
-/** The gradient-bordered "proudly open source" card inside the dialog. */
 export function OpenSourceCard(): React.JSX.Element {
   const theme = useTheme();
 

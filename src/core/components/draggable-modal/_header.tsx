@@ -7,11 +7,9 @@ import { useTheme } from '@/core/theme/use-theme';
 
 interface HeaderProps {
   readonly title: string;
-  /** Shows a back button when given. Absent means this is the root pane. */
   readonly onBack?: () => void;
 }
 
-/** The sheet's title bar, a filled pill rather than bare text. */
 export function Header({ title, onBack }: HeaderProps): React.JSX.Element {
   const theme = useTheme();
 

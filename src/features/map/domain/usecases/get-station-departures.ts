@@ -6,12 +6,6 @@ import type { Station, Stop } from '../models/station';
 import { TransitMode } from '../models/transit-mode';
 import type { MapRepository } from '../repositories/map-repository';
 
-/**
- * Long-distance services, requested in bulk.
- *
- * These trips have few stops but reach far, so a high amount is cheap and buys
- * a much larger reachable area.
- */
 const LONG_DISTANCE_MODES = [
   TransitMode.Coach,
   TransitMode.HighspeedRail,
@@ -21,7 +15,6 @@ const LONG_DISTANCE_MODES = [
 
 const LONG_DISTANCE_AMOUNT = 1000;
 
-/** Everything local. Dense and stop-heavy, so a smaller amount keeps it fast. */
 const REGIONAL_MODES = [
   TransitMode.Tram,
   TransitMode.Subway,
@@ -42,24 +35,6 @@ export type GetStationDepartures = (
   station: Station
 ) => ResultAsync<Departure[], Failure>;
 
-/**
- * Gets everywhere a station can take you.
- *
- * Long-distance and regional departures are fetched as two independent requests
- * and merged. **Both are required**: if either fails, so does this. A map drawn
- * from half the data looks exactly as complete as one drawn from all of it, and
- * returning the departures and the failure together would only move the problem
- * to every caller — so there is one answer, and it is either the whole map or
- * the reason there isn't one.
- *
- * A bucket that simply has nothing to offer is not a failure: plenty of stations
- * serve exactly one kind of service, and the other bucket is then used alone.
- *
- * @param station - The origin station.
- * @returns The deduplicated departures, sorted by name and then travel time,
- * {@link noDeparturesFoundFailure} when neither bucket had anything, or a
- * {@link NetworkingFailure} from whichever bucket failed to fetch.
- */
 export function createGetStationDepartures(
   mapRepository: MapRepository
 ): GetStationDepartures {
@@ -82,14 +57,6 @@ export function createGetStationDepartures(
     );
 }
 
-/**
- * Combines the two mode buckets.
- *
- * Either bucket failing to fetch fails the merge. The Flutter original failed
- * the whole load on a long-distance failure but swallowed a regional one, so a
- * flaky connection could draw a complete-looking map missing every tram, bus
- * and S-Bahn.
- */
 function mergeDepartures(
   longDistance: Result<Departure[], Failure>,
   regional: Result<Departure[], Failure>
@@ -101,8 +68,6 @@ function mergeDepartures(
     return err(noDeparturesFoundFailure);
   }
 
-  // Long distance first: dedupe keeps the first occurrence, so a trip published
-  // under both a long-distance and a regional name keeps its long-distance one.
   return ok(
     collapse([
       ...(longDistance.isOk() ? longDistance.value : []),
@@ -111,12 +76,6 @@ function mergeDepartures(
   );
 }
 
-/**
- * The failure of a bucket that could not be fetched at all.
- *
- * `noDeparturesFound` is deliberately not one of these: it is an answer rather
- * than a failure, and it must not take the other bucket down with it.
- */
 function fetchFailureOf(
   bucket: Result<Departure[], Failure>
 ): Failure | undefined {
@@ -127,22 +86,10 @@ function fetchFailureOf(
     : bucket.error;
 }
 
-/**
- * Deduplicate, then sort — in that order.
- *
- * Sorting first would hand the choice of which duplicate survives to
- * alphabetical order.
- */
 function collapse(departures: readonly Departure[]): Departure[] {
   return sortDepartures(dedupeDepartures(departures));
 }
 
-/**
- * Drops departures that visit exactly the same stops at the same times.
- *
- * Operators frequently publish one trip under several route names; without this
- * the map draws the same line several times over.
- */
 function dedupeDepartures(departures: readonly Departure[]): Departure[] {
   const seen = new Set<string>();
   const unique: Departure[] = [];
@@ -158,13 +105,6 @@ function dedupeDepartures(departures: readonly Departure[]): Departure[] {
   return unique;
 }
 
-/**
- * A stable identity for a stop list, used to detect duplicate trips.
- *
- * Position, name and timing only — `countryCode` and `area` are never set on a
- * stop, and two trips that agree on everything here are the same line drawn
- * twice whatever else they might carry.
- */
 function stopsKey(stops: readonly Stop[]): string {
   return stops
     .map((stop) =>
@@ -180,12 +120,6 @@ function stopsKey(stops: readonly Stop[]): string {
     .join(';');
 }
 
-/**
- * Sorts by route name, then by how far the trip goes.
- *
- * Ordinal comparison, matching Dart's `String.compareTo` — a locale-aware
- * collation would reorder the list between platforms.
- */
 function sortDepartures(departures: readonly Departure[]): Departure[] {
   return [...departures].sort((a, b) => {
     if (a.name === b.name) {

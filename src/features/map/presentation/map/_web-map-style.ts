@@ -23,15 +23,6 @@ interface LabelStyle {
   readonly haloColor: string;
 }
 
-/**
- * Registers the app's sources and layers on the basemap style.
- *
- * Runs once, on style load — MapLibre drops everything added to a style when it
- * is replaced, and this one never is.
- *
- * @param instance - The live map.
- * @param label - How station name labels are drawn.
- */
 export function addStationLayers(
   instance: MapLibreMap,
   label: LabelStyle
@@ -45,7 +36,6 @@ export function addStationLayers(
     data: EMPTY_STATIONS,
   });
 
-  // Routes beneath stations, so markers stay clickable.
   instance.addLayer({
     id: LAYER_IDS.routeLines,
     type: 'line',
@@ -95,12 +85,6 @@ interface SyncSourcesParams {
   readonly routes: RouteFeatures;
 }
 
-/**
- * Pushes the current feature collections into the map's sources.
- *
- * `setData` takes the object as it stands, so unlike the native binding this
- * costs nothing per station — there is no serialisation to memoise away.
- */
 export function syncSources({
   instance,
   stations,

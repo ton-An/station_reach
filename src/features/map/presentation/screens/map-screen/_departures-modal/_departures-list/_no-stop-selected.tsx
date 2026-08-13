@@ -4,12 +4,6 @@ import { ModalScrollView } from '@/core/components/draggable-modal';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 
-/**
- * What the sheet says before anything on the map has been tapped.
- *
- * Still a scrollable body rather than a bare label: it is the sheet's only
- * content at that point, and the sheet is dragged by whatever is inside it.
- */
 export function NoStopSelected(): React.JSX.Element {
   const theme = useTheme();
 

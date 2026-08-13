@@ -9,7 +9,6 @@ interface DialogActionsProps {
   readonly actions: readonly DialogAction[];
 }
 
-/** The dialog's buttons, sharing the width evenly. */
 export function DialogActions({
   actions,
 }: DialogActionsProps): React.JSX.Element {

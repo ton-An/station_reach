@@ -8,13 +8,10 @@ export type DepartureSelectionState =
 
 export interface DepartureSelectionStore {
   readonly state: DepartureSelectionState;
-  /** Opens a departure's full itinerary. */
   readonly select: (departure: Departure) => void;
-  /** Returns to the departure list. */
   readonly deselect: () => void;
 }
 
-/** Builds the departure selection store. It has no dependencies of its own. */
 export function createDepartureSelectionStore(): StoreApi<DepartureSelectionStore> {
   return createStore<DepartureSelectionStore>()((set) => ({
     state: { status: 'none' },

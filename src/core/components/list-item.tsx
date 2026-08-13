@@ -6,11 +6,9 @@ import { Gap } from './gap';
 interface ListItemProps {
   readonly title: string;
   readonly subtitle: string;
-  /** Normally a {@link ListIcon}. */
   readonly icon: React.ReactNode;
 }
 
-/** A leading icon beside a stacked title and subtitle. */
 export function ListItem({
   title,
   subtitle,

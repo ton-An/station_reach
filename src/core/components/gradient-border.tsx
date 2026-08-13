@@ -12,14 +12,6 @@ interface GradientBorderProps {
   readonly backgroundColor?: string;
 }
 
-/**
- * Draws a gradient outline around its children.
- *
- * React Native has no gradient border, and the usual trick — a gradient view
- * with an inset child — bleeds through whenever the fill is translucent, which
- * here it always is. Stroking a rounded rect in SVG gives a true border over
- * whatever shows through the middle.
- */
 export function GradientBorder({
   colors,
   radius,
@@ -30,7 +22,6 @@ export function GradientBorder({
   const theme = useTheme();
   const [size, setSize] = useState({ width: 0, height: 0 });
 
-  // A colon is invalid in an SVG id, and `useId` has shipped ids carrying one.
   const gradientId = useId().replace(/:/g, '');
 
   return (
@@ -62,7 +53,6 @@ export function GradientBorder({
             </LinearGradient>
           </Defs>
 
-          {/* Inset by half the stroke so the outline sits inside the bounds. */}
           <Rect
             x={width / 2}
             y={width / 2}

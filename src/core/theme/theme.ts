@@ -7,7 +7,6 @@
 
 import type { TextStyle } from 'react-native';
 
-/** Spacing scale, in density-independent pixels. */
 export const spacing = {
   tiny: 1,
   xTiny: 2,
@@ -22,7 +21,6 @@ export const spacing = {
   xxLarge: 128,
 } as const satisfies Record<string, number>;
 
-/** Corner radii, in density-independent pixels. */
 export const radii = {
   small: 8,
   field: 10,
@@ -34,7 +32,6 @@ export const radii = {
   full: 999,
 } as const satisfies Record<string, number>;
 
-/** Animation durations, in milliseconds. */
 export const durations = {
   tiny: 50,
   xTiny: 100,
@@ -53,13 +50,6 @@ export const durations = {
   xxHuge: 2500,
 } as const satisfies Record<string, number>;
 
-/**
- * The travel-time ramp: green (near) through yellow, orange and red, then on
- * into magenta and purple for the journeys that take most of a day.
- *
- * Markers, polylines, list rows and the legend all sample it through
- * `interpolateColors`.
- */
 export const timelineGradient = [
   'rgb(0, 150, 107)',
   'rgb(99, 225, 36)',
@@ -75,12 +65,6 @@ export const timelineGradient = [
   'rgb(103, 58, 183)',
 ] as const;
 
-/**
- * The secondary ramp: purple through blue to cyan.
- *
- * Sampled by *position in a list* rather than by duration — the departures at a
- * stop are tinted along it by index.
- */
 export const secondaryGradient = [
   'rgb(156, 39, 176)',
   'rgb(103, 58, 183)',
@@ -89,7 +73,6 @@ export const secondaryGradient = [
   'rgb(0, 188, 212)',
 ] as const;
 
-/** The app's colour palette, including both gradient ramps. */
 export const colors = {
   primary: 'rgb(83, 196, 108)',
   primaryTranslucent: 'rgba(83, 196, 108, 0.235)',
@@ -118,25 +101,8 @@ export const colors = {
   secondaryGradient,
 } as const;
 
-/**
- * The font family every text style names.
- *
- * This has to be the family name *inside* the TTF, and the file has to be
- * named after it too. On iOS the `expo-font` plugin embeds the file through
- * `UIAppFonts` and CoreText registers it under its own family name — an alias
- * passed to `useFonts` is ignored there, so a made-up name silently falls back
- * to the system serif. Android resolves the family from the asset's *file*
- * name, and the web from whatever `@font-face` `useFonts` injects. Naming the
- * file `Inter.ttf` is what makes all three agree.
- */
 export const FONT_FAMILY = 'Inter';
 
-/**
- * The iOS type scale, matched to the Flutter app's `WebfabrikTextThemeData`.
- *
- * `lineHeight` is absolute in React Native, so the Flutter `height` ratios are
- * pre-multiplied here.
- */
 export const text = {
   largeTitle: {
     fontFamily: FONT_FAMILY,
@@ -206,41 +172,17 @@ export const text = {
   },
 } as const satisfies Record<string, TextStyle>;
 
-/**
- * Fixed sizes the floating chrome is laid out against.
- *
- * Not spacing steps — these are the dimensions of the panels themselves, and
- * several of them have to agree across unrelated components, so they belong to
- * one place rather than to whichever file happened to need one first.
- */
 export const layout = {
-  /**
-   * Widest the floating chrome grows on a large screen.
-   *
-   * Shared by the search card, the departures sheet and the notification: the
-   * three read as one column of chrome, which they only do at one width.
-   */
   overlayMaxWidth: 400,
-  /** The bottom-left legend cluster, once the screen is wide enough for one. */
   legendClusterWidth: 320,
-  /**
-   * Below this width the layout collapses to a single bottom-anchored column:
-   * the sheet centres, and the legends move inside it.
-   *
-   * Read it through `useIsWideLayout` rather than measuring by hand.
-   */
   wideBreakpoint: 900,
 } as const satisfies Record<string, number>;
 
-/** Odds and ends that don't belong to a scale. */
 export const misc = {
-  /** Matches the Flutter `ImageFilter.blur(sigmaX: 15, sigmaY: 15)` surfaces. */
   blurIntensity: 30,
-  /** The lighter blur the map legends use (`sigma: 6`). */
   legendBlurIntensity: 12,
 } as const satisfies Record<string, number>;
 
-/** Every token scale, as read through `useTheme`. */
 export const theme = {
   spacing,
   radii,

@@ -14,17 +14,13 @@ import { TranslucentSurface } from '../translucent-surface';
 import { DialogActions } from './_dialog-actions';
 import type { DialogAction } from './dialog-action';
 
-/** The card's fixed width, matching the Flutter dialog. */
 const DIALOG_WIDTH = 320;
 
-/** How much of the screen the scrollable body may occupy. */
 const MAX_BODY_FRACTION = 0.55;
 
-/** How much of the background survives as the card's own fill. */
 const CARD_TINT_ALPHA = 0.58;
 
 interface DialogCardProps {
-  /** The dialog's shared 0..1 entry progress. */
   readonly progress: Animated.Value;
   readonly title: string;
   readonly message: string;
@@ -32,15 +28,6 @@ interface DialogCardProps {
   readonly actions: readonly DialogAction[];
 }
 
-/**
- * The dialog's blurred card.
- *
- * Scale only — deliberately no opacity fade on the card itself. `backdrop-
- * filter` samples the nearest backdrop root, and an ancestor with opacity below
- * 1 creates one, so fading the card in would leave its blur with nothing to
- * sample until the animation landed on exactly 1 and the blur would visibly
- * arrive a beat late. The scrim behind it carries the fade instead.
- */
 export function DialogCard({
   progress,
   title,

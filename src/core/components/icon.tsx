@@ -19,21 +19,6 @@ import Train from '@/assets/icons/train.svg';
 import Tram from '@/assets/icons/tram.svg';
 import TriangleAlert from '@/assets/icons/triangle_alert.svg';
 
-/*
-  Every glyph is a vendored SVG rather than an icon font.
-
-  The set is Lucide: 24×24, `stroke-width` 2, round caps and joins, drawn as
-  strokes rather than filled shapes. That is the load-bearing part — a filled
-  glyph dropped in beside these reads as bold, not as a different icon — so
-  anything added later has to be built on that grid at that weight, and the
-  attributes stay on the root so a file cannot drift.
-
-  `stroke` is `currentColor` and there is no `fill`, so the `color` prop is the
-  only source of tint. No `<style>` and no `class`: react-native-svg applies
-  neither, and a glyph that colours itself through CSS renders black on device
-  while looking correct on the web.
-*/
-
 const Icons = {
   bus: Bus,
   cableCar: CableCar,
@@ -63,7 +48,6 @@ interface IconProps {
   readonly color: string;
 }
 
-/** A single glyph, sized and tinted. */
 export function Icon({ name, size, color }: IconProps): React.JSX.Element {
   const Glyph: React.FC<SvgProps> = Icons[name];
 

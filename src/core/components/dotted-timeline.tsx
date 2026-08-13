@@ -2,7 +2,6 @@ import { View } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
 
-/** Height of the whole run of dashes. */
 const HEIGHT = 60;
 const VERTICAL_INSET = 6;
 
@@ -11,12 +10,6 @@ const DASH_GAP = 9;
 const DASH_THICKNESS = 6;
 const DASH_RADIUS = 2;
 
-/**
- * The dashed vertical rule connecting two stops on an itinerary.
- *
- * Drawn as discrete views rather than a border-dash so the dash length, gap and
- * corner radius all match the Flutter `DottedLine` exactly.
- */
 export function DottedTimeline(): React.JSX.Element {
   const theme = useTheme();
 

@@ -26,12 +26,6 @@ import {
   type StationSelectionStore,
 } from '@/features/map/presentation/stores/station-selection-store';
 
-/**
- * The application's dependency graph.
- *
- * Only the stores are exposed: everything below them is an implementation
- * detail of the layer above.
- */
 export interface Container {
   readonly inAppNotificationStore: StoreApi<InAppNotificationStore>;
   readonly stationSearchStore: StoreApi<StationSearchStore>;
@@ -40,13 +34,6 @@ export interface Container {
   readonly departureSelectionStore: StoreApi<DepartureSelectionStore>;
 }
 
-/**
- * Builds the graph.
- *
- * One place to read how the app is wired, in the same order the Flutter
- * `initGetIt()` used. Every dependency is handed to its consumer here —
- * nothing reaches for one at the point of use.
- */
 function createContainer(): Container {
   // -- Data -- //
   const mapRemoteDataSource = createMapRemoteDataSource();
@@ -68,13 +55,6 @@ function createContainer(): Container {
 
 const ContainerContext = createContext<Container | undefined>(undefined);
 
-/**
- * Provides the graph to the tree below it.
- *
- * Mounted once, at the root. This is what `MultiBlocProvider` did in the
- * Flutter app: components ask the tree for what they need instead of importing
- * a module-level singleton.
- */
 export function ContainerProvider({
   children,
 }: {
@@ -89,14 +69,6 @@ export function ContainerProvider({
   );
 }
 
-/**
- * Reads the graph.
- *
- * Intended for the store hooks rather than for components — a component should
- * ask for the state it renders, not for the container.
- *
- * @throws If no {@link ContainerProvider} is mounted above.
- */
 export function useContainer(): Container {
   const container = useContext(ContainerContext);
 

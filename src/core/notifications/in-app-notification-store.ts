@@ -3,10 +3,8 @@ import { createStore, type StoreApi } from 'zustand/vanilla';
 import type { Failure } from '@/core/failures';
 import type { TranslationKey } from '@/core/i18n/en';
 
-/** How long a notification stays on screen before dismissing itself. */
 const NOTIFICATION_DURATION_MS = 5000;
 
-/** A message shown to the user. */
 export interface InAppNotification {
   readonly id: number;
   readonly titleKey: TranslationKey;

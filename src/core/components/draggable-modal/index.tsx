@@ -26,34 +26,15 @@ import {
 export { ModalList } from './_modal-list';
 export { ModalScrollView } from './_modal-scroll-view';
 
-/** How far past the resting height the legend takes to fade out. */
 const LEGEND_FADE_TRAVEL = 0.08;
 
 interface DraggableModalProps {
   readonly title: string;
-  /**
-   * Shows a back button in the header when given.
-   *
-   * One prop rather than a flag plus a handler, so a button that leads nowhere
-   * cannot be expressed.
-   */
   readonly onBack?: () => void;
-  /** Sits above the sheet, and fades away once it is drawn up past medium. */
   readonly legend?: React.ReactNode;
   readonly children: React.ReactNode;
 }
 
-/**
- * The bottom sheet the app's content lives in.
- *
- * The handle and header drag it outright; the body drags it too, but only
- * where a scroll would have nothing left to give — see {@link ModalScrollView},
- * which every scrolling child should be built from.
- *
- * The gesture and the height it drives both live on the UI thread: the sheet
- * has to keep up with a finger, and a JS-driven height animation cannot
- * promise that on a device.
- */
 export function DraggableModal({
   title,
   onBack,
@@ -76,7 +57,6 @@ export function DraggableModal({
   };
 
   const handleDrag = Gesture.Pan()
-    // Otherwise the sheet fights every tap that wobbles a pixel.
     .activeOffsetY([-DRAG_ACTIVATION_SLOP, DRAG_ACTIVATION_SLOP])
     .onStart(() => beginSheetDrag(drag))
     .onUpdate((event) => updateSheetDrag(drag, event.translationY))
@@ -86,11 +66,6 @@ export function DraggableModal({
     height: fraction.value * availableHeight.value,
   }));
 
-  /*
-    The range starts exactly at the resting height so that at rest the opacity
-    is exactly 1. Anything less creates a backdrop root above the legends and
-    silently kills their blur.
-  */
   const legendStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       fraction.value,

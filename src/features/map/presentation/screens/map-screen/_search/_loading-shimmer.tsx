@@ -8,20 +8,12 @@ import {
   useStationSearchStore,
 } from '../../../stores/use-map-stores';
 
-/** How much of the bar the moving highlight covers. */
 const HIGHLIGHT_FRACTION = 0.4;
 
 const BAR_HEIGHT = 8;
 
-/** How far the highlight fades against the track behind it. */
 const HIGHLIGHT_OPACITY = 0.5;
 
-/**
- * A shimmering bar under the search field while anything is loading.
- *
- * Covers both the quick search and the slow reachability fetch, so the user
- * always knows the app is working.
- */
 export function LoadingShimmer(): React.JSX.Element | null {
   const theme = useTheme();
 
@@ -34,8 +26,6 @@ export function LoadingShimmer(): React.JSX.Element | null {
 
   const isLoading = isSearching || isLoadingDepartures;
 
-  // Measured, because `translateX` must be a number — a percentage string is
-  // silently ignored by the native animation driver.
   const [width, setWidth] = useState(0);
   const [sweep] = useState(() => new Animated.Value(0));
 

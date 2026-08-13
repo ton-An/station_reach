@@ -13,18 +13,11 @@ interface FadePressableProps {
   readonly children: React.ReactNode;
   readonly onPress?: () => void;
   readonly onLongPress?: () => void;
-  /** How far to fade while held. */
   readonly minOpacity?: number;
   readonly style?: StyleProp<ViewStyle>;
   readonly accessibilityLabel?: string;
 }
 
-/**
- * A tap target that fades while pressed.
- *
- * The app's standard press feedback — a fade rather than a ripple or a
- * highlight, matching the Flutter `FadeGestureDetector`.
- */
 export function FadePressable({
   children,
   onPress,

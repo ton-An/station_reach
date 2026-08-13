@@ -11,27 +11,12 @@ const PRESSED_OPACITY = 0.4;
 interface SmallIconButtonProps {
   readonly icon: IconName;
   readonly onPress: () => void;
-  /**
-   * Nudges the glyph inside its circle, in pixels.
-   *
-   * Chevrons are not optically centred in their own box, so the button that
-   * holds one needs a pixel of correction to look centred. Same values the
-   * Flutter `alignmentOffset` used: `[-1, 0]` for back, `[1, 0]` for forward.
-   */
   readonly alignmentOffset?: readonly [number, number];
   readonly backgroundColor?: string;
   readonly accessibilityLabel?: string;
-  /**
-   * Render as a plain affordance rather than a real button.
-   *
-   * Used when the button sits inside an already-tappable row: nesting one
-   * pressable in another produces invalid `<button>` markup on web and makes
-   * the inner target swallow the outer one.
-   */
   readonly decorative?: boolean;
 }
 
-/** A circular icon button that dips in opacity while held. */
 export function SmallIconButton({
   icon,
   onPress,

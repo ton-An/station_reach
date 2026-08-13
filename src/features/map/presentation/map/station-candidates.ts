@@ -1,21 +1,9 @@
-/** A station the hit test turned up, reduced to what picking a winner needs. */
 export interface StationCandidate {
   readonly stopId: string;
   readonly longitude: number;
   readonly latitude: number;
 }
 
-/**
- * Reduces raw hit-test results to the stations among them.
- *
- * Both map bindings answer a query with GeoJSON features and both need the same
- * three fields back, so the reduction lives here rather than once per platform.
- * Anything that isn't a point carrying a `stopId` is dropped: the query is
- * layer-scoped, but a `GeoJSON.Feature` says nothing about what is on it.
- *
- * @param features - Whatever the binding's rendered-feature query returned.
- * @returns One candidate per usable station feature.
- */
 export function toStationCandidates(
   features: readonly GeoJSON.Feature[]
 ): StationCandidate[] {
@@ -42,26 +30,12 @@ export function toStationCandidates(
   return candidates;
 }
 
-/**
- * Picks the station nearest a tap.
- *
- * The hit area is much larger than the dot, so in a dense area a single tap
- * matches several stations at once. Taking whichever the query happened to
- * return first selects by draw order — that is, a neighbour rather than the dot
- * under the finger, which is what made tapping feel unpredictable.
- *
- * @param candidates - Every station the hit test matched.
- * @param target - Where the tap landed, as `[longitude, latitude]`.
- * @returns The id of the closest station, or undefined if nothing was hit.
- */
 export function nearestStopId(
   candidates: readonly StationCandidate[],
   target: readonly [longitude: number, latitude: number]
 ): string | undefined {
   const [targetLongitude, targetLatitude] = target;
 
-  // A degree of longitude is shorter than a degree of latitude everywhere but
-  // the equator; comparing them raw biases the pick east-west.
   const longitudeScale = Math.cos((targetLatitude * Math.PI) / 180);
 
   let nearest: string | undefined;

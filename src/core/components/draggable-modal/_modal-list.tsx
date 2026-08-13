@@ -11,13 +11,6 @@ interface ModalListProps<T> {
   readonly contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-/**
- * The scrolling body of a {@link DraggableModal}, virtualised.
- *
- * Identical to {@link ModalScrollView} to a finger — same two gestures, same
- * scroll spy — but only the rows near the viewport are mounted, so a list of
- * unbounded length does not have to be built before the sheet can paint.
- */
 export function ModalList<T>({
   data,
   keyExtractor,

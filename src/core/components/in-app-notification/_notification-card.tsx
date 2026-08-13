@@ -13,7 +13,6 @@ import { Icon } from '../icon';
 import { pointerEvents } from '../pointer-events';
 import { TranslucentSurface } from '../translucent-surface';
 
-/** The warning glyph beside the message. */
 const ICON_SIZE = 26;
 
 interface NotificationCardProps {
@@ -21,14 +20,6 @@ interface NotificationCardProps {
   readonly onDismiss: () => void;
 }
 
-/**
- * One notification, animating in on mount.
- *
- * It hangs from the top right, dropping in from just above its resting place,
- * because the bottom of the screen already belongs to other chrome. On a narrow
- * screen it spans the width instead, since there is no room to sit beside
- * anything.
- */
 export function NotificationCard({
   notification,
   onDismiss,
@@ -39,14 +30,6 @@ export function NotificationCard({
 
   const [entry] = useState(() => new Animated.Value(0));
 
-  /*
-    Whether the card has finished arriving.
-
-    `opacity` and `transform` each make their element a backdrop root, and a
-    backdrop root has nothing behind it to blur — so while either sits on this
-    wrapper the surface inside it renders flat. Both are dropped the moment the
-    entry animation lands, which is when the card is actually looked at.
-  */
   const [hasEntered, setHasEntered] = useState(false);
 
   useEffect(() => {
@@ -66,7 +49,6 @@ export function NotificationCard({
         pointerEvents.passThrough,
         {
           position: 'absolute',
-          // Level with the search field, so the two read as one row of chrome.
           top: insets.top + theme.spacing.medium,
           left: theme.spacing.medium,
           right: theme.spacing.medium,
@@ -78,16 +60,12 @@ export function NotificationCard({
         style={{
           maxWidth: theme.layout.overlayMaxWidth,
           width: '100%',
-          // See `hasEntered`.
           ...(hasEntered
             ? {}
             : {
                 opacity: entry,
                 transform: [
                   {
-                    // Kept below the top offset so the card never starts
-                    // clipped by the screen edge; on web the safe-area inset
-                    // is zero.
                     translateY: entry.interpolate({
                       inputRange: [0, 1],
                       outputRange: [-theme.spacing.xxSmall, 0],

@@ -10,32 +10,11 @@ import type { GeocodeStation, StopTimesResponse } from './transitous-types';
 const BASE_URL = 'https://api.transitous.org';
 
 export interface MapRemoteDataSource {
-  /**
-   * Searches for stations by name.
-   *
-   * @param query - The free-text search string.
-   * @param signal - Optional abort signal, so a superseded search can be
-   * cancelled.
-   * @returns The matching stations.
-   * @throws `HttpError`.
-   */
   searchStations(query: string, signal?: AbortSignal): Promise<Station[]>;
 
-  /**
-   * Gets the departures leaving a station, restricted to a set of modes.
-   *
-   * One request. `amount` is large enough to cover a station's whole departure
-   * board in a single page, so there is nothing to page through — the cursor is
-   * only read to tell an empty board apart from a full one.
-   *
-   * @returns The departures found.
-   * @throws {@link FailureError} wrapping {@link noDeparturesFoundFailure}, or
-   * `HttpError`.
-   */
   getStationDeparturesByMode(query: DeparturesQuery): Promise<Departure[]>;
 }
 
-/** Talks to the Transitous API. */
 export function createMapRemoteDataSource(): MapRemoteDataSource {
   return { searchStations, getStationDeparturesByMode };
 }
@@ -70,7 +49,6 @@ async function getStationDeparturesByMode({
 
   const response = await getJson<StopTimesResponse>(url);
 
-  // Upstream answers a station it has nothing for with no cursor at all.
   if (response.nextPageCursor === undefined || response.nextPageCursor === '') {
     throw new FailureError(noDeparturesFoundFailure);
   }

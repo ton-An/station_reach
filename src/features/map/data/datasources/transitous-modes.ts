@@ -34,17 +34,10 @@ const MODE_TO_WIRE: Readonly<Record<string, string>> = Object.fromEntries(
   Object.entries(WIRE_TO_MODE).map(([wire, mode]) => [mode, wire])
 );
 
-/**
- * Parses a Transitous mode string.
- *
- * Unknown modes degrade to {@link TransitMode.Other} rather than throwing — the
- * upstream vocabulary grows and a new mode should not break a whole response.
- */
 export function transitModeFromWire(value: string): TransitMode {
   return WIRE_TO_MODE[value] ?? TransitMode.Other;
 }
 
-/** Serialises a mode for the `mode=` query parameter. */
 export function transitModeToWire(mode: TransitMode): string {
   return MODE_TO_WIRE[mode] ?? 'OTHER';
 }

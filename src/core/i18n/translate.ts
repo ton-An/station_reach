@@ -7,12 +7,6 @@
 
 import { en, type TranslationKey } from './en';
 
-/**
- * Looks up a user-facing string.
- *
- * Every string the user can read goes through here — no literals in components,
- * even while English is the only locale.
- */
 export function t(key: TranslationKey): string {
   return en[key];
 }

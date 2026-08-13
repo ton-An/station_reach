@@ -17,25 +17,12 @@ export type StationDeparturesState =
 
 export interface StationDeparturesStore {
   readonly state: StationDeparturesState;
-  /**
-   * Loads everywhere the given station can take you.
-   *
-   * This is the app's one expensive call — it fans out to two upstream requests
-   * and can return thousands of stops.
-   */
   readonly loadReachability: (station: Station) => Promise<void>;
 }
 
-/**
- * Builds the station departures store.
- *
- * @param getStationDepartures - The use case this store drives.
- * @returns The store.
- */
 export function createStationDeparturesStore(
   getStationDepartures: GetStationDepartures
 ): StoreApi<StationDeparturesStore> {
-  // Instance state, so a superseded load can never overwrite a newer one.
   let latestRequestId = 0;
 
   return createStore<StationDeparturesStore>()((set) => ({
@@ -48,7 +35,6 @@ export function createStationDeparturesStore(
 
       const result = await getStationDepartures(station);
 
-      // The user picked another station while this was loading.
       if (requestId !== latestRequestId) return;
 
       set({

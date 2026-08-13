@@ -2,13 +2,6 @@ import { colorForDuration } from '@/core/helpers/color-helper';
 import type { Departure } from '../../domain/models/departure';
 import type { StopIndex } from './stop-index';
 
-/*
-  These shapes are handed straight to MapLibre, so they are declared as type
-  aliases with mutable arrays — GeoJSON's own types are mutable, and an
-  interface would not satisfy its `GeoJsonProperties` index signature.
-*/
-
-/** What the circle and label layers read off each station feature. */
 export type StationFeatureProperties = {
   stopId: string;
   name: string;
@@ -16,11 +9,9 @@ export type StationFeatureProperties = {
   color: string;
 };
 
-/** What the route line layer reads off each leg feature. */
 export type RouteFeatureProperties = {
   departureId: string;
   color: string;
-  /** Perpendicular fan-out, so parallel trips stay distinguishable. */
   offset: number;
 };
 
@@ -58,24 +49,11 @@ export const EMPTY_ROUTES: RouteFeatures = {
   features: [],
 };
 
-/** How far a fanned line may be pushed aside, in offset units. */
 const MAX_FAN_OFFSET = 10;
 
-/** How much of the ramp survives in a station dot and in a route line. */
 const STATION_ALPHA = 0.75;
 const ROUTE_ALPHA = 0.7;
 
-/**
- * Builds the reachable-station points for the map.
- *
- * A station served by several departures is drawn once, at the *shortest*
- * travel time — the map answers "how fast can I get there", not "how slowly" —
- * which is what the index already resolved.
- *
- * @param stops - The indexed reachability set.
- * @param gradient - The travel-time ramp to colour by.
- * @returns One point feature per reachable station.
- */
 export function buildStationFeatures(
   stops: StopIndex,
   gradient: readonly string[]
@@ -100,19 +78,6 @@ export function buildStationFeatures(
   return { type: 'FeatureCollection', features };
 }
 
-/**
- * Builds the route lines for the departures calling at the selected stop.
- *
- * One feature per leg rather than per trip, because the colour ramps along the
- * journey: a leg carries the travel time from the origin to the stop it arrives
- * at, so it always matches the marker at its far end and the line reads green →
- * red the further the trip gets. A leg's own length is deliberately *not* what
- * colours it — a long hop early on is still a short journey.
- *
- * @param departures - The departures to draw.
- * @param gradient - The travel-time ramp to colour by.
- * @returns One line feature per leg.
- */
 export function buildRouteFeatures(
   departures: readonly Departure[],
   gradient: readonly string[]

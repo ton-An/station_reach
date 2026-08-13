@@ -8,12 +8,6 @@ import { InAppNotificationListener } from '@/core/components/in-app-notification
 import { ContainerProvider } from '@/core/container';
 import { FONT_FAMILY } from '@/core/theme/theme';
 
-/**
- * The app shell.
- *
- * Nothing renders until Inter is available: the fallback is a serif face, and
- * swapping it in after first paint reflows every label on the map.
- */
 export default function RootLayout(): React.JSX.Element | null {
   const [fontsLoaded] = useFonts({
     [FONT_FAMILY]: require('@/assets/fonts/Inter.ttf'),

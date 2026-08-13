@@ -4,12 +4,6 @@ import { pointerEvents } from '@/core/components/pointer-events';
 import { AttributionLegend } from './attribution-legend';
 import { TimeGradientLegend } from './time-gradient-legend';
 
-/**
- * The travel-time key and the attribution button, side by side.
- *
- * They travel together: bottom-left of the map on a wide screen, tucked above
- * the sheet on a narrow one.
- */
 export function MapLegends(): React.JSX.Element {
   return (
     <View

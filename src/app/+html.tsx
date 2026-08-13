@@ -3,12 +3,6 @@ import type { PropsWithChildren } from 'react';
 
 import { t } from '@/core/i18n/translate';
 
-/**
- * The HTML document wrapping the web build.
- *
- * Server-rendered only — this never runs in the browser and has no access to
- * app state.
- */
 export default function Root({
   children,
 }: PropsWithChildren): React.JSX.Element {
@@ -24,7 +18,6 @@ export default function Root({
         <meta name="description" content={t('webDescription')} />
         <meta name="apple-mobile-web-app-title" content="Station Reach" />
         <meta name="mobile-web-app-capable" content="yes" />
-        {/* Offers the native app from Safari on iOS. */}
         <meta name="apple-itunes-app" content="app-id=6752408029" />
 
         <ScrollViewStyleReset />

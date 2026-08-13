@@ -22,12 +22,6 @@ declare global {
   var __map: MapLibreMap | undefined;
 }
 
-/**
- * The MapLibre GL JS map surface.
- *
- * Memoised like the native implementation: an unrelated re-render of the screen
- * above pushes both feature collections back into the map for nothing.
- */
 export const MapView = memo(function MapView({
   stations,
   routes,
@@ -40,15 +34,8 @@ export const MapView = memo(function MapView({
   const map = useRef<MapLibreMap>(null);
   const isStyleLoaded = useRef(false);
 
-  // The style can finish loading after a feature collection has arrived, and
-  // the registration below runs out of an effect that closed over the mount
-  // render — so it reads the collections through a ref rather than dropping
-  // whatever landed in between.
   const data = useRef({ stations, routes });
 
-  // Callbacks are read through a ref so re-renders never re-bind map handlers.
-  // Updated in an effect rather than during render, so the ref is only ever
-  // written after commit.
   const handlers = useRef({ onStationPress, onBackgroundPress });
 
   useEffect(() => {
@@ -64,7 +51,6 @@ export const MapView = memo(function MapView({
       center: [...INITIAL_CENTER],
       zoom: INITIAL_ZOOM,
       minZoom: MIN_ZOOM,
-      // Our own legend carries the required attribution.
       attributionControl: false,
     });
 
@@ -72,15 +58,10 @@ export const MapView = memo(function MapView({
 
     if (__DEV__) globalThis.__map = instance;
 
-    // MapLibre swallows tile and style errors otherwise, which makes a blank
-    // map impossible to diagnose.
     instance.on('error', (event) => {
       console.error('[map]', event.error?.message ?? event);
     });
 
-    // `load` fires once and only if we were listening in time. With a warm
-    // cache the style can already be up by the time this effect commits, so
-    // check first and fall back to the event.
     const registerLayers = () => {
       if (isStyleLoaded.current) return;
 
@@ -100,13 +81,6 @@ export const MapView = memo(function MapView({
       instance.once('load', registerLayers);
     }
 
-    /*
-      One handler, not a layer-scoped one plus a background one: the layer-
-      scoped variant hit-tests the rendered circle, which meant the tap target
-      could only be widened by giving every dot a transparent stroke — and then
-      a click in a dense area returned whichever of the overlapping strokes drew
-      last rather than the dot nearest the cursor.
-    */
     instance.on('click', (event: MapMouseEvent) => {
       const stopId = nearestStopId(stationsAt(instance, event.point), [
         event.lngLat.lng,
@@ -123,9 +97,6 @@ export const MapView = memo(function MapView({
 
     const untrackCursor = trackStationCursor(instance, theme.durations.xxTiny);
 
-    // The map is constructed before React Native Web has laid the container
-    // out, so without this the canvas keeps MapLibre's 400x300 default and
-    // only the top-left corner of the map ever paints.
     const observer = new ResizeObserver(() => instance.resize());
     observer.observe(container.current);
 
@@ -136,7 +107,6 @@ export const MapView = memo(function MapView({
       map.current = null;
       instance.remove();
     };
-    // Built once; data and camera are pushed in by the effects below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

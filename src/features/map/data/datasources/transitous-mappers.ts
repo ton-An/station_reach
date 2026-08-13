@@ -7,12 +7,6 @@ const MINUTE_MS = 60_000;
 
 const MAX_ADMIN_LEVEL = 7;
 
-/**
- * Converts a geocode result into a {@link Station}.
- *
- * @param raw - One geocode hit.
- * @returns The station it describes.
- */
 export function toStation(raw: GeocodeStation): Station {
   const area = pickAreaName(raw);
 
@@ -27,16 +21,6 @@ export function toStation(raw: GeocodeStation): Station {
   };
 }
 
-/**
- * Converts a stop time into a {@link Departure}.
- *
- * The origin station is prepended as the first stop at duration zero, so an
- * itinerary always starts where the user is standing.
- *
- * @param origin - The station the departure leaves from.
- * @param raw - The stop time to convert.
- * @returns The departure, with every stop that carries a time.
- */
 export function toDeparture(origin: Station, raw: StopTime): Departure {
   const departureTimeMs = new Date(
     raw.place.scheduledDeparture ?? ''
@@ -66,12 +50,6 @@ export function toDeparture(origin: Station, raw: StopTime): Departure {
   };
 }
 
-/**
- * Picks the area name to show beside a station.
- *
- * Prefers the most specific administrative level at or below
- * {@link MAX_ADMIN_LEVEL}, walking down until one matches.
- */
 function pickAreaName(raw: GeocodeStation): string | undefined {
   const areas = raw.areas ?? [];
 
@@ -83,12 +61,6 @@ function pickAreaName(raw: GeocodeStation): string | undefined {
   return undefined;
 }
 
-/**
- * Converts a next stop, or returns undefined when it has no time.
- *
- * Stops without a scheduled arrival *or* departure carry no travel time and are
- * dropped.
- */
 function toStop(raw: NextStop, departureTimeMs: number): Stop | undefined {
   const arrivalString = raw.scheduledArrival ?? raw.scheduledDeparture;
   if (arrivalString === undefined) return undefined;
@@ -108,7 +80,6 @@ function toStop(raw: NextStop, departureTimeMs: number): Stop | undefined {
   };
 }
 
-/** Picks the most human name upstream offers for a trip. */
 function departureName(raw: StopTime): string {
   return (
     raw.displayName ??

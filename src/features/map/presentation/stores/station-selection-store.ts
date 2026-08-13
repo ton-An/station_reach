@@ -8,25 +8,11 @@ export type StationSelectionState =
   | {
       readonly status: 'selected';
       readonly selectedStop: Stop;
-      /** Only the departures that actually call at the selected stop. */
       readonly departures: readonly Departure[];
     };
 
 export interface StationSelectionStore {
   readonly state: StationSelectionState;
-  /**
-   * Selects a stop on the map.
-   *
-   * The caller passes the trips already narrowed to this stop — they come out
-   * of the map's stop index, which resolved them when the reachability set
-   * loaded, so a tap never rescans every departure.
-   *
-   * Re-selecting what is already selected does nothing, which is what lets the
-   * map answer one tap through two paths without redrawing twice.
-   *
-   * @param selectedStop - The stop the user tapped.
-   * @param departures - The departures calling at that stop.
-   */
   readonly select: (
     selectedStop: Stop,
     departures: readonly Departure[]
@@ -34,7 +20,6 @@ export interface StationSelectionStore {
   readonly unselect: () => void;
 }
 
-/** Builds the station selection store. It has no dependencies of its own. */
 export function createStationSelectionStore(): StoreApi<StationSelectionStore> {
   return createStore<StationSelectionStore>()((set, get) => ({
     state: { status: 'unselected' },

@@ -5,7 +5,6 @@
           this app only ever renders departures.
 */
 
-/** A mode of transit. */
 export const TransitMode = {
   Walk: 'walk',
   Bike: 'bike',
