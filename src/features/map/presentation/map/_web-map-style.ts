@@ -23,16 +23,6 @@ interface LabelStyle {
   readonly haloColor: string;
 }
 
-/**
- * Adds station and route layers to a MapLibre GL JS map.
- *
- * Creates two GeoJSON sources (stations and routes) and three layers
- * (route lines, station circles, and station labels) with paint and layout
- * styles configured to match the native implementation.
- *
- * @param instance - The MapLibre GL JS map to add layers to.
- * @param label - Label style configuration (size, color, halo color).
- */
 export function addStationLayers(
   instance: MapLibreMap,
   label: LabelStyle
@@ -95,13 +85,6 @@ interface SyncSourcesParams {
   readonly routes: RouteFeatures;
 }
 
-/**
- * Updates the station and route GeoJSON sources on a MapLibre GL JS map.
- *
- * @param instance - The MapLibre GL JS map whose sources to update.
- * @param stations - The new station features to render.
- * @param routes - The new route features to render.
- */
 export function syncSources({
   instance,
   stations,

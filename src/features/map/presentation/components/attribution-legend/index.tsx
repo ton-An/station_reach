@@ -10,12 +10,6 @@ import { useTheme } from '@/core/theme/use-theme';
 import { AttributionOpenSourceCard } from './_attribution-open-source-card';
 import { attributionMessage } from './attributions';
 
-/**
- * Legend showing map data attributions and project information.
- *
- * Displays an info button that opens a modal with attribution links and a
- * card linking to the GitHub repository.
- */
 export function AttributionLegend(): React.JSX.Element {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);

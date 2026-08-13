@@ -23,12 +23,6 @@ interface DepartureRowProps {
   readonly onPress: (departure: Departure) => void;
 }
 
-/**
- * A single departure row showing mode, name, and travel time to the selected
- * stop.
- *
- * The accent colour is interpolated across the list to create a gradient effect.
- */
 export const DepartureRow = memo(function DepartureRow({
   departure,
   durationMinutes,

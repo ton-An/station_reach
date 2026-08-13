@@ -14,11 +14,6 @@ const BAR_HEIGHT = 8;
 
 const HIGHLIGHT_OPACITY = 0.5;
 
-/**
- * Animated progress bar shown during station search or departures load.
- *
- * A highlight sweeps across the full width to indicate ongoing activity.
- */
 export function SearchLoadingShimmer(): React.JSX.Element | null {
   const theme = useTheme();
 

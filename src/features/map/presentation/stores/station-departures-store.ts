@@ -5,15 +5,6 @@ import type { Departure } from '../../domain/models/departure';
 import type { Station } from '../../domain/models/station';
 import type { GetStationDepartures } from '../../domain/usecases/get-station-departures';
 
-/**
- * Holds the departures loaded for a station.
- *
- * States:
- * - initial: nothing has been requested
- * - loading: a request is in flight
- * - loaded: the departures for `station` are available
- * - failure: the load failed
- */
 export type StationDeparturesState =
   | { readonly status: 'initial' }
   | { readonly status: 'loading' }
@@ -24,25 +15,11 @@ export type StationDeparturesState =
     }
   | { readonly status: 'failure'; readonly failure: Failure };
 
-/**
- * Manages departures for a selected station.
- *
- * Actions:
- * - loadReachability: fetches and loads departures for a station
- */
 export interface StationDeparturesStore {
   readonly state: StationDeparturesState;
   readonly loadReachability: (station: Station) => Promise<void>;
 }
 
-/**
- * Builds the station departures store.
- *
- * The request id lives in the closure rather than in state, so a superseded
- * load can neither overwrite a newer one nor notify a subscriber.
- *
- * @param getStationDepartures - The use case this store drives.
- */
 export function createStationDeparturesStore(
   getStationDepartures: GetStationDepartures
 ): StoreApi<StationDeparturesStore> {

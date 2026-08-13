@@ -1,10 +1,6 @@
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-/**
- * The categorization of what went wrong during an HTTP operation. Mapped to
- * {@link Failure}s by {@link mapHttpError}.
- */
 export type HttpErrorKind =
   | 'timeout'
   | 'cancelled'
@@ -13,13 +9,6 @@ export type HttpErrorKind =
   | 'badResponse'
   | 'unknown';
 
-/**
- * Categorizes an HTTP error so failures can be mapped without inspecting the
- * original exception.
- *
- * @param kind - The category of error.
- * @param options - Optional error options with a cause.
- */
 export class HttpError extends Error {
   constructor(
     readonly kind: HttpErrorKind,
@@ -44,17 +33,6 @@ function requestHeaders(): Record<string, string> {
   };
 }
 
-/**
- * Fetches JSON from a URL with a timeout and abort signal support.
- *
- * Throws {@link HttpError} on network failures, bad response status, or
- * malformed JSON. The kind field narrows which failure applies.
- *
- * @param url - The URL to fetch.
- * @param signal - Optional abort signal. Cancelling it stops the request.
- * @returns The parsed JSON response.
- * @throws {@link HttpError} for any network or parsing failure.
- */
 export async function getJson<T = unknown>(
   url: string,
   signal?: AbortSignal
@@ -92,9 +70,6 @@ export async function getJson<T = unknown>(
   }
 }
 
-// The caller cancelling and the internal timeout both surface as an abort.
-// Only the caller's signal reports itself as aborted, which is what tells the
-// two apart.
 function toHttpError(error: unknown, callerSignal?: AbortSignal): HttpError {
   if (error instanceof HttpError) return error;
 
@@ -111,8 +86,6 @@ function toHttpError(error: unknown, callerSignal?: AbortSignal): HttpError {
   return new HttpError('unknown', { cause: error });
 }
 
-// An abort error can have either name 'AbortError' or message 'timeout',
-// depending on which controller raised it.
 function isAbort(error: unknown): boolean {
   return (
     error instanceof Error &&

@@ -9,9 +9,6 @@ import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 import { REPOSITORY_URL } from './attributions';
 
-/**
- * Card linking to the Station Reach GitHub repository.
- */
 export function AttributionOpenSourceCard(): React.JSX.Element {
   const theme = useTheme();
 

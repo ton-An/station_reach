@@ -1,9 +1,3 @@
-/*
-  To-Do:
-    - [ ] Maybe make the legend interactive (e.g. tap a band to highlight only
-          the stops reachable within it).
-*/
-
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
@@ -18,10 +12,6 @@ const BAR_HEIGHT = 36;
 
 const BAR_OPACITY = 0.85;
 
-/**
- * Legend showing the travel time gradient used to color reachable stops on the
- * map.
- */
 export function TimeGradientLegend(): React.JSX.Element {
   const theme = useTheme();
 

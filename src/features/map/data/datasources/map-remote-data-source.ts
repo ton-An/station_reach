@@ -9,31 +9,9 @@ import type { GeocodeStation, StopTimesResponse } from './transitous-types';
 
 const BASE_URL = 'https://api.transitous.org';
 
-/**
- * Fetches stations and departures from the Transitous API.
- *
- * Throws {@link FailureError} on network or API errors.
- */
 export interface MapRemoteDataSource {
-  /**
-   * Searches for stations by name.
-   *
-   * @param query - The free-text search string.
-   * @param signal - Optional abort signal to cancel the request.
-   * @returns The matching stations.
-   * @throws {@link FailureError} if the request fails.
-   */
   searchStations(query: string, signal?: AbortSignal): Promise<Station[]>;
 
-  /**
-   * Fetches departures from a station for a single mode bucket.
-   *
-   * @param query - The {@link DeparturesQuery} specifying the station and
-   * modes.
-   * @returns The departures for the requested modes.
-   * @throws {@link FailureError} if the request fails or if no departures
-   * are found.
-   */
   getStationDeparturesByMode(query: DeparturesQuery): Promise<Departure[]>;
 }
 

@@ -5,10 +5,6 @@ import { mapHttpError } from '@/core/http/failure-mapper';
 import type { MapRepository } from '../../domain/repositories/map-repository';
 import type { MapRemoteDataSource } from '../datasources/map-remote-data-source';
 
-/**
- * Creates a map repository that wraps a data source and converts thrown
- * exceptions to {@link Failure} results.
- */
 export function createMapRepository(
   dataSource: MapRemoteDataSource
 ): MapRepository {

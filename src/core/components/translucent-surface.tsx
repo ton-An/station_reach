@@ -22,19 +22,14 @@ const BORDERED_FILL_ALPHA = 0.35;
 
 interface TranslucentSurfaceProps {
   readonly children: React.ReactNode;
-  /** A single radius, or per-corner radii for a sheet anchored to an edge. */
   readonly radius?: number;
   readonly topRadius?: number;
-  /** Softer blur, for the small map legends. */
   readonly light?: boolean;
-  /** Adds a hairline outline. */
   readonly bordered?: boolean;
-  /** Overrides the fill laid over the blur. */
   readonly tint?: string;
   readonly style?: StyleProp<ViewStyle>;
 }
 
-/** A blurred, translucent panel floating over the map. */
 export function TranslucentSurface({
   children,
   radius,

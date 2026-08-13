@@ -18,22 +18,10 @@ import {
 import { nearestStopId } from './station-candidates';
 import type { MapViewProps } from './map-view.types';
 
-/**
- * Global debug reference to the MapLibre GL JS instance.
- *
- * @internal
- */
 declare global {
   var __map: MapLibreMap | undefined;
 }
 
-/**
- * Web map implementation using MapLibre GL JS.
- *
- * Renders an interactive map with departure routes and reachable stations.
- * Manages layer and source creation on first style load, and tracks mouse
- * movement to show a pointer cursor over station markers.
- */
 export const MapView = memo(function MapView({
   stations,
   routes,

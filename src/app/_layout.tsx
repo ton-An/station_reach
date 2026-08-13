@@ -8,11 +8,6 @@ import { InAppNotificationListener } from '@/core/components/in-app-notification
 import { ContainerProvider } from '@/core/container';
 import { FONT_FAMILY } from '@/core/theme/theme';
 
-/**
- * The app shell.
- *
- * Renders nothing until Inter has loaded.
- */
 export default function RootLayout(): React.JSX.Element | null {
   const [fontsLoaded] = useFonts({
     [FONT_FAMILY]: require('@/assets/fonts/Inter.ttf'),

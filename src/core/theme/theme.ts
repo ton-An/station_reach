@@ -1,10 +1,3 @@
-/*
-  To-Do:
-    - [ ] Inter is shipped as a single variable TTF. React Native cannot address
-          the `wght` axis reliably on Android, so weights may snap to the nearest
-          static face. Ship static Inter cuts if that becomes visible.
-*/
-
 import type { TextStyle } from 'react-native';
 
 export const spacing = {

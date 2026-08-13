@@ -11,20 +11,12 @@ const PRESSED_OPACITY = 0.4;
 interface SmallIconButtonProps {
   readonly icon: IconName;
   readonly onPress: () => void;
-  /** Nudges the glyph inside its circle, in pixels. */
   readonly alignmentOffset?: readonly [number, number];
   readonly backgroundColor?: string;
   readonly accessibilityLabel?: string;
-  /**
-   * Renders the circle without a pressable around it.
-   *
-   * A nested pressable produces invalid `<button>` markup on web and swallows
-   * the outer target, so a button inside an already-tappable row sets this.
-   */
   readonly decorative?: boolean;
 }
 
-/** A circular icon button that dips in opacity while held. */
 export function SmallIconButton({
   icon,
   onPress,

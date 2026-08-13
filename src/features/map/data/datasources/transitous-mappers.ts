@@ -7,12 +7,6 @@ const MINUTE_MS = 60_000;
 
 const MAX_ADMIN_LEVEL = 7;
 
-/**
- * Maps a wire {@link GeocodeStation} to a domain {@link Station}.
- *
- * A station's display area is the `areas[]` entry with the highest
- * `adminLevel` ≤ 7.
- */
 export function toStation(raw: GeocodeStation): Station {
   const area = pickAreaName(raw);
 
@@ -27,12 +21,6 @@ export function toStation(raw: GeocodeStation): Station {
   };
 }
 
-/**
- * Maps a wire {@link StopTime} to a domain {@link Departure}.
- *
- * Calculates travel duration from the origin's scheduled departure time to
- * each subsequent stop's arrival time.
- */
 export function toDeparture(origin: Station, raw: StopTime): Departure {
   const departureTimeMs = new Date(
     raw.place.scheduledDeparture ?? ''
@@ -62,12 +50,6 @@ export function toDeparture(origin: Station, raw: StopTime): Departure {
   };
 }
 
-/**
- * Picks the most specific geographic area name for a station.
- *
- * Searches from highest to lowest `adminLevel`, up to 7, and returns the
- * name of the first match.
- */
 function pickAreaName(raw: GeocodeStation): string | undefined {
   const areas = raw.areas ?? [];
 
@@ -79,12 +61,6 @@ function pickAreaName(raw: GeocodeStation): string | undefined {
   return undefined;
 }
 
-/**
- * Converts a wire {@link NextStop} to a domain {@link Stop}.
- *
- * Returns undefined if either the arrival time is missing or the parsed
- * timestamps are invalid.
- */
 function toStop(raw: NextStop, departureTimeMs: number): Stop | undefined {
   const arrivalString = raw.scheduledArrival ?? raw.scheduledDeparture;
   if (arrivalString === undefined) return undefined;

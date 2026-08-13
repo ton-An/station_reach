@@ -5,18 +5,11 @@ import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
 
 interface SlidingPanesProps {
-  /** Which pane is on screen. The detail slides in from the right. */
   readonly isDetailOpen: boolean;
   readonly primary: React.ReactNode;
   readonly detail: React.ReactNode;
 }
 
-/**
- * Two full-width panes on a rail, one of which is on screen.
- *
- * The rail is offset by a measured pixel width. The native animation driver
- * ignores a percentage `translateX`.
- */
 export function SlidingPanes({
   isDetailOpen,
   primary,

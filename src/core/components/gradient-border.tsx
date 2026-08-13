@@ -12,13 +12,6 @@ interface GradientBorderProps {
   readonly backgroundColor?: string;
 }
 
-/**
- * Draws a gradient outline around its children.
- *
- * React Native has no gradient border, and a gradient view behind an inset
- * child bleeds through a translucent fill. This strokes a rounded rect in SVG
- * instead.
- */
 export function GradientBorder({
   colors,
   radius,

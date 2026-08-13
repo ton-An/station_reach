@@ -33,14 +33,6 @@ function stopAt(colors: readonly string[], index: number): string {
   return color;
 }
 
-/**
- * Interpolates between colors in a gradient at a given position. Position is
- * clamped to [0, 1] where 0 is the first color and 1 is the last.
- *
- * @param colors - The gradient stops as rgba strings.
- * @param position - The position in the gradient, from 0 to 1.
- * @returns The interpolated rgba color string.
- */
 export function interpolateColors(
   colors: readonly string[],
   position: number
@@ -70,13 +62,6 @@ export function interpolateColors(
   });
 }
 
-/**
- * Returns the color with a different alpha value.
- *
- * @param color - An rgba color string.
- * @param alpha - The new alpha value from 0 to 1.
- * @returns The color with the new alpha.
- */
 export function withAlpha(color: string, alpha: number): string {
   return formatRgba({ ...parseRgba(color), a: alpha });
 }
@@ -87,14 +72,6 @@ interface FlattenOntoParams {
   readonly alpha: number;
 }
 
-/**
- * Composites a color with transparency onto a backdrop using alpha blending.
- *
- * @param color - The top color, an rgba string.
- * @param backdrop - The bottom color, an rgba string.
- * @param alpha - The alpha of the top color.
- * @returns The blended color.
- */
 export function flattenOnto({
   color,
   backdrop,
@@ -115,8 +92,6 @@ export function flattenOnto({
 
 const GRADIENT_BUCKETS = 36;
 
-// Maps duration to a position in [0, 1]. Each bucket represents 30 minutes,
-// clamped at a maximum of 1080 minutes.
 function durationToGradientPosition(durationMinutes: number): number {
   const bucket = Math.min(
     Math.max(Math.floor(durationMinutes / 30), 0),
@@ -132,15 +107,6 @@ export interface ColorForDurationParams {
   readonly alpha?: number;
 }
 
-/**
- * Returns the color for a travel duration on a gradient. Duration maps to
- * position with each bucket representing 30 minutes, clamped at 1080 minutes.
- *
- * @param gradient - The gradient stops as rgba strings.
- * @param durationMinutes - The travel time in minutes.
- * @param alpha - Optional alpha to apply to the result.
- * @returns The color for the given duration.
- */
 export function colorForDuration({
   gradient,
   durationMinutes,

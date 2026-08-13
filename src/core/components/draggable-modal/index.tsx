@@ -30,21 +30,11 @@ const LEGEND_FADE_TRAVEL = 0.08;
 
 interface DraggableModalProps {
   readonly title: string;
-  /** Shows a back button in the header. */
   readonly onBack?: () => void;
-  /** Sits above the sheet and fades out as the sheet is drawn up. */
   readonly legend?: React.ReactNode;
   readonly children: React.ReactNode;
 }
 
-/**
- * The bottom sheet the app's content lives in.
- *
- * The sheet opens at {@link MEDIUM_HEIGHT} and settles at either
- * {@link SMALL_HEIGHT} or {@link LARGE_HEIGHT} once a drag ends. A scrolling
- * child has to be built from {@link ModalScrollView} or {@link ModalList},
- * which share the finger with the sheet.
- */
 export function DraggableModal({
   title,
   onBack,

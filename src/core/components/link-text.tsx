@@ -12,11 +12,6 @@ interface LinkTextProps {
   readonly style?: TextStyle;
 }
 
-/**
- * Prose with any bare URLs turned into underlined links.
- *
- * A tapped link opens in the system browser.
- */
 export function LinkText({ text, style }: LinkTextProps): React.JSX.Element {
   const theme = useTheme();
 

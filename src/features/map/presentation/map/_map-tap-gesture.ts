@@ -3,15 +3,6 @@ import { Gesture, type ManualGesture } from 'react-native-gesture-handler';
 
 const TAP_SLOP = 12;
 
-/**
- * Builds a tap gesture that reads the raw touch stream.
- *
- * A `Gesture.Tap` has to win recognition against the map's own double-tap
- * handler, which costs a third of a second. `Gesture.Manual` with only
- * `onTouches*` handlers never activates, so it resolves on touch-up and
- * leaves panning, pinching and double-tap-to-zoom alone. The slop and
- * multi-touch checks below are therefore this gesture's own.
- */
 function createMapTapGesture(
   onTap: (x: number, y: number) => void
 ): ManualGesture {
@@ -52,12 +43,6 @@ function createMapTapGesture(
     });
 }
 
-/**
- * Hook that memoizes a manual tap gesture for the map.
- *
- * @param onTap - Callback invoked with screen coordinates of the tap.
- * @returns A memoized {@link ManualGesture} that fires onTap on valid taps.
- */
 export function useMapTapGesture(
   onTap: (x: number, y: number) => void
 ): ManualGesture {

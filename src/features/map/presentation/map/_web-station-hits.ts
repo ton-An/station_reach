@@ -6,13 +6,6 @@ import {
   type StationCandidate,
 } from './station-candidates';
 
-/**
- * Finds station candidates at the given point on a MapLibre GL JS map.
- *
- * @param instance - The MapLibre GL JS map to query.
- * @param point - Screen coordinates to query around.
- * @returns Stations rendered within the hit radius of the point.
- */
 export function stationsAt(
   instance: MapLibreMap,
   point: Point
@@ -30,17 +23,6 @@ export function stationsAt(
   );
 }
 
-/**
- * Tracks mouse movement and shows a pointer cursor when over stations.
- *
- * The cursor does not revert immediately when leaving a station to avoid
- * visual noise during cursor hovering. Instead, it reverts after holdMs
- * milliseconds of not being over a station.
- *
- * @param instance - The MapLibre GL JS map to track on.
- * @param holdMs - Milliseconds to wait before reverting the cursor.
- * @returns A cleanup function that removes the mouse movement listener.
- */
 export function trackStationCursor(
   instance: MapLibreMap,
   holdMs: number

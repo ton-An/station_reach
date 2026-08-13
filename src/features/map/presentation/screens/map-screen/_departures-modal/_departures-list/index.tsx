@@ -14,12 +14,6 @@ import { DeparturesNoStopSelected } from './_departures-no-stop-selected';
 
 const NO_DEPARTURES: readonly Departure[] = [];
 
-/**
- * List of departures from the selected stop.
- *
- * Rows show the departure name, mode, and travel time to the selected stop.
- * Tapping a row selects it and slides to the full itinerary view.
- */
 export function DeparturesList(): React.JSX.Element {
   const theme = useTheme();
   const state = useStationSelectionStore((store) => store.state);

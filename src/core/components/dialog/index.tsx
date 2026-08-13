@@ -14,14 +14,11 @@ interface DialogProps {
   readonly isOpen: boolean;
   readonly onClose: () => void;
   readonly title: string;
-  /** Prose. Bare URLs inside it become underlined links. */
   readonly message: string;
-  /** Rendered below the message. */
   readonly additionalContent?: React.ReactNode;
   readonly actions: readonly DialogAction[];
 }
 
-/** The app's modal dialog. */
 export function Dialog({
   isOpen,
   onClose,

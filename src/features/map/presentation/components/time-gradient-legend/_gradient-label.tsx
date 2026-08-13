@@ -6,9 +6,6 @@ interface GradientLabelProps {
   readonly text: string;
 }
 
-/**
- * Label displayed on the travel time gradient legend.
- */
 export function GradientLabel({ text }: GradientLabelProps): React.JSX.Element {
   const theme = useTheme();
 

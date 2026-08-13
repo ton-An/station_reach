@@ -13,12 +13,6 @@ const MAX_HEIGHT = 250;
 const EVEN_ROW_MIN_OPACITY = 0.1;
 const ODD_ROW_MIN_OPACITY = 0.6;
 
-/**
- * Scrollable list of search results.
- *
- * Tapping a result loads the station's departures and closes the search.
- * Rows alternate opacity for visual separation.
- */
 export function SearchResults(): React.JSX.Element | null {
   const state = useStationSearchStore((store) => store.state);
   const collapse = useStationSearchStore((store) => store.collapse);

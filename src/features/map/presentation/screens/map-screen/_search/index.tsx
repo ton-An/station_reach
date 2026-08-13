@@ -8,14 +8,6 @@ import { SearchLoadingShimmer } from './_search-loading-shimmer';
 import { SearchField } from './_search-field';
 import { SearchResults } from './_search-results';
 
-/**
- * The station search interface.
- *
- * Sub-components:
- * - SearchField: station name input with debounced search
- * - SearchResults: scrollable list of matching stations
- * - SearchLoadingShimmer: progress indicator during search or departures load
- */
 export function Search(): React.JSX.Element {
   const theme = useTheme();
   const insets = useSafeAreaInsets();

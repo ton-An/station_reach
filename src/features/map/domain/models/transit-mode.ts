@@ -1,10 +1,3 @@
-/*
-  To-Do:
-    - [ ] Trim the modes Transitous never returns for a stop (car, airplane,
-          flex, odm, rental …). They came over from the MOTIS routing API and
-          this app only ever renders departures.
-*/
-
 export const TransitMode = {
   Walk: 'walk',
   Bike: 'bike',

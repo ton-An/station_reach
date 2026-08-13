@@ -20,7 +20,6 @@ interface NotificationCardProps {
   readonly onDismiss: () => void;
 }
 
-/** One notification, animating in on mount. */
 export function NotificationCard({
   notification,
   onDismiss,
@@ -31,9 +30,6 @@ export function NotificationCard({
 
   const [entryAnimationValue] = useState(() => new Animated.Value(0));
 
-  // `opacity` and `transform` each make their element a backdrop root, which
-  // has nothing behind it to blur, so the surface inside renders flat. Both
-  // are dropped once the entry animation lands.
   const [hasEntered, setHasEntered] = useState(false);
 
   useEffect(() => {

@@ -11,7 +11,6 @@ interface ModalListProps<T> {
   readonly contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
-/** The scrolling body of a {@link DraggableModal}, virtualised. */
 export function ModalList<T>({
   data,
   keyExtractor,

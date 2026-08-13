@@ -1,16 +1,11 @@
 export const en = {
-  // -- General -- //
   back: 'Back',
-
-  // -- Map -- //
   searchStations: 'Search Stations',
   departures: 'Departures',
   noStopSelected: 'No stop selected',
   thirtyMin: '30min',
   nineHours: '9h',
   eighteenHoursPlus: '18h+',
-
-  // -- Attributions -- //
   openStreetMapAttribution: '© OpenStreetMap',
   cartoDBAttribution: '© CartoDB',
   dataSourcesAttribution: 'Data Sources',
@@ -22,11 +17,7 @@ export const en = {
   proudlyOpenSource: 'Proudly Open Source',
   openSourceExplanation:
     'This app is open source. Take a look at the code, report an issue, or contribute.',
-
-  // -- Web -- //
   webDescription: 'See where transit takes you!',
-
-  // -- Failures -- //
   receiveTimeoutFailureName: 'Receive Timeout',
   receiveTimeoutFailureMessage:
     'Receiving the response from the server timed out.',
