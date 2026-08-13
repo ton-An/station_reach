@@ -129,7 +129,7 @@ it grows parts of its own it becomes a folder with its own `index.tsx`.
   only for differing or non-obvious behaviour.
 - Document each API at its own abstraction level. Describe caller-visible behaviour, inputs,
   outputs and guarantees; leave lower-level implementation mechanisms to the layer that owns them
-  unless they are part of the contract.
+  unless they are part of the contract. Document our code, never a dependency's behaviour.
 - Name the concrete failure constants a call can return in `@returns`, and the error types it
   throws in `@throws`. Do not write a vague bullet like "any failure returned by …".
 - Module-private code gets docs only for non-obvious behaviour: workarounds, gestures,
