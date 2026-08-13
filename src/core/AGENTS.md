@@ -6,10 +6,7 @@ Everything shared across features. Extends the root `AGENTS.md`.
 
 - No feature knowledge here. Anything that knows about stations, departures or the map belongs
   to `src/features/map`.
-- Never hardcode a spacing, radius, colour, duration or layout width — read a token.
-- No user-facing string literals. Every one goes through `t()`.
 - Failures carry translation keys, never copy.
-- No module-level singletons. Stores are factories; `container.tsx` owns the graph.
 
 ## Theme
 
@@ -54,34 +51,29 @@ export const noDeparturesFoundFailure = {
 Each category module exports its constants plus a union named after the category. `index.ts`
 unions those into `Failure`. Import from `@/core/failures`, never from a category module.
 
+Exceptions become failures on one path: a data source that already knows which failure it hit
+throws `FailureError`, the repository unwraps it, and `failure-mapper.ts` maps everything else
+through `mapHttpError`.
+
 **Add a failure**
 
-1. Add the constant to its category module, with a one-line doc.
+1. Add the constant to its category module.
 2. Add it to that module's union.
 3. Add `<name>FailureName` and `<name>FailureMessage` to `i18n/en.ts`.
 4. If it is a new category: new module, new union, and add it to `Failure` in `index.ts`.
-5. Name it in the `@returns` of every signature that can now return it.
 
 ## Dependency injection
 
 `container.tsx` builds the graph in one function under `// -- Data -- //`, `// -- Domain -- //`
-and `// -- Presentation -- //` banners. `Container` holds only `StoreApi<…>` members.
-`useContainer()` is the only way to reach it, and it is built once per provider — never at
-module scope.
-
-## HTTP
-
-- `getJson` throws `HttpError`. `failure-mapper.ts` is the only place that becomes a `Failure`.
-- The User-Agent is set here. Browsers drop it silently; that is expected and not to be worked
-  around.
+and `// -- Presentation -- //` banners. `Container` holds only `StoreApi<…>` members, reached
+through `useContainer()`.
 
 ## Components
 
-- Read `components/` before writing a new one; most of what a screen needs is already there.
 - Prefer `<Gap size="small" />` over an ad-hoc margin.
 - Take pass-through pointer events from `components/pointer-events.ts`. `'none'` is not a
   substitute for `'box-none'`.
-- A component with private parts is a folder — see `dialog/` and `draggable-modal/`.
+- `dialog/` and `draggable-modal/` are the folder-with-private-parts pattern to copy.
 
 ## Cross-platform
 

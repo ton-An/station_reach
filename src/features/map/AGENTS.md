@@ -4,11 +4,8 @@ The app's one feature. Extends the root `AGENTS.md`.
 
 ## Hard Rules
 
-- Preserve the flow: `Component → Store → Use case → MapRepository → MapRepositoryImpl →
-  MapRemoteDataSource`. A store never calls a repository or a data source.
 - Wire shapes live only in `data/datasources/transitous-types.ts`. Nothing above
   `transitous-mappers.ts` sees an API field name.
-- `domain/` imports nothing from `data/` or `presentation/`, and nothing from React or Expo.
 - Transitous is a free community service: no polling, no retry loops, no request storms.
 
 ## Canonical files
@@ -28,29 +25,14 @@ Copy these when adding code of the same kind.
 | Screen with private parts | `presentation/screens/map-screen/` |
 | Platform contract | `presentation/map/map-view.types.ts` |
 
-## Layers
-
-- **Data source** — builds the URL, calls `getJson`, maps the response. Throws `HttpError` for
-  transport problems and `FailureError` for data problems.
-- **Repository** — `ResultAsync.fromPromise` around the data source; unwraps `FailureError`,
-  sends everything else through `mapHttpError`. Nothing above it sees an exception.
-- **Use case** — one operation over repository interfaces. Business rules live here, including
-  the departure merge.
-- **Store** — `result.match` into a state, nothing else.
-
 ## Stores
 
-`create<Name>Store(useCases): StoreApi<<Name>Store>` over `zustand/vanilla` — never a
-module-level `create()`. State is a discriminated union on `status`, named `<Name>State`. Hooks
-in `use-map-stores.ts` bridge through `useContainer()`.
+Stores are `zustand/vanilla`; the hooks in `use-map-stores.ts` bridge through `useContainer()`.
 
 Failures reach the user through the one global in-app notification store, subscribed once at the
 root. Screens do not render their own error banners.
 
 ## Transitous API
-
-Requests are built in `map-remote-data-source.ts`; every one carries a `User-Agent` identifying
-the app.
 
 **Search** — `GET /api/v1/geocode`. A station's display area is the `areas[]` entry with the
 highest `adminLevel` ≤ 7.
@@ -71,9 +53,8 @@ concurrently.
 
 ## Map
 
-`presentation/map/` holds one contract in `map-view.types.ts` and two implementations of it —
-`map-view.tsx` for MapLibre Native, `map-view.web.tsx` for MapLibre GL JS. The screen above
-never branches on platform.
+`map-view.tsx` renders MapLibre Native, `map-view.web.tsx` MapLibre GL JS, both against
+`map-view.types.ts`.
 
 - Constants, ids and style expressions live in `map-config.ts`.
 - Reachability is indexed once per loaded station by `buildStopIndex`. Tapping a marker is a

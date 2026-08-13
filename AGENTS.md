@@ -14,14 +14,14 @@ The repo is mid-rewrite: Flutter → React Native, in place.
 ## Hard Rules
 
 - Read the scoped `AGENTS.md` nearest the files being changed:
-  - `src/core/AGENTS.md` — theme, i18n, failures, DI, HTTP, shared components.
+  - `src/core/AGENTS.md` — theme, i18n, failures, DI, shared components.
   - `src/features/map/AGENTS.md` — the map feature and the Transitous API.
 - Check `git status` before editing. Do not revert user changes or unrelated local edits.
 - Keep changes scoped to the task.
 - Attributions and other legal documents and requirements stay visible and reachable.
 - Reuse before adding. Look for an existing token, component or helper before writing another.
-- Never hardcode a spacing, radius, colour, duration or layout width — read a token.
-- No user-facing string literals. Every one goes through `t()`.
+- Never hardcode what a token or `t()` already owns — a spacing, radius, colour, duration,
+  layout width, or any user-facing string.
 - No `any`, no `!` assertion, no unchecked cast. `strict` and `noUncheckedIndexedAccess` are on.
 - No prop drilling. A component that renders store state subscribes to it; never thread a value
   through a component that does not use it.
@@ -84,9 +84,8 @@ dependency at the point of use.
 ## Change workflows
 
 **Add a use case** — `domain/usecases/<name>.ts`: export a function-type alias and
-`create<Name>(deps): <Name>`. Depend on repository interfaces only, return
-`ResultAsync<T, Failure>`, name the failures it can return, and register in `container.tsx`
-under `Domain`.
+`create<Name>(deps): <Name>`. Depend on repository interfaces only, and register in
+`container.tsx` under `Domain`.
 
 **Add a store** — `presentation/stores/<name>-store.ts`: export `<Name>State` (a union on
 `status`), `<Name>Store`, and `create<Name>Store(useCases): StoreApi<<Name>Store>`. State holds
@@ -99,8 +98,6 @@ it grows parts of its own it becomes a folder with its own `index.tsx`.
 
 **Add a failure** — see `src/core/AGENTS.md`.
 
-Each ends the same way: `npm run typecheck`, `npm run lint`, then exercise the screen.
-
 ## Style
 
 - Prettier: `singleQuote`, `printWidth: 80`, `trailingComma: es5`.
@@ -108,8 +105,6 @@ Each ends the same way: `npm run typecheck`, `npm run lint`, then exercise the s
   module constants `SCREAMING_SNAKE`.
 - Keep a function short and single-purpose. One that needs a comment to mark its sections is
   two functions.
-- A module with private parts is a folder: `index.tsx` plus `_name.tsx` siblings, imported only
-  by that parent. A component becomes one as soon as it grows sub-components.
 - A constant two components share is a token, not an export from whichever needed it first.
 - Object parameters beyond two arguments. No positional booleans.
 - Explicit return types on exported functions. `readonly` on interface fields and array props.
@@ -132,8 +127,7 @@ Closed by default. Two kinds are allowed and nothing else:
 
 1. TSDoc on an exported symbol, as above.
 2. An inline comment where the behaviour is genuinely surprising — a platform trap, a
-   workaround, a gesture, an upstream API constraint. That reasoning belongs here, next to the
-   code, and not in an AGENTS.md.
+   workaround, a gesture, an upstream API constraint.
 
 Do not narrate what the code does, justify an ordinary choice, explain a name or a token, or head
 a module whose contents are self-evident. If the reason for a comment is "so a reader knows what
@@ -151,12 +145,8 @@ Applies to docs, plans, commit messages, PRs and chat answers alike.
 
 ## Verification
 
-Narrowest check first, then broaden.
-
-```bash
-npm run typecheck
-npm run lint
-```
+Narrowest check first, then broaden: `npm run typecheck`, then `npm run lint`, then exercise the
+screen.
 
 - Clean type and lint output is the floor, not the proof. Exercise the affected screen on web
   **and** a native target; the platforms fail differently and neither substitutes for the other.
