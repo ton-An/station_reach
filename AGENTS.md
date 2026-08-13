@@ -114,6 +114,8 @@ it grows parts of its own it becomes a folder with its own `index.tsx`.
 
 - TSDoc every exported symbol: a one-line summary, then only the tags it needs, in this order —
   `@param`, `@returns`, `@throws`. Use `{@link X}` in prose.
+- A paragraph under the summary only where a caller could get it wrong — the contract, not the
+  design story.
 - Name the concrete failure constants a call can return in its `@returns`.
 - Document a behaviour once, on the declaration that owns it — the interface, not the
   implementation. Document the implementation only where it differs.
@@ -130,13 +132,22 @@ Closed by default. Two kinds are allowed and nothing else:
 2. An inline comment where the behaviour is genuinely surprising — a platform trap, a
    workaround, a gesture, an upstream API constraint.
 
-Do not narrate what the code does, justify an ordinary choice, explain a name or a token, or head
-a module whose contents are self-evident. If the reason for a comment is "so a reader knows what
-this is", delete it.
+Both are held to the same shape:
+
+- One sentence. Two only where naming both the cause and the symptom will not fit in one.
+- Write the constraint, not the lesson. Name the API or platform behaviour and what it breaks
+  here; never teach the general concept, and never restate the fix written under it.
+- Stay on the code in front of it. One that needs another file, another component or the rest of
+  the screen to make sense belongs there, not here.
+- Plain technical register. No metaphor, no anthropomorphism.
+
+Do not narrate what the code does, justify a design or layout choice, explain a name or a token,
+or head a module whose contents are self-evident. If the reason for a comment is "so a reader
+knows what this is", delete it.
 
 ## Writing
 
-Applies to docs, plans, commit messages, PRs and chat answers alike.
+Applies to docs, comments, plans, commit messages, PRs and chat answers alike.
 
 - One claim per sentence. Cut any sentence that only sets up the next one.
 - A table, not prose, for anything that is a mapping.
