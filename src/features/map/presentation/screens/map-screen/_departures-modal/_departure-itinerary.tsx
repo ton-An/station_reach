@@ -8,8 +8,8 @@ import { ListItem } from '@/core/components/list-item';
 import { colorForDuration } from '@/core/helpers/color-helper';
 import { formatDuration } from '@/core/helpers/duration-helper';
 import { useTheme } from '@/core/theme/use-theme';
-import type { Departure } from '../../../domain/models/departure';
-import type { Stop } from '../../../domain/models/station';
+import type { Departure } from '../../../../domain/models/departure';
+import type { Stop } from '../../../../domain/models/station';
 
 /** How much of the ramp survives in the pin behind each stop's icon. */
 const PIN_ALPHA = 0.55;

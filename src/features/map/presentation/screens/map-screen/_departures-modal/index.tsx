@@ -6,15 +6,15 @@ import { SlidingPanes } from '@/core/components/sliding-panes';
 import { t } from '@/core/i18n/translate';
 import { useIsWideLayout } from '@/core/theme/use-is-wide-layout';
 import { useTheme } from '@/core/theme/use-theme';
-import type { DepartureSelectionState } from '../../stores/departure-selection-store';
-import type { StationSelectionState } from '../../stores/station-selection-store';
+import type { DepartureSelectionState } from '../../../stores/departure-selection-store';
+import type { StationSelectionState } from '../../../stores/station-selection-store';
 import {
   useDepartureSelectionStore,
   useStationSelectionStore,
-} from '../../stores/use-map-stores';
+} from '../../../stores/use-map-stores';
 import { DepartureItinerary } from './_departure-itinerary';
 import { DeparturesList } from './_departures-list';
-import { MapLegends } from './_map-legends';
+import { MapLegends } from '../../../components/map-legends';
 
 /**
  * The departures sheet, and the itinerary behind it.

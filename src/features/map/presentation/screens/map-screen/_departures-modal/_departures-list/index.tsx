@@ -4,11 +4,11 @@ import type { ListRenderItem } from 'react-native';
 import { ModalList } from '@/core/components/draggable-modal';
 import { interpolateColors } from '@/core/helpers/color-helper';
 import { useTheme } from '@/core/theme/use-theme';
-import type { Departure } from '../../../../domain/models/departure';
+import type { Departure } from '../../../../../domain/models/departure';
 import {
   useDepartureSelectionStore,
   useStationSelectionStore,
-} from '../../../stores/use-map-stores';
+} from '../../../../stores/use-map-stores';
 import { DepartureRow } from './_departure-row';
 import { NoStopSelected } from './_no-stop-selected';
 

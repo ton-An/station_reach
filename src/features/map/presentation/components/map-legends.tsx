@@ -1,8 +1,8 @@
 import { View } from 'react-native';
 
 import { pointerEvents } from '@/core/components/pointer-events';
-import { AttributionLegend } from '../../components/attribution-legend';
-import { TimeGradientLegend } from '../../components/time-gradient-legend';
+import { AttributionLegend } from './attribution-legend';
+import { TimeGradientLegend } from './time-gradient-legend';
 
 /**
  * The travel-time key and the attribution button, side by side.
