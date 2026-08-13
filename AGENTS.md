@@ -103,6 +103,10 @@ it grows parts of its own it becomes a folder with its own `index.tsx`.
 - Prettier: `singleQuote`, `printWidth: 80`, `trailingComma: es5`.
 - Files `kebab-case.ts`/`.tsx`. Components `PascalCase`, factories `createX`, hooks `useX`,
   module constants `SCREAMING_SNAKE`.
+- A sub-component's name starts with its parent's key noun, and its file is the kebab-case of
+  that name — `draggable-modal/_modal-header.tsx` exports `ModalHeader`, never `Header`. Take
+  the noun, not the parent's full name: `AttributionOpenSourceCard`, not
+  `AttributionLegendOpenSourceCard`.
 - Keep a function short and single-purpose. One that needs a comment to mark its sections is
   two functions.
 - A constant two components share is a token, not an export from whichever needed it first.
