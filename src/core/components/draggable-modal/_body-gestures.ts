@@ -19,16 +19,15 @@ import {
 
 export const SCROLL_EVENT_THROTTLE = 16;
 
-/** What a scrolling sheet body has to wire up to behave inside the sheet. */
+/**
+ * What a scrolling sheet body has to wire up to behave inside the sheet.
+ *
+ * A `sheetDrag` detector wraps a `scroll` detector, which wraps the
+ * scrollable. `onScroll` goes on the scrollable.
+ */
 export interface ModalBodyGestures {
-  /** The outer detector. It may take the touch away from the list. */
   readonly sheetDrag: PanGesture;
-  /**
-   * The inner detector, held back by `blocksExternalGesture` until the outer
-   * one activates or fails.
-   */
   readonly scroll: NativeGesture;
-  /** Attach to the scrollable, so the drag can see where the list stands. */
   readonly onScroll: ReturnType<typeof useAnimatedScrollHandler>;
 }
 
