@@ -60,7 +60,7 @@ unions those into `Failure`. Import from `@/core/failures`, never from a categor
 2. Add it to that module's union.
 3. Add `<name>FailureName` and `<name>FailureMessage` to `i18n/en.ts`.
 4. If it is a new category: new module, new union, and add it to `Failure` in `index.ts`.
-5. List it under `Failures:` on every signature that can now return it.
+5. Name it in the `@returns` of every signature that can now return it.
 
 ## Dependency injection
 

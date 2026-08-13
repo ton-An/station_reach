@@ -19,16 +19,17 @@ The repo is mid-rewrite: Flutter → React Native, in place.
 - Check `git status` before editing. Do not revert user changes or unrelated local edits.
 - Keep changes scoped to the task.
 - Attributions and other legal documents and requirements stay visible and reachable.
-- Reuse before adding: a theme token, a `core/components` component, a `core/helpers` function.
-  Check that one exists before writing another.
+- Reuse before adding. Look for an existing token, component or helper before writing another.
 - Never hardcode a spacing, radius, colour, duration or layout width — read a token.
 - No user-facing string literals. Every one goes through `t()`.
 - No `any`, no `!` assertion, no unchecked cast. `strict` and `noUncheckedIndexedAccess` are on.
-- Errors are values. Nothing throws across a layer boundary above the data source.
+- No prop drilling. A component that renders store state subscribes to it; never thread a value
+  through a component that does not use it.
+- Errors are values. An error the app handles crosses a layer boundary as a `Failure`, never as
+  a throw.
 - Never edit or import from `../station_reach_flutter_reference`. Read it to recover behaviour;
   delete a Flutter file only once its behaviour exists in the new code.
-- Do not add a test suite (see Verification).
-- Prefer `rg` for search.
+- Do not add a test suite.
 
 ## Setup
 
@@ -52,7 +53,7 @@ src/
   core/                 shared: components, failures, helpers, http, i18n,
                         notifications, theme, container.tsx
   features/map/
-    data/               datasources (throw), repositories (return Result)
+    data/               datasources, repositories
     domain/             models, repository interfaces, usecases
     presentation/       stores, map, screens, components
   types/                ambient declarations
@@ -84,16 +85,17 @@ dependency at the point of use.
 
 **Add a use case** — `domain/usecases/<name>.ts`: export a function-type alias and
 `create<Name>(deps): <Name>`. Depend on repository interfaces only, return
-`ResultAsync<T, Failure>`, document its `Failures:`, register in `container.tsx` under `Domain`.
+`ResultAsync<T, Failure>`, name the failures it can return, and register in `container.tsx`
+under `Domain`.
 
 **Add a store** — `presentation/stores/<name>-store.ts`: export `<Name>State` (a union on
-`status`), `<Name>Store`, and `create<Name>Store(useCases): StoreApi<<Name>Store>`. Keep
-per-instance bookkeeping in the factory closure, register under `Presentation`, and add the
+`status`), `<Name>Store`, and `create<Name>Store(useCases): StoreApi<<Name>Store>`. State holds
+what the UI renders. A non-reactive value, such as a request id, lives in the factory closure
+instead, where changing it notifies no subscriber. Register under `Presentation` and add the
 selector hook to the feature's `use-*-stores.ts`.
 
-**Add a screen part** — `_name.tsx` beside the parent's `index.tsx`, imported only by it. It
-subscribes to the state it renders rather than taking props threaded down. Once it grows parts
-of its own it becomes a folder with its own `index.tsx`.
+**Add a screen part** — `_name.tsx` beside the parent's `index.tsx`, imported only by it. Once
+it grows parts of its own it becomes a folder with its own `index.tsx`.
 
 **Add a failure** — see `src/core/AGENTS.md`.
 
@@ -101,11 +103,13 @@ Each ends the same way: `npm run typecheck`, `npm run lint`, then exercise the s
 
 ## Style
 
-- Prettier: `singleQuote`, `printWidth: 80`, `trailingComma: es5`. ESLint is correctness only.
+- Prettier: `singleQuote`, `printWidth: 80`, `trailingComma: es5`.
 - Files `kebab-case.ts`/`.tsx`. Components `PascalCase`, factories `createX`, hooks `useX`,
   module constants `SCREAMING_SNAKE`.
+- Keep a function short and single-purpose. One that needs a comment to mark its sections is
+  two functions.
 - A module with private parts is a folder: `index.tsx` plus `_name.tsx` siblings, imported only
-  by that parent.
+  by that parent. A component becomes one as soon as it grows sub-components.
 - A constant two components share is a token, not an export from whichever needed it first.
 - Object parameters beyond two arguments. No positional booleans.
 - Explicit return types on exported functions. `readonly` on interface fields and array props.
@@ -113,11 +117,11 @@ Each ends the same way: `npm run typecheck`, `npm run lint`, then exercise the s
 
 ## Documentation
 
-- TSDoc every exported symbol: a one-line summary, then only the sections it actually has, in
-  this order — `Parameters:` (`- name: description`), `Returns:`, `Failures:`, `Throws:`. Use
-  `{@link X}` in prose. No `@param` / `@returns` tags.
-- `Failures:` names concrete constants. Document behaviour at the layer that owns it: repository
-  behaviour on the domain interface, the implementation only where it differs.
+- TSDoc every exported symbol: a one-line summary, then only the tags it needs, in this order —
+  `@param`, `@returns`, `@throws`. Use `{@link X}` in prose.
+- Name the concrete failure constants a call can return in its `@returns`.
+- Document a behaviour once, on the declaration that owns it — the interface, not the
+  implementation. Document the implementation only where it differs.
 - Skip the doc where the name and signature already say it — pass-throughs, plain value types,
   obvious fields.
 - Open questions are a `To-Do:` block at the top of the file with `- [ ]` items.
@@ -156,7 +160,6 @@ npm run lint
 
 - Clean type and lint output is the floor, not the proof. Exercise the affected screen on web
   **and** a native target; the platforms fail differently and neither substitutes for the other.
-- There is no test suite and that is deliberate. Do not add one without being asked.
 - If you could not run a check, say which one and why. Never claim a result you have not seen.
 
 ## Git
@@ -166,23 +169,15 @@ npm run lint
 - Types in use: `feat`, `fix`, `refactor`, `perf`, `docs`, `chore`, `style`, `ci`.
 - A version bump is its own `chore:` commit and moves `package.json` and `app.json` together.
 - Split unrelated edits into separate commits even when they were made in one sitting.
-- Branches are `kind/subject`, e.g. `rewrite/react-native`.
+- Branches are `kind/subject`.
 - Commit or push only when asked.
-
-## Security and privacy
-
-- Never commit a keystore, an EAS credential or an App Store Connect key.
-- The app collects nothing. Do not log or transmit a search query or a coordinate.
-- Adding a network destination is a privacy-policy change, not an implementation detail.
 
 ## Agent orchestration
 
 - Decide whether delegating is warranted before doing it; most single-file changes are not.
-- Delegate a read-only agent when the scope is unknown, when behaviour has to be recovered from
-  the Flutter reference, or when a change crosses layers.
-- The main agent owns synthesis, edits and verification. A subagent reports files, lines and
-  risks; it does not decide.
-- Never run agents in parallel over the same files.
+- Delegate when the scope is unknown or when a change crosses layers.
+- Give a subagent one scoped job — explore, edit or check a named part — and have it report
+  back the files, lines and risks. The main agent owns the decision and the final verification.
 
 ## AGENTS.md maintenance
 
@@ -190,7 +185,7 @@ npm run lint
 - Replace stale guidance. Never append a second rule for the same concern.
 - Do not restate what the code or a config already records — no file inventories, no token
   values, no identifiers, no project trivia. An agent can read `ls` and `app.json`. Rules only.
-- Keep rules short, imperative and checkable in review.
+- Keep rules short, imperative, non-duplicative and checkable in review.
 - Prefer a general rule to one written for a single incident.
 - A rule belongs here only if it survives the next refactor. Reasoning about one workaround
   belongs in a comment beside that code.

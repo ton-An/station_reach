@@ -41,9 +41,8 @@ Copy these when adding code of the same kind.
 ## Stores
 
 `create<Name>Store(useCases): StoreApi<<Name>Store>` over `zustand/vanilla` — never a
-module-level `create()`. Per-instance bookkeeping (abort controllers, request ids) lives in the
-factory closure, not in state. State is a discriminated union on `status`, named `<Name>State`.
-Hooks in `use-map-stores.ts` bridge through `useContainer()`.
+module-level `create()`. State is a discriminated union on `status`, named `<Name>State`. Hooks
+in `use-map-stores.ts` bridge through `useContainer()`.
 
 Failures reach the user through the one global in-app notification store, subscribed once at the
 root. Screens do not render their own error banners.
