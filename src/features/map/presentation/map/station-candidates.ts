@@ -1,5 +1,3 @@
-import type { StationFeatureProperties } from './map-features';
-
 /** A station the hit test turned up, reduced to what picking a winner needs. */
 export interface StationCandidate {
   readonly stopId: string;
@@ -29,18 +27,19 @@ export function toStationCandidates(
   for (const feature of features) {
     if (feature.geometry.type !== 'Point') continue;
 
-    const properties = feature.properties as StationFeatureProperties | null;
+    const properties: Record<string, unknown> | null = feature.properties;
     const [longitude, latitude] = feature.geometry.coordinates;
+    const stopId = properties?.stopId;
 
     if (
-      properties == null ||
+      typeof stopId !== 'string' ||
       longitude === undefined ||
       latitude === undefined
     ) {
       continue;
     }
 
-    candidates.push({ stopId: properties.stopId, longitude, latitude });
+    candidates.push({ stopId, longitude, latitude });
   }
 
   return candidates;

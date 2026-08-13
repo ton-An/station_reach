@@ -1,4 +1,8 @@
-import { LineLayer, ShapeSource } from '@maplibre/maplibre-react-native';
+import {
+  LineLayer,
+  ShapeSource,
+  type Expression,
+} from '@maplibre/maplibre-react-native';
 import { memo } from 'react';
 
 import {
@@ -32,9 +36,9 @@ export const RoutesSource = memo(function RoutesSource({
           lineWidth: ROUTE_LINE_WIDTH,
           lineCap: 'round',
           lineJoin: 'round',
-          // One cast: the two MapLibre bindings declare structurally identical
-          // expression types under different names.
-          lineOffset: LINE_OFFSET_EXPRESSION as unknown as number,
+          // maplibre-gl and the native binding name the same expression shape
+          // differently.
+          lineOffset: LINE_OFFSET_EXPRESSION as Expression,
         }}
       />
     </ShapeSource>

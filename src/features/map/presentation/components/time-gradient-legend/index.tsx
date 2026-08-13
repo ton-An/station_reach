@@ -37,19 +37,24 @@ const BAR_OPACITY = 0.85;
 export function TimeGradientLegend() {
   const theme = useTheme();
 
-  const gradient = theme.colors.timelineGradient.map((color) =>
+  const [near, next, ...rest] = theme.colors.timelineGradient;
+  const flatten = (color: string) =>
     flattenOnto({
       color,
       backdrop: theme.colors.background,
       alpha: BAR_OPACITY,
-    })
-  );
+    });
+  const gradient: readonly [string, string, ...string[]] = [
+    flatten(near),
+    flatten(next),
+    ...rest.map(flatten),
+  ];
 
   return (
     <TranslucentSurface radius={theme.radii.small} light>
       <View style={{ padding: theme.spacing.small + theme.spacing.tiny }}>
         <LinearGradient
-          colors={gradient as [string, string, ...string[]]}
+          colors={gradient}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={{

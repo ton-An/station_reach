@@ -18,6 +18,10 @@ import {
 import { nearestStopId } from './station-candidates';
 import type { MapViewProps } from './map-view.types';
 
+declare global {
+  var __map: MapLibreMap | undefined;
+}
+
 /**
  * The MapLibre GL JS map surface. See `map-view.tsx` for the native twin.
  *
@@ -60,10 +64,7 @@ export const MapView = memo(function MapView({
 
     map.current = instance;
 
-    if (__DEV__) {
-      // Reach the live map from the browser console while developing.
-      (globalThis as { __map?: MapLibreMap }).__map = instance;
-    }
+    if (__DEV__) globalThis.__map = instance;
 
     // MapLibre swallows tile and style errors otherwise, which makes a blank
     // map impossible to diagnose.
