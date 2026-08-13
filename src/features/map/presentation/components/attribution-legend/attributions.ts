@@ -11,10 +11,7 @@ import type { TranslationKey } from '@/core/i18n/en';
  * Held as keys rather than resolved copy, so a second locale reaches them —
  * anything that calls `t` at module scope is frozen at import time.
  */
-const ATTRIBUTIONS: readonly {
-  readonly nameKey: TranslationKey;
-  readonly url: string;
-}[] = [
+const ATTRIBUTIONS = [
   {
     nameKey: 'openStreetMapAttribution',
     url: 'https://www.openstreetmap.org/copyright',
@@ -27,7 +24,10 @@ const ATTRIBUTIONS: readonly {
     url: 'https://station-reach.eu/datenschutz.html',
   },
   { nameKey: 'impressum', url: 'https://station-reach.eu/impressum.html' },
-];
+] as const satisfies readonly {
+  readonly nameKey: TranslationKey;
+  readonly url: string;
+}[];
 
 export const REPOSITORY_URL = 'https://github.com/ton-An/station_reach';
 

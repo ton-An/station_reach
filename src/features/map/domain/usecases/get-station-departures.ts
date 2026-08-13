@@ -12,17 +12,17 @@ import type { MapRepository } from '../repositories/map-repository';
  * These trips have few stops but reach far, so a high `n` is cheap and buys a
  * much larger reachable area.
  */
-const LONG_DISTANCE_MODES: readonly TransitMode[] = [
+const LONG_DISTANCE_MODES = [
   TransitMode.Coach,
   TransitMode.HighspeedRail,
   TransitMode.LongDistance,
   TransitMode.NightRail,
-];
+] as const satisfies readonly TransitMode[];
 
 const LONG_DISTANCE_AMOUNT = 1000;
 
-/** Everything local. Dense and stop-heavy, so a smaller `n` keeps it fast. */
-const REGIONAL_MODES: readonly TransitMode[] = [
+/** Everything local. Dense and stop-heavy, so a smaller amount keeps it fast. */
+const REGIONAL_MODES = [
   TransitMode.Tram,
   TransitMode.Subway,
   TransitMode.Suburban,
@@ -34,7 +34,7 @@ const REGIONAL_MODES: readonly TransitMode[] = [
   TransitMode.AerialLift,
   TransitMode.ArealLift,
   TransitMode.Metro,
-];
+] as const satisfies readonly TransitMode[];
 
 const REGIONAL_AMOUNT = 400;
 

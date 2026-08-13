@@ -24,7 +24,7 @@ export const spacing = {
   large: 44,
   xLarge: 55,
   xxLarge: 128,
-} as const;
+} as const satisfies Record<string, number>;
 
 /** Corner radii, in density-independent pixels. */
 export const radii = {
@@ -37,7 +37,7 @@ export const radii = {
   xLarge: 30,
   /** Rounder than anything can be tall: turns a box into a pill or a circle. */
   full: 999,
-} as const;
+} as const satisfies Record<string, number>;
 
 /** Animation durations, in milliseconds. */
 export const durations = {
@@ -56,7 +56,7 @@ export const durations = {
   huge: 1500,
   xHuge: 2000,
   xxHuge: 2500,
-} as const;
+} as const satisfies Record<string, number>;
 
 /**
  * The travel-time ramp: green (near) through yellow, orange and red, then on
@@ -242,7 +242,7 @@ export const layout = {
    * Read it through {@link useIsWideLayout} rather than measuring by hand.
    */
   wideBreakpoint: 900,
-} as const;
+} as const satisfies Record<string, number>;
 
 /** Odds and ends that don't belong to a scale. */
 export const misc = {
@@ -250,7 +250,7 @@ export const misc = {
   blurIntensity: 30,
   /** The lighter blur the map legends use (`sigma: 6`). */
   legendBlurIntensity: 12,
-} as const;
+} as const satisfies Record<string, number>;
 
 export const theme = {
   spacing,
