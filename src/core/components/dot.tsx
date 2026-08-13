@@ -2,8 +2,8 @@ import { View } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
 
-/** The 3px separator between a label and its trailing detail. */
-export function Dot() {
+/** The separator between a label and its trailing detail. */
+export function Dot(): React.JSX.Element {
   const theme = useTheme();
 
   return (
@@ -11,7 +11,7 @@ export function Dot() {
       style={{
         width: 3,
         height: 3,
-        borderRadius: 1.5,
+        borderRadius: theme.radii.full,
         backgroundColor: theme.colors.hint,
       }}
     />

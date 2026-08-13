@@ -7,7 +7,6 @@ import { Icon, type IconName } from './icon';
 
 /** How the press fade behaves, matching the Flutter `SmallIconButton`. */
 const FADE_OUT_MS = 215;
-const FADE_IN_MS = 250;
 const PRESSED_OPACITY = 0.4;
 
 interface SmallIconButtonProps {
@@ -82,7 +81,7 @@ export function SmallIconButton({
     <Pressable
       onPress={onPress}
       onPressIn={() => fadeTo(PRESSED_OPACITY, FADE_OUT_MS)}
-      onPressOut={() => fadeTo(1, FADE_IN_MS)}
+      onPressOut={() => fadeTo(1, theme.durations.xShort)}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
     >

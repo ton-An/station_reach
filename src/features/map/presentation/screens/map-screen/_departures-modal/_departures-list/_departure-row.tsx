@@ -114,7 +114,7 @@ export const DepartureRow = memo(function DepartureRow({
       {showDivider && (
         <View
           style={{
-            height: 1,
+            height: theme.spacing.tiny,
             backgroundColor: theme.colors.translucentBackgroundContrast,
           }}
         />

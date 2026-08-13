@@ -17,6 +17,9 @@ import {
   useSheetDrag,
 } from './_sheet-drag';
 
+/** How often the scrollable reports its offset, in milliseconds. */
+export const SCROLL_EVENT_THROTTLE = 16;
+
 /** What a scrolling sheet body has to wire up to behave inside the sheet. */
 export interface ModalBodyGestures {
   /** The outer detector: it may take the touch away from the list. */

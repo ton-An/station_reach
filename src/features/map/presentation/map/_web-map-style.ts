@@ -2,6 +2,8 @@ import type { GeoJSONSource, Map as MapLibreMap } from 'maplibre-gl';
 
 import {
   LABEL_FONTS,
+  LABEL_HALO_WIDTH,
+  LABEL_OFFSET,
   LAYER_IDS,
   LINE_OFFSET_EXPRESSION,
   ROUTE_LINE_WIDTH,
@@ -14,9 +16,6 @@ import {
   type RouteFeatures,
   type StationFeatures,
 } from './map-features';
-
-/** How thick the halo around a station label is. */
-const LABEL_HALO_WIDTH = 1.5;
 
 interface LabelStyle {
   readonly size: number;
@@ -82,8 +81,7 @@ export function addStationLayers(
       'text-font': LABEL_FONTS,
       'text-size': label.size,
       'text-anchor': 'top',
-      'text-offset': [0, 0.6],
-      // MapLibre drops colliding labels itself — no clustering pass needed.
+      'text-offset': [...LABEL_OFFSET],
       'text-allow-overlap': false,
       'text-optional': true,
     },

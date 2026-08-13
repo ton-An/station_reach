@@ -5,7 +5,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { t } from '@/core/i18n/translate';
 import type { InAppNotification } from '@/core/notifications/in-app-notification-store';
 import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
-import { spacing } from '@/core/theme/theme';
 import { useIsWideLayout } from '@/core/theme/use-is-wide-layout';
 import { useTheme } from '@/core/theme/use-theme';
 import { FadePressable } from '../fade-pressable';
@@ -16,15 +15,6 @@ import { TranslucentSurface } from '../translucent-surface';
 
 /** The warning glyph beside the message. */
 const ICON_SIZE = 26;
-
-/**
- * How far above its resting place the card starts, in pixels.
- *
- * Kept below the top offset so the card never begins life clipped by the edge
- * of the screen — on web the safe-area inset is zero, so there is nothing else
- * holding it down.
- */
-const ENTRY_TRAVEL = spacing.xxSmall;
 
 interface NotificationCardProps {
   readonly notification: InAppNotification;
@@ -101,7 +91,7 @@ export function NotificationCard({
                   {
                     translateY: entry.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [-ENTRY_TRAVEL, 0],
+                      outputRange: [-theme.spacing.xxSmall, 0],
                     }),
                   },
                 ],
@@ -109,9 +99,6 @@ export function NotificationCard({
         }}
       >
         <FadePressable onPress={onDismiss}>
-          {/* Bordered, unlike the Flutter original: that one sat over raster
-              tiles dark enough to frame it, and over this basemap a card with
-              no edge dissolves into the map. */}
           <TranslucentSurface radius={theme.radii.medium} bordered>
             <View
               style={{

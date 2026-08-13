@@ -20,6 +20,10 @@ export const BASEMAP_STYLE_URL =
 /** A fontstack the CARTO glyph endpoint actually serves. */
 export const LABEL_FONTS = ['Open Sans Regular', 'Noto Sans Regular'];
 
+// MapLibre hides colliding station labels itself — no clustering pass.
+export const LABEL_HALO_WIDTH = 1.5;
+export const LABEL_OFFSET: readonly [number, number] = [0, 0.6];
+
 /** Roughly centred on Europe, zoomed out far enough to show the continent. */
 export const INITIAL_CENTER: readonly [number, number] = [10.127, 42.68];
 export const INITIAL_ZOOM = 4;
@@ -66,11 +70,6 @@ export const ROUTE_LINE_WIDTH = 5;
  * `clamp((zoom / 7)^2, 0, 4)` shift, but perpendicular to the line rather than
  * diagonal, which separates parallel routes more evenly.
  */
-/*
-  The zoom interpolation has to be the *outermost* expression — MapLibre rejects
-  `["zoom"]` nested inside another operator — so the per-feature offset is
-  multiplied into each stop's output rather than applied around the whole thing.
-*/
 export const LINE_OFFSET_EXPRESSION: ExpressionSpecification = [
   'interpolate',
   ['linear'],

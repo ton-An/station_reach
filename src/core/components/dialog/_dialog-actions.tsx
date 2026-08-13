@@ -1,6 +1,7 @@
+import { Fragment } from 'react';
 import { View } from 'react-native';
 
-import { useTheme } from '@/core/theme/use-theme';
+import { Gap } from '../gap';
 import { DialogButton } from './_dialog-button';
 import type { DialogAction } from './dialog-action';
 
@@ -9,21 +10,19 @@ interface DialogActionsProps {
 }
 
 /** The dialog's buttons, sharing the width evenly. */
-export function DialogActions({ actions }: DialogActionsProps) {
-  const theme = useTheme();
-
+export function DialogActions({
+  actions,
+}: DialogActionsProps): React.JSX.Element {
   return (
     <View style={{ flexDirection: 'row' }}>
       {actions.map((action, index) => (
-        <View
-          key={action.label}
-          style={{
-            flex: 1,
-            marginLeft: index === 0 ? 0 : theme.spacing.xxSmall,
-          }}
-        >
-          <DialogButton action={action} />
-        </View>
+        <Fragment key={action.label}>
+          {index > 0 && <Gap size="xxSmall" />}
+
+          <View style={{ flex: 1 }}>
+            <DialogButton action={action} />
+          </View>
+        </Fragment>
       ))}
     </View>
   );

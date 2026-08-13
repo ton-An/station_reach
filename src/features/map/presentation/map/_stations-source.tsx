@@ -9,6 +9,8 @@ import { memo } from 'react';
 import { useTheme } from '@/core/theme/use-theme';
 import {
   LABEL_FONTS,
+  LABEL_HALO_WIDTH,
+  LABEL_OFFSET,
   LAYER_IDS,
   SOURCE_IDS,
   STATION_CIRCLE_RADIUS,
@@ -68,10 +70,10 @@ export const StationsSource = memo(function StationsSource({
           textFont: LABEL_FONTS,
           textSize: theme.text.caption1.fontSize,
           textAnchor: 'top',
-          textOffset: [0, 0.6],
+          textOffset: [...LABEL_OFFSET],
           textColor: theme.colors.text,
           textHaloColor: theme.colors.background,
-          textHaloWidth: 1.5,
+          textHaloWidth: LABEL_HALO_WIDTH,
           textAllowOverlap: false,
           textOptional: true,
         }}

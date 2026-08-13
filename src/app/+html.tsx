@@ -1,13 +1,17 @@
 import { ScrollViewStyleReset } from 'expo-router/html';
 import type { PropsWithChildren } from 'react';
 
+import { t } from '@/core/i18n/translate';
+
 /**
  * The HTML document wrapping the web build.
  *
  * Server-rendered only — this never runs in the browser and has no access to
  * app state.
  */
-export default function Root({ children }: PropsWithChildren) {
+export default function Root({
+  children,
+}: PropsWithChildren): React.JSX.Element {
   return (
     <html lang="en">
       <head>
@@ -17,7 +21,7 @@ export default function Root({ children }: PropsWithChildren) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover"
         />
 
-        <meta name="description" content="See where transit takes you!" />
+        <meta name="description" content={t('webDescription')} />
         <meta name="apple-mobile-web-app-title" content="Station Reach" />
         <meta name="mobile-web-app-capable" content="yes" />
         {/* Offers the native app from Safari on iOS. */}

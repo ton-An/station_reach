@@ -47,7 +47,7 @@ export function TimeGradientLegend() {
 
   return (
     <TranslucentSurface radius={theme.radii.small} light>
-      <View style={{ padding: theme.spacing.small + 1 }}>
+      <View style={{ padding: theme.spacing.small + theme.spacing.tiny }}>
         <LinearGradient
           colors={gradient as [string, string, ...string[]]}
           start={{ x: 0, y: 0.5 }}

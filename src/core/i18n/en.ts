@@ -27,6 +27,9 @@ export const en = {
   openSourceExplanation:
     'This app is open source. Take a look at the code, report an issue, or contribute.',
 
+  // -- Web -- //
+  webDescription: 'See where transit takes you!',
+
   // -- Failures -- //
   // Every failure constant names two of these; nothing else may hold user copy.
   receiveTimeoutFailureName: 'Receive Timeout',
