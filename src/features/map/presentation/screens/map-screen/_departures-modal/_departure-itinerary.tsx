@@ -54,7 +54,7 @@ interface ItineraryStopProps {
 }
 
 /** One stop, named and timed from the origin. */
-function ItineraryStop({ stop }: ItineraryStopProps) {
+function ItineraryStop({ stop }: ItineraryStopProps): React.JSX.Element {
   const theme = useTheme();
 
   return (

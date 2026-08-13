@@ -13,7 +13,7 @@ import { TimeGradientLegend } from './time-gradient-legend';
  * The row spans the full width, so the space between the two must fall
  * through to the map.
  */
-export function MapLegends() {
+export function MapLegends(): React.JSX.Element {
   return (
     <View
       style={[

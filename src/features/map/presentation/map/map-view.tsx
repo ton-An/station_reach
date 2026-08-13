@@ -46,7 +46,7 @@ export const MapView = memo(function MapView({
   focus,
   onStationPress,
   onBackgroundPress,
-}: MapViewProps) {
+}: MapViewProps): React.JSX.Element {
   const theme = useTheme();
   const camera = useRef<CameraRef>(null);
   const map = useRef<MapViewRef>(null);

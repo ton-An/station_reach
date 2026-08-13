@@ -40,7 +40,7 @@ export function SmallIconButton({
   backgroundColor,
   accessibilityLabel,
   decorative = false,
-}: SmallIconButtonProps) {
+}: SmallIconButtonProps): React.JSX.Element {
   const theme = useTheme();
   const [opacity] = useState(() => new Animated.Value(1));
 

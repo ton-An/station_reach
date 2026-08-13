@@ -25,7 +25,7 @@ import {
  * map subtree at all. {@link MapView} memoises, but reaching that memo still
  * costs a pass over every derivation below.
  */
-export function ReachabilityMap() {
+export function ReachabilityMap(): React.JSX.Element {
   const theme = useTheme();
 
   const departuresState = useStationDeparturesStore((store) => store.state);

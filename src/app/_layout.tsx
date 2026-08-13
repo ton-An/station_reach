@@ -19,7 +19,7 @@ import { FONT_FAMILY } from '@/core/theme/theme';
  * above the navigator so a failure raised on any screen surfaces in the same
  * place.
  */
-export default function RootLayout() {
+export default function RootLayout(): React.JSX.Element | null {
   const [fontsLoaded] = useFonts({
     [FONT_FAMILY]: require('@/assets/fonts/Inter.ttf'),
   });

@@ -16,7 +16,7 @@ import { attributionMessage } from './attributions';
  * ! The icon may stay small, but it must stay present and reachable — the
  * licences behind it require the credits to be available wherever the map is.
  */
-export function AttributionLegend() {
+export function AttributionLegend(): React.JSX.Element {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 

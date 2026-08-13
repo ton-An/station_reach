@@ -22,7 +22,7 @@ import { MapLegends } from '../../../components/map-legends';
  * The two panes slide horizontally: the list is the root, and picking a
  * departure pushes its itinerary in from the right.
  */
-export function DeparturesModal() {
+export function DeparturesModal(): React.JSX.Element {
   const theme = useTheme();
   const isWide = useIsWideLayout();
 

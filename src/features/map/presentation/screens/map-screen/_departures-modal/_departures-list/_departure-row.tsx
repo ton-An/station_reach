@@ -40,7 +40,7 @@ export const DepartureRow = memo(function DepartureRow({
   accentColor,
   showDivider,
   onPress,
-}: DepartureRowProps) {
+}: DepartureRowProps): React.JSX.Element {
   const theme = useTheme();
 
   const handlePress = useCallback(

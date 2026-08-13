@@ -23,7 +23,7 @@ const ODD_ROW_MIN_OPACITY = 0.6;
  *
  * Picking one loads its reachability and collapses the list.
  */
-export function SearchResults() {
+export function SearchResults(): React.JSX.Element | null {
   const state = useStationSearchStore((store) => store.state);
   const collapse = useStationSearchStore((store) => store.collapse);
   const loadReachability = useStationDeparturesStore(

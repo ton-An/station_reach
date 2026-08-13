@@ -47,7 +47,7 @@ export function DialogCard({
   message,
   additionalContent,
   actions,
-}: DialogCardProps) {
+}: DialogCardProps): React.JSX.Element {
   const theme = useTheme();
   const { height } = useWindowDimensions();
 

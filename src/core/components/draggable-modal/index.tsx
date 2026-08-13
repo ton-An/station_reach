@@ -59,7 +59,7 @@ export function DraggableModal({
   onBack,
   legend,
   children,
-}: DraggableModalProps) {
+}: DraggableModalProps): React.JSX.Element {
   const theme = useTheme();
 
   const fraction = useSharedValue(MEDIUM_HEIGHT);
@@ -68,11 +68,6 @@ export function DraggableModal({
 
   const snapDuration = theme.durations.medium;
 
-  /*
-    Deliberately not memoised: the shared values inside it are the stable part,
-    and handing them to a hook would make every write to them — the layout
-    measurement below, the drag itself — a mutation of a memoised value.
-  */
   const drag: SheetDrag = {
     fraction,
     availableHeight,
@@ -92,9 +87,6 @@ export function DraggableModal({
   }));
 
   /*
-    The legend belongs to the map, so it gets out of the way once the sheet is
-    drawn up over it.
-
     The range starts exactly at the resting height so that at rest the opacity
     is exactly 1. Anything less creates a backdrop root above the legends and
     silently kills their blur.

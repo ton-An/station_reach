@@ -18,7 +18,7 @@ export function StationResult({
   station,
   minOpacity,
   onPress,
-}: StationResultProps) {
+}: StationResultProps): React.JSX.Element {
   const theme = useTheme();
 
   const area = describeArea(station);

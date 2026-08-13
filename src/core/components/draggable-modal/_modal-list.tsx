@@ -28,7 +28,7 @@ export function ModalList<T>({
   keyExtractor,
   renderItem,
   contentContainerStyle,
-}: ModalListProps<T>) {
+}: ModalListProps<T>): React.JSX.Element {
   const { sheetDrag, scroll, onScroll } = useModalBodyGestures();
 
   return (

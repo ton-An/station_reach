@@ -9,7 +9,7 @@ import { SearchField } from './_search-field';
 import { SearchResults } from './_search-results';
 
 /** The floating search card at the top of the map. */
-export function Search() {
+export function Search(): React.JSX.Element {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
 

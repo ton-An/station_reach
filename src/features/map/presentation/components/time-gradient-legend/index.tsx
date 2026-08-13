@@ -34,7 +34,7 @@ const BAR_OPACITY = 0.85;
  * midpoint. Anything beyond 18 hours saturates, which is what the `+` means.
  * The three come straight off `GRADIENT_BUCKETS`; retune them together.
  */
-export function TimeGradientLegend() {
+export function TimeGradientLegend(): React.JSX.Element {
   const theme = useTheme();
 
   const [near, next, ...rest] = theme.colors.timelineGradient;

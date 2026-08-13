@@ -26,7 +26,7 @@ export function SlidingPanes({
   isDetailOpen,
   primary,
   detail,
-}: SlidingPanesProps) {
+}: SlidingPanesProps): React.JSX.Element {
   const theme = useTheme();
 
   const [slide] = useState(() => new Animated.Value(0));

@@ -35,20 +35,15 @@ export function Dialog({
   message,
   additionalContent,
   actions,
-}: DialogProps) {
+}: DialogProps): React.JSX.Element {
   const theme = useTheme();
 
   const [progress] = useState(() => new Animated.Value(0));
 
   /*
-    Replays from the start on every open.
-
-    The card is unmounted by `Modal` the instant it closes, so there is no exit
-    to animate — and animating back down to 0 on close only worked if that
-    animation actually got to finish. Anything that interrupted it left the
-    value stranded, and every later open rendered at its final frame with no
-    motion at all. Setting the value explicitly makes each open independent of
-    whatever the last one left behind.
+    Replays from the start on every open: `Modal` unmounts the card on close,
+    so an animation back to 0 is never guaranteed to finish and can leave the
+    value stranded at its final frame.
   */
   useEffect(() => {
     if (!isOpen) return;

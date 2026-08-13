@@ -26,7 +26,7 @@ export function GradientBorder({
   width = 1.5,
   children,
   backgroundColor,
-}: GradientBorderProps) {
+}: GradientBorderProps): React.JSX.Element {
   const theme = useTheme();
   const [size, setSize] = useState({ width: 0, height: 0 });
 

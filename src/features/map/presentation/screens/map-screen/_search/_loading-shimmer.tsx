@@ -23,7 +23,7 @@ const HIGHLIGHT_OPACITY = 0.5;
  * Covers both the quick search and the slow reachability fetch, so the user
  * always knows the app is working.
  */
-export function LoadingShimmer() {
+export function LoadingShimmer(): React.JSX.Element | null {
   const theme = useTheme();
 
   const isSearching = useStationSearchStore(

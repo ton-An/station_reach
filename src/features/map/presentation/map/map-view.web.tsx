@@ -34,7 +34,7 @@ export const MapView = memo(function MapView({
   focus,
   onStationPress,
   onBackgroundPress,
-}: MapViewProps) {
+}: MapViewProps): React.JSX.Element {
   const theme = useTheme();
   const container = useRef<HTMLDivElement>(null);
   const map = useRef<MapLibreMap>(null);

@@ -32,7 +32,7 @@ export function FadePressable({
   minOpacity = 0.6,
   style,
   accessibilityLabel,
-}: FadePressableProps) {
+}: FadePressableProps): React.JSX.Element {
   const theme = useTheme();
   const [opacity] = useState(() => new Animated.Value(1));
 

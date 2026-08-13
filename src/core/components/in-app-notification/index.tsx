@@ -7,7 +7,7 @@ import { NotificationCard } from './_notification-card';
  * Mounted once above the whole app — this is the only place failures become
  * visible, so screens never grow their own error banners.
  */
-export function InAppNotificationListener() {
+export function InAppNotificationListener(): React.JSX.Element | null {
   const notification = useInAppNotificationStore((store) => store.notification);
   const dismiss = useInAppNotificationStore((store) => store.dismiss);
 

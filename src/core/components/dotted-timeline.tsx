@@ -17,7 +17,7 @@ const DASH_RADIUS = 2;
  * Drawn as discrete views rather than a border-dash so the dash length, gap and
  * corner radius all match the Flutter `DottedLine` exactly.
  */
-export function DottedTimeline() {
+export function DottedTimeline(): React.JSX.Element {
   const theme = useTheme();
 
   const usableHeight = HEIGHT - VERTICAL_INSET * 2;

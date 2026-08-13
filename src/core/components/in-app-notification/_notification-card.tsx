@@ -32,7 +32,7 @@ interface NotificationCardProps {
 export function NotificationCard({
   notification,
   onDismiss,
-}: NotificationCardProps) {
+}: NotificationCardProps): React.JSX.Element {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
   const isWide = useIsWideLayout();
@@ -42,11 +42,10 @@ export function NotificationCard({
   /*
     Whether the card has finished arriving.
 
-    ! Load-bearing, not cosmetic. `opacity` and `transform` each make their
-    element a backdrop root, and a backdrop root has nothing behind it to
-    blur — so while either sits on this wrapper the surface inside it renders
-    flat. Both are dropped the moment the entry animation lands, which is when
-    the card is actually looked at.
+    `opacity` and `transform` each make their element a backdrop root, and a
+    backdrop root has nothing behind it to blur — so while either sits on this
+    wrapper the surface inside it renders flat. Both are dropped the moment the
+    entry animation lands, which is when the card is actually looked at.
   */
   const [hasEntered, setHasEntered] = useState(false);
 

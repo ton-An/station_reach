@@ -9,7 +9,7 @@ interface DialogButtonProps {
 }
 
 /** A filled pill, not a bare text button. */
-export function DialogButton({ action }: DialogButtonProps) {
+export function DialogButton({ action }: DialogButtonProps): React.JSX.Element {
   const theme = useTheme();
 
   return (

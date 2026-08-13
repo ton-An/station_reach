@@ -67,7 +67,7 @@ export function TranslucentSurface({
   bordered = false,
   tint,
   style,
-}: TranslucentSurfaceProps) {
+}: TranslucentSurfaceProps): React.JSX.Element {
   const theme = useTheme();
   const window = useWindowDimensions();
 

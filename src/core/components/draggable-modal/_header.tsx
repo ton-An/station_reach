@@ -12,7 +12,7 @@ interface HeaderProps {
 }
 
 /** The sheet's title bar, a filled pill rather than bare text. */
-export function Header({ title, onBack }: HeaderProps) {
+export function Header({ title, onBack }: HeaderProps): React.JSX.Element {
   const theme = useTheme();
 
   return (

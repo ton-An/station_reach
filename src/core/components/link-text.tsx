@@ -25,7 +25,7 @@ interface LinkTextProps {
  * The attribution copy is authored as one block of text rather than as
  * structured rows, so the links have to be found in it rather than declared.
  */
-export function LinkText({ text, style }: LinkTextProps) {
+export function LinkText({ text, style }: LinkTextProps): React.JSX.Element {
   const theme = useTheme();
 
   const baseStyle: TextStyle = {

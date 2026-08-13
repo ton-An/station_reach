@@ -22,7 +22,7 @@ interface ModalScrollViewProps {
 export function ModalScrollView({
   contentContainerStyle,
   children,
-}: ModalScrollViewProps) {
+}: ModalScrollViewProps): React.JSX.Element {
   const { sheetDrag, scroll, onScroll } = useModalBodyGestures();
 
   return (

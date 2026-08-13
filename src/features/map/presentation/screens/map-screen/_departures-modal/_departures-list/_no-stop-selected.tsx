@@ -10,7 +10,7 @@ import { useTheme } from '@/core/theme/use-theme';
  * Still a scrollable body rather than a bare label: it is the sheet's only
  * content at that point, and the sheet is dragged by whatever is inside it.
  */
-export function NoStopSelected() {
+export function NoStopSelected(): React.JSX.Element {
   const theme = useTheme();
 
   return (

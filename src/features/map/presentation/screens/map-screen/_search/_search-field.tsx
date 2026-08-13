@@ -23,7 +23,7 @@ const ICON_SIZE = 28;
 const SEARCH_DEBOUNCE_MS = 300;
 
 /** The station search input. */
-export function SearchField() {
+export function SearchField(): React.JSX.Element {
   const theme = useTheme();
   const search = useStationSearchStore((store) => store.search);
 

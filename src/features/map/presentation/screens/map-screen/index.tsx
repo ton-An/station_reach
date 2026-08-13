@@ -17,7 +17,7 @@ import { useFailureNotifier } from './_use-failure-notifier';
  * that arrangement and nothing else — each panel subscribes to the state it
  * renders, so nothing has to be handed down through here.
  */
-export function MapScreen() {
+export function MapScreen(): React.JSX.Element {
   const theme = useTheme();
   const isWide = useIsWideLayout();
 

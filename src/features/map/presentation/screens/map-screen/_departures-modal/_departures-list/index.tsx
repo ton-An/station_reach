@@ -21,7 +21,7 @@ const NO_DEPARTURES: readonly Departure[] = [];
  * Each row shows how long it takes to reach *this* stop on that trip, which is
  * not the same as how far the trip goes overall.
  */
-export function DeparturesList() {
+export function DeparturesList(): React.JSX.Element {
   const theme = useTheme();
   const state = useStationSelectionStore((store) => store.state);
   const selectDeparture = useDepartureSelectionStore((store) => store.select);
