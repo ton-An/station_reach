@@ -25,8 +25,13 @@ export interface StationSearchStore {
   readonly collapse: () => void;
 }
 
-/** Results carried forward while the next search runs. */
-function previousStations(state: StationSearchState): readonly Station[] {
+/**
+ * The hits worth showing for a state.
+ *
+ * @param state - The state to read.
+ * @returns The stations, or none outside the loading and loaded states.
+ */
+export function visibleStations(state: StationSearchState): readonly Station[] {
   return state.status === 'loading' || state.status === 'loaded'
     ? state.stations
     : [];
@@ -41,12 +46,7 @@ function previousStations(state: StationSearchState): readonly Station[] {
 export function createStationSearchStore(
   searchStations: SearchStations
 ): StoreApi<StationSearchStore> {
-  /*
-    Cancellation bookkeeping belongs to the store instance, not to the module.
-    It lives in this closure rather than in the state because nothing renders
-    from it — putting it in state would notify every subscriber for a change
-    the UI cannot see.
-  */
+  // Instance state, so a superseded search can never overwrite a newer one.
   let inFlight: AbortController | undefined;
   let latestRequestId = 0;
 
@@ -68,7 +68,7 @@ export function createStationSearchStore(
       const requestId = ++latestRequestId;
 
       set({
-        state: { status: 'loading', stations: previousStations(get().state) },
+        state: { status: 'loading', stations: visibleStations(get().state) },
       });
 
       const result = await searchStations(query, controller.signal);

@@ -1,7 +1,7 @@
 import { Keyboard, ScrollView } from 'react-native';
 
 import type { Station } from '../../../../domain/models/station';
-import type { StationSearchState } from '../../../stores/station-search-store';
+import { visibleStations } from '../../../stores/station-search-store';
 import {
   useStationDeparturesStore,
   useStationSearchStore,
@@ -56,11 +56,4 @@ export function SearchResults() {
       ))}
     </ScrollView>
   );
-}
-
-/** The hits worth showing — the loading state keeps the previous ones up. */
-function visibleStations(state: StationSearchState): readonly Station[] {
-  return state.status === 'loading' || state.status === 'loaded'
-    ? state.stations
-    : [];
 }
