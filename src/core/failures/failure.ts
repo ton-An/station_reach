@@ -8,11 +8,7 @@ import type { TranslationKey } from '@/core/i18n/en';
  * `TransitFailure` — which is what the Dart parent classes were for.
  */
 export const FailureCategory = {
-  General: 'general',
-  Authentication: 'authentication',
   Networking: 'networking',
-  Storage: 'storage',
-  Permission: 'permission',
   Transit: 'transit',
 } as const;
 
@@ -26,23 +22,6 @@ export type FailureCategoryCode =
  * the union of every concrete failure in the app. Declare each one with
  * `as const satisfies FailureBase`, so the shape is checked while `code` and
  * `categoryCode` keep their literal types.
- *
- * Both of those are discriminants, so comparing either narrows a `Failure` to
- * the concrete failure or to the category it belongs to — the two things the
- * Dart class hierarchy gave us, without the hierarchy:
- *
- * ```ts
- * if (failure.code === noDeparturesFoundFailure.code) {
- *   // failure is TransitFailure here
- * }
- *
- * if (failure.categoryCode === FailureCategory.Networking) {
- *   // failure is NetworkingFailure here
- * }
- * ```
- *
- * Failures carry translation *keys*, never copy. Nothing between the data layer
- * and the notification that renders it should hold a user-facing sentence.
  */
 export interface FailureBase {
   readonly code: string;
