@@ -6,6 +6,14 @@ import {
   useStationSearchStore,
 } from '../../stores/use-map-stores';
 
+/**
+ * Forwards station-departures and station-search failures to the global
+ * in-app notification store. A departures failure takes priority when both
+ * stores are failing at once.
+ *
+ * The map screen renders no error banners of its own; every failure surfaces
+ * through {@link useInAppNotificationStore} instead.
+ */
 export function useFailureNotifier(): void {
   const departuresState = useStationDeparturesStore((store) => store.state);
   const searchState = useStationSearchStore((store) => store.state);

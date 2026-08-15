@@ -11,6 +11,11 @@ interface ModalListProps<T> {
   readonly contentContainerStyle?: StyleProp<ViewStyle>;
 }
 
+/**
+ * Scrollable list for a {@link DraggableModal}'s body. Wraps
+ * `Animated.FlatList` and, once its content is scrolled to the top, hands an
+ * overscroll back to the sheet as a drag — see {@link useModalBodyGestures}.
+ */
 export function ModalList<T>({
   data,
   keyExtractor,

@@ -16,12 +16,27 @@ export interface StationSearchStore {
   readonly collapse: () => void;
 }
 
+/** The stations to render, empty while there is nothing to show. */
 export function visibleStations(state: StationSearchState): readonly Station[] {
   return state.status === 'loading' || state.status === 'loaded'
     ? state.stations
     : [];
 }
 
+/**
+ * Searches stations for the query the user is typing.
+ *
+ * A new search aborts the one in flight, and a late answer whose request is no
+ * longer the newest is dropped. Results already on screen stay visible while
+ * the next search runs. An empty query needs no request and resets to
+ * `initial`, as does {@link StationSearchStore.collapse}.
+ *
+ * States:
+ * - `initial`: nothing searched
+ * - `loading`: a search is running, over the previous results
+ * - `loaded`: the stations the newest search found
+ * - `failure`: the newest search failed
+ */
 export function createStationSearchStore(
   searchStations: SearchStations
 ): StoreApi<StationSearchStore> {

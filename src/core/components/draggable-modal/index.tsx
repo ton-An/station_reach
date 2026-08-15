@@ -35,6 +35,19 @@ interface DraggableModalProps {
   readonly children: React.ReactNode;
 }
 
+/**
+ * Bottom sheet the user drags between a small and a full height, snapping to
+ * whichever the drag headed towards.
+ *
+ * The handle and header drag the sheet. The body scrolls instead, through
+ * {@link ModalList} or {@link ModalScrollView}, which give the drag back to
+ * the sheet once the content is scrolled to its top. The legend sits above the
+ * sheet and fades out as the sheet is pulled over it.
+ *
+ * Sub-components:
+ * - {@link ModalHandle}: the grab indicator
+ * - {@link ModalHeader}: title and optional back button
+ */
 export function DraggableModal({
   title,
   onBack,

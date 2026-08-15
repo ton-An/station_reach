@@ -20,6 +20,10 @@ interface NotificationCardProps {
   readonly onDismiss: () => void;
 }
 
+/**
+ * One notification, fading and sliding in from `entryAnimationValue`.
+ * Tapping anywhere on it calls `onDismiss`.
+ */
 export function NotificationCard({
   notification,
   onDismiss,

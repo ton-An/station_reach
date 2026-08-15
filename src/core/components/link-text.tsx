@@ -12,6 +12,10 @@ interface LinkTextProps {
   readonly style?: TextStyle;
 }
 
+/**
+ * Renders `text` as plain copy, turning any URL substrings into links that
+ * open in the browser when pressed.
+ */
 export function LinkText({ text, style }: LinkTextProps): React.JSX.Element {
   const theme = useTheme();
 

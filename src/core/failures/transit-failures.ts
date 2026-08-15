@@ -7,4 +7,5 @@ export const noDeparturesFoundFailure = {
   messageKey: 'noDeparturesFoundFailureMessage',
 } as const satisfies FailureBase;
 
+/** The transit category of {@link Failure}. */
 export type TransitFailure = typeof noDeparturesFoundFailure;

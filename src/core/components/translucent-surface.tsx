@@ -10,6 +10,10 @@ import {
 import { withAlpha } from '@/core/helpers/color-helper';
 import { useTheme } from '@/core/theme/use-theme';
 
+/**
+ * iOS gets the system thin-material blur; other platforms fall back to a
+ * flat light tint.
+ */
 const BLUR_TINT: BlurTint = Platform.select({
   ios: 'systemThinMaterialLight',
   default: 'light',
@@ -30,6 +34,20 @@ interface TranslucentSurfaceProps {
   readonly style?: StyleProp<ViewStyle>;
 }
 
+/**
+ * Blurred, tinted background panel: floating chrome sits on this instead
+ * of an opaque fill.
+ *
+ * `topRadius` rounds only the top corners, for panels pinned to an edge;
+ * without it, `radius` (or the default button radius) rounds all four.
+ * `light` selects the lower-intensity blur used behind the legend, and
+ * `bordered` swaps the fill for a translucent tint of `background` plus a
+ * hairline border. `tint` overrides the fill outright.
+ *
+ * The blur layer is sized to the window rather than measured, relying on
+ * the outer view's clipping to crop it to the surface's real bounds
+ * instead of waiting a frame on layout.
+ */
 export function TranslucentSurface({
   children,
   radius,

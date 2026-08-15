@@ -29,6 +29,10 @@ export default function Root({
   );
 }
 
+/**
+ * Global web-only styles: removes the page margin and browser overscroll
+ * bounce, and hides the focus outline on the search field's `<input>`.
+ */
 const ROOT_STYLE = `
 body {
   margin: 0;

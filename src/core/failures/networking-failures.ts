@@ -42,6 +42,7 @@ export const unknownRequestFailure = {
   messageKey: 'unknownRequestFailureMessage',
 } as const satisfies FailureBase;
 
+/** The networking category of {@link Failure}, returned by `mapHttpError`. */
 export type NetworkingFailure =
   | typeof receiveTimeoutFailure
   | typeof requestCancelledFailure

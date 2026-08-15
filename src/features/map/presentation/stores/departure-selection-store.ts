@@ -12,6 +12,13 @@ export interface DepartureSelectionStore {
   readonly deselect: () => void;
 }
 
+/**
+ * Tracks which departure the user opened for detail.
+ *
+ * States:
+ * - `none`: no departure selected
+ * - `selected`: the departure open for detail
+ */
 export function createDepartureSelectionStore(): StoreApi<DepartureSelectionStore> {
   return createStore<DepartureSelectionStore>()((set) => ({
     state: { status: 'none' },

@@ -9,6 +9,19 @@ import { ReachabilityMap } from './_reachability-map';
 import { Search } from './_search';
 import { useFailureNotifier } from './_use-failure-notifier';
 
+/**
+ * The app's one screen: the reachability map, the floating search bar and
+ * departures modal above it, and — on wide layouts — the legend cluster
+ * anchored bottom-left. {@link DeparturesModal} renders the same legend
+ * inline instead when the layout is narrow.
+ *
+ * {@link useFailureNotifier} turns store failures into notifications.
+ *
+ * Sub-components:
+ * - {@link ReachabilityMap}: the map, coloured by travel time
+ * - {@link Search}: station search field and results
+ * - {@link DeparturesModal}: departures list and selected itinerary
+ */
 export function MapScreen(): React.JSX.Element {
   const theme = useTheme();
   const isWide = useIsWideLayout();

@@ -13,6 +13,19 @@ interface MutableStopEntry {
   departures: Departure[];
 }
 
+/**
+ * Indexes every reachable stop once, keyed by stop id, so a marker tap is a
+ * map lookup instead of a re-scan of every departure.
+ *
+ * A stop reached by more than one departure keeps the shortest
+ * `durationMinutes` seen for it, and collects every departure that reaches
+ * it — each counted once even when that departure's own stop list repeats
+ * the id.
+ *
+ * @param departures - The selected station's departures to index.
+ * @returns A map from stop id to its shortest-duration {@link Stop} and the
+ * departures that reach it.
+ */
 export function buildStopIndex(departures: readonly Departure[]): StopIndex {
   const index = new Map<string, MutableStopEntry>();
 

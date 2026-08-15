@@ -8,6 +8,13 @@ import { InAppNotificationListener } from '@/core/components/in-app-notification
 import { ContainerProvider } from '@/core/container';
 import { FONT_FAMILY } from '@/core/theme/theme';
 
+/**
+ * Root layout mounted for every route.
+ *
+ * Renders nothing until the {@link FONT_FAMILY} font has loaded. Mounts
+ * {@link InAppNotificationListener} once here, above the `Stack`, so it is
+ * the one place a failure reaches the screen from any route.
+ */
 export default function RootLayout(): React.JSX.Element | null {
   const [fontsLoaded] = useFonts({
     [FONT_FAMILY]: require('@/assets/fonts/Inter.ttf'),

@@ -1,3 +1,7 @@
+/**
+ * The English dictionary — the only locale the app has. Keys are camelCase;
+ * a failure's keys are `<name>FailureName` and `<name>FailureMessage`.
+ */
 export const en = {
   back: 'Back',
   searchStations: 'Search Stations',
@@ -37,4 +41,5 @@ export const en = {
   noDeparturesFoundFailureMessage: 'No departures found for the given station.',
 } as const;
 
+/** Every valid key `t` accepts, derived from {@link en}. */
 export type TranslationKey = keyof typeof en;

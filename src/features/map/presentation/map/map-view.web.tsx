@@ -22,6 +22,17 @@ declare global {
   var __map: MapLibreMap | undefined;
 }
 
+/**
+ * MapLibre GL JS implementation of {@link MapViewProps}.
+ *
+ * The `maplibregl.Map` instance is created once, on mount, and lives for
+ * the component's lifetime; later prop changes are pushed onto it instead
+ * of recreating it. Layers can only be added once the style has loaded, so
+ * a `stations`/`routes` update that arrives first is held in a ref and
+ * applied by `registerLayers` once `styledata` or `load` fires. A
+ * `ResizeObserver` keeps the map sized to its container. In development the
+ * instance is exposed as `globalThis.__map` for console inspection.
+ */
 export const MapView = memo(function MapView({
   stations,
   routes,

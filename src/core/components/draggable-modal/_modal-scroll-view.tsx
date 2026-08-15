@@ -9,6 +9,10 @@ interface ModalScrollViewProps {
   readonly children: React.ReactNode;
 }
 
+/**
+ * Scrollable body for a {@link DraggableModal} that isn't a list. Hands
+ * overscroll back to the sheet the same way {@link ModalList} does.
+ */
 export function ModalScrollView({
   contentContainerStyle,
   children,

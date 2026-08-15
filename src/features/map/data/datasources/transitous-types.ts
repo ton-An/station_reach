@@ -1,5 +1,13 @@
+/**
+ * Wire shapes for the Transitous REST API. {@link toStation} and
+ * {@link toDeparture} are the only functions that read these field names.
+ */
 export interface GeocodeArea {
   readonly name?: string;
+  /**
+   * How locally the area is scoped: higher is more specific, e.g. a city
+   * over a country.
+   */
   readonly adminLevel?: number;
 }
 

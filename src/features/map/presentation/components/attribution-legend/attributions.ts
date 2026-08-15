@@ -1,6 +1,13 @@
 import { t } from '@/core/i18n/translate';
 import type { TranslationKey } from '@/core/i18n/en';
 
+/**
+ * Attribution entries, keyed by translation key rather than resolved text.
+ *
+ * `t` reads the current locale, so resolving these at module scope would
+ * freeze every name at import time. Keys are resolved only when
+ * {@link attributionMessage} runs, at render.
+ */
 const ATTRIBUTIONS = [
   {
     nameKey: 'openStreetMapAttribution',
@@ -21,6 +28,10 @@ const ATTRIBUTIONS = [
 
 export const REPOSITORY_URL = 'https://github.com/ton-An/station_reach';
 
+/**
+ * The attribution text, one entry per line, keys resolved to the current
+ * locale.
+ */
 export function attributionMessage(): string {
   return ATTRIBUTIONS.map(({ nameKey, url }) => `${t(nameKey)}:\n${url}`).join(
     '\n\n'

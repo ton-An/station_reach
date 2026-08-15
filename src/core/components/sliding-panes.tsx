@@ -10,6 +10,13 @@ interface SlidingPanesProps {
   readonly detail: React.ReactNode;
 }
 
+/**
+ * Two full-width panes side by side, sliding to bring `detail` on screen
+ * when `isDetailOpen` is set.
+ *
+ * Both panes stay mounted the whole time. Toggling only slides between
+ * them, so neither loses state while off screen.
+ */
 export function SlidingPanes({
   isDetailOpen,
   primary,

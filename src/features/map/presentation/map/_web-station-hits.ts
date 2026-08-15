@@ -6,6 +6,13 @@ import {
   type StationCandidate,
 } from './station-candidates';
 
+/**
+ * Station markers within {@link STATION_HIT_RADIUS} px of `point`, the
+ * same tap tolerance the native platform uses.
+ *
+ * @param instance - The map to query.
+ * @param point - The screen point to search around.
+ */
 export function stationsAt(
   instance: MapLibreMap,
   point: Point
@@ -23,6 +30,18 @@ export function stationsAt(
   );
 }
 
+/**
+ * Sets the canvas cursor to a pointer while the mouse is over a station
+ * marker, and clears it `holdMs` after it stops being over one instead of
+ * immediately, so the cursor does not flicker between markers spaced
+ * close together.
+ *
+ * @param instance - The map to track hover on.
+ * @param holdMs - Delay before clearing the pointer cursor, in
+ * milliseconds.
+ * @returns A cleanup function that removes the listener and cancels a
+ * pending clear.
+ */
 export function trackStationCursor(
   instance: MapLibreMap,
   holdMs: number

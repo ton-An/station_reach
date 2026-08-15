@@ -17,6 +17,16 @@ interface SmallIconButtonProps {
   readonly decorative?: boolean;
 }
 
+/**
+ * Icon in a filled circle, fading on press.
+ *
+ * `decorative` renders the same circle without a `Pressable`: no press
+ * fade and no accessibility role, for keeping icons visually balanced
+ * where one side has no action.
+ *
+ * @param alignmentOffset - `[x, y]` pixel nudge for a glyph that renders
+ * off-centre in its circle.
+ */
 export function SmallIconButton({
   icon,
   onPress,

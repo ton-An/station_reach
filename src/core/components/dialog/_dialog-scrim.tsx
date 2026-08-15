@@ -10,6 +10,10 @@ interface DialogScrimProps {
   readonly onPress: () => void;
 }
 
+/**
+ * Backdrop behind the dialog card. Fades in with `entryAnimationValue`;
+ * tapping anywhere on it calls `onPress` to dismiss the dialog.
+ */
 export function DialogScrim({
   entryAnimationValue,
   onPress,

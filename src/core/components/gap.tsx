@@ -9,6 +9,10 @@ interface GapProps {
   readonly axis?: 'horizontal' | 'vertical';
 }
 
+/**
+ * Reads `spacing` directly instead of through `useTheme()`: `Gap` renders in
+ * places with no hook context to call it from.
+ */
 export function Gap({
   size,
   axis = 'horizontal',

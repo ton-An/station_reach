@@ -20,6 +20,19 @@ export interface StationDeparturesStore {
   readonly loadReachability: (station: Station) => Promise<void>;
 }
 
+/**
+ * Loads the departures reachable from a station.
+ *
+ * A later call supersedes an earlier one in flight: the request id lives in
+ * the factory closure, and a late answer whose id is no longer the newest is
+ * dropped instead of reaching state.
+ *
+ * States:
+ * - `initial`: nothing loaded
+ * - `loading`: a load is running, with no station or departures yet
+ * - `loaded`: the station and the departures reaching it
+ * - `failure`: the newest load failed
+ */
 export function createStationDeparturesStore(
   getStationDepartures: GetStationDepartures
 ): StoreApi<StationDeparturesStore> {

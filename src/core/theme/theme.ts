@@ -165,12 +165,22 @@ export const text = {
   },
 } as const satisfies Record<string, TextStyle>;
 
+/**
+ * Dimensions of the app's floating chrome — search panel, legend, modals.
+ * Tokens because panels that never see each other still have to agree on
+ * them.
+ */
 export const layout = {
   overlayMaxWidth: 400,
   legendClusterWidth: 320,
   wideBreakpoint: 900,
 } as const satisfies Record<string, number>;
 
+/**
+ * Blur intensities for {@link TranslucentSurface}, kept as tokens so every
+ * blurred surface in the app agrees on the same two levels instead of each
+ * call site picking its own.
+ */
 export const misc = {
   blurIntensity: 30,
   legendBlurIntensity: 12,

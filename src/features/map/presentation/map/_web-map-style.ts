@@ -23,6 +23,17 @@ interface LabelStyle {
   readonly haloColor: string;
 }
 
+/**
+ * Adds the station and route sources and layers to `instance`. Call once
+ * per map instance: MapLibre GL JS throws if a source or layer id is added
+ * twice, and this does not guard against that.
+ *
+ * Routes are added before stations, so station markers always paint on top
+ * of route lines.
+ *
+ * @param instance - The map to add sources and layers to.
+ * @param label - Station label text styling, read from the theme.
+ */
 export function addStationLayers(
   instance: MapLibreMap,
   label: LabelStyle
@@ -85,6 +96,11 @@ interface SyncSourcesParams {
   readonly routes: RouteFeatures;
 }
 
+/**
+ * Pushes `stations` and `routes` into the sources {@link addStationLayers}
+ * added. No-ops silently for a source that has not been added yet, instead
+ * of throwing.
+ */
 export function syncSources({
   instance,
   stations,

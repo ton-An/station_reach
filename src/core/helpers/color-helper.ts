@@ -33,6 +33,16 @@ function stopAt(colors: readonly string[], index: number): string {
   return color;
 }
 
+/**
+ * Linearly interpolates `colors` at `position`.
+ *
+ * @param colors - The gradient stops, as `rgb()`/`rgba()` strings.
+ * @param position - Where to sample the gradient, 0 to 1. A value outside
+ * that range clamps to the nearest end stop; a single-stop gradient always
+ * returns that stop.
+ * @returns The interpolated colour, as an `rgba()` string.
+ * @throws Error if `colors` is empty.
+ */
 export function interpolateColors(
   colors: readonly string[],
   position: number
@@ -62,6 +72,13 @@ export function interpolateColors(
   });
 }
 
+/**
+ * Returns `color` with its alpha channel replaced by `alpha`.
+ *
+ * @param color - An `rgb()`/`rgba()` string.
+ * @param alpha - The new alpha, 0 to 1.
+ * @returns The colour, as an `rgba()` string.
+ */
 export function withAlpha(color: string, alpha: number): string {
   return formatRgba({ ...parseRgba(color), a: alpha });
 }
@@ -69,9 +86,14 @@ export function withAlpha(color: string, alpha: number): string {
 interface FlattenOntoParams {
   readonly color: string;
   readonly backdrop: string;
+  /** Opacity `color` is mixed at; replaces any alpha already in `color`. */
   readonly alpha: number;
 }
 
+/**
+ * Alpha-composites `color` over the opaque `backdrop` and returns an opaque
+ * result.
+ */
 export function flattenOnto({
   color,
   backdrop,
@@ -102,11 +124,25 @@ function durationToGradientPosition(durationMinutes: number): number {
 }
 
 export interface ColorForDurationParams {
+  /** Colour stops, ordered from the shortest travel time to the longest. */
   readonly gradient: readonly string[];
+  /** Travel time in minutes; a negative value clamps to zero. */
   readonly durationMinutes: number;
+  /** Overrides the interpolated colour's alpha; left as-is when omitted. */
   readonly alpha?: number;
 }
 
+/**
+ * The single source of travel-time colour: markers, polylines and list rows
+ * all call this to turn a duration into a colour, and the legend renders the
+ * same gradient this interpolates over.
+ *
+ * Buckets `durationMinutes` into 30-minute steps, clamped at 18 hours, and
+ * interpolates `gradient` at that position.
+ *
+ * @param params - {@link ColorForDurationParams}
+ * @returns The colour, as an `rgba()` string.
+ */
 export function colorForDuration({
   gradient,
   durationMinutes,

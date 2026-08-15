@@ -16,6 +16,20 @@ import {
 import { DepartureItinerary } from './_departure-itinerary';
 import { DeparturesList } from './_departures-list';
 
+/**
+ * The departures panel: a {@link DraggableModal} that slides between the
+ * departures list and a selected departure's itinerary.
+ *
+ * The title follows the current selection — the selected stop, then the
+ * selected departure, then a generic fallback. The back button appears only
+ * once a departure is selected, and returns to the list. The legend renders
+ * inside the sheet on narrow layouts; {@link MapScreen} renders it standalone
+ * on wide ones.
+ *
+ * Sub-components:
+ * - {@link DeparturesList}: departures reaching the selected stop
+ * - {@link DepartureItinerary}: the stops of the selected departure
+ */
 export function DeparturesModal(): React.JSX.Element {
   const theme = useTheme();
   const isWide = useIsWideLayout();

@@ -3,6 +3,14 @@ import { Gesture, type ManualGesture } from 'react-native-gesture-handler';
 
 const TAP_SLOP = 12;
 
+/**
+ * Recognises a single-finger tap from raw touch events without claiming
+ * the gesture, so MapLibre Native's own pan and pinch handling keeps
+ * working underneath it.
+ *
+ * @param onTap - Called with the view-relative `x, y` of a touch that ends
+ * within {@link TAP_SLOP} px of where it started.
+ */
 function createMapTapGesture(
   onTap: (x: number, y: number) => void
 ): ManualGesture {

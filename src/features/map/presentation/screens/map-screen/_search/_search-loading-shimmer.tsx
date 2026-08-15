@@ -14,6 +14,11 @@ const BAR_HEIGHT = 8;
 
 const HIGHLIGHT_OPACITY = 0.5;
 
+/**
+ * Loading indicator for {@link StationSearchStore} and
+ * {@link StationDeparturesStore}: a translucent bar with a highlight that
+ * sweeps left to right on loop. Hidden once neither is loading.
+ */
 export function SearchLoadingShimmer(): React.JSX.Element | null {
   const theme = useTheme();
 

@@ -26,6 +26,10 @@ import {
   type StationSelectionStore,
 } from '@/features/map/presentation/stores/station-selection-store';
 
+/**
+ * The app's one dependency graph: every store a component can reach through
+ * {@link useContainer}. Built once by {@link ContainerProvider}.
+ */
 export interface Container {
   readonly inAppNotificationStore: StoreApi<InAppNotificationStore>;
   readonly stationSearchStore: StoreApi<StationSearchStore>;
@@ -52,6 +56,10 @@ function createContainer(): Container {
 
 const ContainerContext = createContext<Container | undefined>(undefined);
 
+/**
+ * Builds the {@link Container} once per mount and provides it to the
+ * component tree below.
+ */
 export function ContainerProvider({
   children,
 }: {
@@ -66,6 +74,11 @@ export function ContainerProvider({
   );
 }
 
+/**
+ * Reads the {@link Container} provided by {@link ContainerProvider}.
+ *
+ * @throws {Error} Called outside a {@link ContainerProvider}.
+ */
 export function useContainer(): Container {
   const container = useContext(ContainerContext);
 

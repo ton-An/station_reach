@@ -27,6 +27,7 @@ interface TransitModeIconProps {
   readonly color: string;
 }
 
+/** Icon for a transit mode, `circleQuestionMark` for a mode without one. */
 export function TransitModeIcon({
   mode,
   size,

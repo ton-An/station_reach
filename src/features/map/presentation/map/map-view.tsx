@@ -26,6 +26,14 @@ import {
 } from './map-config';
 import type { MapViewProps } from './map-view.types';
 
+/**
+ * MapLibre Native implementation of {@link MapViewProps}.
+ *
+ * `Camera`'s `defaultSettings` only seed the initial position; a later
+ * `focus` change moves the camera by calling `setCamera` through a ref.
+ * `onStationPress` and `onBackgroundPress` are read from a ref kept in sync
+ * on every render, so the tap gesture built from them is never recreated.
+ */
 export const MapView = memo(function MapView({
   stations,
   routes,

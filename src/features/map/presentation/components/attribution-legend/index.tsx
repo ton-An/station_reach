@@ -10,6 +10,16 @@ import { useTheme } from '@/core/theme/use-theme';
 import { AttributionOpenSourceCard } from './_attribution-open-source-card';
 import { attributionMessage } from './attributions';
 
+/**
+ * Button that opens the map's legal attributions.
+ *
+ * OpenStreetMap, CartoDB, Transitous and the site's privacy policy and
+ * impressum are legal requirements, and this dialog is the one place the
+ * app shows them — keep it reachable.
+ *
+ * Sub-components:
+ * - {@link AttributionOpenSourceCard}: link to the project's repository
+ */
 export function AttributionLegend(): React.JSX.Element {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);

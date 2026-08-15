@@ -13,6 +13,11 @@ const ICON_SIZE = 28;
 
 const SEARCH_DEBOUNCE_MS = 300;
 
+/**
+ * Debounces the typed query by {@link SEARCH_DEBOUNCE_MS} before calling
+ * {@link StationSearchStore.search}. Submitting from the keyboard only
+ * dismisses it; the debounced search is already in flight.
+ */
 export function SearchField(): React.JSX.Element {
   const theme = useTheme();
   const search = useStationSearchStore((store) => store.search);

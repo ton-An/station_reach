@@ -19,6 +19,18 @@ interface DialogProps {
   readonly actions: readonly DialogAction[];
 }
 
+/**
+ * Modal dialog: a centred card over a translucent scrim, both animating in
+ * together while `isOpen` becomes true.
+ *
+ * Tapping the scrim, or the Android back button, calls `onClose`. An action
+ * in `actions` does not close the dialog unless its own `onPress` calls
+ * `onClose` too.
+ *
+ * Sub-components:
+ * - {@link DialogScrim}: the backdrop, dismisses on tap
+ * - {@link DialogCard}: title, message, optional extra content and actions
+ */
 export function Dialog({
   isOpen,
   onClose,

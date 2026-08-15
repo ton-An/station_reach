@@ -35,6 +35,28 @@ export type GetStationDepartures = (
   station: Station
 ) => ResultAsync<Departure[], Failure>;
 
+/**
+ * Reads every departure leaving a station.
+ *
+ * Fetches the long-distance and regional mode buckets concurrently; both
+ * are required, so a fetch failure in either fails the whole read.
+ * {@link noDeparturesFoundFailure} from a bucket is not a fetch failure —
+ * it is an answer — so the other bucket is then used alone, and the failure
+ * only propagates when neither bucket has anything.
+ *
+ * The surviving departures are deduped before sorting, keeping the first
+ * occurrence of each unique stop sequence with long distance concatenated
+ * first, so a trip published under both buckets keeps its long-distance
+ * entry. The result is sorted by name and, within a name, by final-stop
+ * duration.
+ *
+ * @param station - The station to read departures for.
+ * @returns The merged departures, {@link noDeparturesFoundFailure} when
+ * neither bucket has any, or one of {@link receiveTimeoutFailure},
+ * {@link requestCancelledFailure}, {@link connectionFailure},
+ * {@link statusCodeNotOkFailure}, {@link badResponseFailure} and
+ * {@link unknownRequestFailure}.
+ */
 export function createGetStationDepartures(
   mapRepository: MapRepository
 ): GetStationDepartures {

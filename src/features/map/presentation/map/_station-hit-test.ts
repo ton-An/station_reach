@@ -11,6 +11,12 @@ export type StationHit =
   | { readonly kind: 'station'; readonly stopId: string }
   | { readonly kind: 'background' };
 
+/**
+ * Builds the query rect around a tap, in the units and axis order the
+ * native `queryRenderedFeaturesInRect` call expects on each platform:
+ * device pixels on Android, points on iOS, with top and bottom swapped
+ * between the two.
+ */
 function hitRect(x: number, y: number): [number, number, number, number] {
   const left = (x - STATION_HIT_RADIUS) * QUERY_SCALE;
   const right = (x + STATION_HIT_RADIUS) * QUERY_SCALE;
@@ -20,6 +26,14 @@ function hitRect(x: number, y: number): [number, number, number, number] {
   return IS_ANDROID ? [lower, right, upper, left] : [upper, right, lower, left];
 }
 
+/**
+ * Classifies a hit test's result as a station press or a background press:
+ * the nearest station within tap tolerance, or `background` when there is
+ * none.
+ *
+ * @param features - Candidate features from a hit-test query.
+ * @param target - The tapped point, as `[longitude, latitude]`.
+ */
 export function toStationHit(
   features: readonly GeoJSON.Feature[],
   target: readonly [longitude: number, latitude: number]
@@ -37,6 +51,15 @@ interface StationAtPointParams {
   readonly y: number;
 }
 
+/**
+ * Resolves a native tap at view coordinates `x, y` to a {@link StationHit}.
+ *
+ * Queries the rendered station features and the tapped point's map
+ * coordinate concurrently, since both are async native calls.
+ *
+ * @returns The hit, or `undefined` when the point falls outside the map
+ * and no coordinate resolves.
+ */
 export async function stationAtPoint({
   map,
   x,

@@ -4,6 +4,13 @@ export interface StationCandidate {
   readonly latitude: number;
 }
 
+/**
+ * Narrows a rendered-feature query's results to station markers — a point
+ * geometry with a string `stopId` property and defined coordinates.
+ * Anything else, a route line or a malformed feature, is dropped.
+ *
+ * @param features - Features returned by a rendered-feature query.
+ */
 export function toStationCandidates(
   features: readonly GeoJSON.Feature[]
 ): StationCandidate[] {
@@ -30,6 +37,19 @@ export function toStationCandidates(
   return candidates;
 }
 
+/**
+ * Picks the candidate nearest the tapped point, so a tap within several
+ * overlapping markers' hit radius resolves to the closest one instead of
+ * an arbitrary pick.
+ *
+ * Longitude is scaled by `cos(latitude)` before comparing, so distance
+ * approximates ground distance instead of raw degree deltas.
+ *
+ * @param candidates - The markers within tap tolerance.
+ * @param target - The tapped point, as `[longitude, latitude]`.
+ * @returns The nearest candidate's stop id, or `undefined` when
+ * `candidates` is empty.
+ */
 export function nearestStopId(
   candidates: readonly StationCandidate[],
   target: readonly [longitude: number, latitude: number]

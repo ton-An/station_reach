@@ -18,6 +18,13 @@ interface FadePressableProps {
   readonly accessibilityLabel?: string;
 }
 
+/**
+ * Fades its children's opacity to signal press and hover.
+ *
+ * A press fades to `minOpacity`. A pointer hover (mouse, trackpad) fades
+ * only halfway there. Both settle back to full opacity on release or
+ * hover-out.
+ */
 export function FadePressable({
   children,
   onPress,

@@ -12,6 +12,13 @@ const BAR_HEIGHT = 36;
 
 const BAR_OPACITY = 0.85;
 
+/**
+ * Legend for the travel-time colour scale that {@link colorForDuration}
+ * paints markers, polylines and list rows with.
+ *
+ * Its three labels mark the scale's near, middle and far bounds: 30 minutes,
+ * 9 hours and 18+ hours.
+ */
 export function TimeGradientLegend(): React.JSX.Element {
   const theme = useTheme();
 

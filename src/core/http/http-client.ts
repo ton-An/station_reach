@@ -6,9 +6,12 @@ export type HttpErrorKind =
   | 'cancelled'
   | 'connection'
   | 'badStatus'
+  /** The response body was not valid JSON. */
   | 'badResponse'
+  /** The catch-all for anything {@link getJson} cannot otherwise classify. */
   | 'unknown';
 
+/** Thrown by {@link getJson}; `kind` says why the request failed. */
 export class HttpError extends Error {
   constructor(
     readonly kind: HttpErrorKind,
@@ -22,6 +25,10 @@ export class HttpError extends Error {
 const DEFAULT_TIMEOUT_MS = 20_000;
 const CONTACT_EMAIL = 'anton@antons-webfabrik.eu';
 
+/**
+ * Browsers block scripts from setting `User-Agent`, so only native builds
+ * send one.
+ */
 function requestHeaders(): Record<string, string> {
   if (Platform.OS === 'web') return { Accept: 'application/json' };
 
@@ -33,6 +40,19 @@ function requestHeaders(): Record<string, string> {
   };
 }
 
+/**
+ * Fetches `url` and parses the response as JSON.
+ *
+ * The request aborts once the request timeout elapses, or as soon as
+ * `signal` aborts, whichever comes first. `HttpError.kind` tells the two
+ * apart: `'cancelled'` when `signal` aborted the request, `'timeout'` when
+ * the internal timeout did.
+ *
+ * @param url - The endpoint to fetch.
+ * @param signal - Aborts the request; distinct from the request timeout.
+ * @returns The parsed JSON body.
+ * @throws {@link HttpError}
+ */
 export async function getJson<T = unknown>(
   url: string,
   signal?: AbortSignal

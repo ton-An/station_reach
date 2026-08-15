@@ -9,6 +9,7 @@ export type SearchStations = (
   signal?: AbortSignal
 ) => ResultAsync<Station[], Failure>;
 
+/** Searches stations by name. */
 export function createSearchStations(
   mapRepository: MapRepository
 ): SearchStations {

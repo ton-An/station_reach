@@ -20,6 +20,17 @@ export interface StationSelectionStore {
   readonly unselect: () => void;
 }
 
+/**
+ * Tracks which stop is selected on the map, and the departures reaching it.
+ *
+ * `select` is a no-op when the given stop is already selected, and
+ * `unselect` is a no-op when nothing is selected, so neither replaces state
+ * with an equal value.
+ *
+ * States:
+ * - `unselected`: no stop selected
+ * - `selected`: the selected stop and the departures reaching it
+ */
 export function createStationSelectionStore(): StoreApi<StationSelectionStore> {
   return createStore<StationSelectionStore>()((set, get) => ({
     state: { status: 'unselected' },

@@ -28,6 +28,10 @@ interface DialogCardProps {
   readonly actions: readonly DialogAction[];
 }
 
+/**
+ * Dialog content: title, a scrollable message, optional extra content and
+ * the action row. Scales in from `entryAnimationValue` as the dialog opens.
+ */
 export function DialogCard({
   entryAnimationValue,
   title,

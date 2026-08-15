@@ -7,6 +7,12 @@ const MINUTE_MS = 60_000;
 
 const MAX_ADMIN_LEVEL = 7;
 
+/**
+ * Maps a Transitous geocoder result to a {@link Station}.
+ *
+ * The display area is the `areas[]` entry with the highest `adminLevel` at
+ * or below 7, or undefined when none qualifies.
+ */
 export function toStation(raw: GeocodeStation): Station {
   const area = pickAreaName(raw);
 
@@ -21,6 +27,16 @@ export function toStation(raw: GeocodeStation): Station {
   };
 }
 
+/**
+ * Maps one Transitous stop-time to a {@link Departure} reachable from
+ * `origin`.
+ *
+ * `stops` opens with `origin` itself at {@link Stop.durationMinutes} zero,
+ * followed by every `raw.nextStops` entry that carries a usable timestamp,
+ * each duration measured from `origin`'s scheduled departure. The name
+ * falls back through `displayName`, `routeShortName`, `tripShortName` and
+ * `routeLongName`, or an empty string when none is set.
+ */
 export function toDeparture(origin: Station, raw: StopTime): Departure {
   const departureTimeMs = new Date(
     raw.place.scheduledDeparture ?? ''

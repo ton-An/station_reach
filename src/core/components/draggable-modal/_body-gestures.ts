@@ -25,6 +25,16 @@ export interface ModalBodyGestures {
   readonly onScroll: ReturnType<typeof useAnimatedScrollHandler>;
 }
 
+/**
+ * Builds the gestures a {@link DraggableModal} body needs to both scroll its
+ * own content and drag the sheet.
+ *
+ * Once a touch travels past {@link DRAG_ACTIVATION_SLOP}, it drags the sheet
+ * when the sheet is below {@link LARGE_HEIGHT}, or when it is at
+ * {@link LARGE_HEIGHT} and the touch is pulling down while the content is
+ * already scrolled to its top. Every other touch scrolls the content
+ * instead. Used by {@link ModalList} and {@link ModalScrollView}.
+ */
 export function useModalBodyGestures(): ModalBodyGestures {
   const drag = useSheetDrag();
 

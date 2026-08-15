@@ -12,6 +12,13 @@ interface GradientBorderProps {
   readonly backgroundColor?: string;
 }
 
+/**
+ * Wraps `children` in a gradient-coloured stroke border.
+ *
+ * The border is drawn from a size measured on layout, so it is absent for
+ * the first frame and appears once measured. It never intercepts touches:
+ * children stay interactive underneath it.
+ */
 export function GradientBorder({
   colors,
   radius,

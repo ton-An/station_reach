@@ -14,6 +14,15 @@ import { DeparturesNoStopSelected } from './_departures-no-stop-selected';
 
 const NO_DEPARTURES: readonly Departure[] = [];
 
+/**
+ * The departures reaching the selected stop, one row per departure tinted
+ * along the secondary gradient by position. Renders
+ * {@link DeparturesNoStopSelected} until a stop is selected.
+ *
+ * Sub-components:
+ * - {@link DepartureRow}: one departure, coloured and timed to the stop
+ * - {@link DeparturesNoStopSelected}: placeholder before a stop is picked
+ */
 export function DeparturesList(): React.JSX.Element {
   const theme = useTheme();
   const state = useStationSelectionStore((store) => store.state);
