@@ -21,9 +21,9 @@ export function ModalHeader({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: theme.spacing.xMedium,
+        paddingHorizontal: theme.spacing.medium + theme.spacing.small,
         paddingVertical: theme.spacing.medium + theme.spacing.small,
-        borderRadius: theme.radii.large,
+        borderRadius: theme.radii.medium,
         backgroundColor: theme.colors.translucentBackgroundContrast,
       }}
     >
@@ -35,11 +35,17 @@ export function ModalHeader({
             alignmentOffset={[-1, 0]}
             accessibilityLabel={t('back')}
           />
-          <Gap size="medium" />
         </>
       )}
 
-      <View style={{ flex: 1, paddingVertical: theme.spacing.small }}>
+      <View
+        style={{
+          flex: 1,
+          paddingLeft:
+            onBack === undefined ? theme.spacing.small : theme.spacing.medium,
+          paddingVertical: theme.spacing.small,
+        }}
+      >
         <Text
           numberOfLines={2}
           style={[
