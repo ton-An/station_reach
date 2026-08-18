@@ -18,7 +18,7 @@ export const radii = {
   small: 8,
   field: 10,
   medium: 12,
-  button: 14,
+  button: 18,
   xMedium: 18,
   large: 20,
   xLarge: 30,
