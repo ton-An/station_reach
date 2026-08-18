@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native';
 
-import { Gap } from '@/core/components/gap';
 import { SmallIconButton } from '@/core/components/small-icon-button';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
