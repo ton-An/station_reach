@@ -1,12 +1,12 @@
-import { useCallback, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
-import { View } from 'react-native';
+import { View, type LayoutRectangle } from 'react-native';
 
 import { selectionTick } from '@/core/helpers/haptics-helper';
 import { useTheme } from '@/core/theme/use-theme';
@@ -46,10 +46,20 @@ interface DraggableModalProps {
  * the sheet once the content is scrolled to its top. The legend sits above
  * the sheet and fades out as the sheet is pulled over it.
  *
- * The sheet is always laid out at its full height and moved with
- * `translateY`, so a drag costs no layout pass. What that pushes below the
- * screen is given back to the body as bottom padding, which only has to be
- * right once the sheet settles — mid-drag nobody is scrolling.
+ * The sheet is laid out at the tallest its box has ever been, pinned to the
+ * bottom of that box, and every height it is shown at is `translateY` off
+ * that one frame. A drag therefore costs no layout pass. What the translation
+ * pushes below the screen is given back to the body as bottom padding, which
+ * only has to be right once the sheet settles — mid-drag nobody is scrolling.
+ *
+ * The box belongs to the screen around it: a panel opening above the sheet,
+ * such as a list of search results, takes its height off the box's top and
+ * the sheet is expected to follow it down. The sheet holds the place it was
+ * in when that happens and eases the difference away.
+ *
+ * Sizing the sheet to the box instead would defeat both. The box moves the
+ * sheet the moment it is measured, a frame before anything animated can
+ * answer, and the sheet is seen at its destination before it sets off.
  *
  * Sub-components:
  * - {@link ModalHandle}: the grab indicator
@@ -64,16 +74,35 @@ export function DraggableModal({
   const theme = useTheme();
 
   const fraction = useSharedValue(MEDIUM_HEIGHT);
+  const sheetHeight = useSharedValue(0);
   const availableHeight = useSharedValue(0);
   const dragStartFraction = useSharedValue(MEDIUM_HEIGHT);
+  const settledFraction = useSharedValue(MEDIUM_HEIGHT);
+  const layoutShift = useSharedValue(0);
 
-  const [sheetHeight, setSheetHeight] = useState(0);
-  const [settledFraction, setSettledFraction] = useState(MEDIUM_HEIGHT);
-
-  const handleSettle = useCallback((detent: number) => {
-    setSettledFraction(detent);
+  const handleSettle = (detent: number) => {
+    settledFraction.value = detent;
     selectionTick();
-  }, []);
+  };
+
+  const handleLayout = ({ height }: LayoutRectangle) => {
+    // The box is pinned to the bottom of the screen, so it gives up height off
+    // its top and carries the sheet down by `fraction` of what it lost. Hold
+    // the sheet where it was and ease that offset out, or the whole move lands
+    // between two frames. Skipped on the first layout, which has no place to
+    // hold.
+    if (availableHeight.value !== 0) {
+      layoutShift.value += fraction.value * (height - availableHeight.value);
+      layoutShift.value = withTiming(0, { duration: theme.durations.xShort });
+    }
+
+    availableHeight.value = height;
+
+    // The tallest the box has ever been is as tall as the sheet ever needs to
+    // be. Written beside the translation that reads it, so the sheet is never
+    // laid out for one size and moved for another.
+    sheetHeight.value = Math.max(sheetHeight.value, height);
+  };
 
   const drag: SheetDrag = {
     fraction,
@@ -89,7 +118,20 @@ export function DraggableModal({
     .onEnd((event) => settleSheetDrag(drag, event.velocityY));
 
   const sheetStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: (1 - fraction.value) * availableHeight.value }],
+    height: sheetHeight.value,
+    transform: [
+      {
+        translateY:
+          sheetHeight.value -
+          fraction.value * availableHeight.value +
+          layoutShift.value,
+      },
+    ],
+  }));
+
+  const bodyStyle = useAnimatedStyle(() => ({
+    paddingBottom:
+      sheetHeight.value - settledFraction.value * availableHeight.value,
   }));
 
   const legendStyle = useAnimatedStyle(() => ({
@@ -103,19 +145,15 @@ export function DraggableModal({
 
   return (
     <View
-      style={[
-        pointerEvents.passThrough,
-        { flex: 1, justifyContent: 'flex-end', overflow: 'hidden' },
-      ]}
-      onLayout={(event) => {
-        const { height } = event.nativeEvent.layout;
-
-        availableHeight.value = height;
-        setSheetHeight(height);
-      }}
+      style={[pointerEvents.passThrough, { flex: 1, overflow: 'hidden' }]}
+      onLayout={(event) => handleLayout(event.nativeEvent.layout)}
     >
       <Animated.View
-        style={[sheetStyle, pointerEvents.passThrough, { flex: 1 }]}
+        style={[
+          sheetStyle,
+          pointerEvents.passThrough,
+          { position: 'absolute', left: 0, right: 0, bottom: 0 },
+        ]}
       >
         {legend !== undefined && (
           <Animated.View
@@ -145,14 +183,9 @@ export function DraggableModal({
           </GestureDetector>
 
           <SheetDragProvider value={drag}>
-            <View
-              style={{
-                flex: 1,
-                paddingBottom: (1 - settledFraction) * sheetHeight,
-              }}
-            >
+            <Animated.View style={[bodyStyle, { flex: 1 }]}>
               {children}
-            </View>
+            </Animated.View>
           </SheetDragProvider>
         </TranslucentSurface>
       </Animated.View>
