@@ -32,7 +32,11 @@ export function AttributionLegend(): React.JSX.Element {
           accessibilityLabel={t('attributions')}
         >
           <View style={{ padding: theme.spacing.xxSmall }}>
-            <Icon name="info" size={24} color={theme.colors.description} />
+            <Icon
+              name="info"
+              size={theme.icons.medium}
+              color={theme.colors.description}
+            />
           </View>
         </FadePressable>
       </TranslucentSurface>

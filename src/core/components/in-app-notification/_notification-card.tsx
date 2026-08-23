@@ -16,8 +16,6 @@ import { Icon } from '../icon';
 import { pointerEvents } from '../pointer-events';
 import { TranslucentSurface } from '../translucent-surface';
 
-const ICON_SIZE = 26;
-
 interface NotificationCardProps {
   readonly notification: InAppNotification;
   readonly onDismiss: () => void;
@@ -116,7 +114,7 @@ export function NotificationCard({
             >
               <Icon
                 name="triangleAlert"
-                size={ICON_SIZE}
+                size={theme.icons.medium}
                 color={theme.colors.error}
               />
 

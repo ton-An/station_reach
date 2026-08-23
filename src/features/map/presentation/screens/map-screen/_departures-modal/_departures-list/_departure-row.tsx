@@ -13,8 +13,6 @@ import { TransitModeIcon } from '../../../../components/transit-mode-icon';
 
 const ICON_BACKGROUND_ALPHA = 0.4;
 
-const MODE_ICON_SIZE = 20;
-
 interface DepartureRowProps {
   readonly departure: Departure;
   readonly durationMinutes: number;
@@ -56,7 +54,7 @@ export const DepartureRow = memo(function DepartureRow({
           >
             <TransitModeIcon
               mode={departure.mode}
-              size={MODE_ICON_SIZE}
+              size={theme.icons.small}
               color={theme.colors.background}
             />
           </View>

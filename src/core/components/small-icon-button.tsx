@@ -71,7 +71,7 @@ export function SmallIconButton({
           ],
         }}
       >
-        <Icon name={icon} size={24} color={theme.colors.text} />
+        <Icon name={icon} size={theme.icons.medium} color={theme.colors.text} />
       </View>
     </Animated.View>
   );

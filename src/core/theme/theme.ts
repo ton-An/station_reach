@@ -25,6 +25,16 @@ export const radii = {
   full: 999,
 } as const satisfies Record<string, number>;
 
+/**
+ * Glyph sizes for {@link Icon}. Three steps, because an icon that is not one
+ * of these reads as a mistake next to the ones that are.
+ */
+export const icons = {
+  small: 20,
+  medium: 24,
+  large: 28,
+} as const satisfies Record<string, number>;
+
 export const durations = {
   tiny: 50,
   xTiny: 100,
@@ -189,6 +199,7 @@ export const misc = {
 export const theme = {
   spacing,
   radii,
+  icons,
   durations,
   colors,
   text,

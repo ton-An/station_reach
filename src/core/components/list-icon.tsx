@@ -28,7 +28,7 @@ export function ListIcon({ icon, color }: ListIconProps): React.JSX.Element {
     >
       <Icon
         name={icon}
-        size={24}
+        size={theme.icons.medium}
         color={withAlpha(theme.colors.backgroundContrast, GLYPH_ALPHA)}
       />
     </View>

@@ -29,7 +29,11 @@ export function AttributionOpenSourceCard(): React.JSX.Element {
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Icon name="github" size={24} color={theme.colors.text} />
+            <Icon
+              name="github"
+              size={theme.icons.medium}
+              color={theme.colors.text}
+            />
 
             <Gap size="xxSmall" />
 
@@ -42,7 +46,11 @@ export function AttributionOpenSourceCard(): React.JSX.Element {
               {t('proudlyOpenSource')}
             </Text>
 
-            <Icon name="chevronRight" size={20} color={theme.colors.hint} />
+            <Icon
+              name="chevronRight"
+              size={theme.icons.small}
+              color={theme.colors.hint}
+            />
           </View>
 
           <Gap size="xxSmall" axis="vertical" />
