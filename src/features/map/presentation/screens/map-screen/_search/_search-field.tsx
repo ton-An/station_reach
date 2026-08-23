@@ -44,12 +44,16 @@ export function SearchField(): React.JSX.Element {
       <View
         style={{
           justifyContent: 'center',
-          paddingLeft: theme.spacing.medium + theme.spacing.small,
+          paddingLeft: theme.spacing.xxMedium,
           paddingRight: theme.spacing.xSmall,
           pointerEvents: 'none',
         }}
       >
-        <Icon name="search" size={ICON_SIZE} color={theme.colors.hint} />
+        <Icon
+          name="search"
+          size={ICON_SIZE}
+          color={theme.colors.hint}
+        />
       </View>
 
       <TextInput

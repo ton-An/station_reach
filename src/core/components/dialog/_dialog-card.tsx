@@ -60,7 +60,7 @@ export function DialogCard({
         tint={withAlpha(theme.colors.background, CARD_TINT_ALPHA)}
         style={{ width: DIALOG_WIDTH }}
       >
-        <View style={{ padding: theme.spacing.medium + theme.spacing.xTiny }}>
+        <View style={{ padding: theme.spacing.xMedium }}>
           <Gap size="small" axis="vertical" />
 
           <Text
@@ -79,13 +79,13 @@ export function DialogCard({
 
             {additionalContent !== undefined && (
               <>
-                <Gap size="xMedium" axis="vertical" />
+                <Gap size="large" axis="vertical" />
                 {additionalContent}
               </>
             )}
           </ScrollView>
 
-          <Gap size="xMedium" axis="vertical" />
+          <Gap size="large" axis="vertical" />
 
           <DialogActions actions={actions} />
         </View>

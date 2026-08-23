@@ -7,10 +7,10 @@ export const spacing = {
   xSmall: 8,
   xxSmall: 12,
   medium: 14,
-  xMedium: 24,
-  xxMedium: 32,
-  large: 44,
-  xLarge: 55,
+  xMedium: 16,
+  xxMedium: 18,
+  large: 24,
+  xLarge: 44,
   xxLarge: 128,
 } as const satisfies Record<string, number>;
 

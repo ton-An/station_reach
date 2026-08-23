@@ -110,7 +110,7 @@ export function NotificationCard({
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingHorizontal: theme.spacing.xMedium,
+                paddingHorizontal: theme.spacing.large,
                 paddingVertical: theme.spacing.medium,
               }}
             >

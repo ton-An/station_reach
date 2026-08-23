@@ -1,8 +1,12 @@
 import { View } from 'react-native';
 
 import { withAlpha } from '@/core/helpers/color-helper';
+import { icons, spacing } from '@/core/theme/theme';
 import { useTheme } from '@/core/theme/use-theme';
 import { Icon, type IconName } from './icon';
+
+/** Outer diameter, for callers that line something up with the circle. */
+export const LIST_ICON_DIAMETER = spacing.medium * 2 + icons.medium;
 
 const GLYPH_ALPHA = 0.6;
 

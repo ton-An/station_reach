@@ -63,7 +63,7 @@ export function DeparturesList(): React.JSX.Element {
       contentContainerStyle={{
         paddingHorizontal: theme.spacing.medium,
         paddingTop: theme.spacing.medium,
-        paddingBottom: theme.spacing.large,
+        paddingBottom: theme.spacing.xLarge,
       }}
     />
   );

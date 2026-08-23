@@ -25,7 +25,7 @@ export function SearchStationResult({
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          minHeight: theme.spacing.large,
+          minHeight: theme.spacing.xLarge,
           paddingHorizontal: theme.spacing.medium,
           paddingVertical: theme.spacing.xSmall,
         }}

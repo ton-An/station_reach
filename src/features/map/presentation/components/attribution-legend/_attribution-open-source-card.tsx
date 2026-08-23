@@ -25,7 +25,7 @@ export function AttributionOpenSourceCard(): React.JSX.Element {
         <View
           style={{
             paddingHorizontal: theme.spacing.medium,
-            paddingVertical: theme.spacing.medium + theme.spacing.xTiny,
+            paddingVertical: theme.spacing.xMedium,
           }}
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
