@@ -1,10 +1,9 @@
-import {
-  Animated,
-  ScrollView,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import { ScrollView, Text, useWindowDimensions, View } from 'react-native';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  type SharedValue,
+} from 'react-native-reanimated';
 
 import { withAlpha } from '@/core/helpers/color-helper';
 import { useTheme } from '@/core/theme/use-theme';
@@ -20,8 +19,10 @@ const MAX_BODY_FRACTION = 0.55;
 
 const CARD_TINT_ALPHA = 0.58;
 
+const ENTRY_SCALE = 1.15;
+
 interface DialogCardProps {
-  readonly entryAnimationValue: Animated.Value;
+  readonly entryAnimationValue: SharedValue<number>;
   readonly title: string;
   readonly message: string;
   readonly additionalContent?: React.ReactNode;
@@ -30,7 +31,8 @@ interface DialogCardProps {
 
 /**
  * Dialog content: title, a scrollable message, optional extra content and
- * the action row. Scales in from `entryAnimationValue` as the dialog opens.
+ * the action row. Scales and fades with `entryAnimationValue`, so the card
+ * shrinks into place as the dialog opens and grows back out as it closes.
  */
 export function DialogCard({
   entryAnimationValue,
@@ -42,20 +44,17 @@ export function DialogCard({
   const theme = useTheme();
   const { height } = useWindowDimensions();
 
+  const entryStyle = useAnimatedStyle(() => ({
+    opacity: entryAnimationValue.value,
+    transform: [
+      {
+        scale: interpolate(entryAnimationValue.value, [0, 1], [ENTRY_SCALE, 1]),
+      },
+    ],
+  }));
+
   return (
-    <Animated.View
-      style={{
-        pointerEvents: 'auto',
-        transform: [
-          {
-            scale: entryAnimationValue.interpolate({
-              inputRange: [0, 1],
-              outputRange: [1.15, 1],
-            }),
-          },
-        ],
-      }}
-    >
+    <Animated.View style={[entryStyle, { pointerEvents: 'auto' }]}>
       <TranslucentSurface
         radius={theme.radii.xMedium}
         tint={withAlpha(theme.colors.background, CARD_TINT_ALPHA)}

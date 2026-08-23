@@ -1,12 +1,10 @@
-import { useState } from 'react';
-import {
-  Animated,
-  Pressable,
-  type StyleProp,
-  type ViewStyle,
-} from 'react-native';
+import { Pressable, type StyleProp, type ViewStyle } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
-import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
 
 interface FadePressableProps {
@@ -34,14 +32,13 @@ export function FadePressable({
   accessibilityLabel,
 }: FadePressableProps): React.JSX.Element {
   const theme = useTheme();
-  const [opacity] = useState(() => new Animated.Value(1));
+  const opacity = useSharedValue(1);
 
-  const fadeTo = (value: number) =>
-    Animated.timing(opacity, {
-      toValue: value,
-      duration: theme.durations.short,
-      useNativeDriver: USE_NATIVE_DRIVER,
-    }).start();
+  const fadeTo = (value: number) => {
+    opacity.value = withTiming(value, { duration: theme.durations.short });
+  };
+
+  const fadeStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
 
   return (
     <Pressable
@@ -55,7 +52,7 @@ export function FadePressable({
       accessibilityLabel={accessibilityLabel}
       style={style}
     >
-      <Animated.View style={{ opacity }}>{children}</Animated.View>
+      <Animated.View style={fadeStyle}>{children}</Animated.View>
     </Pressable>
   );
 }

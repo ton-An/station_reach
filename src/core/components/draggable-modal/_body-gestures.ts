@@ -11,8 +11,8 @@ import {
 import {
   beginSheetDrag,
   DRAG_ACTIVATION_SLOP,
-  endSheetDrag,
   LARGE_HEIGHT,
+  settleSheetDrag,
   updateSheetDrag,
   useSheetDrag,
 } from './_sheet-drag';
@@ -68,7 +68,7 @@ export function useModalBodyGestures(): ModalBodyGestures {
     })
     .onStart(() => beginSheetDrag(drag))
     .onUpdate((event) => updateSheetDrag(drag, event.translationY))
-    .onEnd((event) => endSheetDrag(drag, event.translationY));
+    .onEnd((event) => settleSheetDrag(drag, event.velocityY));
 
   const onScroll = useAnimatedScrollHandler((event) => {
     scrollOffset.value = event.contentOffset.y;

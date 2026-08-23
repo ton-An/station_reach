@@ -17,6 +17,7 @@
     "expo-blur": "~57.0.1",
     "expo-constants": "~57.0.8",
     "expo-font": "~57.0.1",
+    "expo-haptics": "~57.0.1",
     "expo-linear-gradient": "^57.0.1",
     "expo-linking": "~57.0.4",
     "expo-localization": "~57.0.1",

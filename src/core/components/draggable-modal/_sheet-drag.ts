@@ -1,18 +1,38 @@
 import { createContext, useContext } from 'react';
-import { withTiming, type SharedValue } from 'react-native-reanimated';
+import {
+  cancelAnimation,
+  withSpring,
+  type SharedValue,
+} from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
 /**
- * Fractions of the sheet's available height it can snap to. A drag only
- * ever settles on {@link SMALL_HEIGHT} or {@link LARGE_HEIGHT} — see
- * {@link endSheetDrag}. {@link MEDIUM_HEIGHT} is just the sheet's initial
- * resting fraction.
+ * Fractions of the sheet's available height a drag can settle at.
+ * {@link MEDIUM_HEIGHT} is both the sheet's opening height and a detent a
+ * later drag can return to.
  */
 export const SMALL_HEIGHT = 0.3;
 export const MEDIUM_HEIGHT = 0.6;
 export const LARGE_HEIGHT = 1;
 
-/** Drag travel, in pixels, above which {@link endSheetDrag} follows the drag. */
-const SIGNIFICANT_DRAG = 70;
+const DETENTS = [SMALL_HEIGHT, MEDIUM_HEIGHT, LARGE_HEIGHT] as const;
+
+/**
+ * Seconds of release velocity {@link settleSheetDrag} adds to the sheet's
+ * position before it picks a detent, so a flick carries past the detent it
+ * was released next to.
+ */
+const VELOCITY_PROJECTION_SECONDS = 0.25;
+
+/**
+ * Under-damped on purpose: the sheet overshoots its detent by a hair, which
+ * is what makes a release read as thrown rather than driven.
+ */
+const SNAP_SPRING = {
+  damping: 20,
+  stiffness: 190,
+  mass: 0.85,
+} as const;
 
 /**
  * Vertical travel, in pixels, a touch must move before a pan gesture starts
@@ -22,8 +42,8 @@ export const DRAG_ACTIVATION_SLOP = 2;
 
 /**
  * Sheet-drag state shared, through {@link SheetDragProvider}, between the
- * sheet shell in {@link DraggableModal} and its scrollable body. Every field
- * is a `SharedValue` so the worklets in this file can update it on the UI
+ * sheet shell in {@link DraggableModal} and its scrollable body. Every
+ * `SharedValue` field is written by the worklets in this file, on the UI
  * thread.
  */
 export interface SheetDrag {
@@ -31,7 +51,11 @@ export interface SheetDrag {
   readonly fraction: SharedValue<number>;
   readonly availableHeight: SharedValue<number>;
   readonly dragStartFraction: SharedValue<number>;
-  readonly snapDuration: number;
+  /**
+   * Called on the JS thread with the detent a release settles at, and only
+   * when that detent differs from the one the drag started at.
+   */
+  readonly onSettle: (fraction: number) => void;
 }
 
 const SheetDragContext = createContext<SheetDrag | undefined>(undefined);
@@ -55,12 +79,13 @@ export function useSheetDrag(): SheetDrag {
 }
 
 /**
- * Starts a sheet drag: records the sheet's current height fraction as the
- * point the drag moves from. Runs on the UI thread inside a gesture's
- * `onStart`.
+ * Starts a sheet drag: stops any snap still running and records the sheet's
+ * current height fraction as the point the drag moves from. Runs on the UI
+ * thread inside a gesture's `onStart`.
  */
 export function beginSheetDrag(drag: SheetDrag): void {
   'worklet';
+  cancelAnimation(drag.fraction);
   drag.dragStartFraction.value = drag.fraction.value;
 }
 
@@ -82,18 +107,39 @@ export function updateSheetDrag(drag: SheetDrag, translationY: number): void {
 }
 
 /**
- * Ends a sheet drag, animating the sheet to {@link LARGE_HEIGHT} or
- * {@link SMALL_HEIGHT}. A drag whose travel exceeds `SIGNIFICANT_DRAG`
- * settles in the direction it was dragged; a shorter drag settles in the
- * opposite direction. Runs on the UI thread inside a gesture's `onEnd`.
+ * Ends a sheet drag, springing the sheet to the detent nearest to where its
+ * release velocity was heading. Runs on the UI thread inside a gesture's
+ * `onEnd`.
+ *
+ * @param velocityY - Release velocity in pixels per second, positive
+ * downwards, as the gesture reports it.
  */
-export function endSheetDrag(drag: SheetDrag, translationY: number): void {
+export function settleSheetDrag(drag: SheetDrag, velocityY: number): void {
   'worklet';
-  const draggedUp = translationY < 0;
-  const isSignificant = Math.abs(translationY) > SIGNIFICANT_DRAG;
-  const goUp = isSignificant ? draggedUp : !draggedUp;
+  const height = drag.availableHeight.value;
+  if (height === 0) return;
 
-  drag.fraction.value = withTiming(goUp ? LARGE_HEIGHT : SMALL_HEIGHT, {
-    duration: drag.snapDuration,
-  });
+  const projected =
+    drag.fraction.value - (velocityY / height) * VELOCITY_PROJECTION_SECONDS;
+
+  const target = nearestDetent(projected);
+
+  drag.fraction.value = withSpring(target, SNAP_SPRING);
+
+  if (target !== drag.dragStartFraction.value) {
+    scheduleOnRN(drag.onSettle, target);
+  }
+}
+
+function nearestDetent(fraction: number): number {
+  'worklet';
+  let nearest: number = SMALL_HEIGHT;
+
+  for (const detent of DETENTS) {
+    if (Math.abs(detent - fraction) < Math.abs(nearest - fraction)) {
+      nearest = detent;
+    }
+  }
+
+  return nearest;
 }

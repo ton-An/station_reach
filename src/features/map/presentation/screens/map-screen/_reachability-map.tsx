@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
+import { selectionTick } from '@/core/helpers/haptics-helper';
 import { useTheme } from '@/core/theme/use-theme';
 import { FOCUS_LATITUDE_OFFSET, FOCUSED_ZOOM } from '../../map/map-config';
 import {
@@ -88,7 +89,10 @@ export function ReachabilityMap(): React.JSX.Element {
   const handleStationPress = useCallback(
     (stopId: string) => {
       const entry = stopIndex.get(stopId);
-      if (entry !== undefined) selectStation(entry.stop, entry.departures);
+      if (entry === undefined) return;
+
+      selectStation(entry.stop, entry.departures);
+      selectionTick();
     },
     [stopIndex, selectStation]
   );

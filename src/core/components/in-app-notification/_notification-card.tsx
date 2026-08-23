@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Animated, Easing, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import Animated, {
+  Easing,
+  withTiming,
+  type EntryExitAnimationFunction,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { t } from '@/core/i18n/translate';
 import type { InAppNotification } from '@/core/notifications/in-app-notification-store';
-import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useIsWideLayout } from '@/core/theme/use-is-wide-layout';
 import { useTheme } from '@/core/theme/use-theme';
 import { FadePressable } from '../fade-pressable';
@@ -21,8 +24,12 @@ interface NotificationCardProps {
 }
 
 /**
- * One notification, fading and sliding in from `entryAnimationValue`.
- * Tapping anywhere on it calls `onDismiss`.
+ * One notification, dropping in from above the top of the screen and
+ * lifting back out. Tapping anywhere on it calls `onDismiss`.
+ *
+ * The exit is a layout animation rather than an animated style, so the card
+ * keeps playing after the store has already dropped it and nothing has to
+ * hold a copy of a notification that is gone.
  */
 export function NotificationCard({
   notification,
@@ -32,23 +39,54 @@ export function NotificationCard({
   const insets = useSafeAreaInsets();
   const isWide = useIsWideLayout();
 
-  const [entryAnimationValue] = useState(() => new Animated.Value(0));
+  const travel = theme.spacing.xxSmall;
 
-  const [hasEntered, setHasEntered] = useState(false);
+  const entering: EntryExitAnimationFunction = () => {
+    'worklet';
+    return {
+      initialValues: { opacity: 0, transform: [{ translateY: -travel }] },
+      animations: {
+        opacity: withTiming(1, {
+          duration: theme.durations.xxShort,
+          easing: Easing.out(Easing.cubic),
+        }),
+        transform: [
+          {
+            translateY: withTiming(0, {
+              duration: theme.durations.xxShort,
+              easing: Easing.out(Easing.cubic),
+            }),
+          },
+        ],
+      },
+    };
+  };
 
-  useEffect(() => {
-    Animated.timing(entryAnimationValue, {
-      toValue: 1,
-      duration: theme.durations.xxShort,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: USE_NATIVE_DRIVER,
-    }).start(({ finished }) => {
-      if (finished) setHasEntered(true);
-    });
-  }, [entryAnimationValue, theme.durations.xxShort]);
+  const exiting: EntryExitAnimationFunction = () => {
+    'worklet';
+    return {
+      initialValues: { opacity: 1, transform: [{ translateY: 0 }] },
+      animations: {
+        opacity: withTiming(0, {
+          duration: theme.durations.xxTiny,
+          easing: Easing.in(Easing.cubic),
+        }),
+        transform: [
+          {
+            translateY: withTiming(-travel, {
+              duration: theme.durations.xxTiny,
+              easing: Easing.in(Easing.cubic),
+            }),
+          },
+        ],
+      },
+    };
+  };
 
   return (
-    <View
+    <Animated.View
+      entering={entering}
+      exiting={exiting}
       style={[
         pointerEvents.passThrough,
         {
@@ -60,23 +98,10 @@ export function NotificationCard({
         },
       ]}
     >
-      <Animated.View
+      <View
         style={{
           maxWidth: theme.layout.overlayMaxWidth,
           width: '100%',
-          ...(hasEntered
-            ? {}
-            : {
-                opacity: entryAnimationValue,
-                transform: [
-                  {
-                    translateY: entryAnimationValue.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [-theme.spacing.xxSmall, 0],
-                    }),
-                  },
-                ],
-              }),
         }}
       >
         <FadePressable onPress={onDismiss}>
@@ -114,7 +139,7 @@ export function NotificationCard({
             </View>
           </TranslucentSurface>
         </FadePressable>
-      </Animated.View>
-    </View>
+      </View>
+    </Animated.View>
   );
 }

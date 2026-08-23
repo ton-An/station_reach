@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Animated, Easing, Modal, View } from 'react-native';
+import { Modal, View } from 'react-native';
+import {
+  Easing,
+  useAnimatedReaction,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
-import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
 import { pointerEvents } from '../pointer-events';
 import { DialogCard } from './_dialog-card';
@@ -21,11 +27,15 @@ interface DialogProps {
 
 /**
  * Modal dialog: a centred card over a translucent scrim, both animating in
- * together while `isOpen` becomes true.
+ * together while `isOpen` becomes true and back out when it clears.
  *
  * Tapping the scrim, or the Android back button, calls `onClose`. An action
  * in `actions` does not close the dialog unless its own `onPress` calls
  * `onClose` too.
+ *
+ * A closing dialog outlives `isOpen`. `Modal` tears its window down the
+ * frame `visible` clears, taking the exit animation with it, so the window
+ * stays up until the animation itself reports it has nothing left to show.
  *
  * Sub-components:
  * - {@link DialogScrim}: the backdrop, dismisses on tap
@@ -41,28 +51,36 @@ export function Dialog({
 }: DialogProps): React.JSX.Element {
   const theme = useTheme();
 
-  const [entryAnimationValue] = useState(() => new Animated.Value(0));
+  const entryAnimationValue = useSharedValue(0);
+  const [isOnScreen, setIsOnScreen] = useState(false);
 
   useEffect(() => {
-    if (!isOpen) return;
+    entryAnimationValue.value = isOpen
+      ? withTiming(1, {
+          duration: theme.durations.short,
+          easing: Easing.out(Easing.cubic),
+        })
+      : withTiming(0, {
+          duration: theme.durations.xxTiny,
+          easing: Easing.in(Easing.cubic),
+        });
+  }, [
+    isOpen,
+    entryAnimationValue,
+    theme.durations.short,
+    theme.durations.xxTiny,
+  ]);
 
-    entryAnimationValue.setValue(0);
-
-    const entry = Animated.timing(entryAnimationValue, {
-      toValue: 1,
-      duration: theme.durations.short,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: USE_NATIVE_DRIVER,
-    });
-
-    entry.start();
-
-    return () => entry.stop();
-  }, [isOpen, entryAnimationValue, theme.durations.short]);
+  useAnimatedReaction(
+    () => entryAnimationValue.value > 0,
+    (isVisible, wasVisible) => {
+      if (isVisible !== wasVisible) scheduleOnRN(setIsOnScreen, isVisible);
+    }
+  );
 
   return (
     <Modal
-      visible={isOpen}
+      visible={isOpen || isOnScreen}
       transparent
       animationType="none"
       onRequestClose={onClose}

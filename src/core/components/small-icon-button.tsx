@@ -1,7 +1,11 @@
-import { useState } from 'react';
-import { Animated, Easing, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
-import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
 import { Icon, type IconName } from './icon';
 
@@ -36,25 +40,28 @@ export function SmallIconButton({
   decorative = false,
 }: SmallIconButtonProps): React.JSX.Element {
   const theme = useTheme();
-  const [opacity] = useState(() => new Animated.Value(1));
+  const opacity = useSharedValue(1);
 
-  const fadeTo = (value: number, duration: number) =>
-    Animated.timing(opacity, {
-      toValue: value,
+  const fadeTo = (value: number, duration: number) => {
+    opacity.value = withTiming(value, {
       duration,
       easing: value === 1 ? Easing.in(Easing.ease) : Easing.out(Easing.ease),
-      useNativeDriver: USE_NATIVE_DRIVER,
-    }).start();
+    });
+  };
+
+  const fadeStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
 
   const circle = (
     <Animated.View
-      style={{
-        opacity: decorative ? 1 : opacity,
-        padding: theme.spacing.xSmall,
-        borderRadius: theme.radii.full,
-        backgroundColor:
-          backgroundColor ?? theme.colors.translucentBackgroundContrast,
-      }}
+      style={[
+        decorative ? undefined : fadeStyle,
+        {
+          padding: theme.spacing.xSmall,
+          borderRadius: theme.radii.full,
+          backgroundColor:
+            backgroundColor ?? theme.colors.translucentBackgroundContrast,
+        },
+      ]}
     >
       <View
         style={{

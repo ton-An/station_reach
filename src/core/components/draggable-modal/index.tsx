@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
@@ -7,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { View } from 'react-native';
 
+import { selectionTick } from '@/core/helpers/haptics-helper';
 import { useTheme } from '@/core/theme/use-theme';
 import { Gap } from '../gap';
 import { pointerEvents } from '../pointer-events';
@@ -16,8 +18,8 @@ import { ModalHeader } from './_modal-header';
 import {
   beginSheetDrag,
   DRAG_ACTIVATION_SLOP,
-  endSheetDrag,
   MEDIUM_HEIGHT,
+  settleSheetDrag,
   SheetDragProvider,
   updateSheetDrag,
   type SheetDrag,
@@ -36,13 +38,18 @@ interface DraggableModalProps {
 }
 
 /**
- * Bottom sheet the user drags between a small and a full height, snapping to
- * whichever the drag headed towards.
+ * Bottom sheet the user drags between three heights, springing to the
+ * detent the release was heading for.
  *
  * The handle and header drag the sheet. The body scrolls instead, through
  * {@link ModalList} or {@link ModalScrollView}, which give the drag back to
- * the sheet once the content is scrolled to its top. The legend sits above the
- * sheet and fades out as the sheet is pulled over it.
+ * the sheet once the content is scrolled to its top. The legend sits above
+ * the sheet and fades out as the sheet is pulled over it.
+ *
+ * The sheet is always laid out at its full height and moved with
+ * `translateY`, so a drag costs no layout pass. What that pushes below the
+ * screen is given back to the body as bottom padding, which only has to be
+ * right once the sheet settles — mid-drag nobody is scrolling.
  *
  * Sub-components:
  * - {@link ModalHandle}: the grab indicator
@@ -60,23 +67,29 @@ export function DraggableModal({
   const availableHeight = useSharedValue(0);
   const dragStartFraction = useSharedValue(MEDIUM_HEIGHT);
 
-  const snapDuration = theme.durations.medium;
+  const [sheetHeight, setSheetHeight] = useState(0);
+  const [settledFraction, setSettledFraction] = useState(MEDIUM_HEIGHT);
+
+  const handleSettle = useCallback((detent: number) => {
+    setSettledFraction(detent);
+    selectionTick();
+  }, []);
 
   const drag: SheetDrag = {
     fraction,
     availableHeight,
     dragStartFraction,
-    snapDuration,
+    onSettle: handleSettle,
   };
 
   const handleDrag = Gesture.Pan()
     .activeOffsetY([-DRAG_ACTIVATION_SLOP, DRAG_ACTIVATION_SLOP])
     .onStart(() => beginSheetDrag(drag))
     .onUpdate((event) => updateSheetDrag(drag, event.translationY))
-    .onEnd((event) => endSheetDrag(drag, event.translationY));
+    .onEnd((event) => settleSheetDrag(drag, event.velocityY));
 
   const sheetStyle = useAnimatedStyle(() => ({
-    height: fraction.value * availableHeight.value,
+    transform: [{ translateY: (1 - fraction.value) * availableHeight.value }],
   }));
 
   const legendStyle = useAnimatedStyle(() => ({
@@ -92,13 +105,18 @@ export function DraggableModal({
     <View
       style={[
         pointerEvents.passThrough,
-        { flex: 1, justifyContent: 'flex-end' },
+        { flex: 1, justifyContent: 'flex-end', overflow: 'hidden' },
       ]}
       onLayout={(event) => {
-        availableHeight.value = event.nativeEvent.layout.height;
+        const { height } = event.nativeEvent.layout;
+
+        availableHeight.value = height;
+        setSheetHeight(height);
       }}
     >
-      <Animated.View style={[sheetStyle, pointerEvents.passThrough]}>
+      <Animated.View
+        style={[sheetStyle, pointerEvents.passThrough, { flex: 1 }]}
+      >
         {legend !== undefined && (
           <Animated.View
             style={[
@@ -127,7 +145,14 @@ export function DraggableModal({
           </GestureDetector>
 
           <SheetDragProvider value={drag}>
-            <View style={{ flex: 1 }}>{children}</View>
+            <View
+              style={{
+                flex: 1,
+                paddingBottom: (1 - settledFraction) * sheetHeight,
+              }}
+            >
+              {children}
+            </View>
           </SheetDragProvider>
         </TranslucentSurface>
       </Animated.View>

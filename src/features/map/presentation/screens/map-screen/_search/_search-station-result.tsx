@@ -8,13 +8,11 @@ import type { Station } from '../../../../domain/models/station';
 
 interface SearchStationResultProps {
   readonly station: Station;
-  readonly minOpacity: number;
   readonly onPress: () => void;
 }
 
 export function SearchStationResult({
   station,
-  minOpacity,
   onPress,
 }: SearchStationResultProps): React.JSX.Element {
   const theme = useTheme();
@@ -22,7 +20,7 @@ export function SearchStationResult({
   const area = describeArea(station);
 
   return (
-    <FadePressable minOpacity={minOpacity} onPress={onPress}>
+    <FadePressable onPress={onPress}>
       <View
         style={{
           flexDirection: 'row',

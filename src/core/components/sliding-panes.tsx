@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Animated, View } from 'react-native';
+import { View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
-import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
 
 interface SlidingPanesProps {
@@ -24,16 +28,18 @@ export function SlidingPanes({
 }: SlidingPanesProps): React.JSX.Element {
   const theme = useTheme();
 
-  const [slide] = useState(() => new Animated.Value(0));
+  const slide = useSharedValue(0);
   const [paneWidth, setPaneWidth] = useState(0);
 
   useEffect(() => {
-    Animated.timing(slide, {
-      toValue: isDetailOpen ? 1 : 0,
+    slide.value = withTiming(isDetailOpen ? 1 : 0, {
       duration: theme.durations.xShort,
-      useNativeDriver: USE_NATIVE_DRIVER,
-    }).start();
+    });
   }, [isDetailOpen, slide, theme.durations.xShort]);
+
+  const slideStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: -slide.value * paneWidth }],
+  }));
 
   return (
     <View
@@ -41,19 +47,10 @@ export function SlidingPanes({
       onLayout={(event) => setPaneWidth(event.nativeEvent.layout.width)}
     >
       <Animated.View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          width: paneWidth * 2,
-          transform: [
-            {
-              translateX: slide.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, -paneWidth],
-              }),
-            },
-          ],
-        }}
+        style={[
+          slideStyle,
+          { flex: 1, flexDirection: 'row', width: paneWidth * 2 },
+        ]}
       >
         <View style={{ width: paneWidth }}>{primary}</View>
 

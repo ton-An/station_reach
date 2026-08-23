@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Animated, Easing, View } from 'react-native';
+import { View } from 'react-native';
+import Animated, {
+  cancelAnimation,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from 'react-native-reanimated';
 
-import { USE_NATIVE_DRIVER } from '@/core/theme/animation';
 import { useTheme } from '@/core/theme/use-theme';
 import {
   useStationDeparturesStore,
@@ -32,31 +39,32 @@ export function SearchLoadingShimmer(): React.JSX.Element | null {
   const isLoading = isSearching || isLoadingDepartures;
 
   const [width, setWidth] = useState(0);
-  const [sweep] = useState(() => new Animated.Value(0));
+  const sweep = useSharedValue(0);
+
+  const highlightWidth = width * HIGHLIGHT_FRACTION;
 
   useEffect(() => {
     if (!isLoading || width === 0) return;
 
-    const animation = Animated.loop(
-      Animated.timing(sweep, {
-        toValue: 1,
+    sweep.value = 0;
+    sweep.value = withRepeat(
+      withTiming(1, {
         duration: theme.durations.xHuge,
         easing: Easing.linear,
-        useNativeDriver: USE_NATIVE_DRIVER,
-      })
+      }),
+      -1
     );
 
-    animation.start();
-
-    return () => {
-      animation.stop();
-      sweep.setValue(0);
-    };
+    return () => cancelAnimation(sweep);
   }, [isLoading, width, sweep, theme.durations.xHuge]);
 
-  if (!isLoading) return null;
+  const highlightStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: -highlightWidth + sweep.value * (width + highlightWidth) },
+    ],
+  }));
 
-  const highlightWidth = width * HIGHLIGHT_FRACTION;
+  if (!isLoading) return null;
 
   return (
     <View
@@ -68,20 +76,15 @@ export function SearchLoadingShimmer(): React.JSX.Element | null {
       }}
     >
       <Animated.View
-        style={{
-          width: highlightWidth,
-          height: '100%',
-          backgroundColor: theme.colors.primary,
-          opacity: HIGHLIGHT_OPACITY,
-          transform: [
-            {
-              translateX: sweep.interpolate({
-                inputRange: [0, 1],
-                outputRange: [-highlightWidth, width],
-              }),
-            },
-          ],
-        }}
+        style={[
+          highlightStyle,
+          {
+            width: highlightWidth,
+            height: '100%',
+            backgroundColor: theme.colors.primary,
+            opacity: HIGHLIGHT_OPACITY,
+          },
+        ]}
       />
     </View>
   );

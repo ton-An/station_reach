@@ -10,9 +10,6 @@ import { SearchStationResult } from './_search-station-result';
 
 const MAX_HEIGHT = 250;
 
-const EVEN_ROW_MIN_OPACITY = 0.1;
-const ODD_ROW_MIN_OPACITY = 0.6;
-
 /**
  * Picking a result loads its reachability, collapses the search and
  * dismisses the keyboard.
@@ -38,13 +35,10 @@ export function SearchResults(): React.JSX.Element | null {
       style={{ maxHeight: MAX_HEIGHT }}
       keyboardShouldPersistTaps="handled"
     >
-      {stations.map((station, index) => (
+      {stations.map((station) => (
         <SearchStationResult
           key={station.id}
           station={station}
-          minOpacity={
-            index % 2 === 0 ? EVEN_ROW_MIN_OPACITY : ODD_ROW_MIN_OPACITY
-          }
           onPress={() => pick(station)}
         />
       ))}
