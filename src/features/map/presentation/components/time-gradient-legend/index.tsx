@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { TranslucentSurface } from '@/core/components/translucent-surface';
-import { flattenOnto } from '@/core/helpers/color-helper';
+import { flattenOnto, resampleGradient } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
 import { GradientLabel } from './_gradient-label';
@@ -13,16 +13,27 @@ const BAR_HEIGHT = 36;
 const BAR_OPACITY = 0.85;
 
 /**
+ * How many stops the bar is drawn from. `LinearGradient` mixes its stops in
+ * sRGB, so the Oklab curve the map is coloured by has to be sampled finely
+ * enough that what the mixing does between two samples cannot be seen.
+ */
+const BAR_STOPS = 48;
+
+/**
  * Legend for the travel-time colour scale that {@link colorForDuration}
  * paints markers, polylines and list rows with.
  *
  * Its three labels mark the scale's near, middle and far bounds: 30 minutes,
- * 9 hours and 18+ hours.
+ * 6 hours and 18+ hours. The middle one is six rather than nine because the
+ * scale is not linear in time — see `DURATION_SCALE_MINUTES`.
  */
 export function TimeGradientLegend(): React.JSX.Element {
   const theme = useTheme();
 
-  const [near, next, ...rest] = theme.colors.timelineGradient;
+  const [near, next, ...rest] = resampleGradient(
+    theme.colors.timelineGradient,
+    BAR_STOPS
+  );
   const flatten = (color: string) =>
     flattenOnto({
       color,
@@ -70,7 +81,7 @@ export function TimeGradientLegend(): React.JSX.Element {
               backgroundColor: theme.colors.translucentBackgroundContrast,
             }}
           >
-            <GradientLabel text={t('nineHours')} />
+            <GradientLabel text={t('sixHours')} />
           </View>
 
           <GradientLabel text={t('eighteenHoursPlus')} />

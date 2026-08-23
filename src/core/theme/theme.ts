@@ -52,19 +52,30 @@ export const durations = {
   xxHuge: 2500,
 } as const satisfies Record<string, number>;
 
+/**
+ * Travel-time colour scale, shortest first. Sampled by `colorForDuration`,
+ * so the spacing between stops is what a minute of travel time is worth.
+ *
+ * The stops are evenly spaced in Oklab, not picked by eye: an equal step
+ * along the scale is an equal change in colour, with no stop that jumps
+ * further than its neighbours. Lightness rises once to the yellow apex and
+ * falls from there, never reversing again, so the ramp reads as one slope
+ * rather than a set of bands. Both ends stay dark enough to hold their own
+ * over the light basemap at the alpha markers and routes are drawn with.
+ */
 export const timelineGradient = [
-  'rgb(0, 150, 107)',
-  'rgb(99, 225, 36)',
-  'rgb(255, 245, 59)',
-  'rgb(254, 209, 29)',
-  'rgb(255, 152, 0)',
-  'rgb(244, 67, 54)',
-  'rgb(255, 17, 0)',
-  'rgb(178, 12, 0)',
-  'rgb(174, 38, 135)',
-  'rgb(156, 39, 176)',
-  'rgb(139, 58, 183)',
-  'rgb(103, 58, 183)',
+  'rgb(0, 160, 91)',
+  'rgb(78, 192, 79)',
+  'rgb(144, 209, 51)',
+  'rgb(213, 218, 0)',
+  'rgb(243, 185, 0)',
+  'rgb(239, 131, 0)',
+  'rgb(230, 71, 0)',
+  'rgb(204, 1, 32)',
+  'rgb(169, 0, 70)',
+  'rgb(149, 0, 117)',
+  'rgb(122, 10, 158)',
+  'rgb(64, 18, 152)',
 ] as const;
 
 export const secondaryGradient = [

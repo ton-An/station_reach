@@ -8,7 +8,7 @@ export const en = {
   departures: 'Departures',
   noStopSelected: 'No stop selected',
   thirtyMin: '30min',
-  nineHours: '9h',
+  sixHours: '6h',
   eighteenHoursPlus: '18h+',
   openStreetMapAttribution: '© OpenStreetMap',
   cartoDBAttribution: '© CartoDB',
