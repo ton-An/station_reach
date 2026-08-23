@@ -21,9 +21,10 @@ import {
  * Renders the reachability map for the loaded station: stations coloured by
  * travel time, and the selected departure's route once a stop is tapped.
  *
- * Loading a new station resets any station or departure selection and
- * refocuses the map on it. Tapping a station looks up its stop in
- * {@link buildStopIndex} and selects it; tapping the background unselects.
+ * Loading a new station unselects the selected stop and refocuses the map on
+ * it. Tapping a station looks up its stop in {@link buildStopIndex} and
+ * selects it; tapping the background unselects. An open departure belongs to
+ * the stop it was opened from, so it closes whenever that selection moves.
  */
 export function ReachabilityMap(): React.JSX.Element {
   const theme = useTheme();
@@ -79,12 +80,20 @@ export function ReachabilityMap(): React.JSX.Element {
       ? departuresState.station.id
       : undefined;
 
+  const selectedStopId =
+    stationSelection.status === 'selected'
+      ? stationSelection.selectedStop.id
+      : undefined;
+
   useEffect(() => {
     if (loadedStationId === undefined) return;
 
     unselectStation();
+  }, [loadedStationId, unselectStation]);
+
+  useEffect(() => {
     deselectDeparture();
-  }, [loadedStationId, unselectStation, deselectDeparture]);
+  }, [selectedStopId, deselectDeparture]);
 
   const handleStationPress = useCallback(
     (stopId: string) => {

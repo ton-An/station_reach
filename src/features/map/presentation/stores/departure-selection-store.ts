@@ -15,16 +15,22 @@ export interface DepartureSelectionStore {
 /**
  * Tracks which departure the user opened for detail.
  *
+ * `deselect` is a no-op when nothing is selected, so it never replaces state
+ * with an equal value.
+ *
  * States:
  * - `none`: no departure selected
  * - `selected`: the departure open for detail
  */
 export function createDepartureSelectionStore(): StoreApi<DepartureSelectionStore> {
-  return createStore<DepartureSelectionStore>()((set) => ({
+  return createStore<DepartureSelectionStore>()((set, get) => ({
     state: { status: 'none' },
 
     select: (departure) => set({ state: { status: 'selected', departure } }),
 
-    deselect: () => set({ state: { status: 'none' } }),
+    deselect: () => {
+      if (get().state.status === 'none') return;
+      set({ state: { status: 'none' } });
+    },
   }));
 }
