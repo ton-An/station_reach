@@ -7,10 +7,10 @@ export const spacing = {
   xSmall: 8,
   xxSmall: 12,
   medium: 14,
-  xMedium: 24,
-  xxMedium: 32,
-  large: 44,
-  xLarge: 55,
+  xMedium: 16,
+  xxMedium: 18,
+  large: 24,
+  xLarge: 44,
   xxLarge: 128,
 } as const satisfies Record<string, number>;
 
@@ -18,11 +18,20 @@ export const radii = {
   small: 8,
   field: 10,
   medium: 12,
-  button: 18,
   xMedium: 18,
   large: 20,
   xLarge: 30,
   full: 999,
+} as const satisfies Record<string, number>;
+
+/**
+ * Glyph sizes for {@link Icon}. Three steps, because an icon that is not one
+ * of these reads as a mistake next to the ones that are.
+ */
+export const icons = {
+  small: 20,
+  medium: 24,
+  large: 28,
 } as const satisfies Record<string, number>;
 
 export const durations = {
@@ -78,7 +87,6 @@ export const colors = {
   translucentBackgroundContrast: 'rgba(0, 0, 0, 0.078)',
 
   text: 'rgb(0, 0, 0)',
-  description: 'rgba(60, 60, 67, 0.6)',
   hint: 'rgb(142, 142, 147)',
   buttonLabel: 'rgb(255, 255, 255)',
 
@@ -177,18 +185,20 @@ export const layout = {
 } as const satisfies Record<string, number>;
 
 /**
- * Blur intensities for {@link TranslucentSurface}, kept as tokens so every
- * blurred surface in the app agrees on the same two levels instead of each
- * call site picking its own.
+ * Values components have to agree on without ever seeing each other: the two
+ * blur levels {@link TranslucentSurface} renders at, and the alpha a circle
+ * filled from a gradient is tinted to before a glyph is drawn on it.
  */
 export const misc = {
   blurIntensity: 30,
   legendBlurIntensity: 12,
+  glyphCircleAlpha: 0.55,
 } as const satisfies Record<string, number>;
 
 export const theme = {
   spacing,
   radii,
+  icons,
   durations,
   colors,
   text,

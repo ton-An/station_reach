@@ -9,8 +9,6 @@ import { useStationSearchStore } from '../../../stores/use-map-stores';
 
 const FIELD_HEIGHT = 54;
 
-const ICON_SIZE = 28;
-
 const SEARCH_DEBOUNCE_MS = 300;
 
 /**
@@ -44,12 +42,16 @@ export function SearchField(): React.JSX.Element {
       <View
         style={{
           justifyContent: 'center',
-          paddingLeft: theme.spacing.medium + theme.spacing.small,
+          paddingLeft: theme.spacing.xxMedium,
           paddingRight: theme.spacing.xSmall,
           pointerEvents: 'none',
         }}
       >
-        <Icon name="search" size={ICON_SIZE} color={theme.colors.hint} />
+        <Icon
+          name="search"
+          size={theme.icons.large}
+          color={theme.colors.hint}
+        />
       </View>
 
       <TextInput

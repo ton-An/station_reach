@@ -39,7 +39,7 @@ interface TranslucentSurfaceProps {
  * of an opaque fill.
  *
  * `topRadius` rounds only the top corners, for panels pinned to an edge;
- * without it, `radius` (or the default button radius) rounds all four.
+ * without it, `radius` (or the panel default) rounds all four.
  * `light` selects the lower-intensity blur used behind the legend, and
  * `bordered` swaps the fill for a translucent tint of `background` plus a
  * hairline border. `tint` overrides the fill outright.
@@ -62,7 +62,7 @@ export function TranslucentSurface({
 
   const corners: ViewStyle =
     topRadius === undefined
-      ? { borderRadius: radius ?? theme.radii.button }
+      ? { borderRadius: radius ?? theme.radii.xMedium }
       : { borderTopLeftRadius: topRadius, borderTopRightRadius: topRadius };
 
   return (
@@ -95,7 +95,7 @@ export function TranslucentSurface({
           bordered
             ? {
                 borderWidth: BORDER_WIDTH,
-                borderColor: withAlpha(theme.colors.hint, BORDER_ALPHA),
+                borderColor: withAlpha(theme.colors.border, BORDER_ALPHA),
               }
             : {},
         ]}

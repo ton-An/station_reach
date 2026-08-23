@@ -16,8 +16,6 @@ import { Icon } from '../icon';
 import { pointerEvents } from '../pointer-events';
 import { TranslucentSurface } from '../translucent-surface';
 
-const ICON_SIZE = 26;
-
 interface NotificationCardProps {
   readonly notification: InAppNotification;
   readonly onDismiss: () => void;
@@ -105,18 +103,18 @@ export function NotificationCard({
         }}
       >
         <FadePressable onPress={onDismiss}>
-          <TranslucentSurface radius={theme.radii.medium} bordered>
+          <TranslucentSurface radius={theme.radii.xMedium} bordered>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingHorizontal: theme.spacing.xMedium,
+                paddingHorizontal: theme.spacing.large,
                 paddingVertical: theme.spacing.medium,
               }}
             >
               <Icon
                 name="triangleAlert"
-                size={ICON_SIZE}
+                size={theme.icons.medium}
                 color={theme.colors.error}
               />
 

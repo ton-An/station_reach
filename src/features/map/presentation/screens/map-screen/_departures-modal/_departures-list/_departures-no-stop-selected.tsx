@@ -9,7 +9,7 @@ export function DeparturesNoStopSelected(): React.JSX.Element {
 
   return (
     <ModalScrollView
-      contentContainerStyle={{ paddingTop: theme.spacing.xMedium }}
+      contentContainerStyle={{ paddingTop: theme.spacing.large }}
     >
       <Text
         style={[

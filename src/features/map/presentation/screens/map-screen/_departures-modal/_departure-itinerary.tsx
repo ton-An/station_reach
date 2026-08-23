@@ -1,9 +1,12 @@
 import { Text, View } from 'react-native';
 
-import { DottedTimeline } from '@/core/components/dotted-timeline';
+import {
+  DASH_THICKNESS,
+  DottedTimeline,
+} from '@/core/components/dotted-timeline';
 import { ModalScrollView } from '@/core/components/draggable-modal';
 import { Gap } from '@/core/components/gap';
-import { ListIcon } from '@/core/components/list-icon';
+import { LIST_ICON_DIAMETER, ListIcon } from '@/core/components/list-icon';
 import { ListItem } from '@/core/components/list-item';
 import { colorForDuration } from '@/core/helpers/color-helper';
 import { formatDuration } from '@/core/helpers/duration-helper';
@@ -11,7 +14,11 @@ import { useTheme } from '@/core/theme/use-theme';
 import type { Stop } from '../../../../domain/models/station';
 import { useDepartureSelectionStore } from '../../../stores/use-map-stores';
 
-const PIN_ALPHA = 0.55;
+/**
+ * Indents the dash column until it hangs under the centre of the
+ * {@link ListIcon} circle in the row above it.
+ */
+const TIMELINE_INDENT = (LIST_ICON_DIAMETER - DASH_THICKNESS) / 2;
 
 export function DepartureItinerary(): React.JSX.Element | null {
   const theme = useTheme();
@@ -26,7 +33,7 @@ export function DepartureItinerary(): React.JSX.Element | null {
       contentContainerStyle={{
         paddingHorizontal: theme.spacing.medium,
         paddingTop: theme.spacing.medium,
-        paddingBottom: theme.spacing.large,
+        paddingBottom: theme.spacing.xLarge,
       }}
     >
       {departure.stops.map((stop, index) => (
@@ -57,7 +64,7 @@ function ItineraryStop({ stop }: ItineraryStopProps): React.JSX.Element {
           color={colorForDuration({
             gradient: theme.colors.timelineGradient,
             durationMinutes: stop.durationMinutes,
-            alpha: PIN_ALPHA,
+            alpha: theme.misc.glyphCircleAlpha,
           })}
         />
       }
@@ -80,7 +87,7 @@ function ItineraryLeg({
 
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <View style={{ width: theme.spacing.xMedium - theme.spacing.tiny }} />
+      <View style={{ width: TIMELINE_INDENT }} />
 
       <DottedTimeline />
 

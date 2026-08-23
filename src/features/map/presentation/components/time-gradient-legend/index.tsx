@@ -37,7 +37,7 @@ export function TimeGradientLegend(): React.JSX.Element {
 
   return (
     <TranslucentSurface radius={theme.radii.small} light>
-      <View style={{ padding: theme.spacing.small + theme.spacing.tiny }}>
+      <View style={{ padding: theme.spacing.small }}>
         <LinearGradient
           colors={gradient}
           start={{ x: 0, y: 0.5 }}
@@ -56,7 +56,7 @@ export function TimeGradientLegend(): React.JSX.Element {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              paddingHorizontal: theme.spacing.xSmall + theme.spacing.xTiny,
+              paddingHorizontal: theme.spacing.xxSmall,
             },
           ]}
         >

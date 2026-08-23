@@ -21,6 +21,10 @@ Tokens live in `theme/theme.ts`. Read the values there.
   back to the JS thread on web, which is where the app is slowest.
 - A gesture settles with `withSpring`, a state change with `withTiming`.
 - A new spacing or radius goes into its scale in order, keeping the `tiny → xxLarge` ladder.
+  Never add two tokens with the same value, and never compose one from two others at a call
+  site — add the rung instead.
+- Icon sizes come from `icons`. An `Icon` never takes a literal `size`.
+- A floating panel takes `radii.xMedium`; the sheet's top edge takes `radii.xLarge`.
 
 ## i18n
 

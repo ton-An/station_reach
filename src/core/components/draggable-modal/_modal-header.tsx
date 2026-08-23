@@ -20,8 +20,8 @@ export function ModalHeader({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: theme.spacing.medium + theme.spacing.small,
-        paddingVertical: theme.spacing.medium + theme.spacing.small,
+        paddingHorizontal: theme.spacing.xxMedium,
+        paddingVertical: theme.spacing.xxMedium,
         borderRadius: theme.radii.medium,
         backgroundColor: theme.colors.translucentBackgroundContrast,
       }}

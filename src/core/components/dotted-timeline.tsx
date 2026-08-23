@@ -7,7 +7,7 @@ const VERTICAL_INSET = 6;
 
 const DASH_LENGTH = 9;
 const DASH_GAP = 9;
-const DASH_THICKNESS = 6;
+export const DASH_THICKNESS = 6;
 const DASH_RADIUS = 2;
 
 export function DottedTimeline(): React.JSX.Element {
