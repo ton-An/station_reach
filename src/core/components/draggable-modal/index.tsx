@@ -1,5 +1,6 @@
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
+  Easing,
   Extrapolation,
   interpolate,
   useAnimatedStyle,
@@ -29,6 +30,13 @@ export { ModalList } from './_modal-list';
 export { ModalScrollView } from './_modal-scroll-view';
 
 const LEGEND_FADE_TRAVEL = 0.08;
+
+/**
+ * Decelerating, because the box it follows resizes in one frame. The default
+ * easing of `withTiming` accelerates in, which holds the sheet still for the
+ * first part of the duration and reads as the sheet answering late.
+ */
+const LAYOUT_SHIFT_EASING = Easing.out(Easing.cubic);
 
 interface DraggableModalProps {
   readonly title: string;
@@ -93,7 +101,10 @@ export function DraggableModal({
     // hold.
     if (availableHeight.value !== 0) {
       layoutShift.value += fraction.value * (height - availableHeight.value);
-      layoutShift.value = withTiming(0, { duration: theme.durations.xShort });
+      layoutShift.value = withTiming(0, {
+        duration: theme.durations.xShort,
+        easing: LAYOUT_SHIFT_EASING,
+      });
     }
 
     availableHeight.value = height;
