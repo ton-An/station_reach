@@ -2,7 +2,11 @@ import { GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import type { StyleProp, ViewStyle } from 'react-native';
 
-import { SCROLL_EVENT_THROTTLE, useModalBodyGestures } from './_body-gestures';
+import {
+  SCROLL_EVENT_THROTTLE,
+  SHOWS_SCROLL_INDICATOR,
+  useModalBodyGestures,
+} from './_body-gestures';
 
 interface ModalScrollViewProps {
   readonly contentContainerStyle?: StyleProp<ViewStyle>;
@@ -25,6 +29,7 @@ export function ModalScrollView({
         <Animated.ScrollView
           onScroll={onScroll}
           scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+          showsVerticalScrollIndicator={SHOWS_SCROLL_INDICATOR}
           contentContainerStyle={contentContainerStyle}
         >
           {children}
