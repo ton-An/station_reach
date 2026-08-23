@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { HydrationGate } from '@/core/components/hydration-gate';
 import { InAppNotifications } from '@/core/components/in-app-notification';
 import { ContainerProvider } from '@/core/container';
 import { FONT_FAMILY } from '@/core/theme/theme';
@@ -14,6 +15,7 @@ import { FONT_FAMILY } from '@/core/theme/theme';
  * Renders nothing until the {@link FONT_FAMILY} font has loaded. Mounts
  * {@link InAppNotifications} once here, above the `Stack`, so it is
  * the one place a failure reaches the screen from any route.
+ * {@link HydrationGate} holds the web build's first paint.
  */
 export default function RootLayout(): React.JSX.Element | null {
   const [fontsLoaded] = useFonts({
@@ -28,9 +30,11 @@ export default function RootLayout(): React.JSX.Element | null {
         <SafeAreaProvider>
           <StatusBar style="dark" />
 
-          <Stack screenOptions={{ headerShown: false }} />
+          <HydrationGate>
+            <Stack screenOptions={{ headerShown: false }} />
 
-          <InAppNotifications />
+            <InAppNotifications />
+          </HydrationGate>
         </SafeAreaProvider>
       </ContainerProvider>
     </GestureHandlerRootView>
