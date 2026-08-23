@@ -106,6 +106,21 @@ export function updateSheetDrag(drag: SheetDrag, translationY: number): void {
   drag.fraction.value = Math.min(Math.max(next, SMALL_HEIGHT), LARGE_HEIGHT);
 }
 
+// Declared above its caller: a worklet captures the worklets it calls when
+// the module is evaluated, so a later declaration is still in its TDZ.
+function nearestDetent(fraction: number): number {
+  'worklet';
+  let nearest: number = SMALL_HEIGHT;
+
+  for (const detent of DETENTS) {
+    if (Math.abs(detent - fraction) < Math.abs(nearest - fraction)) {
+      nearest = detent;
+    }
+  }
+
+  return nearest;
+}
+
 /**
  * Ends a sheet drag, springing the sheet to the detent nearest to where its
  * release velocity was heading. Runs on the UI thread inside a gesture's
@@ -129,17 +144,4 @@ export function settleSheetDrag(drag: SheetDrag, velocityY: number): void {
   if (target !== drag.dragStartFraction.value) {
     scheduleOnRN(drag.onSettle, target);
   }
-}
-
-function nearestDetent(fraction: number): number {
-  'worklet';
-  let nearest: number = SMALL_HEIGHT;
-
-  for (const detent of DETENTS) {
-    if (Math.abs(detent - fraction) < Math.abs(nearest - fraction)) {
-      nearest = detent;
-    }
-  }
-
-  return nearest;
 }
