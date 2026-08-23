@@ -1,4 +1,3 @@
-import { Platform } from 'react-native';
 import {
   Gesture,
   type NativeGesture,
@@ -19,13 +18,6 @@ import {
 } from './_sheet-drag';
 
 export const SCROLL_EVENT_THROTTLE = 16;
-
-/**
- * A desktop browser draws a full-width scrollbar that sits on the sheet's
- * rounded corner and never fades. Every other platform overlays a thin
- * indicator that does fade, which the sheet keeps.
- */
-export const SHOWS_SCROLL_INDICATOR = Platform.OS !== 'web';
 
 export interface ModalBodyGestures {
   readonly sheetDrag: PanGesture;
