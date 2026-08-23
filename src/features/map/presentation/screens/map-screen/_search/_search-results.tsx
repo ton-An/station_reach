@@ -1,6 +1,5 @@
 import { Keyboard, ScrollView } from 'react-native';
 
-import { SHOWS_SCROLL_INDICATOR } from '@/core/components/scroll-indicator';
 import type { Station } from '../../../../domain/models/station';
 import { visibleStations } from '../../../stores/station-search-store';
 import {
@@ -35,7 +34,6 @@ export function SearchResults(): React.JSX.Element | null {
     <ScrollView
       style={{ maxHeight: MAX_HEIGHT }}
       keyboardShouldPersistTaps="handled"
-      showsVerticalScrollIndicator={SHOWS_SCROLL_INDICATOR}
     >
       {stations.map((station) => (
         <SearchStationResult

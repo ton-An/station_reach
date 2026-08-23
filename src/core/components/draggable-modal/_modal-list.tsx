@@ -2,7 +2,6 @@ import { GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 import type { ListRenderItem, StyleProp, ViewStyle } from 'react-native';
 
-import { SHOWS_SCROLL_INDICATOR } from '@/core/components/scroll-indicator';
 import { SCROLL_EVENT_THROTTLE, useModalBodyGestures } from './_body-gestures';
 
 interface ModalListProps<T> {
@@ -34,7 +33,6 @@ export function ModalList<T>({
           renderItem={renderItem}
           onScroll={onScroll}
           scrollEventThrottle={SCROLL_EVENT_THROTTLE}
-          showsVerticalScrollIndicator={SHOWS_SCROLL_INDICATOR}
           contentContainerStyle={contentContainerStyle}
         />
       </GestureDetector>

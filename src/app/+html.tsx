@@ -2,6 +2,7 @@ import { ScrollViewStyleReset } from 'expo-router/html';
 import type { PropsWithChildren } from 'react';
 
 import { t } from '@/core/i18n/translate';
+import { colors, radii, spacing } from '@/core/theme/theme';
 
 export default function Root({
   children,
@@ -31,16 +32,36 @@ export default function Root({
 
 /**
  * Global web-only styles: removes the page margin and browser overscroll
- * bounce, and hides the focus outline on the search field's `<input>`.
+ * bounce, hides the focus outline on the search field's `<input>`, and cuts
+ * every scrollbar down to a pill.
  */
 const ROOT_STYLE = `
 body {
   margin: 0;
   overscroll-behavior: none;
+  scrollbar-width: thin;
+  scrollbar-color: ${colors.border} ${colors.transparent};
 }
 
 input:focus,
 input:focus-visible {
   outline: none;
+}
+
+::-webkit-scrollbar {
+  width: ${spacing.xSmall}px;
+  height: ${spacing.xSmall}px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: ${colors.transparent};
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: ${colors.border};
+  background-clip: content-box;
+  border: ${spacing.xTiny}px solid ${colors.transparent};
+  border-radius: ${radii.full}px;
 }
 `;
