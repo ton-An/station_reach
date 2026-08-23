@@ -26,6 +26,10 @@ export function Search(): React.JSX.Element {
       style={[
         pointerEvents.passThrough,
         {
+          // Above the departures modal, which follows it in the screen and
+          // would otherwise cover the results while sliding out from under
+          // them.
+          zIndex: 1,
           alignItems: 'center',
           paddingTop: insets.top + theme.spacing.medium,
           paddingHorizontal: theme.spacing.medium,

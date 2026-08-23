@@ -29,7 +29,16 @@ export function MapScreen(): React.JSX.Element {
   useFailureNotifier();
 
   return (
-    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+    <View
+      style={{
+        flex: 1,
+        // The screen is the only clip. Panels below the search bar overhang
+        // their own boxes while they slide, and are meant to be seen doing
+        // it; nothing should leave the screen.
+        overflow: 'hidden',
+        backgroundColor: theme.colors.background,
+      }}
+    >
       <ReachabilityMap />
 
       <View style={[pointerEvents.passThrough, { flex: 1 }]}>

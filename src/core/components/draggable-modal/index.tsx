@@ -144,8 +144,11 @@ export function DraggableModal({
   }));
 
   return (
+    // Deliberately unclipped: while the sheet is held after a resize it
+    // stands above its box, and clipping here would cut its top off for as
+    // long as it eases back down. The screen it sits on clips instead.
     <View
-      style={[pointerEvents.passThrough, { flex: 1, overflow: 'hidden' }]}
+      style={[pointerEvents.passThrough, { flex: 1 }]}
       onLayout={(event) => handleLayout(event.nativeEvent.layout)}
     >
       <Animated.View
