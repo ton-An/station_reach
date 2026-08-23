@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -Rs '{hookSpecificOutput:{hookEventName:\"SessionStart\",additionalContext:.}}' \"${CLAUDE_PROJECT_DIR:-.}/.claude/skills/asd-ste100/SKILL.md\"",
+            "suppressOutput": true,
+            "statusMessage": "Loading ASD-STE100 writing rules"
+          }
+        ]
+      }
+    ]
+  }
+}

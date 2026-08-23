@@ -121,7 +121,7 @@ it grows parts of its own it becomes a folder with its own `index.tsx`.
 - Exported symbols that define behaviour or an architectural contract get a TSDoc comment
   (`/** … */`). That usually means stores, use cases, repository and data source interfaces,
   shared components with interaction or state behaviour, and functions with non-obvious effects.
-- Skip docs for plain value types, union members, pass-throughs, obvious fields and re-exports
+- Skip docs for plain value types, union members, pass-throughs, obvious fields, when you are restating your thoughts and re-exports
   whose purpose is fully expressed by the code.
 - Do not replace useful detailed docs with shorter summaries. Preserve existing explanations
   unless they are wrong, and improve them in place when needed.
@@ -153,6 +153,8 @@ in the target file, and match their level of detail. The register to write in is
 
 Applies to docs, comments, plans, commit messages, PRs and chat answers alike.
 
+- Read `.claude/skills/asd-ste100/SKILL.md` and apply it to every piece of prose before it ships.
+  The rules below win where the two differ.
 - One claim per sentence. Cut any sentence that only sets up the next one.
 - A table, not prose, for anything that is a mapping.
 - No preamble, no restating the request, no closing summary that repeats the diff.
