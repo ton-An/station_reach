@@ -85,7 +85,11 @@ export function TranslucentSurface({
         style={[
           corners,
           {
+            // Shrinks as well as grows: without it the fill layer keeps its
+            // content height, and a scrollable child of the surface is then
+            // laid out at its full content height and never scrolls.
             flexGrow: 1,
+            flexShrink: 1,
             backgroundColor:
               tint ??
               (bordered
