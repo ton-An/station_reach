@@ -35,7 +35,7 @@ export function AttributionLegend(): React.JSX.Element {
             <Icon
               name="info"
               size={theme.icons.medium}
-              color={theme.colors.description}
+              color={theme.colors.hint}
             />
           </View>
         </FadePressable>

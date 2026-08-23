@@ -11,8 +11,6 @@ import { useTheme } from '@/core/theme/use-theme';
 import type { Departure } from '../../../../../domain/models/departure';
 import { TransitModeIcon } from '../../../../components/transit-mode-icon';
 
-const ICON_BACKGROUND_ALPHA = 0.4;
-
 interface DepartureRowProps {
   readonly departure: Departure;
   readonly durationMinutes: number;
@@ -49,13 +47,16 @@ export const DepartureRow = memo(function DepartureRow({
             style={{
               padding: theme.spacing.xxSmall,
               borderRadius: theme.radii.full,
-              backgroundColor: withAlpha(accentColor, ICON_BACKGROUND_ALPHA),
+              backgroundColor: withAlpha(
+                accentColor,
+                theme.misc.glyphCircleAlpha
+              ),
             }}
           >
             <TransitModeIcon
               mode={departure.mode}
               size={theme.icons.small}
-              color={theme.colors.background}
+              color={theme.colors.primaryContrast}
             />
           </View>
 

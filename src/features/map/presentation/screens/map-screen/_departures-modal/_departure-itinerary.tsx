@@ -20,8 +20,6 @@ import { useDepartureSelectionStore } from '../../../stores/use-map-stores';
  */
 const TIMELINE_INDENT = (LIST_ICON_DIAMETER - DASH_THICKNESS) / 2;
 
-const PIN_ALPHA = 0.55;
-
 export function DepartureItinerary(): React.JSX.Element | null {
   const theme = useTheme();
   const selection = useDepartureSelectionStore((store) => store.state);
@@ -66,7 +64,7 @@ function ItineraryStop({ stop }: ItineraryStopProps): React.JSX.Element {
           color={colorForDuration({
             gradient: theme.colors.timelineGradient,
             durationMinutes: stop.durationMinutes,
-            alpha: PIN_ALPHA,
+            alpha: theme.misc.glyphCircleAlpha,
           })}
         />
       }

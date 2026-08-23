@@ -10,7 +10,7 @@ export function GradientLabel({ text }: GradientLabelProps): React.JSX.Element {
   const theme = useTheme();
 
   return (
-    <Text style={[theme.text.subhead, { color: theme.colors.background }]}>
+    <Text style={[theme.text.subhead, { color: theme.colors.primaryContrast }]}>
       {text}
     </Text>
   );

@@ -18,7 +18,6 @@ export const radii = {
   small: 8,
   field: 10,
   medium: 12,
-  button: 18,
   xMedium: 18,
   large: 20,
   xLarge: 30,
@@ -88,7 +87,6 @@ export const colors = {
   translucentBackgroundContrast: 'rgba(0, 0, 0, 0.078)',
 
   text: 'rgb(0, 0, 0)',
-  description: 'rgba(60, 60, 67, 0.6)',
   hint: 'rgb(142, 142, 147)',
   buttonLabel: 'rgb(255, 255, 255)',
 
@@ -187,13 +185,14 @@ export const layout = {
 } as const satisfies Record<string, number>;
 
 /**
- * Blur intensities for {@link TranslucentSurface}, kept as tokens so every
- * blurred surface in the app agrees on the same two levels instead of each
- * call site picking its own.
+ * Values components have to agree on without ever seeing each other: the two
+ * blur levels {@link TranslucentSurface} renders at, and the alpha a circle
+ * filled from a gradient is tinted to before a glyph is drawn on it.
  */
 export const misc = {
   blurIntensity: 30,
   legendBlurIntensity: 12,
+  glyphCircleAlpha: 0.55,
 } as const satisfies Record<string, number>;
 
 export const theme = {
