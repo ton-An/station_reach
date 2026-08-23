@@ -103,7 +103,7 @@ export function NotificationCard({
         }}
       >
         <FadePressable onPress={onDismiss}>
-          <TranslucentSurface radius={theme.radii.xMedium} bordered>
+          <TranslucentSurface radius={theme.radii.xMedium}>
             <View
               style={{
                 flexDirection: 'row',

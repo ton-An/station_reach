@@ -37,7 +37,6 @@ export function Search(): React.JSX.Element {
       ]}
     >
       <TranslucentSurface
-        bordered
         style={{ width: '100%', maxWidth: theme.layout.overlayMaxWidth }}
       >
         <SearchField />
