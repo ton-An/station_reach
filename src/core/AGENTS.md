@@ -17,7 +17,9 @@ Tokens live in `theme/theme.ts`. Read the values there.
 - `layout` holds the dimensions of the floating chrome. They are tokens because panels that
   never see each other have to agree on them.
 - Branch on width through `useIsWideLayout()`, never a hand-measured `useWindowDimensions()`.
-- Take `USE_NATIVE_DRIVER` from `theme/animation.ts`; never hardcode `useNativeDriver: true`.
+- Animate with Reanimated shared values, never React Native's `Animated`. The legacy API falls
+  back to the JS thread on web, which is where the app is slowest.
+- A gesture settles with `withSpring`, a state change with `withTiming`.
 - A new spacing or radius goes into its scale in order, keeping the `tiny → xxLarge` ladder.
 
 ## i18n
