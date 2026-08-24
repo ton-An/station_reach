@@ -8,7 +8,6 @@ import { useTheme } from '@/core/theme/use-theme';
 import { GradientLabel } from './_gradient-label';
 
 const BAR_WIDTH = 250;
-const BAR_HEIGHT = 36;
 
 const BAR_OPACITY = 0.85;
 
@@ -55,7 +54,7 @@ export function TimeGradientLegend(): React.JSX.Element {
           end={{ x: 1, y: 0.5 }}
           style={{
             width: BAR_WIDTH,
-            height: BAR_HEIGHT,
+            height: theme.layout.legendHeight - theme.spacing.small * 2,
             borderRadius: theme.radii.small * 0.7,
           }}
         />

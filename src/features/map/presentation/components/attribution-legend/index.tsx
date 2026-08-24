@@ -31,7 +31,14 @@ export function AttributionLegend(): React.JSX.Element {
           onPress={() => setIsOpen(true)}
           accessibilityLabel={t('attributions')}
         >
-          <View style={{ padding: theme.spacing.xxSmall }}>
+          <View
+            style={{
+              width: theme.layout.legendHeight,
+              height: theme.layout.legendHeight,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <Icon
               name="info"
               size={theme.icons.medium}
