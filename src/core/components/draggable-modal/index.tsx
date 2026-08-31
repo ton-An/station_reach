@@ -59,21 +59,6 @@ interface DraggableModalProps {
  * sheet a detent per swipe, everywhere a touch drags it and by the same rule.
  * See {@link useWheelDrag}.
  *
- * The sheet is laid out at the tallest its box has ever been, pinned to the
- * bottom of that box, and every height it is shown at is `translateY` off
- * that one frame. A drag therefore costs no layout pass. What the translation
- * pushes below the screen is given back to the body as bottom padding, which
- * only has to be right once the sheet settles — mid-drag nobody is scrolling.
- *
- * The box belongs to the screen around it: a panel opening above the sheet,
- * such as a list of search results, takes its height off the box's top and
- * the sheet is expected to follow it down. The sheet holds the place it was
- * in when that happens and eases the difference away.
- *
- * Sizing the sheet to the box instead would defeat both. The box moves the
- * sheet the moment it is measured, a frame before anything animated can
- * answer, and the sheet is seen at its destination before it sets off.
- *
  * Sub-components:
  * - {@link ModalHandle}: the grab indicator
  * - {@link ModalHeader}: title and optional back button
@@ -99,11 +84,6 @@ export function DraggableModal({
   };
 
   const handleLayout = ({ height }: LayoutRectangle) => {
-    // The box is pinned to the bottom of the screen, so it gives up height off
-    // its top and carries the sheet down by `fraction` of what it lost. Hold
-    // the sheet where it was and ease that offset out, or the whole move lands
-    // between two frames. Skipped on the first layout, which has no place to
-    // hold.
     if (availableHeight.value !== 0) {
       layoutShift.value += fraction.value * (height - availableHeight.value);
       layoutShift.value = withTiming(0, {
@@ -114,9 +94,6 @@ export function DraggableModal({
 
     availableHeight.value = height;
 
-    // The tallest the box has ever been is as tall as the sheet ever needs to
-    // be. Written beside the translation that reads it, so the sheet is never
-    // laid out for one size and moved for another.
     sheetHeight.value = Math.max(sheetHeight.value, height);
   };
 
@@ -133,8 +110,6 @@ export function DraggableModal({
     .onUpdate((event) => updateSheetDrag(drag, event.translationY))
     .onEnd((event) => settleSheetDrag(drag, event.velocityY));
 
-  // Nothing scrolls under the handle and the header, so every wheel over them
-  // is the sheet's.
   const handleWheel = useWheelDrag(drag, () => true);
 
   const sheetStyle = useAnimatedStyle(() => ({
@@ -164,9 +139,6 @@ export function DraggableModal({
   }));
 
   return (
-    // Deliberately unclipped: while the sheet is held after a resize it
-    // stands above its box, and clipping here would cut its top off for as
-    // long as it eases back down. The screen it sits on clips instead.
     <View
       style={[pointerEvents.passThrough, { flex: 1 }]}
       onLayout={(event) => handleLayout(event.nativeEvent.layout)}

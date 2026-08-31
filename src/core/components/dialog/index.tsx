@@ -33,10 +33,6 @@ interface DialogProps {
  * in `actions` does not close the dialog unless its own `onPress` calls
  * `onClose` too.
  *
- * A closing dialog outlives `isOpen`. `Modal` tears its window down the
- * frame `visible` clears, taking the exit animation with it, so the window
- * stays up until the animation itself reports it has nothing left to show.
- *
  * Sub-components:
  * - {@link DialogScrim}: the backdrop, dismisses on tap
  * - {@link DialogCard}: title, message, optional extra content and actions
@@ -57,13 +53,13 @@ export function Dialog({
   useEffect(() => {
     entryAnimationValue.value = isOpen
       ? withTiming(1, {
-          duration: theme.durations.short,
-          easing: Easing.out(Easing.cubic),
-        })
+        duration: theme.durations.short,
+        easing: Easing.out(Easing.cubic),
+      })
       : withTiming(0, {
-          duration: theme.durations.xxTiny,
-          easing: Easing.in(Easing.cubic),
-        });
+        duration: theme.durations.xxTiny,
+        easing: Easing.in(Easing.cubic),
+      });
   }, [
     isOpen,
     entryAnimationValue,

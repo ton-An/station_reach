@@ -51,8 +51,7 @@ interface TranslucentSurfaceProps {
  * the fill alone disappears against a pale map.
  *
  * The blur layer is sized to the window rather than measured, relying on
- * the outer view's clipping to crop it to the surface's real bounds
- * instead of waiting a frame on layout.
+ * the outer view's clipping to crop it.
  */
 export function TranslucentSurface({
   children,

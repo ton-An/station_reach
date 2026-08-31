@@ -13,13 +13,6 @@ interface HydrationGateProps {
 
 /**
  * Hides `children` until React has hydrated, then fades them in.
- *
- * The static web build prerenders in Node, where `Dimensions` reports a 0x0
- * window, so every {@link useIsWideLayout} branch renders narrow. The browser
- * paints that phone layout before the bundle hydrates and replaces it. The
- * gate trades that flash for a blank frame: the prerendered markup carries
- * `opacity: 0`, and only the first effect — which runs after hydration, with
- * the real window measured — reveals it.
  */
 export function HydrationGate({
   children,
