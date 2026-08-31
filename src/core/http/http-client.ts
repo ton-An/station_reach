@@ -75,9 +75,7 @@ export async function getJson<T = unknown>(
       throw new BadResponseFailure({ cause });
     }
   } catch (error) {
-    if (error instanceof Failure) throw error;
-
-    throw toNetworkingFailure(error, signal);
+    throw error instanceof Failure ? error : toNetworkingFailure(error, signal);
   } finally {
     clearTimeout(timeout);
     signal?.removeEventListener('abort', onCallerAbort);
