@@ -1,4 +1,3 @@
-import { NoDeparturesFoundFailure } from '@/core/failures';
 import { getJson } from '@/core/http/http-client';
 
 import type { Departure } from '../../domain/models/departure';
