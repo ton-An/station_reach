@@ -16,5 +16,15 @@
     "stoptimes",
     "transitous",
     "wght"
-  ]
+  ],
+  "peacock.color": "#42a8b9",
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#42a8b9",
+    "statusBar.debuggingBackground": "#42a8b9",
+    "statusBar.debuggingForeground": "#15202b",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#358693",
+    "statusBarItem.remoteBackground": "#a43b95",
+    "statusBarItem.remoteForeground": "#15202b"
+  }
 }
