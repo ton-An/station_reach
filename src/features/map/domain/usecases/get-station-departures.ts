@@ -1,6 +1,7 @@
-import { err, ok, ResultAsync, type Result } from 'neverthrow';
+import { err, ok, type Result } from 'neverthrow';
 
 import { Failure, NoDeparturesFoundFailure } from '@/core/failures';
+
 import type { Departure } from '../models/departure';
 import type { Station, Stop } from '../models/station';
 import { TransitMode } from '../models/transit-mode';
@@ -33,7 +34,7 @@ const REGIONAL_AMOUNT = 400;
 
 export type GetStationDepartures = (
   station: Station
-) => ResultAsync<Departure[], Failure>;
+) => Promise<Result<Departure[], Failure>>;
 
 /**
  * Reads every departure leaving a station.
@@ -60,23 +61,22 @@ export type GetStationDepartures = (
 export function createGetStationDepartures(
   mapRepository: MapRepository
 ): GetStationDepartures {
-  return (station) =>
-    ResultAsync.fromSafePromise(
-      Promise.all([
-        mapRepository.getStationDeparturesByMode({
-          station,
-          modes: LONG_DISTANCE_MODES,
-          amount: LONG_DISTANCE_AMOUNT,
-        }),
-        mapRepository.getStationDeparturesByMode({
-          station,
-          modes: REGIONAL_MODES,
-          amount: REGIONAL_AMOUNT,
-        }),
-      ])
-    ).andThen(([longDistance, regional]) =>
-      mergeDepartures(longDistance, regional)
-    );
+  return async (station) => {
+    const [longDistance, regional] = await Promise.all([
+      mapRepository.getStationDeparturesByMode({
+        station,
+        modes: LONG_DISTANCE_MODES,
+        amount: LONG_DISTANCE_AMOUNT,
+      }),
+      mapRepository.getStationDeparturesByMode({
+        station,
+        modes: REGIONAL_MODES,
+        amount: REGIONAL_AMOUNT,
+      }),
+    ]);
+
+    return mergeDepartures(longDistance, regional);
+  };
 }
 
 function mergeDepartures(

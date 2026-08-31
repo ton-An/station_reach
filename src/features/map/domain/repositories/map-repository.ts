@@ -1,6 +1,7 @@
-import type { ResultAsync } from 'neverthrow';
+import type { Result } from 'neverthrow';
 
 import type { Failure } from '@/core/failures';
+
 import type { Departure } from '../models/departure';
 import type { Station } from '../models/station';
 import type { TransitMode } from '../models/transit-mode';
@@ -28,7 +29,7 @@ export interface MapRepository {
   searchStations(
     query: string,
     signal?: AbortSignal
-  ): ResultAsync<Station[], Failure>;
+  ): Promise<Result<Station[], Failure>>;
 
   /**
    * Reads the departures leaving a station, each carrying every stop it
@@ -42,5 +43,5 @@ export interface MapRepository {
    */
   getStationDeparturesByMode(
     query: DeparturesQuery
-  ): ResultAsync<Departure[], Failure>;
+  ): Promise<Result<Departure[], Failure>>;
 }
