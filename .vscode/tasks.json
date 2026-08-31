@@ -2,10 +2,18 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "lint: whole project",
+      "label": "lint: watch",
       "type": "shell",
-      "command": "npm run lint -- --no-cache",
-      "problemMatcher": ["$eslint-stylish"],
+      "command": "node scripts/lint-watch.mjs",
+      "isBackground": true,
+      "problemMatcher": {
+        "base": "$eslint-stylish",
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^lint: start$",
+          "endsPattern": "^lint: done$"
+        }
+      },
       "presentation": {
         "reveal": "silent",
         "panel": "dedicated",
