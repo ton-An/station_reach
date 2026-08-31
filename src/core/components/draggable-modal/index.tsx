@@ -9,7 +9,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { View, type LayoutRectangle } from 'react-native';
 
-import { selectionTick } from '@/core/helpers/haptics-helper';
 import { useTheme } from '@/core/theme/use-theme';
 import { Gap } from '../gap';
 import { pointerEvents } from '../pointer-events';
@@ -80,7 +79,6 @@ export function DraggableModal({
 
   const handleSettle = (detent: number) => {
     settledFraction.value = detent;
-    selectionTick();
   };
 
   const handleLayout = ({ height }: LayoutRectangle) => {

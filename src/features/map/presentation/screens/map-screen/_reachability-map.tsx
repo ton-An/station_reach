@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { selectionTick } from '@/core/helpers/haptics-helper';
 import { useTheme } from '@/core/theme/use-theme';
 import { FOCUS_LATITUDE_OFFSET, FOCUSED_ZOOM } from '../../map/map-config';
 import {
@@ -54,9 +53,9 @@ export function ReachabilityMap(): React.JSX.Element {
     () =>
       stationSelection.status === 'selected'
         ? buildRouteFeatures(
-            stationSelection.departures,
-            theme.colors.timelineGradient
-          )
+          stationSelection.departures,
+          theme.colors.timelineGradient
+        )
         : EMPTY_ROUTES,
     [stationSelection, theme.colors.timelineGradient]
   );
@@ -65,12 +64,12 @@ export function ReachabilityMap(): React.JSX.Element {
     () =>
       departuresState.status === 'loaded'
         ? {
-            center: [
-              departuresState.station.longitude,
-              departuresState.station.latitude + FOCUS_LATITUDE_OFFSET,
-            ],
-            zoom: FOCUSED_ZOOM,
-          }
+          center: [
+            departuresState.station.longitude,
+            departuresState.station.latitude + FOCUS_LATITUDE_OFFSET,
+          ],
+          zoom: FOCUSED_ZOOM,
+        }
         : undefined,
     [departuresState]
   );
@@ -101,7 +100,6 @@ export function ReachabilityMap(): React.JSX.Element {
       if (entry === undefined) return;
 
       selectStation(entry.stop, entry.departures);
-      selectionTick();
     },
     [stopIndex, selectStation]
   );
