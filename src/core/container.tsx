@@ -5,8 +5,8 @@ import {
   createInAppNotificationStore,
   type InAppNotificationStore,
 } from '@/core/notifications/in-app-notification-store';
-import { createMapRemoteDataSource } from '@/features/map/data/datasources/map-remote-data-source';
-import { createMapRepository } from '@/features/map/data/repositories/map-repository-impl';
+import { MapRemoteDataSourceImpl } from '@/features/map/data/datasources/map-remote-data-source';
+import { MapRepositoryImpl } from '@/features/map/data/repositories/map-repository-impl';
 import { createGetStationDepartures } from '@/features/map/domain/usecases/get-station-departures';
 import { createSearchStations } from '@/features/map/domain/usecases/search-stations';
 import {
@@ -39,8 +39,8 @@ export interface Container {
 }
 
 function createContainer(): Container {
-  const mapRemoteDataSource = createMapRemoteDataSource();
-  const mapRepository = createMapRepository(mapRemoteDataSource);
+  const mapRemoteDataSource = new MapRemoteDataSourceImpl();
+  const mapRepository = new MapRepositoryImpl(mapRemoteDataSource);
 
   const searchStations = createSearchStations(mapRepository);
   const getStationDepartures = createGetStationDepartures(mapRepository);

@@ -77,9 +77,10 @@ skip a step: a store calls a use case, never a repository or a data source.
 | Store | calls the use case, unwraps, sets state | folds into a `failure` state |
 | Component | reads store state and renders | — |
 
-Everything is a factory taking its dependencies as arguments. `src/core/container.tsx` builds the
-one graph and `ContainerProvider` hands it down. No module-level singletons, and never import a
-dependency at the point of use.
+A data source and a repository is a class taking its dependencies in the constructor. A use case
+and a store is a factory taking them as arguments. `src/core/container.tsx` builds the one graph
+and `ContainerProvider` hands it down. No module-level singletons, and never import a dependency
+at the point of use.
 
 ## Change workflows
 
