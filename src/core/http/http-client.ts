@@ -1,26 +1,16 @@
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
-export type HttpErrorKind =
-  | 'timeout'
-  | 'cancelled'
-  | 'connection'
-  | 'badStatus'
-  /** The response body was not valid JSON. */
-  | 'badResponse'
-  /** The catch-all for anything {@link getJson} cannot otherwise classify. */
-  | 'unknown';
-
-/** Thrown by {@link getJson}; `kind` says why the request failed. */
-export class HttpError extends Error {
-  constructor(
-    readonly kind: HttpErrorKind,
-    options?: { readonly cause?: unknown }
-  ) {
-    super(`HTTP ${kind}`, options);
-    this.name = 'HttpError';
-  }
-}
+import {
+  BadResponseFailure,
+  ConnectionFailure,
+  Failure,
+  ReceiveTimeoutFailure,
+  RequestCancelledFailure,
+  StatusCodeNotOkFailure,
+  UnknownRequestFailure,
+  type NetworkingFailure,
+} from '@/core/failures';
 
 const DEFAULT_TIMEOUT_MS = 20_000;
 const CONTACT_EMAIL = 'anton@antons-webfabrik.eu';
@@ -44,14 +34,16 @@ function requestHeaders(): Record<string, string> {
  * Fetches `url` and parses the response as JSON.
  *
  * The request aborts once the request timeout elapses, or as soon as
- * `signal` aborts, whichever comes first. `HttpError.kind` tells the two
- * apart: `'cancelled'` when `signal` aborted the request, `'timeout'` when
+ * `signal` aborts, whichever comes first — a {@link RequestCancelledFailure}
+ * when `signal` aborted the request, a {@link ReceiveTimeoutFailure} when
  * the internal timeout did.
  *
  * @param url - The endpoint to fetch.
  * @param signal - Aborts the request; distinct from the request timeout.
  * @returns The parsed JSON body.
- * @throws {@link HttpError}
+ * @throws {@link ReceiveTimeoutFailure}, {@link RequestCancelledFailure},
+ * {@link ConnectionFailure}, {@link StatusCodeNotOkFailure},
+ * {@link BadResponseFailure} or {@link UnknownRequestFailure}.
  */
 export async function getJson<T = unknown>(
   url: string,
@@ -74,36 +66,39 @@ export async function getJson<T = unknown>(
     });
 
     if (!response.ok) {
-      throw new HttpError('badStatus');
+      throw new StatusCodeNotOkFailure();
     }
 
     try {
       return (await response.json()) as T;
     } catch (cause) {
-      throw new HttpError('badResponse', { cause });
+      throw new BadResponseFailure({ cause });
     }
   } catch (error) {
-    throw toHttpError(error, signal);
+    if (error instanceof Failure) throw error;
+
+    throw toNetworkingFailure(error, signal);
   } finally {
     clearTimeout(timeout);
     signal?.removeEventListener('abort', onCallerAbort);
   }
 }
 
-function toHttpError(error: unknown, callerSignal?: AbortSignal): HttpError {
-  if (error instanceof HttpError) return error;
-
+function toNetworkingFailure(
+  error: unknown,
+  callerSignal?: AbortSignal
+): NetworkingFailure {
   if (isAbort(error)) {
     return callerSignal?.aborted
-      ? new HttpError('cancelled', { cause: error })
-      : new HttpError('timeout', { cause: error });
+      ? new RequestCancelledFailure({ cause: error })
+      : new ReceiveTimeoutFailure({ cause: error });
   }
 
   if (error instanceof TypeError) {
-    return new HttpError('connection', { cause: error });
+    return new ConnectionFailure({ cause: error });
   }
 
-  return new HttpError('unknown', { cause: error });
+  return new UnknownRequestFailure({ cause: error });
 }
 
 function isAbort(error: unknown): boolean {

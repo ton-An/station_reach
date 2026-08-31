@@ -20,10 +20,10 @@ export interface MapRepository {
    *
    * @param query - Free text the user typed.
    * @param signal - Aborts the search.
-   * @returns The matching stations, or one of {@link receiveTimeoutFailure},
-   * {@link requestCancelledFailure}, {@link connectionFailure},
-   * {@link statusCodeNotOkFailure}, {@link badResponseFailure} and
-   * {@link unknownRequestFailure}.
+   * @returns The matching stations, or one of {@link ReceiveTimeoutFailure},
+   * {@link RequestCancelledFailure}, {@link ConnectionFailure},
+   * {@link StatusCodeNotOkFailure}, {@link BadResponseFailure} and
+   * {@link UnknownRequestFailure}.
    */
   searchStations(
     query: string,
@@ -34,11 +34,11 @@ export interface MapRepository {
    * Reads the departures leaving a station, each carrying every stop it
    * reaches and how long it takes to get there.
    *
-   * @returns The departures found, {@link noDeparturesFoundFailure} when the
-   * station has none scheduled, or one of {@link receiveTimeoutFailure},
-   * {@link requestCancelledFailure}, {@link connectionFailure},
-   * {@link statusCodeNotOkFailure}, {@link badResponseFailure} and
-   * {@link unknownRequestFailure}.
+   * @returns The departures found, a {@link NoDeparturesFoundFailure} when
+   * the station has none scheduled, or one of {@link ReceiveTimeoutFailure},
+   * {@link RequestCancelledFailure}, {@link ConnectionFailure},
+   * {@link StatusCodeNotOkFailure}, {@link BadResponseFailure} and
+   * {@link UnknownRequestFailure}.
    */
   getStationDeparturesByMode(
     query: DeparturesQuery

@@ -1,7 +1,6 @@
 import { ResultAsync } from 'neverthrow';
 
-import { FailureError, type Failure } from '@/core/failures';
-import { mapHttpError } from '@/core/http/failure-mapper';
+import { Failure, UnknownRequestFailure } from '@/core/failures';
 import type { MapRepository } from '../../domain/repositories/map-repository';
 import type { MapRemoteDataSource } from '../datasources/map-remote-data-source';
 
@@ -24,7 +23,7 @@ export function createMapRepository(
 }
 
 function toFailure(error: unknown): Failure {
-  if (error instanceof FailureError) return error.failure;
-
-  return mapHttpError(error);
+  return error instanceof Failure
+    ? error
+    : new UnknownRequestFailure({ cause: error });
 }

@@ -1,6 +1,6 @@
 import { err, ok, ResultAsync, type Result } from 'neverthrow';
 
-import { noDeparturesFoundFailure, type Failure } from '@/core/failures';
+import { Failure, NoDeparturesFoundFailure } from '@/core/failures';
 import type { Departure } from '../models/departure';
 import type { Station, Stop } from '../models/station';
 import { TransitMode } from '../models/transit-mode';
@@ -40,7 +40,7 @@ export type GetStationDepartures = (
  *
  * Fetches the long-distance and regional mode buckets concurrently; both
  * are required, so a fetch failure in either fails the whole read.
- * {@link noDeparturesFoundFailure} from a bucket is not a fetch failure —
+ * A {@link NoDeparturesFoundFailure} from a bucket is not a fetch failure —
  * it is an answer — so the other bucket is then used alone, and the failure
  * only propagates when neither bucket has anything.
  *
@@ -51,11 +51,11 @@ export type GetStationDepartures = (
  * duration.
  *
  * @param station - The station to read departures for.
- * @returns The merged departures, {@link noDeparturesFoundFailure} when
- * neither bucket has any, or one of {@link receiveTimeoutFailure},
- * {@link requestCancelledFailure}, {@link connectionFailure},
- * {@link statusCodeNotOkFailure}, {@link badResponseFailure} and
- * {@link unknownRequestFailure}.
+ * @returns The merged departures, a {@link NoDeparturesFoundFailure} when
+ * neither bucket has any, or one of {@link ReceiveTimeoutFailure},
+ * {@link RequestCancelledFailure}, {@link ConnectionFailure},
+ * {@link StatusCodeNotOkFailure}, {@link BadResponseFailure} and
+ * {@link UnknownRequestFailure}.
  */
 export function createGetStationDepartures(
   mapRepository: MapRepository
@@ -87,7 +87,7 @@ function mergeDepartures(
   if (fetchFailure !== undefined) return err(fetchFailure);
 
   if (longDistance.isErr() && regional.isErr()) {
-    return err(noDeparturesFoundFailure);
+    return err(new NoDeparturesFoundFailure());
   }
 
   return ok(
@@ -103,7 +103,7 @@ function fetchFailureOf(
 ): Failure | undefined {
   if (bucket.isOk()) return undefined;
 
-  return bucket.error.code === noDeparturesFoundFailure.code
+  return bucket.error instanceof NoDeparturesFoundFailure
     ? undefined
     : bucket.error;
 }

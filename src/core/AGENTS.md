@@ -37,34 +37,33 @@ Tokens live in `theme/theme.ts`. Read the values there.
 
 ## Failures
 
-A failure is a concrete constant, never assembled at the call site:
+A failure is a class extending the abstract `Failure`, never assembled at the call site:
 
 ```ts
-export const noDeparturesFoundFailure = {
-  code: 'no_departures_found',
-  categoryCode: FailureCategory.Transit,
-  nameKey: 'noDeparturesFoundFailureName',
-  messageKey: 'noDeparturesFoundFailureMessage',
-} as const satisfies FailureBase;
+export class NoDeparturesFoundFailure extends Failure {
+  readonly categoryCode = FailureCategory.Transit;
+  readonly nameKey = 'noDeparturesFoundFailureName' as const;
+  readonly messageKey = 'noDeparturesFoundFailureMessage' as const;
+
+  constructor() {
+    super('no_departures_found');
+  }
+}
 ```
 
-`as const satisfies FailureBase` is load-bearing: it checks the shape while keeping `code` and
-`categoryCode` literal, so both narrow `Failure` — `code` to the concrete failure,
-`categoryCode` to its category. `Failure` is the union of every constant, not an open interface.
+Each category module exports its classes plus a union named after the category, for
+documentation and `@returns`/`@throws` tags. `index.ts` re-exports `Failure` itself as the type
+every store and repository signature uses. Import from `@/core/failures`, never from a category
+module.
 
-Each category module exports its constants plus a union named after the category. `index.ts`
-unions those into `Failure`. Import from `@/core/failures`, never from a category module.
-
-Exceptions become failures on one path: a data source that already knows which failure it hit
-throws `FailureError`, the repository unwraps it, and `failure-mapper.ts` maps everything else
-through `mapHttpError`.
+Exceptions become failures in the repository or before if the failure gets constructed from a non-exception case The repository relays anything already a `Failure` and falls back to rethrowing unknown exceptions.
 
 **Add a failure**
 
-1. Add the constant to its category module.
+1. Add the class to its category module.
 2. Add it to that module's union.
 3. Add `<name>FailureName` and `<name>FailureMessage` to `i18n/en.ts`.
-4. If it is a new category: new module, new union, and add it to `Failure` in `index.ts`.
+4. If it is a new category: new module, new union, add it to `FailureCategory` in `failure.ts`.
 
 ## Dependency injection
 

@@ -1,4 +1,4 @@
-import { FailureError, noDeparturesFoundFailure } from '@/core/failures';
+import { NoDeparturesFoundFailure } from '@/core/failures';
 import { getJson } from '@/core/http/http-client';
 import type { Departure } from '../../domain/models/departure';
 import type { Station } from '../../domain/models/station';
@@ -17,7 +17,7 @@ export interface MapRemoteDataSource {
    * @param query - Free text the user typed.
    * @param signal - Aborts the request.
    * @returns The matching stations.
-   * @throws {@link HttpError} on a network, timeout or bad-response failure.
+   * @throws a {@link NetworkingFailure}
    */
   searchStations(query: string, signal?: AbortSignal): Promise<Station[]>;
 
@@ -28,11 +28,10 @@ export interface MapRemoteDataSource {
    * @param query - The station, the mode bucket and the max departures to
    * request.
    * @returns The departures found.
-   * @throws {@link FailureError} wrapping {@link noDeparturesFoundFailure}
+   * @throws {@link NoDeparturesFoundFailure}
    * when `nextPageCursor` is missing or empty — the station has nothing
    * scheduled for these modes.
-   * @throws {@link HttpError} on a network, timeout or bad-response
-   * failure.
+   * @throws a {@link NetworkingFailure}
    */
   getStationDeparturesByMode(query: DeparturesQuery): Promise<Departure[]>;
 }
@@ -72,7 +71,7 @@ async function getStationDeparturesByMode({
   const response = await getJson<StopTimesResponse>(url);
 
   if (response.nextPageCursor === undefined || response.nextPageCursor === '') {
-    throw new FailureError(noDeparturesFoundFailure);
+    throw new NoDeparturesFoundFailure();
   }
 
   return (response.stopTimes ?? []).map((stopTime) =>

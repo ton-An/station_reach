@@ -1,52 +1,70 @@
-import { FailureCategory, type FailureBase } from './failure';
+import { Failure, FailureCategory } from './failure';
 
-export const receiveTimeoutFailure = {
-  code: 'receive_timeout',
-  categoryCode: FailureCategory.Networking,
-  nameKey: 'receiveTimeoutFailureName',
-  messageKey: 'receiveTimeoutFailureMessage',
-} as const satisfies FailureBase;
+export class ReceiveTimeoutFailure extends Failure {
+  readonly categoryCode = FailureCategory.Networking;
+  readonly nameKey = 'receiveTimeoutFailureName' as const;
+  readonly messageKey = 'receiveTimeoutFailureMessage' as const;
 
-export const requestCancelledFailure = {
-  code: 'request_cancelled',
-  categoryCode: FailureCategory.Networking,
-  nameKey: 'requestCancelledFailureName',
-  messageKey: 'requestCancelledFailureMessage',
-} as const satisfies FailureBase;
+  constructor(options?: { readonly cause?: unknown }) {
+    super('receive_timeout', options);
+  }
+}
 
-export const connectionFailure = {
-  code: 'connection_failure',
-  categoryCode: FailureCategory.Networking,
-  nameKey: 'connectionFailureName',
-  messageKey: 'connectionFailureMessage',
-} as const satisfies FailureBase;
+export class RequestCancelledFailure extends Failure {
+  readonly categoryCode = FailureCategory.Networking;
+  readonly nameKey = 'requestCancelledFailureName' as const;
+  readonly messageKey = 'requestCancelledFailureMessage' as const;
 
-export const statusCodeNotOkFailure = {
-  code: 'status_code_not_ok',
-  categoryCode: FailureCategory.Networking,
-  nameKey: 'statusCodeNotOkFailureName',
-  messageKey: 'statusCodeNotOkFailureMessage',
-} as const satisfies FailureBase;
+  constructor(options?: { readonly cause?: unknown }) {
+    super('request_cancelled', options);
+  }
+}
 
-export const badResponseFailure = {
-  code: 'bad_response',
-  categoryCode: FailureCategory.Networking,
-  nameKey: 'badResponseFailureName',
-  messageKey: 'badResponseFailureMessage',
-} as const satisfies FailureBase;
+export class ConnectionFailure extends Failure {
+  readonly categoryCode = FailureCategory.Networking;
+  readonly nameKey = 'connectionFailureName' as const;
+  readonly messageKey = 'connectionFailureMessage' as const;
 
-export const unknownRequestFailure = {
-  code: 'unknown_request',
-  categoryCode: FailureCategory.Networking,
-  nameKey: 'unknownRequestFailureName',
-  messageKey: 'unknownRequestFailureMessage',
-} as const satisfies FailureBase;
+  constructor(options?: { readonly cause?: unknown }) {
+    super('connection_failure', options);
+  }
+}
 
-/** The networking category of {@link Failure}, returned by `mapHttpError`. */
+export class StatusCodeNotOkFailure extends Failure {
+  readonly categoryCode = FailureCategory.Networking;
+  readonly nameKey = 'statusCodeNotOkFailureName' as const;
+  readonly messageKey = 'statusCodeNotOkFailureMessage' as const;
+
+  constructor(options?: { readonly cause?: unknown }) {
+    super('status_code_not_ok', options);
+  }
+}
+
+export class BadResponseFailure extends Failure {
+  readonly categoryCode = FailureCategory.Networking;
+  readonly nameKey = 'badResponseFailureName' as const;
+  readonly messageKey = 'badResponseFailureMessage' as const;
+
+  constructor(options?: { readonly cause?: unknown }) {
+    super('bad_response', options);
+  }
+}
+
+export class UnknownRequestFailure extends Failure {
+  readonly categoryCode = FailureCategory.Networking;
+  readonly nameKey = 'unknownRequestFailureName' as const;
+  readonly messageKey = 'unknownRequestFailureMessage' as const;
+
+  constructor(options?: { readonly cause?: unknown }) {
+    super('unknown_request', options);
+  }
+}
+
+/** The networking category of {@link Failure}. */
 export type NetworkingFailure =
-  | typeof receiveTimeoutFailure
-  | typeof requestCancelledFailure
-  | typeof connectionFailure
-  | typeof statusCodeNotOkFailure
-  | typeof badResponseFailure
-  | typeof unknownRequestFailure;
+  | ReceiveTimeoutFailure
+  | RequestCancelledFailure
+  | ConnectionFailure
+  | StatusCodeNotOkFailure
+  | BadResponseFailure
+  | UnknownRequestFailure;

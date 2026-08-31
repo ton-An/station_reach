@@ -1,11 +1,14 @@
-import { FailureCategory, type FailureBase } from './failure';
+import { Failure, FailureCategory } from './failure';
 
-export const noDeparturesFoundFailure = {
-  code: 'no_departures_found',
-  categoryCode: FailureCategory.Transit,
-  nameKey: 'noDeparturesFoundFailureName',
-  messageKey: 'noDeparturesFoundFailureMessage',
-} as const satisfies FailureBase;
+export class NoDeparturesFoundFailure extends Failure {
+  readonly categoryCode = FailureCategory.Transit;
+  readonly nameKey = 'noDeparturesFoundFailureName' as const;
+  readonly messageKey = 'noDeparturesFoundFailureMessage' as const;
+
+  constructor() {
+    super('no_departures_found');
+  }
+}
 
 /** The transit category of {@link Failure}. */
-export type TransitFailure = typeof noDeparturesFoundFailure;
+export type TransitFailure = NoDeparturesFoundFailure;

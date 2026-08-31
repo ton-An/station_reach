@@ -10,13 +10,21 @@ export type FailureCategoryCode =
   (typeof FailureCategory)[keyof typeof FailureCategory];
 
 /**
- * Shape every failure constant satisfies, via `as const satisfies
- * FailureBase`. That keeps `code` and `categoryCode` literal, so each
- * narrows {@link Failure} to its concrete failure and category.
+ * Base class every concrete failure extends. A failure is thrown or
+ * returned as a value interchangeably, and narrowed with `instanceof` —
+ * against `Failure` itself to test for any domain failure, or against a
+ * concrete subclass for one in particular.
  */
-export interface FailureBase {
-  readonly code: string;
-  readonly categoryCode: FailureCategoryCode;
-  readonly nameKey: TranslationKey;
-  readonly messageKey: TranslationKey;
+export abstract class Failure extends Error {
+  abstract readonly categoryCode: FailureCategoryCode;
+  abstract readonly nameKey: TranslationKey;
+  abstract readonly messageKey: TranslationKey;
+
+  constructor(
+    readonly code: string,
+    options?: { readonly cause?: unknown }
+  ) {
+    super(code, options);
+    this.name = new.target.name;
+  }
 }
