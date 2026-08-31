@@ -11,6 +11,7 @@ import { ListItem } from '@/core/components/list-item';
 import { colorForDuration } from '@/core/helpers/color-helper';
 import { formatDuration } from '@/core/helpers/duration-helper';
 import { useTheme } from '@/core/theme/use-theme';
+
 import type { Stop } from '../../../../domain/models/station';
 import { useDepartureSelectionStore } from '../../../stores/use-map-stores';
 

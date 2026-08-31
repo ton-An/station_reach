@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 
 import { useTheme } from '@/core/theme/use-theme';
+
 import { FOCUS_LATITUDE_OFFSET, FOCUSED_ZOOM } from '../../map/map-config';
 import {
   buildRouteFeatures,

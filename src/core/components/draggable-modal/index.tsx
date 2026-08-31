@@ -1,3 +1,4 @@
+import { type LayoutRectangle,View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Easing,
@@ -7,9 +8,9 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { View, type LayoutRectangle } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
+
 import { Gap } from '../gap';
 import { pointerEvents } from '../pointer-events';
 import { TranslucentSurface } from '../translucent-surface';
@@ -20,9 +21,9 @@ import {
   DRAG_ACTIVATION_SLOP,
   MEDIUM_HEIGHT,
   settleSheetDrag,
+  type SheetDrag,
   SheetDragProvider,
   updateSheetDrag,
-  type SheetDrag,
 } from './_sheet-drag';
 import { useWheelDrag } from './_wheel-drag';
 

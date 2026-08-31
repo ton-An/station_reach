@@ -7,6 +7,7 @@ import { Icon } from '@/core/components/icon';
 import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { AttributionOpenSourceCard } from './_attribution-open-source-card';
 import { attributionMessage } from './attributions';
 

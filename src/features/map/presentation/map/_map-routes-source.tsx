@@ -1,7 +1,7 @@
 import {
+  type Expression,
   LineLayer,
   ShapeSource,
-  type Expression,
 } from '@maplibre/maplibre-react-native';
 import { memo } from 'react';
 

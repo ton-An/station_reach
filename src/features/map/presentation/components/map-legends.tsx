@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 
 import { pointerEvents } from '@/core/components/pointer-events';
+
 import { AttributionLegend } from './attribution-legend';
 import { TimeGradientLegend } from './time-gradient-legend';
 

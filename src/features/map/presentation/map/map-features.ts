@@ -1,4 +1,5 @@
 import { colorForDuration } from '@/core/helpers/color-helper';
+
 import type { Departure } from '../../domain/models/departure';
 import type { StopIndex } from './stop-index';
 

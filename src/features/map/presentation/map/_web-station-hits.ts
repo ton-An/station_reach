@@ -2,8 +2,8 @@ import type { Map as MapLibreMap, MapMouseEvent, Point } from 'maplibre-gl';
 
 import { LAYER_IDS, STATION_HIT_RADIUS } from './map-config';
 import {
-  toStationCandidates,
   type StationCandidate,
+  toStationCandidates,
 } from './station-candidates';
 
 /**

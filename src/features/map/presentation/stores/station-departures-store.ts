@@ -1,6 +1,7 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
 
 import type { Failure } from '@/core/failures';
+
 import type { Departure } from '../../domain/models/departure';
 import type { Station } from '../../domain/models/station';
 import type { GetStationDepartures } from '../../domain/usecases/get-station-departures';

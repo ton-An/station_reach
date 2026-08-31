@@ -4,6 +4,7 @@ import type { ListRenderItem } from 'react-native';
 import { ModalList } from '@/core/components/draggable-modal';
 import { interpolateColors } from '@/core/helpers/color-helper';
 import { useTheme } from '@/core/theme/use-theme';
+
 import type { Departure } from '../../../../../domain/models/departure';
 import {
   useDepartureSelectionStore,

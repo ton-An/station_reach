@@ -3,9 +3,9 @@ import { useCallback, useEffect, useRef } from 'react';
 import {
   beginSheetDrag,
   settleSheetDrag,
+  type SheetDrag,
   stepSheetDrag,
   updateSheetDrag,
-  type SheetDrag,
 } from './_sheet-drag';
 import type { TakesWheel, UseWheelDrag } from './_wheel-drag.types';
 

@@ -6,6 +6,7 @@ import { SlidingPanes } from '@/core/components/sliding-panes';
 import { t } from '@/core/i18n/translate';
 import { useIsWideLayout } from '@/core/theme/use-is-wide-layout';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { MapLegends } from '../../../components/map-legends';
 import type { DepartureSelectionState } from '../../../stores/departure-selection-store';
 import type { StationSelectionState } from '../../../stores/station-selection-store';

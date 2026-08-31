@@ -8,6 +8,7 @@ import { SmallIconButton } from '@/core/components/small-icon-button';
 import { colorForDuration, withAlpha } from '@/core/helpers/color-helper';
 import { formatDuration } from '@/core/helpers/duration-helper';
 import { useTheme } from '@/core/theme/use-theme';
+
 import type { Departure } from '../../../../../domain/models/departure';
 import { TransitModeIcon } from '../../../../components/transit-mode-icon';
 

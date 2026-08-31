@@ -1,6 +1,7 @@
 import { Text, View } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
+
 import { Gap } from './gap';
 
 interface ListItemProps {

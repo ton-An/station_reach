@@ -4,9 +4,9 @@ import {
   type PanGesture,
 } from 'react-native-gesture-handler';
 import {
+  type SharedValue,
   useAnimatedScrollHandler,
   useSharedValue,
-  type SharedValue,
 } from 'react-native-reanimated';
 
 import {

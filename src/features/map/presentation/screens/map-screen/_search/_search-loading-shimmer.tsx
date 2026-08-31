@@ -10,6 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useTheme } from '@/core/theme/use-theme';
+
 import {
   useStationDeparturesStore,
   useStationSearchStore,

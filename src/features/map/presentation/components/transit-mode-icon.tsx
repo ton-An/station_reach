@@ -1,4 +1,5 @@
 import { Icon, type IconName } from '@/core/components/icon';
+
 import { TransitMode } from '../../domain/models/transit-mode';
 
 const MODE_ICONS: Partial<Record<TransitMode, IconName>> = {

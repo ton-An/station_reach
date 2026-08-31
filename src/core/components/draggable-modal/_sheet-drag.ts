@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
 import {
   cancelAnimation,
-  withSpring,
   type SharedValue,
+  withSpring,
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 

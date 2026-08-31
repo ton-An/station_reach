@@ -1,4 +1,4 @@
-import { theme, type Theme } from './theme';
+import { type Theme,theme } from './theme';
 
 export function useTheme(): Theme {
   return theme;

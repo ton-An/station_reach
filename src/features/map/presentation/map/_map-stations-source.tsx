@@ -1,12 +1,13 @@
 import {
   CircleLayer,
+  type OnPressEvent,
   ShapeSource,
   SymbolLayer,
-  type OnPressEvent,
 } from '@maplibre/maplibre-react-native';
 import { memo } from 'react';
 
 import { useTheme } from '@/core/theme/use-theme';
+
 import {
   LABEL_FONTS,
   LABEL_HALO_WIDTH,

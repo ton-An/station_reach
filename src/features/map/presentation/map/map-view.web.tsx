@@ -1,12 +1,13 @@
+import 'maplibre-gl/dist/maplibre-gl.css';
+
 import maplibregl, {
   type Map as MapLibreMap,
   type MapMouseEvent,
 } from 'maplibre-gl';
 import { memo, useEffect, useRef } from 'react';
 
-import 'maplibre-gl/dist/maplibre-gl.css';
-
 import { useTheme } from '@/core/theme/use-theme';
+
 import { addStationLayers, syncSources } from './_web-map-style';
 import { stationsAt, trackStationCursor } from './_web-station-hits';
 import {
@@ -15,8 +16,8 @@ import {
   INITIAL_ZOOM,
   MIN_ZOOM,
 } from './map-config';
-import { nearestStopId } from './station-candidates';
 import type { MapViewProps } from './map-view.types';
+import { nearestStopId } from './station-candidates';
 
 declare global {
   var __map: MapLibreMap | undefined;

@@ -5,6 +5,7 @@ import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { flattenOnto, resampleGradient } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { GradientLabel } from './_gradient-label';
 
 const BAR_WIDTH = 250;

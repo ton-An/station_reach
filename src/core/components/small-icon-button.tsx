@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
+
 import { FadePressable } from './fade-pressable';
 import { Icon, type IconName } from './icon';
 

@@ -1,5 +1,5 @@
-import { t } from '@/core/i18n/translate';
 import type { TranslationKey } from '@/core/i18n/en';
+import { t } from '@/core/i18n/translate';
 
 /**
  * Attribution entries, keyed by translation key rather than resolved text.

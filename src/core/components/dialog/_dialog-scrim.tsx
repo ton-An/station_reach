@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet } from 'react-native';
 import Animated, {
-  useAnimatedStyle,
   type SharedValue,
+  useAnimatedStyle,
 } from 'react-native-reanimated';
 
 import { withAlpha } from '@/core/helpers/color-helper';

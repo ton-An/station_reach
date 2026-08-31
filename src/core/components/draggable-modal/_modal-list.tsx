@@ -1,11 +1,11 @@
-import { GestureDetector } from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
 import {
-  View,
   type ListRenderItem,
   type StyleProp,
+  View,
   type ViewStyle,
 } from 'react-native';
+import { GestureDetector } from 'react-native-gesture-handler';
+import Animated from 'react-native-reanimated';
 
 import { SCROLL_EVENT_THROTTLE, useModalBodyGestures } from './_body-gestures';
 

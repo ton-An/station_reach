@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { pointerEvents } from '@/core/components/pointer-events';
 import { useIsWideLayout } from '@/core/theme/use-is-wide-layout';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { MapLegends } from '../../components/map-legends';
 import { DeparturesModal } from './_departures-modal';
 import { ReachabilityMap } from './_reachability-map';

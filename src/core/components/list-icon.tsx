@@ -2,6 +2,7 @@ import { View } from 'react-native';
 
 import { icons, spacing } from '@/core/theme/theme';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { Icon, type IconName } from './icon';
 
 /** Outer diameter, for callers that line something up with the circle. */

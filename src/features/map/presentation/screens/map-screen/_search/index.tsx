@@ -4,8 +4,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { pointerEvents } from '@/core/components/pointer-events';
 import { TranslucentSurface } from '@/core/components/translucent-surface';
 import { useTheme } from '@/core/theme/use-theme';
-import { SearchLoadingShimmer } from './_search-loading-shimmer';
+
 import { SearchField } from './_search-field';
+import { SearchLoadingShimmer } from './_search-loading-shimmer';
 import { SearchResults } from './_search-results';
 
 /**

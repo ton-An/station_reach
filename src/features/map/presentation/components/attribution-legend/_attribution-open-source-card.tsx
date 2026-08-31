@@ -7,6 +7,7 @@ import { GradientBorder } from '@/core/components/gradient-border';
 import { Icon } from '@/core/components/icon';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { REPOSITORY_URL } from './attributions';
 
 export function AttributionOpenSourceCard(): React.JSX.Element {

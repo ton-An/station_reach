@@ -1,7 +1,7 @@
 import {
   Camera,
-  MapView as MapLibreMapView,
   type CameraRef,
+  MapView as MapLibreMapView,
   type MapViewRef,
   type OnPressEvent,
 } from '@maplibre/maplibre-react-native';
@@ -10,14 +10,15 @@ import { StyleSheet, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
 
 import { useTheme } from '@/core/theme/use-theme';
-import { useMapTapGesture } from './_map-tap-gesture';
+
 import { MapRoutesSource } from './_map-routes-source';
+import { MapStationsSource } from './_map-stations-source';
+import { useMapTapGesture } from './_map-tap-gesture';
 import {
   stationAtPoint,
-  toStationHit,
   type StationHit,
+  toStationHit,
 } from './_station-hit-test';
-import { MapStationsSource } from './_map-stations-source';
 import {
   BASEMAP_STYLE_URL,
   INITIAL_CENTER,

@@ -1,12 +1,13 @@
 import { ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import Animated, {
   interpolate,
-  useAnimatedStyle,
   type SharedValue,
+  useAnimatedStyle,
 } from 'react-native-reanimated';
 
 import { withAlpha } from '@/core/helpers/color-helper';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { Gap } from '../gap';
 import { LinkText } from '../link-text';
 import { TranslucentSurface } from '../translucent-surface';

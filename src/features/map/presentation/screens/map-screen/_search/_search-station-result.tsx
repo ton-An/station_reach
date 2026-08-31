@@ -4,6 +4,7 @@ import { Dot } from '@/core/components/dot';
 import { FadePressable } from '@/core/components/fade-pressable';
 import { Gap } from '@/core/components/gap';
 import { useTheme } from '@/core/theme/use-theme';
+
 import type { Station } from '../../../../domain/models/station';
 
 interface SearchStationResultProps {

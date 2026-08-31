@@ -5,6 +5,7 @@ import { Icon } from '@/core/components/icon';
 import { withAlpha } from '@/core/helpers/color-helper';
 import { t } from '@/core/i18n/translate';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { useStationSearchStore } from '../../../stores/use-map-stores';
 
 const FIELD_HEIGHT = 54;

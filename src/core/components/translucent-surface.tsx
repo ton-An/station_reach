@@ -1,9 +1,9 @@
-import { BlurView, type BlurTint } from 'expo-blur';
+import { type BlurTint,BlurView } from 'expo-blur';
 import {
   Platform,
+  type StyleProp,
   useWindowDimensions,
   View,
-  type StyleProp,
   type ViewStyle,
 } from 'react-native';
 

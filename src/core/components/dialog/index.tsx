@@ -9,6 +9,7 @@ import {
 import { scheduleOnRN } from 'react-native-worklets';
 
 import { useTheme } from '@/core/theme/use-theme';
+
 import { pointerEvents } from '../pointer-events';
 import { DialogCard } from './_dialog-card';
 import { DialogScrim } from './_dialog-scrim';

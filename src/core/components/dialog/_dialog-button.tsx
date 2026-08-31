@@ -2,6 +2,7 @@ import { Text, View } from 'react-native';
 
 import { FadePressable } from '@/core/components/fade-pressable';
 import { useTheme } from '@/core/theme/use-theme';
+
 import type { DialogAction } from './dialog-action';
 
 interface DialogButtonProps {

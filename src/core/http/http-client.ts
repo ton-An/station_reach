@@ -5,11 +5,11 @@ import {
   BadResponseFailure,
   ConnectionFailure,
   Failure,
+  type NetworkingFailure,
   ReceiveTimeoutFailure,
   RequestCancelledFailure,
   StatusCodeNotOkFailure,
   UnknownRequestFailure,
-  type NetworkingFailure,
 } from '@/core/failures';
 
 const DEFAULT_TIMEOUT_MS = 20_000;

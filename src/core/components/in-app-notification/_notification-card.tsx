@@ -1,8 +1,8 @@
 import { Text, View } from 'react-native';
 import Animated, {
   Easing,
-  withTiming,
   type EntryExitAnimationFunction,
+  withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10,6 +10,7 @@ import { t } from '@/core/i18n/translate';
 import type { InAppNotification } from '@/core/notifications/in-app-notification-store';
 import { useIsWideLayout } from '@/core/theme/use-is-wide-layout';
 import { useTheme } from '@/core/theme/use-theme';
+
 import { FadePressable } from '../fade-pressable';
 import { Gap } from '../gap';
 import { Icon } from '../icon';
