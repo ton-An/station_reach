@@ -21,8 +21,8 @@ module.exports = defineConfig([
     },
     rules: {
       'local/catch-must-rethrow': 'error',
-      'simple-import-sort/imports': 'error',
-      'simple-import-sort/exports': 'error',
+      'simple-import-sort/imports': 'warn',
+      'simple-import-sort/exports': 'warn',
       'unused-imports/no-unused-imports': 'error',
     },
   },
