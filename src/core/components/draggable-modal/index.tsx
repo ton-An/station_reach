@@ -25,6 +25,7 @@ import {
   updateSheetDrag,
   type SheetDrag,
 } from './_sheet-drag';
+import { useWheelDrag } from './_wheel-drag';
 
 export { ModalList } from './_modal-list';
 export { ModalScrollView } from './_modal-scroll-view';
@@ -53,6 +54,10 @@ interface DraggableModalProps {
  * {@link ModalList} or {@link ModalScrollView}, which give the drag back to
  * the sheet once the content is scrolled to its top. The legend sits above
  * the sheet and fades out as the sheet is pulled over it.
+ *
+ * On the web a wheel — a trackpad two-finger swipe up or down — moves the
+ * sheet a detent per swipe, everywhere a touch drags it and by the same rule.
+ * See {@link useWheelDrag}.
  *
  * The sheet is laid out at the tallest its box has ever been, pinned to the
  * bottom of that box, and every height it is shown at is `translateY` off
@@ -128,6 +133,10 @@ export function DraggableModal({
     .onUpdate((event) => updateSheetDrag(drag, event.translationY))
     .onEnd((event) => settleSheetDrag(drag, event.velocityY));
 
+  // Nothing scrolls under the handle and the header, so every wheel over them
+  // is the sheet's.
+  const handleWheel = useWheelDrag(drag, () => true);
+
   const sheetStyle = useAnimatedStyle(() => ({
     height: sheetHeight.value,
     transform: [
@@ -185,7 +194,10 @@ export function DraggableModal({
 
         <TranslucentSurface topRadius={theme.radii.xLarge} style={{ flex: 1 }}>
           <GestureDetector gesture={handleDrag}>
-            <View style={{ paddingHorizontal: theme.spacing.medium }}>
+            <View
+              ref={handleWheel}
+              style={{ paddingHorizontal: theme.spacing.medium }}
+            >
               <Gap size="medium" axis="vertical" />
 
               <ModalHandle />

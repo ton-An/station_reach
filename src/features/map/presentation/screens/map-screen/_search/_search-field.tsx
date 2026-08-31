@@ -49,7 +49,7 @@ export function SearchField(): React.JSX.Element {
       >
         <Icon
           name="search"
-          size={theme.icons.large}
+          size={theme.icons.medium}
           color={theme.colors.hint}
         />
       </View>

@@ -106,9 +106,13 @@ export function updateSheetDrag(drag: SheetDrag, translationY: number): void {
   drag.fraction.value = Math.min(Math.max(next, SMALL_HEIGHT), LARGE_HEIGHT);
 }
 
+/**
+ * The detent closest to a height fraction. For a caller that has to treat a
+ * sheet mid-spring as the height it is springing to.
+ */
 // Declared above its caller: a worklet captures the worklets it calls when
 // the module is evaluated, so a later declaration is still in its TDZ.
-function nearestDetent(fraction: number): number {
+export function nearestDetent(fraction: number): number {
   'worklet';
   let nearest: number = SMALL_HEIGHT;
 
@@ -138,6 +142,29 @@ export function settleSheetDrag(drag: SheetDrag, velocityY: number): void {
     drag.fraction.value - (velocityY / height) * VELOCITY_PROJECTION_SECONDS;
 
   const target = nearestDetent(projected);
+
+  drag.fraction.value = withSpring(target, SNAP_SPRING);
+
+  if (target !== drag.dragStartFraction.value) {
+    scheduleOnRN(drag.onSettle, target);
+  }
+}
+
+/**
+ * Ends a sheet drag by springing the sheet one detent along from the one the
+ * drag started at, or holds it at the last detent in that direction. For an
+ * input that has no release to read a velocity from, where the direction the
+ * drag went is all there is to go on.
+ *
+ * @param direction - `1` to step up, `-1` to step down.
+ */
+export function stepSheetDrag(drag: SheetDrag, direction: 1 | -1): void {
+  'worklet';
+  const from = nearestDetent(drag.dragStartFraction.value);
+  const next = DETENTS.findIndex((detent) => detent === from) + direction;
+  const index = Math.min(Math.max(next, 0), DETENTS.length - 1);
+
+  const target = DETENTS[index] ?? from;
 
   drag.fraction.value = withSpring(target, SNAP_SPRING);
 

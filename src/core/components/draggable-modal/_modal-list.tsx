@@ -1,6 +1,11 @@
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import type { ListRenderItem, StyleProp, ViewStyle } from 'react-native';
+import {
+  View,
+  type ListRenderItem,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 
 import { SCROLL_EVENT_THROTTLE, useModalBodyGestures } from './_body-gestures';
 
@@ -22,20 +27,22 @@ export function ModalList<T>({
   renderItem,
   contentContainerStyle,
 }: ModalListProps<T>): React.JSX.Element {
-  const { sheetDrag, scroll, onScroll } = useModalBodyGestures();
+  const { sheetDrag, scroll, onScroll, wheelTarget } = useModalBodyGestures();
 
   return (
-    <GestureDetector gesture={sheetDrag}>
-      <GestureDetector gesture={scroll}>
-        <Animated.FlatList
-          data={data}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-          onScroll={onScroll}
-          scrollEventThrottle={SCROLL_EVENT_THROTTLE}
-          contentContainerStyle={contentContainerStyle}
-        />
+    <View ref={wheelTarget} style={{ flex: 1 }}>
+      <GestureDetector gesture={sheetDrag}>
+        <GestureDetector gesture={scroll}>
+          <Animated.FlatList
+            data={data}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            onScroll={onScroll}
+            scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+            contentContainerStyle={contentContainerStyle}
+          />
+        </GestureDetector>
       </GestureDetector>
-    </GestureDetector>
+    </View>
   );
 }
