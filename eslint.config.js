@@ -8,7 +8,6 @@ const catchMustRethrow = require('./eslint-rules/catch-must-rethrow');
 
 module.exports = defineConfig([
   expoConfig,
-  // Formatting is Prettier's job; keep ESLint to correctness.
   prettierConfig,
   {
     plugins: {
