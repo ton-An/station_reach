@@ -70,10 +70,6 @@ async function getStationDeparturesByMode({
 
   const response = await getJson<StopTimesResponse>(url);
 
-  if (response.nextPageCursor === undefined || response.nextPageCursor === '') {
-    throw new NoDeparturesFoundFailure();
-  }
-
   return (response.stopTimes ?? []).map((stopTime) =>
     toDeparture(station, stopTime)
   );
