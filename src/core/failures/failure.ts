@@ -2,7 +2,6 @@ import type { TranslationKey } from '@/core/i18n/en';
 
 export const FailureCategory = {
   Networking: 'networking',
-  Transit: 'transit',
 } as const;
 
 /** The category a {@link Failure} belongs to. */

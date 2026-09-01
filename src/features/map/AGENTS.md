@@ -41,14 +41,12 @@ highest `adminLevel` ≤ 7.
 concurrently.
 
 - **Both buckets are required.** If either fails to fetch, the whole load fails. There is no
-  partial result.
-- `noDeparturesFound` is the one exception: it is an answer, not a failed fetch, so the other
-  bucket is then used alone. It propagates only when neither bucket has anything.
+  partial result. A bucket with nothing scheduled is an answer, not a failure, and contributes
+  no departures.
 - **Dedupe before sorting.** Dedupe keeps the first occurrence and long distance is concatenated
   first, so a trip published under both names keeps its long-distance one. Then sort by name,
   and within a name by final-stop duration.
-- One request per bucket, no paging. A missing or empty `nextPageCursor` means the station has
-  nothing → `noDeparturesFound`.
+- One request per bucket, no paging.
 - A stop's `duration` is measured from the origin's scheduled departure, so the origin is zero.
 
 ## Map

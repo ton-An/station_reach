@@ -1,6 +1,6 @@
 import { err, ok, type Result } from 'neverthrow';
 
-import { Failure, NoDeparturesFoundFailure } from '@/core/failures';
+import type { Failure } from '@/core/failures';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- {@link} target
 import type { NetworkingFailure } from '@/core/failures/networking-failures';
 
@@ -42,10 +42,9 @@ export type GetStationDepartures = (
  * Reads every departure leaving a station.
  *
  * Fetches the long-distance and regional mode buckets concurrently; both
- * are required, so a fetch failure in either fails the whole read.
- * A {@link NoDeparturesFoundFailure} from a bucket is not a fetch failure —
- * it is an answer — so the other bucket is then used alone, and the failure
- * only propagates when neither bucket has anything.
+ * are required, so a failure in either fails the whole read. A bucket with
+ * nothing scheduled is an answer, not a failure, and contributes no
+ * departures.
  *
  * The surviving departures are deduped before sorting, keeping the first
  * occurrence of each unique stop sequence with long distance concatenated
@@ -54,8 +53,7 @@ export type GetStationDepartures = (
  * duration.
  *
  * @param station - The station to read departures for.
- * @returns The merged departures, a {@link NoDeparturesFoundFailure} when
- * neither bucket has any, or a {@link NetworkingFailure}
+ * @returns The merged departures, or a {@link NetworkingFailure}
  */
 export function createGetStationDepartures(
   mapRepository: MapRepository
@@ -82,29 +80,10 @@ function mergeDepartures(
   longDistance: Result<Departure[], Failure>,
   regional: Result<Departure[], Failure>
 ): Result<Departure[], Failure> {
-  const fetchFailure = fetchFailureOf(longDistance) ?? fetchFailureOf(regional);
-  if (fetchFailure !== undefined) return err(fetchFailure);
+  if (longDistance.isErr()) return err(longDistance.error);
+  if (regional.isErr()) return err(regional.error);
 
-  if (longDistance.isErr() && regional.isErr()) {
-    return err(new NoDeparturesFoundFailure());
-  }
-
-  return ok(
-    collapse([
-      ...(longDistance.isOk() ? longDistance.value : []),
-      ...(regional.isOk() ? regional.value : []),
-    ])
-  );
-}
-
-function fetchFailureOf(
-  bucket: Result<Departure[], Failure>
-): Failure | undefined {
-  if (bucket.isOk()) return undefined;
-
-  return bucket.error instanceof NoDeparturesFoundFailure
-    ? undefined
-    : bucket.error;
+  return ok(collapse([...longDistance.value, ...regional.value]));
 }
 
 function collapse(departures: readonly Departure[]): Departure[] {

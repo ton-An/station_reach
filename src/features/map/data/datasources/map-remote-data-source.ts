@@ -1,7 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars -- {@link} target
 import type { NetworkingFailure } from '@/core/failures/networking-failures';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- {@link} target
-import type { NoDeparturesFoundFailure } from '@/core/failures/transit-failures';
 import { getJson } from '@/core/http/http-client';
 
 import type { Departure } from '../../domain/models/departure';
@@ -31,9 +29,7 @@ export interface MapRemoteDataSource {
    *
    * @param query - The station, the mode bucket and the max departures to
    * request.
-   * @returns The departures found.
-   * @throws {@link NoDeparturesFoundFailure}
-   * when `nextPageCursor` is missing or empty — the station has nothing
+   * @returns The departures found, empty when the station has nothing
    * scheduled for these modes.
    * @throws a {@link NetworkingFailure}
    */

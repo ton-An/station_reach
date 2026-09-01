@@ -37,8 +37,6 @@ export const en = {
   unknownRequestFailureName: 'Unknown Error',
   unknownRequestFailureMessage:
     'Something went wrong while talking to the server.',
-  noDeparturesFoundFailureName: 'No Departures Found',
-  noDeparturesFoundFailureMessage: 'No departures found for the given station.',
 } as const;
 
 /** Every valid key `t` accepts, derived from {@link en}. */

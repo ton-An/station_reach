@@ -42,16 +42,16 @@ abstract class extending `Failure` that owns the category's `categoryCode`, and 
 failure in that module extends it:
 
 ```ts
-export abstract class TransitFailure extends Failure {
-  readonly categoryCode = FailureCategory.Transit;
+export abstract class NetworkingFailure extends Failure {
+  readonly categoryCode = FailureCategory.Networking;
 }
 
-export class NoDeparturesFoundFailure extends TransitFailure {
-  readonly nameKey = 'noDeparturesFoundFailureName' as const;
-  readonly messageKey = 'noDeparturesFoundFailureMessage' as const;
+export class ConnectionFailure extends NetworkingFailure {
+  readonly nameKey = 'connectionFailureName' as const;
+  readonly messageKey = 'connectionFailureMessage' as const;
 
-  constructor() {
-    super('no_departures_found');
+  constructor(options?: { readonly cause?: unknown }) {
+    super('connection_failure', options);
   }
 }
 ```
