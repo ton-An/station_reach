@@ -4,7 +4,7 @@ import type { Departure } from '../../domain/models/departure';
 import type { Station } from '../../domain/models/station';
 import type { DeparturesQuery } from '../../domain/repositories/map-repository';
 import { toDeparture, toStation } from './transitous-mappers';
-import { transitModeToWire } from './transitous-modes';
+import { transitModeToTransitous } from './transitous-modes';
 import type { GeocodeStation, StopTimesResponse } from './transitous-types';
 
 const BASE_URL = 'https://api.transitous.org';
@@ -52,7 +52,7 @@ export class MapRemoteDataSourceImpl implements MapRemoteDataSource {
     modes,
     amount,
   }: DeparturesQuery): Promise<Departure[]> {
-    const modeParam = modes.map(transitModeToWire).join(',');
+    const modeParam = modes.map(transitModeToTransitous).join(',');
 
     const url =
       `${BASE_URL}/api/v6/stoptimes` +

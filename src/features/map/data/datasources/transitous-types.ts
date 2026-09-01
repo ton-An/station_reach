@@ -1,5 +1,5 @@
 /**
- * Wire shapes for the Transitous REST API. {@link toStation} and
+ * Response shapes for the Transitous REST API. {@link toStation} and
  * {@link toDeparture} are the only functions that read these field names.
  */
 export interface GeocodeArea {

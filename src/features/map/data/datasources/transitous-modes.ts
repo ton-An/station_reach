@@ -1,6 +1,6 @@
 import { TransitMode } from '../../domain/models/transit-mode';
 
-const WIRE_TO_MODE: Readonly<Record<string, TransitMode>> = {
+const TRANSITOUS_TO_MODE: Readonly<Record<string, TransitMode>> = {
   WALK: TransitMode.Walk,
   BIKE: TransitMode.Bike,
   RENTAL: TransitMode.Rental,
@@ -30,22 +30,25 @@ const WIRE_TO_MODE: Readonly<Record<string, TransitMode>> = {
   METRO: TransitMode.Metro,
 };
 
-const MODE_TO_WIRE: Readonly<Record<string, string>> = Object.fromEntries(
-  Object.entries(WIRE_TO_MODE).map(([wire, mode]) => [mode, wire])
+const MODE_TO_TRANSITOUS: Readonly<Record<string, string>> = Object.fromEntries(
+  Object.entries(TRANSITOUS_TO_MODE).map(([transitous, mode]) => [
+    mode,
+    transitous,
+  ])
 );
 
 /**
  * Maps a Transitous mode string to a {@link TransitMode}, or
  * {@link TransitMode.Other} when the value is not recognised.
  */
-export function transitModeFromWire(value: string): TransitMode {
-  return WIRE_TO_MODE[value] ?? TransitMode.Other;
+export function transitModeFromTransitous(value: string): TransitMode {
+  return TRANSITOUS_TO_MODE[value] ?? TransitMode.Other;
 }
 
 /**
- * Maps a {@link TransitMode} to its Transitous wire value, or `'OTHER'`
+ * Maps a {@link TransitMode} to its Transitous mode string, or `'OTHER'`
  * when it has none.
  */
-export function transitModeToWire(mode: TransitMode): string {
-  return MODE_TO_WIRE[mode] ?? 'OTHER';
+export function transitModeToTransitous(mode: TransitMode): string {
+  return MODE_TO_TRANSITOUS[mode] ?? 'OTHER';
 }

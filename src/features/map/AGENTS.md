@@ -4,8 +4,8 @@ The app's one feature. Extends the root `AGENTS.md`.
 
 ## Hard Rules
 
-- Wire shapes live only in `data/datasources/transitous-types.ts`. Nothing above
-  `transitous-mappers.ts` sees an API field name.
+- Transitous response shapes live only in `data/datasources/transitous-types.ts`.
+  Nothing above `transitous-mappers.ts` sees an API field name.
 - Transitous is a free community service: no polling, no retry loops, no request storms.
 
 ## Canonical files
@@ -15,7 +15,7 @@ Copy these when adding code of the same kind.
 | Role | File |
 | --- | --- |
 | Data source, throws | `data/datasources/map-remote-data-source.ts` |
-| Wire → domain mapping | `data/datasources/transitous-mappers.ts` |
+| Transitous → domain mapping | `data/datasources/transitous-mappers.ts` |
 | Repository implementation | `data/repositories/map-repository-impl.ts` |
 | Repository contract | `domain/repositories/map-repository.ts` |
 | Use case, thin | `domain/usecases/search-stations.ts` |

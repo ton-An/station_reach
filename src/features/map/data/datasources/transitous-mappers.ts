@@ -1,6 +1,6 @@
 import type { Departure } from '../../domain/models/departure';
 import type { Station, Stop } from '../../domain/models/station';
-import { transitModeFromWire } from './transitous-modes';
+import { transitModeFromTransitous } from './transitous-modes';
 import type { GeocodeStation, NextStop, StopTime } from './transitous-types';
 
 const MINUTE_MS = 60_000;
@@ -21,7 +21,7 @@ export function toStation(raw: GeocodeStation): Station {
     name: raw.name,
     latitude: raw.lat,
     longitude: raw.lon,
-    modes: (raw.modes ?? []).map(transitModeFromWire),
+    modes: (raw.modes ?? []).map(transitModeFromTransitous),
     ...(raw.country === undefined ? {} : { countryCode: raw.country }),
     ...(area === undefined ? {} : { area }),
   };
@@ -61,7 +61,7 @@ export function toDeparture(origin: Station, raw: StopTime): Departure {
   return {
     id: raw.tripId,
     name: departureName(raw),
-    mode: transitModeFromWire(raw.mode),
+    mode: transitModeFromTransitous(raw.mode),
     stops,
   };
 }
@@ -91,7 +91,7 @@ function toStop(raw: NextStop, departureTimeMs: number): Stop | undefined {
     name: raw.name,
     latitude: raw.lat,
     longitude: raw.lon,
-    modes: (raw.modes ?? []).map(transitModeFromWire),
+    modes: (raw.modes ?? []).map(transitModeFromTransitous),
     durationMinutes: (arrivalMs - departureTimeMs) / MINUTE_MS,
   };
 }

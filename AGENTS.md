@@ -71,7 +71,7 @@ skip a step: a store calls a use case, never a repository or a data source.
 
 | Layer | Job | On failure |
 | --- | --- | --- |
-| Data source | network, and wire JSON → domain models; the only place wire shapes exist | throws |
+| Data source | network, and API JSON → domain models; the only place response shapes exist | throws |
 | Repository | catches, maps every exception to a `Failure` | returns `Promise<Result>` |
 | Use case | one operation, combines repositories, applies business rules | returns `Promise<Result>` |
 | Store | calls the use case, unwraps, sets state | folds into a `failure` state |
