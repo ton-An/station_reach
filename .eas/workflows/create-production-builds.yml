@@ -1,5 +1,9 @@
 name: Create Production Builds
 
+on:
+  push:
+    branches: ['rewrite/react-native', 'main']
+
 jobs:
   build_android:
     type: build # This job type creates a production build for Android
