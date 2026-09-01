@@ -39,11 +39,16 @@ export const LAYER_IDS = {
 
 export const STATION_CIRCLE_RADIUS = 6.3;
 /**
- * Tap tolerance radius, in screen pixels. Shared by the native
- * `ShapeSource` hitbox and the web hit-test query, so a tap near a marker
- * still counts as a hit on it.
+ * Tap tolerance radius, in screen pixels. Shared by the native and web
+ * hit-test queries, so a tap near a marker still counts as a hit on it.
  */
 export const STATION_HIT_RADIUS = 24;
+
+/**
+ * How far a touch may travel, in screen pixels, and still count as a tap
+ * instead of a pan.
+ */
+export const TAP_MOVE_TOLERANCE = 10;
 
 export const ROUTE_LINE_WIDTH = 5;
 

@@ -31,7 +31,6 @@ export const MapView = memo(function MapView({
   routes,
   focus,
   onStationPress,
-  onBackgroundPress,
 }: MapViewProps): React.JSX.Element {
   const theme = useTheme();
   const container = useRef<HTMLDivElement>(null);
@@ -40,11 +39,11 @@ export const MapView = memo(function MapView({
 
   const data = useRef({ stations, routes });
 
-  const handlers = useRef({ onStationPress, onBackgroundPress });
+  const handlers = useRef({ onStationPress });
 
   useEffect(() => {
-    handlers.current = { onStationPress, onBackgroundPress };
-  }, [onStationPress, onBackgroundPress]);
+    handlers.current = { onStationPress };
+  }, [onStationPress]);
 
   useEffect(() => {
     if (container.current === null) return;
@@ -90,11 +89,7 @@ export const MapView = memo(function MapView({
         event.lngLat.lng,
         event.lngLat.lat,
       ]);
-
-      if (stopId === undefined) {
-        handlers.current.onBackgroundPress();
-        return;
-      }
+      if (stopId === undefined) return;
 
       handlers.current.onStationPress(stopId);
     });

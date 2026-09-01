@@ -23,8 +23,7 @@ import {
  *
  * Loading a new station unselects the selected stop and refocuses the map on
  * it. Tapping a station looks up its stop in {@link buildStopIndex} and
- * selects it; tapping the background unselects. An open departure belongs to
- * the stop it was opened from, so it closes whenever that selection moves.
+ * selects it;
  */
 export function ReachabilityMap(): React.JSX.Element {
   const theme = useTheme();
@@ -111,7 +110,6 @@ export function ReachabilityMap(): React.JSX.Element {
       routes={routes}
       focus={focus}
       onStationPress={handleStationPress}
-      onBackgroundPress={unselectStation}
     />
   );
 }

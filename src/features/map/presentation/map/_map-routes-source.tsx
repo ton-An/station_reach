@@ -1,8 +1,4 @@
-import {
-  type Expression,
-  LineLayer,
-  ShapeSource,
-} from '@maplibre/maplibre-react-native';
+import { GeoJSONSource, Layer } from '@maplibre/maplibre-react-native';
 import { memo } from 'react';
 
 import {
@@ -21,17 +17,17 @@ export const MapRoutesSource = memo(function MapRoutesSource({
   routes,
 }: MapRoutesSourceProps) {
   return (
-    <ShapeSource id={SOURCE_IDS.routes} shape={routes}>
-      <LineLayer
+    <GeoJSONSource id={SOURCE_IDS.routes} data={routes}>
+      <Layer
         id={LAYER_IDS.routeLines}
-        style={{
-          lineColor: ['get', 'color'],
-          lineWidth: ROUTE_LINE_WIDTH,
-          lineCap: 'round',
-          lineJoin: 'round',
-          lineOffset: LINE_OFFSET_EXPRESSION as Expression,
+        type="line"
+        layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+        paint={{
+          'line-color': ['get', 'color'],
+          'line-width': ROUTE_LINE_WIDTH,
+          'line-offset': LINE_OFFSET_EXPRESSION,
         }}
       />
-    </ShapeSource>
+    </GeoJSONSource>
   );
 });

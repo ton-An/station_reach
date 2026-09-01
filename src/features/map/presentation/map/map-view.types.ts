@@ -18,8 +18,9 @@ export interface MapViewProps {
   readonly routes: RouteFeatures;
   /** Camera position to animate to. `undefined` leaves the camera as-is. */
   readonly focus: MapFocus | undefined;
-  /** Fires with a station's stop id when a tap hits its marker. */
+  /**
+   * Fires with a station's stop id when a tap hits its marker. A tap that
+   * misses every marker fires nothing.
+   */
   readonly onStationPress: (stopId: string) => void;
-  /** Fires when a tap misses every station marker. */
-  readonly onBackgroundPress: () => void;
 }
