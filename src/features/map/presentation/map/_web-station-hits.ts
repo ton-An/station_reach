@@ -1,10 +1,11 @@
-import type { Map as MapLibreMap, MapMouseEvent, Point } from 'maplibre-gl';
+import type {
+  Map as MapLibreMap,
+  MapGeoJSONFeature,
+  MapMouseEvent,
+  Point,
+} from 'maplibre-gl';
 
 import { LAYER_IDS, STATION_HIT_RADIUS } from './map-config';
-import {
-  type StationCandidate,
-  toStationCandidates,
-} from './station-candidates';
 
 /**
  * Station markers within {@link STATION_HIT_RADIUS} px of `point`, the
@@ -16,17 +17,15 @@ import {
 export function stationsAt(
   instance: MapLibreMap,
   point: Point
-): StationCandidate[] {
+): MapGeoJSONFeature[] {
   const { x, y } = point;
 
-  return toStationCandidates(
-    instance.queryRenderedFeatures(
-      [
-        [x - STATION_HIT_RADIUS, y - STATION_HIT_RADIUS],
-        [x + STATION_HIT_RADIUS, y + STATION_HIT_RADIUS],
-      ],
-      { layers: [LAYER_IDS.stationCircles] }
-    )
+  return instance.queryRenderedFeatures(
+    [
+      [x - STATION_HIT_RADIUS, y - STATION_HIT_RADIUS],
+      [x + STATION_HIT_RADIUS, y + STATION_HIT_RADIUS],
+    ],
+    { layers: [LAYER_IDS.stationCircles] }
   );
 }
 
