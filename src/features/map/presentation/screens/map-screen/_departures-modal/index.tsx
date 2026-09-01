@@ -23,9 +23,7 @@ import { DeparturesList } from './_departures-list';
  *
  * The title follows the current selection — the selected stop, then the
  * selected departure, then a generic fallback. The back button appears only
- * once a departure is selected, and returns to the list. The legend renders
- * inside the sheet on narrow layouts; {@link MapScreen} renders it standalone
- * on wide ones.
+ * once a departure is selected, and returns to the list.
  *
  * Sub-components:
  * - {@link DeparturesList}: departures reaching the selected stop

@@ -42,9 +42,7 @@ export type GetStationDepartures = (
  * Reads every departure leaving a station.
  *
  * Fetches the long-distance and regional mode buckets concurrently; both
- * are required, so a failure in either fails the whole read. A bucket with
- * nothing scheduled is an answer, not a failure, and contributes no
- * departures.
+ * are required, so a failure in either fails the whole read.
  *
  * The surviving departures are deduped before sorting, keeping the first
  * occurrence of each unique stop sequence with long distance concatenated

@@ -16,7 +16,7 @@ import { attributionMessage } from './attributions';
  *
  * OpenStreetMap, CartoDB, Transitous and the site's privacy policy and
  * impressum are legal requirements, and this dialog is the one place the
- * app shows them — keep it reachable.
+ * app shows them.
  *
  * Sub-components:
  * - {@link AttributionOpenSourceCard}: link to the project's repository
