@@ -1,6 +1,8 @@
 import { err, ok, type Result } from 'neverthrow';
 
 import { Failure, NoDeparturesFoundFailure } from '@/core/failures';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- {@link} target
+import type { NetworkingFailure } from '@/core/failures/networking-failures';
 
 import type { Departure } from '../models/departure';
 import type { Station, Stop } from '../models/station';
@@ -53,10 +55,7 @@ export type GetStationDepartures = (
  *
  * @param station - The station to read departures for.
  * @returns The merged departures, a {@link NoDeparturesFoundFailure} when
- * neither bucket has any, or one of {@link ReceiveTimeoutFailure},
- * {@link RequestCancelledFailure}, {@link ConnectionFailure},
- * {@link StatusCodeNotOkFailure}, {@link BadResponseFailure} and
- * {@link UnknownRequestFailure}.
+ * neither bucket has any, or a {@link NetworkingFailure}
  */
 export function createGetStationDepartures(
   mapRepository: MapRepository

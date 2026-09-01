@@ -41,9 +41,7 @@ function requestHeaders(): Record<string, string> {
  * @param url - The endpoint to fetch.
  * @param signal - Aborts the request; distinct from the request timeout.
  * @returns The parsed JSON body.
- * @throws {@link ReceiveTimeoutFailure}, {@link RequestCancelledFailure},
- * {@link ConnectionFailure}, {@link StatusCodeNotOkFailure},
- * {@link BadResponseFailure} or {@link UnknownRequestFailure}.
+ * @throws a {@link NetworkingFailure}
  */
 export async function getJson<T = unknown>(
   url: string,

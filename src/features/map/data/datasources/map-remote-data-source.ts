@@ -1,3 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- {@link} target
+import type { NetworkingFailure } from '@/core/failures/networking-failures';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- {@link} target
+import type { NoDeparturesFoundFailure } from '@/core/failures/transit-failures';
 import { getJson } from '@/core/http/http-client';
 
 import type { Departure } from '../../domain/models/departure';

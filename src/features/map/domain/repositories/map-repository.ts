@@ -1,6 +1,10 @@
 import type { Result } from 'neverthrow';
 
 import type { Failure } from '@/core/failures';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- {@link} target
+import type { NetworkingFailure } from '@/core/failures/networking-failures';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- {@link} target
+import type { NoDeparturesFoundFailure } from '@/core/failures/transit-failures';
 
 import type { Departure } from '../models/departure';
 import type { Station } from '../models/station';
@@ -21,10 +25,7 @@ export interface MapRepository {
    *
    * @param query - Free text the user typed.
    * @param signal - Aborts the search.
-   * @returns The matching stations, or one of {@link ReceiveTimeoutFailure},
-   * {@link RequestCancelledFailure}, {@link ConnectionFailure},
-   * {@link StatusCodeNotOkFailure}, {@link BadResponseFailure} and
-   * {@link UnknownRequestFailure}.
+   * @returns The matching stations, or a {@link NetworkingFailure}
    */
   searchStations(
     query: string,
@@ -35,11 +36,8 @@ export interface MapRepository {
    * Reads the departures leaving a station, each carrying every stop it
    * reaches and how long it takes to get there.
    *
-   * @returns The departures found, a {@link NoDeparturesFoundFailure} when
-   * the station has none scheduled, or one of {@link ReceiveTimeoutFailure},
-   * {@link RequestCancelledFailure}, {@link ConnectionFailure},
-   * {@link StatusCodeNotOkFailure}, {@link BadResponseFailure} and
-   * {@link UnknownRequestFailure}.
+   * @returns The departures found, a {@link NoDeparturesFoundFailure},
+   * or a {@link NetworkingFailure}
    */
   getStationDeparturesByMode(
     query: DeparturesQuery
