@@ -16,28 +16,13 @@ export type RouteFeatureProperties = {
   offset: number;
 };
 
-export type PointFeature<P> = {
-  type: 'Feature';
-  geometry: { type: 'Point'; coordinates: [number, number] };
-  properties: P;
-};
-
-export type LineFeature<P> = {
-  type: 'Feature';
-  geometry: { type: 'LineString'; coordinates: [number, number][] };
-  properties: P;
-};
-
-export type FeatureCollection<F> = {
-  type: 'FeatureCollection';
-  features: F[];
-};
-
-export type StationFeatures = FeatureCollection<
-  PointFeature<StationFeatureProperties>
+export type StationFeatures = GeoJSON.FeatureCollection<
+  GeoJSON.Point,
+  StationFeatureProperties
 >;
-export type RouteFeatures = FeatureCollection<
-  LineFeature<RouteFeatureProperties>
+export type RouteFeatures = GeoJSON.FeatureCollection<
+  GeoJSON.LineString,
+  RouteFeatureProperties
 >;
 
 export const EMPTY_STATIONS: StationFeatures = {
@@ -69,7 +54,7 @@ export function buildStationFeatures(
   gradient: readonly string[]
 ): StationFeatures {
   const features = [...stops.values()].map(
-    ({ stop }): PointFeature<StationFeatureProperties> => ({
+    ({ stop }): StationFeatures['features'][number] => ({
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [stop.longitude, stop.latitude] },
       properties: {
@@ -107,7 +92,7 @@ export function buildRouteFeatures(
   departures: readonly Departure[],
   gradient: readonly string[]
 ): RouteFeatures {
-  const features: LineFeature<RouteFeatureProperties>[] = [];
+  const features: RouteFeatures['features'] = [];
   const middle = departures.length / 2;
 
   departures.forEach((departure, departureIndex) => {
