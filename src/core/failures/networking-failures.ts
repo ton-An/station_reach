@@ -1,7 +1,11 @@
 import { Failure, FailureCategory } from './failure';
 
-export class ReceiveTimeoutFailure extends Failure {
+/** The networking category of {@link Failure}. */
+export abstract class NetworkingFailure extends Failure {
   readonly categoryCode = FailureCategory.Networking;
+}
+
+export class ReceiveTimeoutFailure extends NetworkingFailure {
   readonly nameKey = 'receiveTimeoutFailureName' as const;
   readonly messageKey = 'receiveTimeoutFailureMessage' as const;
 
@@ -10,8 +14,7 @@ export class ReceiveTimeoutFailure extends Failure {
   }
 }
 
-export class RequestCancelledFailure extends Failure {
-  readonly categoryCode = FailureCategory.Networking;
+export class RequestCancelledFailure extends NetworkingFailure {
   readonly nameKey = 'requestCancelledFailureName' as const;
   readonly messageKey = 'requestCancelledFailureMessage' as const;
 
@@ -20,8 +23,7 @@ export class RequestCancelledFailure extends Failure {
   }
 }
 
-export class ConnectionFailure extends Failure {
-  readonly categoryCode = FailureCategory.Networking;
+export class ConnectionFailure extends NetworkingFailure {
   readonly nameKey = 'connectionFailureName' as const;
   readonly messageKey = 'connectionFailureMessage' as const;
 
@@ -30,8 +32,7 @@ export class ConnectionFailure extends Failure {
   }
 }
 
-export class StatusCodeNotOkFailure extends Failure {
-  readonly categoryCode = FailureCategory.Networking;
+export class StatusCodeNotOkFailure extends NetworkingFailure {
   readonly nameKey = 'statusCodeNotOkFailureName' as const;
   readonly messageKey = 'statusCodeNotOkFailureMessage' as const;
 
@@ -40,8 +41,7 @@ export class StatusCodeNotOkFailure extends Failure {
   }
 }
 
-export class BadResponseFailure extends Failure {
-  readonly categoryCode = FailureCategory.Networking;
+export class BadResponseFailure extends NetworkingFailure {
   readonly nameKey = 'badResponseFailureName' as const;
   readonly messageKey = 'badResponseFailureMessage' as const;
 
@@ -50,8 +50,7 @@ export class BadResponseFailure extends Failure {
   }
 }
 
-export class UnknownRequestFailure extends Failure {
-  readonly categoryCode = FailureCategory.Networking;
+export class UnknownRequestFailure extends NetworkingFailure {
   readonly nameKey = 'unknownRequestFailureName' as const;
   readonly messageKey = 'unknownRequestFailureMessage' as const;
 
@@ -59,12 +58,3 @@ export class UnknownRequestFailure extends Failure {
     super('unknown_request', options);
   }
 }
-
-/** The networking category of {@link Failure}. */
-export type NetworkingFailure =
-  | ReceiveTimeoutFailure
-  | RequestCancelledFailure
-  | ConnectionFailure
-  | StatusCodeNotOkFailure
-  | BadResponseFailure
-  | UnknownRequestFailure;

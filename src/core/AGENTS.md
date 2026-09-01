@@ -37,11 +37,16 @@ Tokens live in `theme/theme.ts`. Read the values there.
 
 ## Failures
 
-A failure is a class extending the abstract `Failure`, never assembled at the call site:
+A failure is a class, never assembled at the call site. Each category module declares one
+abstract class extending `Failure` that owns the category's `categoryCode`, and every concrete
+failure in that module extends it:
 
 ```ts
-export class NoDeparturesFoundFailure extends Failure {
+export abstract class TransitFailure extends Failure {
   readonly categoryCode = FailureCategory.Transit;
+}
+
+export class NoDeparturesFoundFailure extends TransitFailure {
   readonly nameKey = 'noDeparturesFoundFailureName' as const;
   readonly messageKey = 'noDeparturesFoundFailureMessage' as const;
 
@@ -51,19 +56,18 @@ export class NoDeparturesFoundFailure extends Failure {
 }
 ```
 
-Each category module exports its classes plus a union named after the category, for
-documentation and `@returns`/`@throws` tags. `index.ts` re-exports `Failure` itself as the type
-every store and repository signature uses. Import from `@/core/failures`, never from a category
-module.
+The category class is the type a whole category is named by, in a signature and in a
+`@returns`/`@throws` tag. `index.ts` re-exports `Failure` itself as the type every store and
+repository signature uses. Import from `@/core/failures`, never from a category module.
 
 Exceptions become failures in the repository or before if the failure gets constructed from a non-exception case The repository relays anything already a `Failure` and falls back to rethrowing unknown exceptions.
 
 **Add a failure**
 
-1. Add the class to its category module.
-2. Add it to that module's union.
-3. Add `<name>FailureName` and `<name>FailureMessage` to `i18n/en.ts`.
-4. If it is a new category: new module, new union, add it to `FailureCategory` in `failure.ts`.
+1. Add the class to its category module, extending that module's category class.
+2. Add `<name>FailureName` and `<name>FailureMessage` to `i18n/en.ts`.
+3. If it is a new category: new module, new abstract category class, add it to
+   `FailureCategory` in `failure.ts`.
 
 ## Dependency injection
 
