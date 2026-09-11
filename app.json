@@ -3,7 +3,7 @@
     "name": "Station Reach",
     "slug": "station-reach",
     "description": "See where transit takes you!",
-    "version": "0.1.6",
+    "version": "0.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "stationreach",
