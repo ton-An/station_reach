@@ -1,0 +1,132 @@
+import { colorForDuration } from '@/core/helpers/color-helper';
+
+import type { Departure } from '../../domain/models/departure';
+import type { StopIndex } from './stop-index';
+
+export type StationFeatureProperties = {
+  stopId: string;
+  name: string;
+  durationMinutes: number;
+  color: string;
+};
+
+export type RouteFeatureProperties = {
+  departureId: string;
+  color: string;
+  offset: number;
+};
+
+export type StationFeatures = GeoJSON.FeatureCollection<
+  GeoJSON.Point,
+  StationFeatureProperties
+>;
+export type RouteFeatures = GeoJSON.FeatureCollection<
+  GeoJSON.LineString,
+  RouteFeatureProperties
+>;
+
+export const EMPTY_STATIONS: StationFeatures = {
+  type: 'FeatureCollection',
+  features: [],
+};
+
+export const EMPTY_ROUTES: RouteFeatures = {
+  type: 'FeatureCollection',
+  features: [],
+};
+
+const MAX_FAN_OFFSET = 10;
+
+const STATION_ALPHA = 0.75;
+const ROUTE_ALPHA = 0.7;
+
+/**
+ * Builds one point feature per {@link StopIndex} entry.
+ *
+ * @param stops - The reachability index to render, from
+ * {@link buildStopIndex}.
+ * @param gradient - Colour stops passed to {@link colorForDuration} — the
+ * same gradient used for routes, list rows and the legend keeps a
+ * station's colour identical everywhere it appears.
+ */
+export function buildStationFeatures(
+  stops: StopIndex,
+  gradient: readonly string[]
+): StationFeatures {
+  const features = [...stops.values()].map(
+    ({ stop }): StationFeatures['features'][number] => ({
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [stop.longitude, stop.latitude] },
+      properties: {
+        stopId: stop.id,
+        name: stop.name,
+        durationMinutes: stop.durationMinutes,
+        color: colorForDuration({
+          gradient,
+          durationMinutes: stop.durationMinutes,
+          alpha: STATION_ALPHA,
+        }),
+      },
+    })
+  );
+
+  return { type: 'FeatureCollection', features };
+}
+
+/**
+ * Builds one line feature per leg of every departure's stop sequence, so a
+ * departure with several stops becomes several segments, each coloured by
+ * the duration at its destination stop.
+ *
+ * Every segment of a departure shares a per-departure `offset`, fanned out
+ * around the middle of `departures` and capped at `MAX_FAN_OFFSET`, so
+ * routes sharing a corridor stay visually apart once
+ * {@link LINE_OFFSET_EXPRESSION} turns it into pixels.
+ *
+ * @param departures - The selected station's departures, in fan-out order.
+ * @param gradient - Colour stops passed to {@link colorForDuration} — the
+ * same gradient used for stations, list rows and the legend keeps a
+ * route's colour identical to its destination marker's.
+ */
+export function buildRouteFeatures(
+  departures: readonly Departure[],
+  gradient: readonly string[]
+): RouteFeatures {
+  const features: RouteFeatures['features'] = [];
+  const middle = departures.length / 2;
+
+  departures.forEach((departure, departureIndex) => {
+    const offset = Math.min(
+      Math.max(middle - departureIndex, 0),
+      MAX_FAN_OFFSET
+    );
+
+    for (let i = 0; i < departure.stops.length - 1; i++) {
+      const from = departure.stops[i];
+      const to = departure.stops[i + 1];
+      if (from === undefined || to === undefined) continue;
+
+      features.push({
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: [
+            [from.longitude, from.latitude],
+            [to.longitude, to.latitude],
+          ],
+        },
+        properties: {
+          departureId: departure.id,
+          color: colorForDuration({
+            gradient,
+            durationMinutes: to.durationMinutes,
+            alpha: ROUTE_ALPHA,
+          }),
+          offset,
+        },
+      });
+    }
+  });
+
+  return { type: 'FeatureCollection', features };
+}

@@ -1,0 +1,70 @@
+import type { ExpressionSpecification } from 'maplibre-gl';
+
+/**
+ * Ids, constants and style expressions shared by both `MapView`
+ * implementations and the map's hit-testing modules.
+ */
+export const BASEMAP_STYLE_URL =
+  'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json';
+
+export const LABEL_FONTS = ['Open Sans Regular', 'Noto Sans Regular'];
+
+export const LABEL_HALO_WIDTH = 1.5;
+/** Ems, not pixels — matches the unit MapLibre expects for a text offset. */
+export const LABEL_OFFSET: readonly [number, number] = [0, 0.6];
+
+export const INITIAL_CENTER: readonly [number, number] = [10.127, 42.68];
+export const INITIAL_ZOOM = 4;
+export const MIN_ZOOM = 1.5;
+
+export const FOCUSED_ZOOM = 6;
+
+/**
+ * Added to a focused station's latitude before centring the camera on it.
+ * Negative, so the camera centres south of the station and the marker
+ * itself sits higher on screen, clear of the bottom sheet.
+ */
+export const FOCUS_LATITUDE_OFFSET = -1;
+
+export const SOURCE_IDS = {
+  stations: 'reachable-stations',
+  routes: 'departure-routes',
+} as const;
+
+export const LAYER_IDS = {
+  stationCircles: 'reachable-station-circles',
+  stationLabels: 'reachable-station-labels',
+  routeLines: 'departure-route-lines',
+} as const;
+
+export const STATION_CIRCLE_RADIUS = 6.3;
+/**
+ * Tap tolerance radius, in screen pixels. Shared by the native and web
+ * hit-test queries, so a tap near a marker still counts as a hit on it.
+ */
+export const STATION_HIT_RADIUS = 24;
+
+/**
+ * How far a touch may travel, in screen pixels, and still count as a tap
+ * instead of a pan.
+ */
+export const TAP_MOVE_TOLERANCE = 10;
+
+export const ROUTE_LINE_WIDTH = 5;
+
+/**
+ * Turns a route feature's `offset` property, set by
+ * {@link buildRouteFeatures}, into a pixel `lineOffset` that grows with
+ * zoom — so routes fanned apart stay visibly apart at every zoom level.
+ */
+export const LINE_OFFSET_EXPRESSION: ExpressionSpecification = [
+  'interpolate',
+  ['linear'],
+  ['zoom'],
+  0,
+  ['*', ['get', 'offset'], 0],
+  7,
+  ['*', ['get', 'offset'], 1],
+  14,
+  ['*', ['get', 'offset'], 4],
+];
