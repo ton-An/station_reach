@@ -19,7 +19,8 @@
 </p>
 
 <div align="center">
-  <a href="https://station-reach.eu">Homepage</a>
+  <a href="https://station-reach.eu">Homepage</a> •
+  <a href="https://github.com/users/ton-An/projects/2">Project Board</a>
 </div>
 
 ## Screenshots
@@ -41,11 +42,8 @@ https://station-reach.eu
 https://apps.apple.com/de/app/station-reach/id6752408029?l=en-GB
 
 ### Android
-
-Station Reach is currently in **closed testing** on Google Play. To participate, join the Google
-Group [station-reach-testers@googlegroups.com](https://groups.google.com/g/station-reach-testers),
-then the test on Google Play:
-https://play.google.com/apps/testing/eu.antons_webfabrik.station_reach
+Station Reach is currently in **closed testing** on Google Play. To participate, you must join the Google Group:
+[station-reach-testers@googlegroups.com](https://groups.google.com/g/station-reach-testers). And then the test on Google Play: https://play.google.com/apps/testing/eu.antons_webfabrik.station_reac[...]
 
 Google Play requires at least 12 testers to move forward, so your help is greatly appreciated!
 
