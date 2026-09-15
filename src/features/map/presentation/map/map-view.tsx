@@ -3,16 +3,19 @@ import {
   type CameraRef,
   Map as MapLibreMap,
   type MapRef,
+  ViewAnnotation,
 } from '@maplibre/maplibre-react-native';
-import { memo, useCallback, useEffect, useRef } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import { type GestureResponderEvent, StyleSheet } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
 
+import { StationCallout } from '../components/station-callout';
 import { MapRoutesSource } from './_map-routes-source';
 import { MapStationsSource } from './_map-stations-source';
 import {
   BASEMAP_STYLE_URL,
+  CALLOUT_OFFSET,
   INITIAL_CENTER,
   INITIAL_ZOOM,
   LAYER_IDS,
@@ -20,6 +23,7 @@ import {
   STATION_HIT_RADIUS,
   TAP_MOVE_TOLERANCE,
 } from './map-config';
+import { calloutTarget } from './map-features';
 import type { MapViewProps } from './map-view.types';
 import { nearestStopId } from './nearest-stop';
 
@@ -37,17 +41,26 @@ import { nearestStopId } from './nearest-stop';
  *
  * `Camera`'s `initialViewState` only seeds the initial position; a later
  * `focus` change moves the camera by calling `easeTo` through a ref.
+ *
+ * `calloutStopId` is labelled with a `ViewAnnotation`. There is no hover on
+ * a touch screen, so the card follows the selection and nothing else.
  */
 export const MapView = memo(function MapView({
   stations,
   routes,
   focus,
+  calloutStopId,
   onStationPress,
 }: MapViewProps): React.JSX.Element {
   const theme = useTheme();
   const camera = useRef<CameraRef>(null);
   const map = useRef<MapRef>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  const callout = useMemo(
+    () => calloutTarget(stations, calloutStopId),
+    [stations, calloutStopId]
+  );
 
   useEffect(() => {
     if (focus === undefined) return;
@@ -147,6 +160,19 @@ export const MapView = memo(function MapView({
       <MapRoutesSource routes={routes} />
 
       <MapStationsSource stations={stations} />
+
+      {callout !== undefined && (
+        <ViewAnnotation
+          lngLat={[...callout.center]}
+          anchor="bottom"
+          offset={[...CALLOUT_OFFSET]}
+        >
+          <StationCallout
+            name={callout.name}
+            durationMinutes={callout.durationMinutes}
+          />
+        </ViewAnnotation>
+      )}
     </MapLibreMap>
   );
 });

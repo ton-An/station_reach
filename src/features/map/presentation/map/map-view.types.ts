@@ -19,6 +19,12 @@ export interface MapViewProps {
   /** Camera position to animate to. `undefined` leaves the camera as-is. */
   readonly focus: MapFocus | undefined;
   /**
+   * The stop to label with a callout, or `undefined` for none. A pointer
+   * hovering a marker labels that marker instead, for as long as it hovers,
+   * which only the web implementation can offer.
+   */
+  readonly calloutStopId: string | undefined;
+  /**
    * Fires with a station's stop id when a tap hits its marker. A tap that
    * misses every marker fires nothing.
    */

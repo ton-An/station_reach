@@ -73,6 +73,41 @@ export function buildStationFeatures(
   return { type: 'FeatureCollection', features };
 }
 
+/** What a station callout renders, and where it is anchored. */
+export interface CalloutTarget {
+  readonly name: string;
+  readonly durationMinutes: number;
+  /** `[longitude, latitude]`, GeoJSON order. */
+  readonly center: readonly [number, number];
+}
+
+/**
+ * Looks up what to label with a callout.
+ *
+ * @param stations - The features currently on the map.
+ * @param stopId - The stop to label, or `undefined` to label none.
+ * @returns The target, or `undefined` when no feature carries `stopId` or
+ * the one that does has no usable coordinate.
+ */
+export function calloutTarget(
+  stations: StationFeatures,
+  stopId: string | undefined
+): CalloutTarget | undefined {
+  if (stopId === undefined) return undefined;
+
+  const feature = stations.features.find(
+    (candidate) => candidate.properties.stopId === stopId
+  );
+  if (feature === undefined) return undefined;
+
+  const [longitude, latitude] = feature.geometry.coordinates;
+  if (longitude === undefined || latitude === undefined) return undefined;
+
+  const { name, durationMinutes } = feature.properties;
+
+  return { name, durationMinutes, center: [longitude, latitude] };
+}
+
 /**
  * Builds one line feature per leg of every departure's stop sequence, so a
  * departure with several stops becomes several segments, each coloured by

@@ -21,6 +21,10 @@ import {
  * Renders the reachability map for the loaded station: stations coloured by
  * travel time, and the selected departure's route once a stop is tapped.
  *
+ * The selected stop is the one the map labels with a callout. On the web a
+ * hovered marker takes that label instead, which the map view handles on
+ * its own.
+ *
  * Loading a new station unselects the selected stop and refocuses the map on
  * it. Tapping a station looks up its stop in {@link buildStopIndex} and
  * selects it;
@@ -109,6 +113,7 @@ export function ReachabilityMap(): React.JSX.Element {
       stations={stations}
       routes={routes}
       focus={focus}
+      calloutStopId={selectedStopId}
       onStationPress={handleStationPress}
     />
   );

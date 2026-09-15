@@ -45,6 +45,13 @@ export const STATION_CIRCLE_RADIUS = 6.3;
 export const STATION_HIT_RADIUS = 24;
 
 /**
+ * Pixels the station callout is shifted by from the marker it labels.
+ * Negative on the y axis, so the card sits above the dot and leaves it
+ * visible.
+ */
+export const CALLOUT_OFFSET: readonly [number, number] = [0, -14];
+
+/**
  * How far a touch may travel, in screen pixels, and still count as a tap
  * instead of a pan.
  */

@@ -214,6 +214,53 @@ export function flattenOnto({
   });
 }
 
+function relativeLuminance(color: string): number {
+  const { r, g, b } = parseRgba(color);
+
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+}
+
+function contrastRatio(a: string, b: string): number {
+  const first = relativeLuminance(a);
+  const second = relativeLuminance(b);
+
+  return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+}
+
+/**
+ * Picks the candidate that reads best on `background`.
+ *
+ * Compares WCAG contrast ratios instead of testing lightness against a
+ * threshold. A scale that runs through saturated warm colours crosses from
+ * "takes dark text" to "takes light text" inside them, where a threshold
+ * picked by eye lands on the wrong side.
+ *
+ * Alpha is ignored: both the background and the candidates are read as
+ * opaque.
+ *
+ * @param background - The colour the candidates would be drawn on.
+ * @param candidates - The colours to choose between.
+ * @returns The candidate with the highest contrast ratio, and the earliest
+ * of them when two tie.
+ */
+export function contrastOn(
+  background: string,
+  candidates: readonly [string, ...string[]]
+): string {
+  let best = candidates[0];
+  let bestRatio = contrastRatio(background, best);
+
+  for (const candidate of candidates.slice(1)) {
+    const ratio = contrastRatio(background, candidate);
+    if (ratio <= bestRatio) continue;
+
+    best = candidate;
+    bestRatio = ratio;
+  }
+
+  return best;
+}
+
 const MAX_DURATION_MINUTES = 18 * 60;
 
 /**
