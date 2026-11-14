@@ -28,6 +28,7 @@
     "statusBarItem.remoteBackground": "#a43b95",
     "statusBarItem.remoteForeground": "#15202b",
     "sideBar.border": "#66bac8",
-    "statusBar.border": "#42a8b9"
+    "statusBar.border": "#42a8b9",
+    "statusBar.inactiveBackground": "#42a8b9"
   }
 }
