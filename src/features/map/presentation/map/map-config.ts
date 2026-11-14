@@ -45,6 +45,23 @@ export const STATION_CIRCLE_RADIUS = 6.3;
 export const STATION_HIT_RADIUS = 24;
 
 /**
+ * How far a callout is lifted off its station's coordinate, in screen
+ * pixels, so it clears both the marker and the marker's own label.
+ */
+const CALLOUT_GAP = 8;
+
+/**
+ * Which part of a callout sits on its station's coordinate. The bottom edge,
+ * so the card grows upwards and away from the marker it labels.
+ */
+export const CALLOUT_ANCHOR = 'bottom';
+
+export const CALLOUT_OFFSET: readonly [number, number] = [
+  0,
+  -(STATION_CIRCLE_RADIUS + CALLOUT_GAP),
+];
+
+/**
  * How far a touch may travel, in screen pixels, and still count as a tap
  * instead of a pan.
  */

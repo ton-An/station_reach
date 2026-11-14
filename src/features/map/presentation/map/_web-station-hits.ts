@@ -6,6 +6,7 @@ import type {
 } from 'maplibre-gl';
 
 import { LAYER_IDS, STATION_HIT_RADIUS } from './map-config';
+import { type NearestStop, nearestStop } from './nearest-stop';
 
 /**
  * Station markers within {@link STATION_HIT_RADIUS} px of `point`, the
@@ -30,40 +31,56 @@ export function stationsAt(
 }
 
 /**
- * Sets the canvas cursor to a pointer while the mouse is over a station
- * marker, and clears it `holdMs` after it stops being over one instead of
- * immediately, so the cursor does not flicker between markers spaced
- * close together.
+ * Reports the station marker under the pointer through `onStationChange`,
+ * and sets the canvas cursor to a pointer while there is one.
  *
- * @param instance - The map to track hover on.
- * @param holdMs - Delay before clearing the pointer cursor, in
- * milliseconds.
+ * The cursor clears `holdMs` after the pointer leaves a station instead of
+ * immediately, so it does not flicker between markers spaced close together.
+ * The reported station changes at once, because a card labelling a marker
+ * has to leave when its marker does.
+ *
+ * @param instance - The map to track the pointer on.
+ * @param holdMs - Delay before the pointer cursor clears, in milliseconds.
+ * @param onStationChange - Called with the station under the pointer, or
+ * `undefined` when there is none.
  * @returns A cleanup function that removes the listener and cancels a
- * pending clear.
+ * pending cursor clear.
  */
-export function trackStationCursor(
-  instance: MapLibreMap,
-  holdMs: number
-): () => void {
+export function trackStationPointer({
+  instance,
+  holdMs,
+  onStationChange,
+}: {
+  readonly instance: MapLibreMap;
+  readonly holdMs: number;
+  readonly onStationChange: (station: NearestStop | undefined) => void;
+}): () => void {
   let hold: ReturnType<typeof setTimeout> | undefined;
+  let current: string | undefined;
 
   const onMouseMove = (event: MapMouseEvent) => {
     const canvas = instance.getCanvas();
+    const station = nearestStop(stationsAt(instance, event.point), [
+      event.lngLat.lng,
+      event.lngLat.lat,
+    ]);
 
-    if (stationsAt(instance, event.point).length > 0) {
+    if (station !== undefined) {
       clearTimeout(hold);
       hold = undefined;
 
       if (canvas.style.cursor !== 'pointer') canvas.style.cursor = 'pointer';
-      return;
+    } else if (canvas.style.cursor === 'pointer' && hold === undefined) {
+      hold = setTimeout(() => {
+        hold = undefined;
+        canvas.style.cursor = '';
+      }, holdMs);
     }
 
-    if (canvas.style.cursor !== 'pointer' || hold !== undefined) return;
+    if (station?.stopId === current) return;
 
-    hold = setTimeout(() => {
-      hold = undefined;
-      canvas.style.cursor = '';
-    }, holdMs);
+    current = station?.stopId;
+    onStationChange(station);
   };
 
   instance.on('mousemove', onMouseMove);

@@ -194,6 +194,7 @@ export const layout = {
   legendClusterWidth: 320,
   /** Height of both surfaces in the legend row, so the two line up. */
   legendHeight: 44,
+  calloutMaxWidth: 240,
   wideBreakpoint: 900,
 } as const satisfies Record<string, number>;
 

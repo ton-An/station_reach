@@ -3,16 +3,21 @@ import {
   type CameraRef,
   Map as MapLibreMap,
   type MapRef,
+  ViewAnnotation,
 } from '@maplibre/maplibre-react-native';
 import { memo, useCallback, useEffect, useRef } from 'react';
 import { type GestureResponderEvent, StyleSheet } from 'react-native';
 
 import { useTheme } from '@/core/theme/use-theme';
 
+import { StationCallout } from '../components/station-callout';
+import { useStationSelectionStore } from '../stores/use-map-stores';
 import { MapRoutesSource } from './_map-routes-source';
 import { MapStationsSource } from './_map-stations-source';
 import {
   BASEMAP_STYLE_URL,
+  CALLOUT_ANCHOR,
+  CALLOUT_OFFSET,
   INITIAL_CENTER,
   INITIAL_ZOOM,
   LAYER_IDS,
@@ -21,7 +26,7 @@ import {
   TAP_MOVE_TOLERANCE,
 } from './map-config';
 import type { MapViewProps } from './map-view.types';
-import { nearestStopId } from './nearest-stop';
+import { nearestStop } from './nearest-stop';
 
 /**
  * MapLibre Native implementation of {@link MapViewProps}.
@@ -37,6 +42,11 @@ import { nearestStopId } from './nearest-stop';
  *
  * `Camera`'s `initialViewState` only seeds the initial position; a later
  * `focus` change moves the camera by calling `easeTo` through a ref.
+ *
+ * A station callout hangs on the selected stop in a `ViewAnnotation`. A
+ * touch screen has no pointer to follow, so the card follows the selection
+ * here, and the annotation keeps it pinned to its coordinate as the camera
+ * moves.
  */
 export const MapView = memo(function MapView({
   stations,
@@ -48,6 +58,10 @@ export const MapView = memo(function MapView({
   const camera = useRef<CameraRef>(null);
   const map = useRef<MapRef>(null);
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  const selectedStop = useStationSelectionStore((store) =>
+    store.state.status === 'selected' ? store.state.selectedStop : undefined
+  );
 
   useEffect(() => {
     if (focus === undefined) return;
@@ -75,10 +89,10 @@ export const MapView = memo(function MapView({
         instance.unproject([x, y]),
       ]);
 
-      const stopId = nearestStopId(features, lngLat);
-      if (stopId === undefined) return;
+      const nearest = nearestStop(features, lngLat);
+      if (nearest === undefined) return;
 
-      onStationPress(stopId);
+      onStationPress(nearest.stopId);
     },
     [onStationPress]
   );
@@ -147,6 +161,19 @@ export const MapView = memo(function MapView({
       <MapRoutesSource routes={routes} />
 
       <MapStationsSource stations={stations} />
+
+      {selectedStop !== undefined && (
+        <ViewAnnotation
+          lngLat={[selectedStop.longitude, selectedStop.latitude]}
+          anchor={CALLOUT_ANCHOR}
+          offset={[...CALLOUT_OFFSET]}
+        >
+          <StationCallout
+            name={selectedStop.name}
+            durationMinutes={selectedStop.durationMinutes}
+          />
+        </ViewAnnotation>
+      )}
     </MapLibreMap>
   );
 });
