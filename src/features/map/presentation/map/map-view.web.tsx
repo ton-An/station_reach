@@ -4,12 +4,14 @@ import maplibregl, {
   type Map as MapLibreMap,
   type MapMouseEvent,
 } from 'maplibre-gl';
-import { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useTheme } from '@/core/theme/use-theme';
 
+import { useStationSelectionStore } from '../stores/use-map-stores';
+import { MapCallouts } from './_web-map-callouts';
 import { addStationLayers, syncSources } from './_web-map-style';
-import { stationsAt, trackStationCursor } from './_web-station-hits';
+import { stationsAt, trackStationPointer } from './_web-station-hits';
 import {
   BASEMAP_STYLE_URL,
   INITIAL_CENTER,
@@ -17,7 +19,12 @@ import {
   MIN_ZOOM,
 } from './map-config';
 import type { MapViewProps } from './map-view.types';
-import { nearestStopId } from './nearest-stop';
+import { type NearestStop, nearestStop } from './nearest-stop';
+import {
+  calloutTargetForFeature,
+  calloutTargetForStop,
+  type StationCalloutTarget,
+} from './station-callout-target';
 
 declare global {
   var __map: MapLibreMap | undefined;
@@ -25,6 +32,10 @@ declare global {
 
 /**
  * MapLibre GL JS implementation of {@link MapViewProps}.
+ *
+ * The selected stop and the station under the pointer each get a callout, so
+ * a hover never hides the stop the user tapped. {@link MapCallouts} anchors
+ * them.
  */
 export const MapView = memo(function MapView({
   stations,
@@ -40,6 +51,31 @@ export const MapView = memo(function MapView({
   const data = useRef({ stations, routes });
 
   const handlers = useRef({ onStationPress });
+
+  const selectedStop = useStationSelectionStore((store) =>
+    store.state.status === 'selected' ? store.state.selectedStop : undefined
+  );
+  const [hovered, setHovered] = useState<NearestStop | undefined>();
+
+  const callouts = useMemo(() => {
+    const targets: StationCalloutTarget[] = [];
+
+    if (selectedStop !== undefined) {
+      targets.push(calloutTargetForStop(selectedStop));
+    }
+
+    const hoveredTarget =
+      hovered === undefined
+        ? undefined
+        : calloutTargetForFeature(hovered.feature);
+
+    // Hovering the selected stop is the same stop twice, not a second card.
+    if (hoveredTarget !== undefined && hoveredTarget.id !== selectedStop?.id) {
+      targets.push(hoveredTarget);
+    }
+
+    return targets;
+  }, [hovered, selectedStop]);
 
   useEffect(() => {
     handlers.current = { onStationPress };
@@ -85,23 +121,27 @@ export const MapView = memo(function MapView({
     }
 
     instance.on('click', (event: MapMouseEvent) => {
-      const stopId = nearestStopId(stationsAt(instance, event.point), [
+      const nearest = nearestStop(stationsAt(instance, event.point), [
         event.lngLat.lng,
         event.lngLat.lat,
       ]);
-      if (stopId === undefined) return;
+      if (nearest === undefined) return;
 
-      handlers.current.onStationPress(stopId);
+      handlers.current.onStationPress(nearest.stopId);
     });
 
-    const untrackCursor = trackStationCursor(instance, theme.durations.xxTiny);
+    const untrackPointer = trackStationPointer({
+      instance,
+      holdMs: theme.durations.xxTiny,
+      onStationChange: setHovered,
+    });
 
     const observer = new ResizeObserver(() => instance.resize());
     observer.observe(container.current);
 
     return () => {
       observer.disconnect();
-      untrackCursor();
+      untrackPointer();
       isStyleLoaded.current = false;
       map.current = null;
       instance.remove();
@@ -126,5 +166,11 @@ export const MapView = memo(function MapView({
     });
   }, [focus, theme.durations.xMedium]);
 
-  return <div ref={container} style={{ position: 'absolute', inset: 0 }} />;
+  return (
+    <>
+      <div ref={container} style={{ position: 'absolute', inset: 0 }} />
+
+      <MapCallouts map={map} targets={callouts} />
+    </>
+  );
 });

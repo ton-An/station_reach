@@ -1,3 +1,5 @@
+import { colors } from '@/core/theme/theme';
+
 interface Rgba {
   readonly r: number;
   readonly g: number;
@@ -212,6 +214,39 @@ export function flattenOnto({
     b: mix(top.b, bottom.b),
     a: 1,
   });
+}
+
+function relativeLuminance({ r, g, b }: Rgba): number {
+  return 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+}
+
+function contrastRatio(a: Rgba, b: Rgba): number {
+  const first = relativeLuminance(a);
+  const second = relativeLuminance(b);
+
+  return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
+}
+
+/**
+ * Picks the theme colour a glyph stays legible in when drawn on `color`.
+ *
+ * Returns whichever of {@link colors.primaryContrast} and {@link colors.text}
+ * scores the higher WCAG 2.1 contrast ratio against `color`. A lightness
+ * threshold is the wrong test for the travel-time scale: it crosses from
+ * stops that take dark glyphs to stops that take light ones in the middle of
+ * its warm colours, which is not where a threshold puts the switch.
+ *
+ * @param color - The backdrop, as an `rgb()`/`rgba()` string. Its alpha is
+ * ignored; the colour is treated as opaque.
+ * @returns `colors.primaryContrast` or `colors.text`.
+ */
+export function contrastOn(color: string): string {
+  const backdrop = parseRgba(color);
+  const light = contrastRatio(parseRgba(colors.primaryContrast), backdrop);
+
+  return light >= contrastRatio(parseRgba(colors.text), backdrop)
+    ? colors.primaryContrast
+    : colors.text;
 }
 
 const MAX_DURATION_MINUTES = 18 * 60;

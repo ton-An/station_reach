@@ -1,26 +1,33 @@
+/** A station feature a hit-test resolved to, with its stop id read out. */
+export interface NearestStop {
+  readonly feature: GeoJSON.Feature;
+  readonly stopId: string;
+}
+
 /**
- * Picks the station marker nearest the tapped point, so a tap within
- * several overlapping markers' hit radius resolves to the closest one.
+ * Picks the station marker nearest the given point, so a query that catches
+ * several overlapping markers resolves to the closest one.
  *
  * Longitude is scaled by `cos(latitude)` before comparing, so distance
  * approximates ground distance instead of raw degree deltas.
  *
  * @param features - Candidate features from a hit-test query.
- * @param target - The tapped point, as `[longitude, latitude]`.
- * @returns The nearest station's stop id, or `undefined` when no feature
- * qualifies.
+ * @param target - The point to measure from, as `[longitude, latitude]`.
+ * @returns The nearest station feature and its stop id, or `undefined` when
+ * no feature qualifies.
  */
-export function nearestStopId(
+export function nearestStop(
   features: readonly GeoJSON.Feature[],
   target: readonly [longitude: number, latitude: number]
-): string | undefined {
+): NearestStop | undefined {
   const [targetLongitude, targetLatitude] = target;
   const longitudeScale = Math.cos((targetLatitude * Math.PI) / 180);
 
-  let nearest: string | undefined;
+  let nearest: NearestStop | undefined;
   let nearestDistance = Number.POSITIVE_INFINITY;
 
-  for (const { geometry, properties } of features) {
+  for (const feature of features) {
+    const { geometry, properties } = feature;
     if (geometry.type !== 'Point') continue;
 
     const [longitude, latitude] = geometry.coordinates;
@@ -40,7 +47,7 @@ export function nearestStopId(
 
     if (distance < nearestDistance) {
       nearestDistance = distance;
-      nearest = stopId;
+      nearest = { feature, stopId };
     }
   }
 
